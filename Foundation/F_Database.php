@@ -72,7 +72,7 @@ class F_Database {
      */
     public static function set($oggetto) {
         
-        $prima_iterazione=TRUE;//Usata per modificare $campi e $valori
+        $prima_iterazione=TRUE; //Usata per modificare $campi e $valori
         foreach($oggetto as $field=>$value) {
             if($prima_iterazione) {
                 $campi = '`'.$field.'`';
@@ -93,7 +93,7 @@ class F_Database {
             "ph_valori"  => $valori));
         
         $pdo = NULL; //Chiude la connessione a DB
-        return $pdo_stmt->rowCount();
+        return boolval($pdo_stmt->rowCount());
     }
     
     
@@ -128,7 +128,7 @@ class F_Database {
             "ph_chiave"          => $oggetto->chiave_Primaria));
         
         $pdo = NULL; //Chiude la connessione a DB
-        return $pdo_stmt->rowCount();
+        return boolval($pdo_stmt->rowCount());
     }
     
     
