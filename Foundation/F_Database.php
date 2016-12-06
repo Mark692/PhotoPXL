@@ -60,7 +60,7 @@ class F_Database {
             "ph_parametro"       => $chiave_Primaria));
         
         $pdo = NULL; //Chiude la connessione a DB
-        return $pdo_stmt->fetch(PDO::FETCH_ASSOC);
+        return $pdo_stmt->fetch(\PDO::FETCH_ASSOC);
     }
     
     
