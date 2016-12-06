@@ -11,7 +11,7 @@ namespace Control;
 /*
  * Questa classe si occupa di svolgere operazioni base con le flag
  */
-class C_Bitsets {
+class C_Ruolo {
     
     private $set;
     

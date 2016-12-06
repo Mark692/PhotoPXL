@@ -6,3 +6,9 @@
  * and open the template in the editor.
  */
 
+namespace Control;
+
+class Upload {
+    
+    
+}

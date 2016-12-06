@@ -59,24 +59,24 @@ class C_Utenti {
      */
     private function assegna_funzioni() {
         
-        $bitset = new \Control\C_Bitsets($this->u_flags);
+        $ruolo = new \Control\C_Ruolo($this->u_flags);
         
-        if ( $bitset->controlla( SELF::UPLOAD_LIMITATO ) ) { 
+        if ( $ruolo->controlla( SELF::UPLOAD_LIMITATO ) ) { 
             echo $this->limite_upload = 10;
         }
-        elseif ( $bitset->controlla( SELF::BAN ) ) {
+        elseif ( $ruolo->controlla( SELF::BAN ) ) {
             echo $this->limite_upload = 0;
         }
         else {
             echo $this->limite_upload = -1; //Upload illimitato
         }
         
-        if ( $bitset->controlla( SELF::MODERAZIONE ) ) { 
+        if ( $ruolo->controlla( SELF::MODERAZIONE ) ) { 
             
             $this->fun_modera = new \Control\Moderazioni( /* parametri vari*/ );
         }
         
-        if ( $bitset->controlla( SELF::CAMBIA_RUOLI ) ) {
+        if ( $ruolo->controlla( SELF::CAMBIA_RUOLI ) ) {
             
             $this->fun_cambia_ruoli = new \Control\Cambia_Ruoli( /* parametri vari*/ ) ;
         }

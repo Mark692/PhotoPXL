@@ -22,7 +22,7 @@ class E_Utente {
      * Contatore giornaliero di upload
      * @type int
      */
-    private $upload_Count;
+    private $up_Count;
     
     /*
      * Conserva la DATA in formato "d/m/y" dell'ultimo upload fatto dall'utente.
@@ -38,20 +38,41 @@ class E_Utente {
      * @param string $email
      * @param int $ruolo
      */
-    public function __construct($username, $password, $email, $ruolo) {
+    public function __construct($username, $password, $email, $ruolo, $up_C, $last_up) {
 
         $this->username = $username;
         $this->password = $password;
         $this->mail = filter_var($email, FILTER_VALIDATE_EMAIL);
         $this->role = $ruolo;
+        $this->up_Count = $up_C;
+        $this->last_Upload = $last_up;
     }
     
     
     /*
+     * Prende il totale di upload fatti dall'ultimo reset 
      * @return int
      */
-    public function get_upload_Count() {
-        return $this->upload_Count;
+    public function get_up_Count() {
+        return $this->up_Count;
+    }
+    
+    
+    /*
+     * Incrementa il numero di upload fatti di 1
+     * @return int
+     */
+    public function add_up_Count() {
+        $this->up_Count = $this->up_Count +1;
+        return $this->up_Count;
+    }
+    
+    /*
+     * Se viene fatto un upload in un giorno diverso dall'ultimo caricamento si 
+     * procede al reset del contatore $upload_Count
+     */
+    public function reset_Up_Count() {
+        $this->up_Count = 0;
     }
     
     
@@ -64,25 +85,18 @@ class E_Utente {
     
     
     /*
-     * Se viene fatto un upload in un giorno diverso dall'ultimo caricamento si 
-     * procede al reset del contatore $upload_Count
-     * @return int 0
+     * Modifica la data dell'ultimo_Upload con il giorno attuale.
+     * Ritorna TRUE se il giorno è cambiato, FALSE altrimenti
+     * @return bool 
      */
-    public function reset_Upload() {
-        return $this->upload_Count = 0;
+    public function mod_last_Up() {
+        
+        if($this->last_Upload!=date("d/m/y")) {
+            $this->last_Upload = date("d/m/y");
+            return TRUE;
+        }
+        return FALSE;
     }
-    
-    
-    /*
-     * Aggiorna la data dell'ultimo_Upload al giorno attuale
-     */
-    public function update_Date() {
-        $this->last_Upload = date("d/m/y");
-    }
-    
-    
-    
-    
     
     
 }
