@@ -27,7 +27,7 @@ class E_User {
      * MOD -------- 3
      * ADMIN ------ 4
      */
-    private $role;
+    private $role = 1; //Default role for a new user is STANDARD USER
 
     /**
      * Daily counter of total uploaded photos
@@ -198,7 +198,9 @@ class E_User {
      * @return bool
      */
     public function can_upload() {
-        if ($this->role >= 2 || ($this->role == 1 && $this->up_Count < 10)) {
+        $is_PRO = var_dump($this->role >= 2);
+        $std_status = var_dump($this->role == 1 && $this->up_Count < 10); //Can use 10 as $config['upload_limit']['Standard']
+        if ($is_PRO || $std_status) {
             return TRUE;
         }
         return FALSE;
