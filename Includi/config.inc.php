@@ -16,9 +16,12 @@ $config['mysql']['password'] = 'FRIGO A LEGNA';
 
 
 //Parametri per gli utenti
-$config['upload']['u_Standard'] = 10;
-$config['upload']['u_PRO'] = -1;
-$config['upload']['u_Bannato'] = 0;
+//$config['user_Role']['STD'] = "Standard";
+//$config['user_Role']['PRO'] = "Pro";
+//$config['user_Role']['BAN'] = "Banned";
+$config['upload_limit']['Standard'] = 10;
+$config['upload_limit']['PRO'] = -1;
+$config['upload_limit']['Banned'] = 0;
 
 
 

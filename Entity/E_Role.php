@@ -6,12 +6,12 @@
  * and open the template in the editor.
  */
 
-namespace Control;
+namespace Entity;
 
 /*
  * This class works on User Roles
  */
-class E_Role {
+class E_Role {  //CAN DELETE THIS CLASS: IMPLEMENTED IN E_USER ALREADY!!
     
     private $role;
     

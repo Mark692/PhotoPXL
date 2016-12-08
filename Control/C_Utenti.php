@@ -13,12 +13,14 @@ class C_Utenti {
     /*
      * Ogni funzionalità ha una sua costante.
      * Limitazione: 32 funzioni massime ammesse
-     */
+     *
     const BAN = 0x1;                // 0000 0001
     const UPLOAD_LIMITATO = 0x2;    // 0000 0010
     const MODERAZIONE = 0x4;        // 0000 0100
     const CAMBIA_RUOLI = 0x8;       // 0000 1000
-    //const nuova_costante = 0x10;       // 0001 0000
+    //const nuova_costante = 0x10;  // 0001 0000
+     * 
+     */
     
     /*  
      * Lista di funzionalità abilitate per questo utente, espresse come bit settati in un intero 
@@ -41,7 +43,7 @@ class C_Utenti {
      * ed assegnargli le rispettive funzioni
      * @param \Foundation\F_Utenti
      */
-    public function __construct(\Foundation\F_Utenti $username) {
+    public function __construct(\Foundation\F_User $username) {
         
         $this->username = $username;
         $this->u_flags = $this->username->getRuolo();

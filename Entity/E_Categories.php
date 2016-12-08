@@ -13,16 +13,16 @@ class Categories {
     /**
      * Categories array that describes both photos and albums
      *
-    const PAESAGGI;
-    const RITRATTI;
-    const FAUNA;
-    const MACRO;
-    const BIANCO_NERO;
-    const ASTRONOMIA;
-    const STREET;
-    const NATURA_MORTA;
-    const SPORT;
-    */
+     * PAESAGGI
+     * RITRATTI
+     * FAUNA
+     * MACRO
+     * BIANCO_NERO
+     * ASTRONOMIA
+     * STREET
+     * NATURA_MORTA
+     * SPORT
+     */
     private $categories;
     
     
@@ -33,6 +33,7 @@ class Categories {
     public function __construct(array $cat) {
         $this->categories = $cat;
     }
+    
     
     /**
      * Changes radically the previous instantiated array of categories
@@ -52,32 +53,26 @@ class Categories {
     }
     
     
+    //--------------NOT--REALLY--USED--METHODS-------------------------
+    
     /**
      * Adds the string/array of categories to $this->categories
-     * @param string $s_del
-     * @param array $a_del
+     * @param string or array $to_add
      */
-    public function add(string $s_del="", array $a_del=[]) {
-        if($s_del!="") {
-            array_push($this->categories, $s_del);
-        }
-        if($a_del!=[]) {
-            array_push($this->categories, $a_del);
+    public function add($to_add) {
+        if($to_add!="" && $to_add!=[]) {
+            array_push($this->categories, $to_add);
         }
     }
     
     
     /**
      * Removes the string/array of categories from $this->categories
-     * @param string $s_del
-     * @param array $a_del
+     * @param string or array $to_del
      */
-    public function remove(string $s_del="", array $a_del=[]) {
-        if($s_del!="") {
-            array_diff($this->categories, $s_del);
-        }
-        if($a_del!=[]) {
-            array_diff($this->categories, $a_del);
+    public function remove($to_del) {
+        if($to_del!="" && $to_del!=[]) {
+            array_diff($this->categories, $to_del);
         }
     }
     

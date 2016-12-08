@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,34 +9,46 @@
 namespace Entity;
 
 /**
- * Classe atta a definire ogni utente
+ * This class defines the attributes of each user
  */
 class E_User {
 
     private $username;
     private $password;
     private $email;
+
+    /**
+     * Roles that describe each user
+     * @type int
+     *
+     * BANNED ----- 0
+     * STANDARD --- 1
+     * PRO -------- 2
+     * MOD -------- 3
+     * ADMIN ------ 4
+     */
     private $role;
-    
+
     /**
      * Daily counter of total uploaded photos
      * @type int
      */
     private $up_Count;
-    
+
     /**
      * Holds the Date of the last uploaded photo in "d/m/y" format
      * @type DATA "d/m/y"
      */
     private $last_Upload;
-    
-    
+
     /**
      * Sets the parameters needed to instantiate a new User
      * @param string $username
-     * @param string $password 
+     * @param string $password
      * @param string $email
      * @param int $role
+     * @param int $up_Count
+     * @param string $last_up
      */
     public function __construct($username, $password, $email, $role, $up_Count, $last_up) {
 
@@ -47,8 +59,7 @@ class E_User {
         $this->up_Count = $up_Count;
         $this->last_Upload = $last_up;
     }
-    
-    
+
     /**
      * Retrieves the username of the User
      * @return string
@@ -57,17 +68,14 @@ class E_User {
         return $this->username;
     }
 
-    
     /**
      * Sets a new username for the User
      * @param string
-     * @return string
      */
     public function set_username($new_username) {
-        return $this->username = $new_username;
+        $this->username = $new_username;
     }
 
-    
     /**
      * Retrieves the hashed password of the User
      * @return string
@@ -76,17 +84,15 @@ class E_User {
         return $this->password;
     }
 
-    
     /**
      * Sets a new hashed password for the User
      * @param string
      * @return string
      */
     public function set_password($new_pass) {
-        return $this->password = $new_pass;
+        $this->password = $new_pass;
     }
 
-    
     /**
      * Retrieves the email of the User
      * @return string
@@ -94,18 +100,16 @@ class E_User {
     public function get_mail() {
         return $this->email;
     }
-    
-    
+
     /**
      * Sets a new email for the User
      * @param string
      * @return string
      */
     public function set_mail($new_email) {
-        return $this->email = filter_var($new_email, FILTER_VALIDATE_EMAIL);
+        $this->email = filter_var($new_email, FILTER_VALIDATE_EMAIL);
     }
-    
-    
+
     /**
      * Retrieves the role of the User
      * @return int
@@ -113,18 +117,29 @@ class E_User {
     public function get_role() {
         return $this->role;
     }
-    
-    
+
     /**
      * Sets a new role for the User
-     * @param int
-     * @return int
+     * @param int $new_role
      */
-    public function set_role($new_ruolo) {
-        return $this->role = $new_ruolo;
+    public function set_role($new_role) {
+        $this->role = $new_role;
     }
-    
-    
+
+    /**
+     * Promotes the user to the next ranking role
+     */
+    public function promote() {
+        $this->role = $this->role + 1;
+    }
+
+    /**
+     * Demotes the user to the previous ranking role
+     */
+    public function demote() {
+        $this->role = $this->role - 1;
+    }
+
     /**
      * Gets the total upload count since the last reset
      * @return int
@@ -132,25 +147,21 @@ class E_User {
     public function get_up_Count() {
         return $this->up_Count;
     }
-    
-    
+
     /**
      * Increments the count of uploads by 1
-     * @return int
      */
     public function add_up_Count() {
-        $this->up_Count = $this->up_Count +1;
-        return $this->up_Count;
+        $this->up_Count = $this->up_Count + 1;
     }
-    
+
     /**
      * Resets the Upload Count
      */
     private function reset_Up_Count() {
         $this->up_Count = 0;
     }
-    
-    
+
     /**
      * Gets the last upload date
      * @return DATE format "d/m/y"
@@ -158,33 +169,39 @@ class E_User {
     private function get_last_Upload() {
         return $this->last_Upload;
     }
-    
-    
+
     /**
-     * Gets the last upload date
-     * @param string format "d/m/y"
-     * @return string format "d/m/y"
+     * Sets the last upload date
      */
-    private function set_last_Upload($new_date) {
-        return $this->last_Upload = $new_date;
+    private function set_last_Upload() {
+        $this->last_Upload = date("d/m/y");
     }
-    
-    
+
     /**
-     * Checks if the date of the last upload is different from "today"'s date. 
+     * Checks if the date of the last upload is different from "today"'s date.
      * If it is, sets it to "today", resets the Upload count to 0.
      * Returns the Upload Count.
-     * @return int 
+     * @return int
      */
     public function check_Up() {
-        
+
         $last_up = $this->get_last_Upload();
-        if($last_up!=date("d/m/y")) {
-            $this->set_last_Upload(date("d/m/y"));
+        if ($last_up != date("d/m/y")) {
+            $this->set_last_Upload();
             $this->reset_Up_Count();
         }
         return $this->get_up_Count();
     }
-    
-    
+
+    /**
+     * Checks if the user can still upload
+     * @return bool
+     */
+    public function can_upload() {
+        if ($this->role >= 2 || ($this->role == 1 && $this->up_Count < 10)) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
 }
