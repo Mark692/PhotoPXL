@@ -11,44 +11,17 @@ namespace Entity;
 class Categories {
     
     /**
-     * Categories array to describe both photos and albums
+     * Categories to describe both photos and albums
      */ 
-    private $categories = array(
-        0  => "Paesaggi",
-        1  => "Ritratti",
-        2  => "Volti",
-        3  => "Animali",
-        4  => "Gatti",
-        5  => "Cani",
-        6  => "Storica",
-        7  => "Mare",
-        8  => "Montagna",
-        9  => "Bianco e Nero",
-        10 => "Seppia"
-        );
-    
-    
-    /*
-     * Adds a category to the list
-     * @param string
-     */
-    public function set_categories(array $cat) {
-        array_push($this->categories, $cat);
-    }
-    
-    
-    /**
-     * Gets the categories array
-     * @return array
-     */
-    public function get_categories() {
-        return $this->categories;
-    }
-    
-    
-    
-    
-    
+        const PAESAGGI = 0;
+        const RITRATTI = 1;
+        const FAUNA = 2;
+        const MACRO = 3;
+        const BIANCO_NERO = 4;
+        const ASTRONOMIA = 5;
+        const STREET = 6;
+        const NATURA_MORTA = 7;
+        const SPORT = 8;
     
     
     
