@@ -10,15 +10,6 @@ require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."Autoloader.p
 require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."config.inc.php";
 
 
-$nome = "marco";
-$password = "unapssword";
-$email = "mail";
-$ruolo = 11111110;
-$utente_prova = new \Entity\E_Utente($nome, $password, $email, $ruolo);
-
-$provaDB = new \Foundation\F_Utente($nome);
-
-echo $provaDB::set($utente_prova);
 
 
 
