@@ -8,7 +8,7 @@
 
 namespace Entity;
 
-class E_Foto {
+class E_Photo {
 
     private $title;
     private $description;
@@ -16,10 +16,10 @@ class E_Foto {
 
     /**
      * A "PRO User" may decide to declare a photo as Reserved to make it unlisted
-     * and visible to himself only.
+     * and visible to himself only. Default = 0, meaning it's visible to any user
      * @var bool
      */
-    private $reserved;
+    private $reserved = 0;
 
     /**
      * TODO: ADD THIS ATTRIBUTE AND METHODS TO ENABLE THE "LIKE-SYSTEM"
@@ -55,10 +55,9 @@ class E_Foto {
     /**
      * Sets a new title for the Photo
      * @param string
-     * @return string
      */
     public function set_title($new_title) {
-        return $this->title = $new_title;
+        $this->title = $new_title;
     }
 
     /**
@@ -72,10 +71,9 @@ class E_Foto {
     /**
      * Sets a new description for the Photo
      * @param string
-     * @return string
      */
     public function set_description($new_description) {
-        return $this->description = $new_description;
+        $this->description = $new_description;
     }
 
     /**
@@ -87,12 +85,11 @@ class E_Foto {
     }
 
     /**
-     * Sets a new upload date for the Photo
+     * Sets the date for the Photo
      * @param string
-     * @return string
      */
-    public function set_upload_date($new_upload_date) {
-        return $this->upload_date = $new_upload_date;
+    public function set_upload_date() {
+        $this->upload_date = date("dmy");
     }
 
     /**
@@ -106,10 +103,9 @@ class E_Foto {
     /**
      * Sets a new visibility for the Photo
      * @param bool
-     * @return string
      */
     public function set_reserved(bool $reserved) {
-        return $this->reserved = $reserved;
+        $this->reserved = $reserved;
     }
 
     /**

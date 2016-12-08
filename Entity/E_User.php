@@ -87,7 +87,6 @@ class E_User {
     /**
      * Sets a new hashed password for the User
      * @param string
-     * @return string
      */
     public function set_password($new_pass) {
         $this->password = $new_pass;
@@ -104,7 +103,6 @@ class E_User {
     /**
      * Sets a new email for the User
      * @param string
-     * @return string
      */
     public function set_mail($new_email) {
         $this->email = filter_var($new_email, FILTER_VALIDATE_EMAIL);
@@ -174,7 +172,7 @@ class E_User {
      * Sets the last upload date
      */
     private function set_last_Upload() {
-        $this->last_Upload = date("d/m/y");
+        $this->last_Upload = date("d-m-y");
     }
 
     /**
@@ -186,7 +184,7 @@ class E_User {
     public function check_Up() {
 
         $last_up = $this->get_last_Upload();
-        if ($last_up != date("d/m/y")) {
+        if ($last_up != date("d-m-y")) {
             $this->set_last_Upload();
             $this->reset_Up_Count();
         }
