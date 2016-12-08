@@ -1,0 +1,190 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+namespace Entity;
+
+/**
+ * Classe atta a definire ogni utente
+ */
+class E_User {
+
+    private $username;
+    private $password;
+    private $email;
+    private $role;
+    
+    /**
+     * Daily counter of total uploaded photos
+     * @type int
+     */
+    private $up_Count;
+    
+    /**
+     * Holds the Date of the last uploaded photo in "d/m/y" format
+     * @type DATA "d/m/y"
+     */
+    private $last_Upload;
+    
+    
+    /**
+     * Sets the parameters needed to instantiate a new User
+     * @param string $username
+     * @param string $password 
+     * @param string $email
+     * @param int $role
+     */
+    public function __construct($username, $password, $email, $role, $up_Count, $last_up) {
+
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        $this->role = $role;
+        $this->up_Count = $up_Count;
+        $this->last_Upload = $last_up;
+    }
+    
+    
+    /**
+     * Retrieves the username of the User
+     * @return string
+     */
+    public function get_username() {
+        return $this->username;
+    }
+
+    
+    /**
+     * Sets a new username for the User
+     * @param string
+     * @return string
+     */
+    public function set_username($new_username) {
+        return $this->username = $new_username;
+    }
+
+    
+    /**
+     * Retrieves the hashed password of the User
+     * @return string
+     */
+    public function get_password() {
+        return $this->password;
+    }
+
+    
+    /**
+     * Sets a new hashed password for the User
+     * @param string
+     * @return string
+     */
+    public function set_password($new_pass) {
+        return $this->password = $new_pass;
+    }
+
+    
+    /**
+     * Retrieves the email of the User
+     * @return string
+     */
+    public function get_mail() {
+        return $this->email;
+    }
+    
+    
+    /**
+     * Sets a new email for the User
+     * @param string
+     * @return string
+     */
+    public function set_mail($new_email) {
+        return $this->email = filter_var($new_email, FILTER_VALIDATE_EMAIL);
+    }
+    
+    
+    /**
+     * Retrieves the role of the User
+     * @return int
+     */
+    public function get_role() {
+        return $this->role;
+    }
+    
+    
+    /**
+     * Sets a new role for the User
+     * @param int
+     * @return int
+     */
+    public function set_role($new_ruolo) {
+        return $this->role = $new_ruolo;
+    }
+    
+    
+    /**
+     * Gets the total upload count since the last reset
+     * @return int
+     */
+    public function get_up_Count() {
+        return $this->up_Count;
+    }
+    
+    
+    /**
+     * Increments the count of uploads by 1
+     * @return int
+     */
+    public function add_up_Count() {
+        $this->up_Count = $this->up_Count +1;
+        return $this->up_Count;
+    }
+    
+    /**
+     * Resets the Upload Count
+     */
+    private function reset_Up_Count() {
+        $this->up_Count = 0;
+    }
+    
+    
+    /**
+     * Gets the last upload date
+     * @return DATE format "d/m/y"
+     */
+    private function get_last_Upload() {
+        return $this->last_Upload;
+    }
+    
+    
+    /**
+     * Gets the last upload date
+     * @param string format "d/m/y"
+     * @return string format "d/m/y"
+     */
+    private function set_last_Upload($new_date) {
+        return $this->last_Upload = $new_date;
+    }
+    
+    
+    /**
+     * Checks if the date of the last upload is different from "today"'s date. 
+     * If it is, sets it to "today", resets the Upload count to 0.
+     * Returns the Upload Count.
+     * @return int 
+     */
+    public function check_Up() {
+        
+        $last_up = $this->get_last_Upload();
+        if($last_up!=date("d/m/y")) {
+            $this->set_last_Upload(date("d/m/y"));
+            $this->reset_Up_Count();
+        }
+        return $this->get_up_Count();
+    }
+    
+    
+}

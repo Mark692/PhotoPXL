@@ -32,9 +32,9 @@ class F_Database {
              
             //Sostituzione di PDO::ERRMOD_SILENT
             //$connessione->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMOD_SILENT) //Decommenta in Produzione
-            $connessione->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
+            $connessione->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
             return $connessione;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo "Impossibile connettersi al database. Errore: " . $e;
         } 
     }
@@ -130,17 +130,6 @@ class F_Database {
         $pdo = NULL; //Chiude la connessione a DB
         return boolval($pdo_stmt->rowCount());
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 }
