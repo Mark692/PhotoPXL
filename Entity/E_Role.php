@@ -9,15 +9,14 @@
 namespace Control;
 
 /*
- * Questa classe si occupa di svolgere operazioni base con le flag
+ * This class works on User Roles
  */
-class C_Ruolo {
+class E_Role {
     
-    private $set;
+    private $role;
     
     public function __construct($bits = 0) {
-    
-        $this->set = $bits;
+        $this->role = $bits;
     }
     
     
@@ -25,9 +24,8 @@ class C_Ruolo {
      * Controlla che siano settati I BITS in $flag
      * @return boolean
      */
-    public function controlla($flag) {
-        
-        return ($this->set & $flag) == $flag;
+    public function is_on($flag) {
+        return ($this->role & $flag) == $flag;
     }
     
     
@@ -35,18 +33,16 @@ class C_Ruolo {
      * Imposta un permesso con il BitwiseOR
      * @return boolean
      */
-    public function attiva($flags) {
-        
-        $this->set = $this->set | $flags;
+    public function set_on($flags) {
+        $this->role = $this->role | $flags;
     }
     
     
     /*
      * Setta a 0 i bit di $set nelle stesse posizioni in cui sono settati in $bits
      */
-    public function disattiva($bits) {
-        
-        $this->set = $this->set & (~$bits);
+    public function set_off($bits) {
+        $this->role = $this->role & (~$bits);
     }
     
 }

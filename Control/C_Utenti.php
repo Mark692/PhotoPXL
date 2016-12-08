@@ -46,7 +46,7 @@ class C_Utenti {
         $this->username = $username;
         $this->u_flags = $this->username->getRuolo();
         
-        $this->fun_modera = new \Control\Upload();
+        $this->fun_modera = new \Control\C_Upload();
         
         //Aggiungi funzionalità per l'utente
         $this->assegna_funzioni();
@@ -58,26 +58,23 @@ class C_Utenti {
      * le dovute funzioni all'utente 
      */
     private function assegna_funzioni() {
+        $ruolo = new \Control\E_Role($this->u_flags);
         
-        $ruolo = new \Control\C_Ruolo($this->u_flags);
-        
-        if ( $ruolo->controlla( SELF::UPLOAD_LIMITATO ) ) { 
+        if ( $ruolo->is_on( SELF::UPLOAD_LIMITATO ) ) { 
             echo $this->limite_upload = 10;
         }
-        elseif ( $ruolo->controlla( SELF::BAN ) ) {
+        elseif ( $ruolo->is_on( SELF::BAN ) ) {
             echo $this->limite_upload = 0;
         }
         else {
             echo $this->limite_upload = -1; //Upload illimitato
         }
         
-        if ( $ruolo->controlla( SELF::MODERAZIONE ) ) { 
-            
+        if ( $ruolo->is_on( SELF::MODERAZIONE ) ) { 
             $this->fun_modera = new \Control\Moderazioni( /* parametri vari*/ );
         }
         
-        if ( $ruolo->controlla( SELF::CAMBIA_RUOLI ) ) {
-            
+        if ( $ruolo->is_on( SELF::CAMBIA_RUOLI ) ) {
             $this->fun_cambia_ruoli = new \Control\Cambia_Ruoli( /* parametri vari*/ ) ;
         }
     }
