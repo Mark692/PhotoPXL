@@ -25,8 +25,6 @@ class Categories {
 
     private $categories;
 
-    //I TRE PORCELLINI
-
     /**
      * Instantiate an array of categories
      * @param array $cat
