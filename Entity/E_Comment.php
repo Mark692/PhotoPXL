@@ -10,29 +10,36 @@ namespace Entity;
 
 class E_Comment {
 
-    private $text;
+    private $text = '';
 
+
+    
     /**
      *
      * @param string $text
      */
-    public function __construct($text) {
+    public function __construct($text)
+    {
         $this->text = $text;
     }
+
 
     /**
      * Sets a new text
      * @param string
      */
-    public function set_text($new_text) {
+    public function set_text($new_text)
+    {
         $this->text = $new_text;
     }
+
 
     /**
      * Retrieves the text
      * @return string
      */
-    public function get_text() {
+    public function get_text()
+    {
         return $this->text;
     }
 

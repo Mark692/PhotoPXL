@@ -22,52 +22,70 @@ class Categories {
     const STREET = 6;
     const NATURA_MORTA = 7;
     const SPORT = 8;
+    private $categories = [];
 
-    private $categories;
+
 
     /**
      * Instantiate an array of categories
      * @param array $cat
      */
-    public function __construct(array $cat) {
+    public function __construct(array $cat)
+    {
         $this->categories = $cat;
     }
+
 
     /**
      * Changes radically the previous instantiated array of categories
      * @param array $new_cats
      */
-    public function set(array $new_cats) {
+    public function set(array $new_cats)
+    {
         $this->categories = $new_cats;
     }
+
 
     /**
      * Retrives the categories array
      * @return array
      */
-    public function get() {
+    public function get()
+    {
         return $this->categories;
     }
 
-    //--------------NOT--REALLY--USED--METHODS-------------------------
+
+    //--------------NOT--REALLY--USED--METHODS---------------------//
 
     /**
-     * Adds the string/array of categories to $this->categories
+     * Adds the string/array of categories to $this->categories in not already present
      * @param string or array $to_add
      */
-    public function add($to_add) {
-        if ($to_add != "" && $to_add != []) {
-            array_push($this->categories, $to_add);
+    public function add($to_add)
+    {
+        if ($to_add != "" && $to_add != [])
+        {
+            if (array_search($this->categories, $to_add) == FALSE) //If $to_add is not already in $this->categories
+            {
+                array_push($this->categories, $to_add);
+            }
         }
     }
 
+
     /**
-     * Removes the string/array of categories from $this->categories
+     * Removes the string/array of categories from $this->categories if present
      * @param string or array $to_del
      */
-    public function remove($to_del) {
-        if ($to_del != "" && $to_del != []) {
-            array_diff($this->categories, $to_del);
+    public function remove($to_del)
+    {
+        if ($to_del != "" && $to_del != [])
+        {
+            if (array_search($this->categories, $to_del) != FALSE) //If $to_add is already in $this->categories
+            {
+                array_diff($this->categories, $to_del);
+            }
         }
     }
 
