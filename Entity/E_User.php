@@ -37,7 +37,7 @@ class E_User {
 
     /**
      * Holds the Date of the last uploaded photo in "d/m/y" format
-     * @type DATA "d/m/y"
+     * @type string "d/m/y"
      */
     private $last_Upload;
 
@@ -51,7 +51,6 @@ class E_User {
      * @param string $last_up
      */
     public function __construct($username, $password, $email, $role, $up_Count, $last_up) {
-
         $this->username = $username;
         $this->password = $password;
         $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -126,16 +125,26 @@ class E_User {
 
     /**
      * Promotes the user to the next ranking role
+     * @return bool
      */
     public function promote() {
-        $this->role = $this->role + 1;
+        if ($this->role < self::ADMIN) {
+            $this->role = $this->role + 1;
+            return TRUE;
+        }
+        return FALSE;
     }
 
     /**
      * Demotes the user to the previous ranking role
+     * @return bool
      */
     public function demote() {
-        $this->role = $this->role - 1;
+        if ($this->role > self::BANNED) {
+            $this->role = $this->role - 1;
+            return TRUE;
+        }
+        return FALSE;
     }
 
     /**
@@ -182,7 +191,6 @@ class E_User {
      * @return int
      */
     public function check_Up() {
-
         $last_up = $this->get_last_Upload();
         if ($last_up != date("d-m-y")) {
             $this->set_last_Upload();
@@ -196,9 +204,12 @@ class E_User {
      * @return bool
      */
     public function can_upload() {
-        $is_PRO = var_dump($this->role >= 2);
-        $std_status = var_dump($this->role == 1 && $this->up_Count < 10); //Can use 10 as $config['upload_limit']['Standard']
-        if ($is_PRO || $std_status) {
+        global $config;
+        $std_max = $config['upload_limit']['Standard'];
+
+        if ($this->role >= self::PRO) {
+            return TRUE;
+        } elseif ($this->role == self::STANDARD && $this->up_Count < $std_max) {
             return TRUE;
         }
         return FALSE;
