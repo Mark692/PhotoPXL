@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespaceEntity;
+namespace Entity;
 
 class E_Album {
 
@@ -36,7 +36,7 @@ class E_Album {
         $this->title = $new_title;
     }
 
-    
+
     /**
      * Retrieves the title of the Album
      * @return string
