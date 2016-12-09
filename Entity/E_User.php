@@ -20,13 +20,13 @@ class E_User {
     /**
      * Roles that describe each user
      * @type int
-     *
-     * BANNED ----- 0
-     * STANDARD --- 1
-     * PRO -------- 2
-     * MOD -------- 3
-     * ADMIN ------ 4
      */
+    const BANNED = 0;
+    const STANDARD = 1;
+    const PRO = 2;
+    const MOD = 3;
+    const ADMIN = 4;
+
     private $role = 1; //Default role for a new user is STANDARD USER
 
     /**
