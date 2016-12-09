@@ -9,7 +9,7 @@
 namespace Entity;
 
 class Categories {
-//vi odio tutto
+//ciao
     /**
      * Categories array that describes both photos and albums
      */
