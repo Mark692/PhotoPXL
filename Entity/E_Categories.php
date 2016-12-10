@@ -56,7 +56,7 @@ class E_Categories {
     }
 
 
-    //--------------NOT--REALLY--USED--METHODS---------------------//
+    //--------------------NOT--REALLY--USED--METHODS--------------------//
 
     /**
      * Adds the array of categories to $this->categories in not already present

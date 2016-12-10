@@ -16,10 +16,10 @@ class E_Photo {
 
     /**
      * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted
-     * and visible to himself only. Default = 0, meaning it's visible to any user
+     * and visible to himself only. Default = FALSE, meaning it's visible to any user
      * @var bool
      */
-    private $reserved = 0;
+    private $reserved = FALSE;
 
 
 
@@ -59,11 +59,11 @@ class E_Photo {
      * @param string $desc
      * @param bool $reserved
      */
-    public function __construct($title, $desc, $reserved = FALSE)
+    public function __construct($title, $desc, $up_date, $reserved = FALSE)
     {
         $this->title = $title;
         $this->description = $desc;
-        $this->set_upload_date();
+        $this->upload_date = $up_date;
         $this->reserved = $reserved;
     }
 
@@ -112,7 +112,7 @@ class E_Photo {
      * Sets the date for the Photo
      * @param string
      */
-    private function set_upload_date()
+    public function set_upload_date()
     {
         $this->upload_date = date("dmy");
     }
