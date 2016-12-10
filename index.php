@@ -10,13 +10,6 @@ require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."Autoloader.p
 require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."config.inc.php";
 
 
-$prova_multidim = array();
-
-echo nl2br("\r\n");
-
-
-
-
 
 
 //$avvia = new \View\V_Home();

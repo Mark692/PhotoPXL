@@ -8,7 +8,7 @@
 
 namespace Entity;
 
-class Categories {
+class E_Categories {
 
     /**
      * Categories array that describes both photos and albums
@@ -59,34 +59,36 @@ class Categories {
     //--------------NOT--REALLY--USED--METHODS---------------------//
 
     /**
-     * Adds the string/array of categories to $this->categories in not already present
+     * Adds the array of categories to $this->categories in not already present
      * @param string or array $to_add
      */
     public function add($to_add)
     {
-        if ($to_add != "" && $to_add != [])
+        foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
         {
-            if (array_search($this->categories, $to_add) == FALSE) //If $to_add is not already in $this->categories
+            if ($val != '' && in_array($val, $this->categories) == FALSE) //If ($to_add IS NOT in $this->categories)
             {
-                array_push($this->categories, $to_add);
+                array_push($this->categories, $val);
             }
         }
     }
 
 
     /**
-     * Removes the string/array of categories from $this->categories if present
+     * Removes the array of categories from $this->categories if present
      * @param string or array $to_del
      */
     public function remove($to_del)
     {
-        if ($to_del != "" && $to_del != [])
+        foreach((array) $to_del as $val)
         {
-            if (array_search($this->categories, $to_del) != FALSE) //If $to_add is already in $this->categories
+            $cat_key = array_search($val, $this->categories); //Key of the value $to_del
+            if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
             {
-                array_diff($this->categories, $to_del);
+                unset($this->categories[$cat_key]);
             }
         }
+        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
     }
 
 }
