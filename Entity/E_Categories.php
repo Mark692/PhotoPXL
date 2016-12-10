@@ -27,7 +27,7 @@ class Categories {
 
 
     /**
-     * Instantiate an array of categories
+     * Instantiates an array of categories
      * @param array $cat
      */
     public function __construct(array $cat)
