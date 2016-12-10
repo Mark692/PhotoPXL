@@ -36,8 +36,8 @@ class E_User {
     private $up_Count;
 
     /**
-     * Holds the Date of the last uploaded photo in "d/m/y" format
-     * @type string "d/m/y"
+     * Holds the Date of the last uploaded photo in "d-m-y" format
+     * @type string "d-m-y"
      */
     private $last_Upload;
 
@@ -202,7 +202,7 @@ class E_User {
 
     /**
      * Gets the last upload date
-     * @return DATE format "d/m/y"
+     * @return string format "d-m-y"
      */
     private function get_last_Upload()
     {
@@ -227,8 +227,7 @@ class E_User {
      */
     public function check_Up()
     {
-        $last_up = $this->get_last_Upload();
-        if ($last_up != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
+        if ($this->get_last_Upload() != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
         {
             $this->set_last_Upload();
             $this->reset_Up_Count();
