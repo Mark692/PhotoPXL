@@ -66,7 +66,7 @@ class E_Categories {
     {
         foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
         {
-            if ($val != '' && in_array($val, $this->categories) == FALSE) //If ($to_add IS NOT in $this->categories)
+            if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
             {
                 array_push($this->categories, $val);
             }
