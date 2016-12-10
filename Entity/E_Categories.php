@@ -13,16 +13,16 @@ class Categories {
     /**
      * Categories array that describes both photos and albums
      */
-    const PAESAGGI = 0;
-    const RITRATTI = 1;
-    const FAUNA = 2;
-    const MACRO = 3;
-    const BIANCO_NERO = 4;
-    const ASTRONOMIA = 5;
-    const STREET = 6;
-    const NATURA_MORTA = 7;
-    const SPORT = 8;
-    private $categories = [];
+    //const PAESAGGI = 0;
+    //const RITRATTI = 1;
+    //const FAUNA = 2;
+    //const MACRO = 3;
+    //const BIANCO_NERO = 4;
+    //const ASTRONOMIA = 5;
+    //const STREET = 6;
+    //const NATURA_MORTA = 7;
+    //const SPORT = 8;
+    private $categories = []; //Check the global $config array for the Categories also
 
 
 
