@@ -9,7 +9,7 @@
 namespace Entity;
 
 class Categories {
-//mi fate schifo
+
     /**
      * Categories array that describes both photos and albums
      */
