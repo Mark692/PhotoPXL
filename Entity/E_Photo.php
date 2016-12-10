@@ -16,27 +16,39 @@ class E_Photo {
 
     /**
      * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted
-     * and visible to himself only. Default = FALSE, meaning it's visible to any user
+     * and visible to himself only. Default = 0, meaning it's visible to any user
      * @var bool
      */
-    private $reserved = FALSE;
+    private $reserved = 0;
 
 
 
     /**
      * TODO: ADD THIS ATTRIBUTE AND METHODS TO ENABLE THE "LIKE-SYSTEM"
-     * private $like; //@type int
+     * private $like = 0; //@type int
      *
-     * public function get_like() {
+     * public function set_like($number)
+     * {
+     *      $this->like = $number;
+     * }
+     *
+     *
+     * public function get_like()
+     * {
      *      return $this->like;
      * }
      *
-     * public function add_like() {
+     *
+     * public function add_like()
+     * {
      *      $this->like = $this->like +1;
      * }
      *
-     * public function remove_like() {
+     *
+     * public function remove_like()
+     * {
      *      $this->like = $this->like -1;
+     *
      * }
      */
 
@@ -45,14 +57,13 @@ class E_Photo {
      *
      * @param string $title
      * @param string $desc
-     * @param string $up_date
      * @param bool $reserved
      */
-    public function __construct($title, $desc, $up_date, $reserved = FALSE)
+    public function __construct($title, $desc, $reserved = FALSE)
     {
         $this->title = $title;
-        $this->description = $$desc;
-        $this->upload_date = $up_date;
+        $this->description = $desc;
+        $this->set_upload_date();
         $this->reserved = $reserved;
     }
 
@@ -101,7 +112,7 @@ class E_Photo {
      * Sets the date for the Photo
      * @param string
      */
-    public function set_upload_date()
+    private function set_upload_date()
     {
         $this->upload_date = date("dmy");
     }
@@ -121,9 +132,12 @@ class E_Photo {
      * Sets a new visibility for the Photo
      * @param bool
      */
-    public function set_reserved(bool $reserved)
+    public function set_reserved($reserved)
     {
-        $this->reserved = $reserved;
+        if (is_bool($reserved))
+        {
+            $this->reserved = $reserved;
+        }
     }
 
 

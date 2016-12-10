@@ -228,7 +228,7 @@ class E_User {
     public function check_Up()
     {
         $last_up = $this->get_last_Upload();
-        if ($last_up != date("d-m-y"))
+        if ($last_up != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
         {
             $this->set_last_Upload();
             $this->reset_Up_Count();
@@ -236,7 +236,7 @@ class E_User {
         return $this->get_up_Count();
     }
 
-    
+
     /**
      * Checks if the user can still upload
      * @return bool
