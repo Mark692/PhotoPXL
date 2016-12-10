@@ -20,10 +20,10 @@ class E_Album {
      * @param string $title
      * @param string $desc
      */
-    public function __construct($title, $desc)
+    public function __construct($title, $desc='')
     {
         $this->title = $title;
-        $this->description = $$desc;
+        $this->description = $desc;
     }
 
 
