@@ -8,12 +8,13 @@
 
 namespace Entity;
 
-class E_Comment {
+class E_Comment
+{
 
     private $text = '';
 
 
-    
+
     /**
      *
      * @param string $text

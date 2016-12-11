@@ -8,7 +8,8 @@
 
 namespace Entity;
 
-class E_Photo {
+class E_Photo
+{
 
     private $title;
     private $description;
@@ -143,7 +144,7 @@ class E_Photo {
 
     /**
      * Retrieves the visibility of the Photo
-     * @return string
+     * @return bool
      */
     public function get_reserved()
     {

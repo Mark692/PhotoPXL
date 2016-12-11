@@ -8,7 +8,8 @@
 
 namespace Entity;
 
-class E_Categories {
+class E_Categories
+{
 
     /**
      * Categories array that describes both photos and albums

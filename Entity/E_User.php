@@ -11,8 +11,9 @@ namespace Entity;
 /**
  * This class defines the attributes of each user
  */
-class E_User {
-
+class E_User
+{
+    
     private $username;
     private $password;
     private $email;
@@ -52,14 +53,18 @@ class E_User {
      * @param int $up_Count
      * @param string $last_up
      */
-    public function __construct($username, $password, $email, $role, $up_Count, $last_up)
+    public function __construct($username, $password, $email, $role, $up_Count, $last_up='')
     {
         $this->username = $username;
         $this->password = $password;
         $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
         $this->role = $role;
         $this->up_Count = $up_Count;
-        $this->last_Upload = $last_up;
+        if ($last_up == '')
+        {
+            $this->set_last_Upload();
+        }
+        else {$this->last_Upload = $last_up;}
     }
 
 
@@ -133,12 +138,16 @@ class E_User {
 
 
     /**
-     * Sets a new role for the User
+     * Sets a new role for the User if $new_role is a valid entry
      * @param int $new_role
      */
     public function set_role($new_role)
     {
-        $this->role = $new_role;
+        global $config;
+        if ($new_role >= 0 && $new_role <= count($config))
+        {
+            $this->role = $new_role;
+        }
     }
 
 
@@ -148,7 +157,8 @@ class E_User {
      */
     public function promote()
     {
-        if ($this->role < self::ADMIN)
+        global $config;
+        if ($this->role < count($config))
         {
             $this->role = $this->role + 1;
             return TRUE;
@@ -163,7 +173,7 @@ class E_User {
      */
     public function demote()
     {
-        if ($this->role > self::BANNED)
+        if ($this->role > 0)
         {
             $this->role = $this->role - 1;
             return TRUE;
@@ -173,11 +183,17 @@ class E_User {
 
 
     /**
-     * Gets the total upload count since the last reset
+     * Returns the total of Uploads done today.
+     * Resets the Upload count to 0 if the date of the last upload is different from "today"'s date.
      * @return int
      */
     public function get_up_Count()
     {
+        if ($this->last_Upload != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
+        {
+            $this->set_last_Upload();
+            $this->reset_Up_Count();
+        }
         return $this->up_Count;
     }
 
@@ -204,7 +220,7 @@ class E_User {
      * Gets the last upload date
      * @return string format "d-m-y"
      */
-    private function get_last_Upload()
+    public function get_last_Upload()
     {
         return $this->last_Upload;
     }
@@ -220,36 +236,21 @@ class E_User {
 
 
     /**
-     * Checks if the date of the last upload is different from "today"'s date.
-     * If it is, sets it to "today", resets the Upload count to 0.
-     * Returns the Upload Count.
-     * @return int
-     */
-    public function check_Up()
-    {
-        if ($this->get_last_Upload() != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
-        {
-            $this->set_last_Upload();
-            $this->reset_Up_Count();
-        }
-        return $this->get_up_Count();
-    }
-
-
-    /**
      * Checks if the user can still upload
      * @return bool
      */
     public function can_upload()
     {
         global $config;
+        $std_role = array_search('Standard', $config['user']);
         $std_max = $config['upload_limit']['Standard'];
+        $this->up_Count = $this->get_up_Count();
 
-        if ($this->role >= self::PRO)
+        if ($this->role > $std_role) //If the user is PRO at least...
         {
             return TRUE;
         }
-        elseif ($this->role == self::STANDARD && $this->up_Count < $std_max)
+        elseif ($this->role == $std_role && $this->up_Count < $std_max) //STD User with less than 10 uploads done today
         {
             return TRUE;
         }

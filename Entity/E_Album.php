@@ -8,7 +8,8 @@
 
 namespace Entity;
 
-class E_Album {
+class E_Album
+{
 
     private $title;
     private $description;
