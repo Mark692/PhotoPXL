@@ -13,7 +13,7 @@ namespace Entity;
  */
 class E_User
 {
-    
+
     private $username;
     private $password;
     private $email;
