@@ -16,12 +16,11 @@ $tryme = new \Prove\Prove();
 $obj = $tryme->rnd_E_User(); //Crea un utente con dati casuali
 
 $futente = new \Foundation\F_User();
-echo($futente::$tabella);
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 
 $out = $futente::keyval($obj);
-echo(nl2br("\r\n"));
+var_dump($out);
 
 $futente::set($obj);
 

@@ -77,6 +77,7 @@ class F_Database
         foreach((array) $obj as $field=>$value)
         {
             $field = str_replace($ref->getName(), '', $field); //Rimozione di Namespace/Class da ogni $field
+            $field = filter_var($field, FILTER_SANITIZE_STRING); //Rimuove i caratteri non voluti
 
             if($prima_iterazione)
             {
@@ -104,9 +105,7 @@ class F_Database
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        //$pdo_stmt->bindParam(':ph_tabella', self::$tabella);
         $pdo_stmt->execute();
-
         $pdo = NULL; //Chiude la connessione a DB
     }
 
