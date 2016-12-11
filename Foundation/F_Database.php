@@ -68,13 +68,11 @@ class F_Database
     /**
      * Preso un oggetto in input, questo viene ritornato in due stringhe: $campi, $valori
      * @param type $obj
-     * @return array
+     * @return string
      */
     public static function keyval($obj)
     {
         $prima_iterazione=TRUE; //Usata per modificare $campi e $valori
-        $campi = '';
-        $valori = '';
         $ref = new \ReflectionClass($obj); //Servirà per trovare Namespace/Class del parametro $oggetto
         foreach((array) $obj as $field=>$value)
         {
@@ -82,16 +80,15 @@ class F_Database
 
             if($prima_iterazione)
             {
-                $campi = "'".$field."'";
-                $valori = "'".$value."'";
+                $output = $field."='".$value."'";
                 $prima_iterazione=FALSE;
             }
             else
-            {   $campi  = $campi.", '".$field."'"; //Concatena il primo valore a tutte le altre $key
-                $valori = $valori.", '".$value."'";
+            {
+                $output  = $output.", ".$field."='".$value."'"; //Concatena il primo valore a tutte le altre $key
             }
         }
-        return [$campi, $valori];
+        return $output;
     }
 
 
@@ -103,8 +100,7 @@ class F_Database
     public static function set($oggetto)
     {
         $out = self::keyval($oggetto);
-        echo($query = 'INSERT INTO users ('.$out[0].') '
-                .'VALUES ('.$out[1].')');
+        $query = "INSERT INTO users SET ".$out;
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
