@@ -41,24 +41,32 @@ class F_Database
     }
 
 
+    public static function query_gen($key)
+    {
+        //Overridden by child classes
+        return $query = "SELECT * "
+                       ."FROM users "
+                       ."WHERE username = '".$key."'";
+    }
+
+
     /*
      * Permette di prendere dal DB un record grazie alla sua Chiave Primaria.
      * Il metodo prende ulteriori parametri in base alla classe che lo estende
      * @param string Chiave Primaria della tabella
      * @return obj \Entity
      */
-    public static function get_by($chiave_Primaria) {
+    public static function get_by($key) {
 
-        $query = 'SELECT * '
-                .'FROM `:ph_tabella` '
-                .'WHERE `:ph_chiave_Primaria` = :ph_parametro';
+//        $query = "SELECT * "
+//                ."FROM users "
+//                ."WHERE username = '".$chiave_Primaria."'";
+
+        $query = self::query_gen($key);
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->execute(array(
-            "ph_tabella"         => self::$tabella,
-            "ph_chiave_Primaria" => self::$chiave_Primaria,
-            "ph_parametro"       => $chiave_Primaria));
+        $pdo_stmt->execute();
 
         $pdo = NULL; //Chiude la connessione a DB
         return $pdo_stmt->fetch(PDO::FETCH_ASSOC);

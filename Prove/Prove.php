@@ -19,7 +19,7 @@ class Prove
     {
         $rn_user = $this->rnd_string(7);
         $rn_pass = $this->rnd_string(10);
-        $rn_email = $this->rnd_string(rand(8, 10))."@".$this->rnd_string(rand(3, 6)).".".$this->rnd_string(rand(2, 3));
+        $rn_email = $this->rnd_string(rand(3, 10))."@".$this->rnd_string(rand(2, 5)).".".$this->rnd_string(rand(2, 3));
         $rn_role = rand(0, 4);
         $rn_uploads = rand(0, 14);
 

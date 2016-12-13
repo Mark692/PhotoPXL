@@ -20,11 +20,17 @@ class F_User extends \Foundation\F_Database
      */
     public function __construct()
     {
-        parent::$tabella = "users";
-        parent::$chiave_Primaria = "username";
+        parent::$tabella = 'users';
+        parent::$chiave_Primaria = 'username';
     }
 
 
+    public static function query_gen($key)
+    {
+        return $query = "SELECT * "
+                       ."FROM users "
+                       ."WHERE username = '".$key."'";
+    }
 
 
 
