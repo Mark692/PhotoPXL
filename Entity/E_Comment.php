@@ -12,7 +12,9 @@ class E_Comment
 {
 
     private $text = '';
-
+    private $photo;
+    private $user;
+    private $date;
 
 
     /**

@@ -14,6 +14,9 @@ class E_Photo
     private $title;
     private $description;
     private $upload_date;
+    private $user; //L'utente che ne fa l'upload
+    private $categories; //Categorie della foto
+
 
     /**
      * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted

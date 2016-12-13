@@ -24,7 +24,8 @@ class E_Categories
     //const NATURA_MORTA = 7;
     //const SPORT = 8;
     private $categories = []; //Check the global $config array for the Categories also
-
+    private $photo;
+    private $album;
 
 
     /**

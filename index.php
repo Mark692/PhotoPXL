@@ -15,20 +15,21 @@ global $config;
 $tryme = new \Prove\Prove();
 $obj = $tryme->rnd_E_User(); //Crea un utente con dati casuali
 
-$futente = new \Foundation\F_User();
+var_dump($obj);
+//$futente = new \Foundation\F_User();
 //var_dump($futente);
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 
-$out = $futente::keyval($obj);
-var_dump($out);
+//$out = $futente::keyval($obj);
+//var_dump($out);
 //$futente::set_user($obj);
 
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 
-$user = 'NVAk8kKxPP';
-var_dump($futente::get_record($user, TRUE, "password"));
+//$user = 'NVAk8kKxPP';
+//var_dump($futente::get_record($user, TRUE, "password"));
 
 
 

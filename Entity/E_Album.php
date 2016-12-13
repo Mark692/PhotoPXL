@@ -13,15 +13,19 @@ class E_Album
 
     private $title;
     private $description;
+    private $photo;
+    private $categories;
+    private $create_date;
 
 
 
     /**
      *
      * @param string $title
+     * @param        $photo
      * @param string $desc
      */
-    public function __construct($title, $desc='')
+    public function __construct($title, $photo, $desc='')
     {
         $this->title = $title;
         $this->description = $desc;
