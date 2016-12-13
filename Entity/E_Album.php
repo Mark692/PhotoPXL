@@ -14,7 +14,7 @@ class E_Album
     private $title;
     private $description;
     private $photo;
-    private $categories;
+    private $category;
     private $create_date;
 
 
@@ -22,13 +22,19 @@ class E_Album
     /**
      *
      * @param string $title
-     * @param        $photo
      * @param string $desc
+     * @param array $photo the id list of all photos included in the album
+     * @param array $category the SINGLE category of the album
+     * @param string $create_date
      */
-    public function __construct($title, $photo, $desc='')
+    public function __construct($title, $desc, $photo, $category, $create_date)
     {
         $this->title = $title;
         $this->description = $desc;
+        $this->photo = $photo;
+        $this->categories = $category;
+        $this->create_date = $create_date;
+
     }
 
 
@@ -70,5 +76,67 @@ class E_Album
     {
         return $this->description;
     }
+
+
+    /**
+     * Sets a photo for the Album
+     * @param string
+     */
+    public function set_photo($photo)
+    {
+        $this->photo = $photo;
+    }
+
+
+    /**
+     * Retrieves the photos of the Album
+     * @return string
+     */
+    public function get_photo()
+    {
+        return $this->photo;
+    }
+
+
+    /**
+     * Sets a category for the Album
+     * @param string
+     */
+    public function set_category($category)
+    {
+        $this->category = $category;
+    }
+
+
+    /**
+     * Retrieves the category of the Album
+     * @return string
+     */
+    public function get_category()
+    {
+        return $this->category;
+    }
+
+
+    /**
+     * Sets a creation date for the Album
+     * @param string
+     */
+    public function set_date($date)
+    {
+        $this->create_date = $date;
+    }
+
+
+    /**
+     * Retrieves the creation date of the Album
+     * @return string
+     */
+    public function get_date()
+    {
+        return $this->create_date;
+    }
+
+
 
 }

@@ -24,8 +24,6 @@ class E_Categories
     //const NATURA_MORTA = 7;
     //const SPORT = 8;
     private $categories = []; //Check the global $config array for the Categories also
-    private $photo;
-    private $album;
 
 
     /**
@@ -59,6 +57,8 @@ class E_Categories
 
 
     //--------------------NOT--REALLY--USED--METHODS--------------------//
+    //                                                                  //
+    //-------------------MUST--IMPLEMENT--IN--CONTROL-------------------//
 
     /**
      * Adds the array of categories to $this->categories in not already present

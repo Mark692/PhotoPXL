@@ -62,7 +62,7 @@ class E_User
         $this->up_Count = $up_Count;
         if ($last_up == '')
         {
-            $this->set_last_Upload();
+            $this->set_last_Upload(date("d-m-y"));
         }
         else {$this->last_Upload = $last_up;}
     }
@@ -229,9 +229,9 @@ class E_User
     /**
      * Sets the last upload date
      */
-    private function set_last_Upload()
+    private function set_last_Upload($date)
     {
-        $this->last_Upload = date("d-m-y");
+        $this->last_Upload = $date;
     }
 
 
@@ -243,14 +243,14 @@ class E_User
     {
         global $config;
         $std_role = array_search('Standard', $config['user']);
-        $std_max = $config['upload_limit']['Standard'];
+        $std_max_up = $config['upload_limit']['Standard'];
         $this->up_Count = $this->get_up_Count();
 
         if ($this->role > $std_role) //If the user is PRO at least...
         {
             return TRUE;
         }
-        elseif ($this->role == $std_role && $this->up_Count < $std_max) //STD User with less than 10 uploads done today
+        elseif ($this->role == $std_role && $this->up_Count < $std_max_up) //STD User with less than 10 uploads done today
         {
             return TRUE;
         }
