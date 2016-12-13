@@ -41,29 +41,13 @@ class F_Database
     }
 
 
-    public static function query_gen($key)
-    {
-        //Overridden by child classes
-        return $query = "SELECT * "
-                       ."FROM users "
-                       ."WHERE username = '".$key."'";
-    }
-
-
     /*
-     * Permette di prendere dal DB un record grazie alla sua Chiave Primaria.
-     * Il metodo prende ulteriori parametri in base alla classe che lo estende
-     * @param string Chiave Primaria della tabella
+     * Permette di prendere dal DB un record.
+     * @param string
      * @return obj \Entity
      */
-    public static function get_by($key) {
-
-//        $query = "SELECT * "
-//                ."FROM users "
-//                ."WHERE username = '".$chiave_Primaria."'";
-
-        $query = self::query_gen($key);
-
+    public static function get($query)
+    {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
         $pdo_stmt->execute();
@@ -102,14 +86,13 @@ class F_Database
 
 
     /*
-     * Permette di salvare sul DB un oggetto.
-     * Ogni classe implementa i propri placeholder "tabella" e "chiave_primaria"
-     * @param obj
+     * Permette di salvare sul DB un oggetto $obj
+     * @param obj $obj
      */
-    public static function set($oggetto)
+    public static function set($obj, $query)
     {
-        $out = self::keyval($oggetto);
-        $query = "INSERT INTO users SET ".$out;
+        $out = self::keyval($obj);
+        $query = $query.$out;
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -123,8 +106,8 @@ class F_Database
      * @param string Chiave Primaria della tabella
      * @return bool
      */
-    public static function aggiorna($oggetto) {
-
+    public static function aggiorna($oggetto)
+    {
         $memorizzato = $this->get($oggetto->chiave_Primaria);
         $prima_iterazione=TRUE;
 

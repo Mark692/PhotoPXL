@@ -18,20 +18,41 @@ class F_User extends \Foundation\F_Database
      * Imposta i parametri base per la connessione a DB come il nome della tabella
      * sulla quale operare ed il nome della chiave primaria.
      */
-    public function __construct()
+//    public function __construct()
+//    {
+//        parent::$tabella = 'users';
+//        parent::$chiave_Primaria = 'username';
+//    }
+
+
+    /**
+     * Retrives all the users that match the query
+     * @param type $value searched with the query
+     * @param bool $orderBy to select the preferred order to display results
+     * @param string $column the column to search
+     */
+    public static function get_record($value, $orderBy, $column = "username")
     {
-        parent::$tabella = 'users';
-        parent::$chiave_Primaria = 'username';
+        $query = "SELECT * "
+                ."FROM users "
+                ."WHERE ".$column." = '".$value."'";
+        if (!$orderBy)
+        {
+            $query = $query."ORDER BY DESC";
+        }
+        $record = parent::get($query);
+        return $record;
     }
 
 
-    public static function query_gen($key)
+    /**
+     * Saves the user into the DB
+     * @param \Entity\E_User $user
+     */
+    public static function set_user(\Entity\E_User $user)
     {
-        return $query = "SELECT * "
-                       ."FROM users "
-                       ."WHERE username = '".$key."'";
+        $query = "INSERT INTO users SET ";
+        parent::set($user, $query);
     }
-
-
 
 }

@@ -144,7 +144,7 @@ class E_User
     public function set_role($new_role)
     {
         global $config;
-        if ($new_role >= 0 && $new_role <= count($config))
+        if ($new_role >= 0 && $new_role <= count($config['user']))
         {
             $this->role = $new_role;
         }
@@ -158,7 +158,7 @@ class E_User
     public function promote()
     {
         global $config;
-        if ($this->role < count($config))
+        if ($this->role < count($config['user']))
         {
             $this->role = $this->role + 1;
             return TRUE;
