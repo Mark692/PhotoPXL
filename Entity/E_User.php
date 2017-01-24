@@ -22,12 +22,7 @@ class E_User
      * Roles that describe each user
      * @type int
      */
-    //const BANNED = 0;
-    //const STANDARD = 1;
-    //const PRO = 2;
-    //const MOD = 3;
-    //const ADMIN = 4;
-
+    //BANNED = 0; STANDARD = 1; PRO = 2; MOD = 3; ADMIN = 4;
     private $role = 1; //Default is STANDARD USER
 
     /**
@@ -37,8 +32,8 @@ class E_User
     private $up_Count;
 
     /**
-     * Holds the Date of the last uploaded photo in "d-m-y" format
-     * @type string "d-m-y"
+     * Holds the Date of the last uploaded photo in time() format
+     * @type int
      */
     private $last_Upload;
 
@@ -51,7 +46,7 @@ class E_User
      * @param string $email
      * @param int $role
      * @param int $up_Count
-     * @param string $last_up
+     * @param int $last_up
      */
     public function __construct($username, $password, $email, $role, $up_Count, $last_up='')
     {
@@ -62,7 +57,7 @@ class E_User
         $this->up_Count = $up_Count;
         if ($last_up == '')
         {
-            $this->set_last_Upload(date("d-m-y"));
+            $this->set_last_Upload(time());
         }
         else {$this->last_Upload = $last_up;}
     }
@@ -189,9 +184,9 @@ class E_User
      */
     public function get_up_Count()
     {
-        if ($this->last_Upload != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
+        if (date('d-m-y', $this->last_Upload) != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
         {
-            $this->set_last_Upload(/*CAMBIA!!! CONTROLLA LA FUNZIONE SOTTO!!! E' CAMBIATA*/);
+            $this->set_last_Upload(time());
             $this->reset_Up_Count();
         }
         return $this->up_Count;
@@ -217,8 +212,8 @@ class E_User
 
 
     /**
-     * Gets the last upload date
-     * @return string format "d-m-y"
+     * Gets the last upload date in seconds
+     * @return int
      */
     public function get_last_Upload()
     {

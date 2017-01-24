@@ -25,7 +25,7 @@ class E_Album
      * @param string $desc
      * @param array $photo the id list of all photos included in the album
      * @param array $category the SINGLE category of the album
-     * @param string $create_date
+     * @param int $create_date
      */
     public function __construct($title, $desc, $photo, $category, $create_date)
     {
@@ -33,8 +33,7 @@ class E_Album
         $this->description = $desc;
         $this->photo = $photo;
         $this->categories = $category;
-        $this->create_date = $create_date;
-
+        $this->set_date($create_date);
     }
 
 
@@ -77,10 +76,10 @@ class E_Album
         return $this->description;
     }
 
-
+////////////////////////////////////////////////////////////////////////////////
     /**
      * Sets a photo for the Album
-     * @param string
+     * @param string  <-------WAT. Controlla come aggiungere le foto
      */
     public function set_photo($photo)
     {
@@ -90,13 +89,13 @@ class E_Album
 
     /**
      * Retrieves the photos of the Album
-     * @return string
+     * @return string  <-------WAT. Controlla come aggiungere le foto
      */
     public function get_photo()
     {
         return $this->photo;
     }
-
+////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Sets a category for the Album
@@ -122,9 +121,13 @@ class E_Album
      * Sets a creation date for the Album
      * @param string
      */
-    public function set_date($date)
+    public function set_date($date='')
     {
-        $this->create_date = $date;
+        if ($date == '')
+        {
+            $this->create_date = time();
+        }
+        else {$this->create_date = $date;}
     }
 
 

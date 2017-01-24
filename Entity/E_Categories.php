@@ -8,21 +8,16 @@
 
 namespace Entity;
 
+/**
+ * This class is to be used to edit the categories available for all photos and
+ * albums
+ */
 class E_Categories
 {
 
     /**
      * Categories array that describes both photos and albums
      */
-    //const PAESAGGI = 0;
-    //const RITRATTI = 1;
-    //const FAUNA = 2;
-    //const MACRO = 3;
-    //const BIANCO_NERO = 4;
-    //const ASTRONOMIA = 5;
-    //const STREET = 6;
-    //const NATURA_MORTA = 7;
-    //const SPORT = 8;
     private $categories = []; //Check the global $config array for the Categories also
 
 
@@ -30,14 +25,15 @@ class E_Categories
      * Instantiates an array of categories
      * @param array $cat
      */
-    public function __construct(array $cat)
+    public function __construct()
     {
-        $this->categories = $cat;
+        global $config;
+        $this->categories = $config['categories'];
     }
 
 
     /**
-     * Changes radically the previous instantiated array of categories
+     * Sets a NEW array of categories
      * @param array $new_cats
      */
     public function set(array $new_cats)
@@ -56,12 +52,8 @@ class E_Categories
     }
 
 
-    //--------------------NOT--REALLY--USED--METHODS--------------------//
-    //                                                                  //
-    //-------------------MUST--IMPLEMENT--IN--CONTROL-------------------//
-
     /**
-     * Adds the array of categories to $this->categories in not already present
+     * Adds the array of categories to $this->categories if not already present
      * @param string or array $to_add
      */
     public function add($to_add)

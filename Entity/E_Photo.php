@@ -11,12 +11,12 @@ namespace Entity;
 class E_Photo
 {
 
+    private $id;
     private $title;
     private $description;
     private $upload_date;
     private $user; //L'utente che ne fa l'upload
     private $categories; //Categorie della foto
-
 
     /**
      * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted
@@ -25,51 +25,52 @@ class E_Photo
      */
     private $reserved = FALSE;
 
-
-
-    /**
-     * TODO: ADD THIS ATTRIBUTE AND METHODS TO ENABLE THE "LIKE-SYSTEM"
-     * private $like = 0; //@type int
-     *
-     * public function set_like($number)
-     * {
-     *      $this->like = $number;
-     * }
-     *
-     *
-     * public function get_like()
-     * {
-     *      return $this->like;
-     * }
-     *
-     *
-     * public function add_like()
-     * {
-     *      $this->like = $this->like +1;
-     * }
-     *
-     *
-     * public function remove_like()
-     * {
-     *      $this->like = $this->like -1;
-     *
-     * }
-     */
+    private $like = 0; //@type int
 
 
     /**
      *
+     * @param string $id
      * @param string $title
      * @param string $desc
+     * @param int $up_date
+     * @param int $like
      * @param bool $reserved
+     * @param string $user
+     * @param array $cat
      */
-    public function __construct($title, $desc, $up_date, $reserved = FALSE)
+    public function __construct($id, $title, $desc, $up_date, $like, $reserved, $user, $cat)
     {
+        $this->id = $id;
         $this->title = $title;
         $this->description = $desc;
         $this->upload_date = $up_date;
+        $this->like = $like;
         $this->reserved = $reserved;
+        $this->user = $user;
+        $this->categories = $cat;
     }
+
+
+    /**
+     * Sets a new id for the Photo
+     * @param string
+     */
+    public function set_id($new_id)
+    {
+        $this->id = $new_id;
+    }
+
+
+    /**
+     * Retrieves the id of the Photo
+     * @return string
+     */
+    public function get_id()
+    {
+        return $this->id;
+    }
+
 
 
     /**
@@ -133,6 +134,44 @@ class E_Photo
 
 
     /**
+     * Sets the like number for the Photo
+     * @param int
+     */
+    public function set_like($number)
+    {
+        $this->like = $number;
+    }
+
+
+    /**
+     * Retrieves the like number of the Photo
+     * @return int
+     */
+    public function get_like()
+    {
+        return $this->like;
+    }
+
+
+    /**
+     * Adds a like to the current Photo
+     */
+    public function add_like()
+    {
+        $this->like = $this->like +1;
+    }
+
+
+    /**
+     * Removes a like for the current Photo
+     */
+    public function remove_like()
+    {
+        $this->like = $this->like -1;
+    }
+
+
+    /**
      * Sets a new visibility for the Photo
      * @param bool
      */
@@ -153,5 +192,99 @@ class E_Photo
     {
         return $this->reserved;
     }
+
+
+    /**
+     * Sets an uploader user for the Photo
+     * @param string
+     */
+    public function set_user($user)
+    {
+        if (is_bool($user))
+        {
+            $this->reserved = $user;
+        }
+    }
+
+
+    /**
+     * Retrieves the uploader user
+     * @return bool
+     */
+    public function get_user()
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * Adds the array of categories to $this->categories, if not already present
+     * @param string or array $to_add
+     */
+    public function set_cat($to_add)
+    {
+        foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
+        {
+            if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
+            {
+                array_push($this->categories, $val);
+            }
+        }
+    }
+
+    
+    /**
+     * Retrives the categories array
+     * @return array
+     */
+    public function get_cat()
+    {
+        return $this->categories;
+    }
+
+
+    /**
+     * Removes the array of categories from $this->categories if present
+     * @param string or array $to_del
+     */
+    public function remove_cat($to_del)
+    {
+        foreach((array) $to_del as $val)
+        {
+            $cat_key = array_search($val, $this->categories); //Key of the value $to_del
+            if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
+            {
+                unset($this->categories[$cat_key]);
+            }
+        }
+        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
