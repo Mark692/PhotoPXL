@@ -20,11 +20,11 @@ class Prove
     public function rnd_string($tot_caratteri)
     {
         $char_ammessi = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $range = strlen($char_ammessi);
+        $max_chars = strlen($char_ammessi) - 1;
         $randomString = '';
         for ($i = 0; $i < $tot_caratteri; $i++)
         {
-            $randomString .= $char_ammessi[rand(0, $range - 1)];
+            $randomString .= $char_ammessi[rand(0, $max_chars)];
         }
         return $randomString;
     }
