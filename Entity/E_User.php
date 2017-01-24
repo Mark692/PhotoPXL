@@ -191,7 +191,7 @@ class E_User
     {
         if ($this->last_Upload != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
         {
-            $this->set_last_Upload();
+            $this->set_last_Upload(/*CAMBIA!!! CONTROLLA LA FUNZIONE SOTTO!!! E' CAMBIATA*/);
             $this->reset_Up_Count();
         }
         return $this->up_Count;
