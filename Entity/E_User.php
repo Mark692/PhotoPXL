@@ -53,7 +53,7 @@ class E_User
         $this->username = $username;
         $this->password = $password;
         $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        $this->role = $role;
+        $this->role = $this->set_role($role);
         $this->up_Count = $up_Count;
         if ($last_up == '')
         {
@@ -143,11 +143,12 @@ class E_User
         {
             $this->role = $new_role;
         }
+        else {$this->role = 1;}
     }
 
 
     /**
-     * Promotes the user to the next ranking role
+     * Promotes the user to the next ranking role; returns TRUE only if promoted successfully
      * @return bool
      */
     public function promote()
@@ -163,7 +164,7 @@ class E_User
 
 
     /**
-     * Demotes the user to the previous ranking role
+     * Demotes the user to the previous ranking role; returns TRUE only if demoted successfully
      * @return bool
      */
     public function demote()
