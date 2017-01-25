@@ -33,22 +33,26 @@ class E_Photo
      * @param string $id
      * @param string $title
      * @param string $desc
-     * @param int $up_date
      * @param int $like
      * @param bool $reserved
      * @param string $user
      * @param array $cat
+     * @param int $up_date
      */
-    public function __construct($id, $title, $desc, $up_date, $like, $reserved, $user, $cat)
+    public function __construct($id, $title, $desc, $like, $reserved, $user, $cat, $up_date='')
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $desc;
-        $this->upload_date = $up_date;
         $this->like = $like;
         $this->reserved = $reserved;
         $this->user = $user;
         $this->categories = $cat;
+        if ($up_date == '')
+        {
+            $this->set_upload_date(time());
+        }
+        else {$this->upload_date = $up_date;}
     }
 
 
@@ -117,9 +121,9 @@ class E_Photo
      * Sets the date for the Photo
      * @param string
      */
-    public function set_upload_date()
+    public function set_upload_date($date)
     {
-        $this->upload_date = date("dmy");
+        $this->upload_date = $date;
     }
 
 
@@ -200,10 +204,7 @@ class E_Photo
      */
     public function set_user($user)
     {
-        if (is_bool($user))
-        {
-            $this->reserved = $user;
-        }
+        $this->reserved = $user;
     }
 
 
@@ -232,7 +233,7 @@ class E_Photo
         }
     }
 
-    
+
     /**
      * Retrives the categories array
      * @return array

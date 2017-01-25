@@ -184,7 +184,7 @@ class E_User
      */
     public function get_up_Count()
     {
-        if (date('d-m-y', $this->last_Upload) != date("d-m-y")) //date(...) is a STRING!! Can NOT use < or >
+        if (date('d-m-y', $this->last_Upload) != date('d-m-y')) //date(...) is a STRING!! Can NOT use < or >
         {
             $this->set_last_Upload(time());
             $this->reset_Up_Count();

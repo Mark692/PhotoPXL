@@ -13,28 +13,13 @@ global $config;
 
 
 //------------------------------PROVE------------------------------//
-$tryme = new \Prove\P_User();
-$obj = $tryme->rnd_E_User(); //Crea un utente con dati casuali
+$tryme = new \Prove\Test();
+$arr = $tryme->TE_User(); //Crea un utente con dati casuali
 
-//var_dump($obj);
+//var_dump($arr);
 //echo(nl2br("\r\n"));
-echo(nl2br("\r\n"));
 
-//Visualizza l'oggetto $obj in forma di array
-$ref = new \ReflectionClass($obj);
-foreach((array) $obj as $field=>$value)
-{
-    $field = str_replace($ref->getName(), '', $field); //Rimozione di Namespace/Class da ogni $field
-    $field = filter_var($field, FILTER_SANITIZE_STRING); //Rimuove i caratteri non voluti
-
-    echo(ucfirst($field)." = ".$value.nl2br("\r\n"));
-}
-
-$hashit = $obj->get_last_Upload().$obj->get_username().$obj->get_password();
-echo("HashIT = ".$hashit);
 echo(nl2br("\r\n"));
-echo(nl2br("\r\n"));
-echo("Hash md4 = ".hash('md4', $hashit));
 
 
 
