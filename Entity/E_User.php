@@ -120,11 +120,15 @@ class E_User
      * Sets a new hashed password for the User
      * @param string The user password
      */
-    public function set_password($new_pass)
+    public function set_password($pass, $nonce='')
     {
-        //global $config; //To rethrive the salt
-        //$new_pass = hash('sha512', $new_pass.$config['salt']);
-        $this->password = $new_pass;
+        if($nonce!=='')
+        {
+            $pass = decryptNonce(); //IMPLEMETA STA ROBBA!!
+        }
+        global $config; //To rethrive the salt
+        $pass = hash('sha512', $pass.$config['salt']);
+        $this->password = $pass;
     }
 
 
