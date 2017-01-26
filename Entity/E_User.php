@@ -23,7 +23,7 @@ class E_User
      * @type int
      */
     //BANNED = 0; STANDARD = 1; PRO = 2; MOD = 3; ADMIN = 4;
-    private $role = 1; //Default is STANDARD USER
+    private $role; //Default is STANDARD USER
 
     /**
      * Daily counter of total uploaded photos
@@ -52,14 +52,10 @@ class E_User
     {
         $this->username = $username;
         $this->password = $password;
-        $this->email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        $this->role = $this->set_role($role);
-        $this->up_Count = $up_Count;
-        if ($last_up == '')
-        {
-            $this->set_last_Upload(time());
-        }
-        else {$this->last_Upload = $last_up;}
+        $this->set_email($email);
+        $this->set_role($role);
+        $this->set_up_Count($up_Count);
+        $this->set_last_Upload($last_up);
     }
 
 
@@ -115,10 +111,16 @@ class E_User
     /**
      * Sets a new email for the User
      * @param string
+     * @return bool If the $new_email is not validated returns FALSE, else sets the user email to the $new_email
      */
-    public function set_mail($new_email)
+    public function set_email($new_email)
     {
-        $this->email = filter_var($new_email, FILTER_VALIDATE_EMAIL);
+        if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
+        {
+            return FALSE;
+        }
+        $this->email = $new_email;
+        return TRUE;
     }
 
 
@@ -139,7 +141,7 @@ class E_User
     public function set_role($new_role)
     {
         global $config;
-        if ($new_role >= 0 && $new_role <= count($config['user']))
+        if ($new_role >= 0 && $new_role < count($config['user']))
         {
             $this->role = $new_role;
         }
@@ -154,7 +156,7 @@ class E_User
     public function promote()
     {
         global $config;
-        if ($this->role < count($config['user']))
+        if ($this->role < count($config['user'])-1) //count() inizia da 1 ma gli utenti inseriti partono da 0 quindi l'ultimo elemento è count()-1
         {
             $this->role = $this->role + 1;
             return TRUE;
@@ -194,6 +196,16 @@ class E_User
     }
 
 
+    public function set_up_Count($upc)
+    {
+        if($upc<0)
+        {
+            $upc = 0;
+        }
+        $this->up_Count = $upc;
+    }
+
+
     /**
      * Increments the count of uploads by 1
      */
@@ -225,8 +237,12 @@ class E_User
     /**
      * Sets the last upload date
      */
-    private function set_last_Upload($date)
+    private function set_last_Upload($date = '')
     {
+        if ($date==='' || $date<0)
+        {
+            $date = time();
+        }
         $this->last_Upload = $date;
     }
 
