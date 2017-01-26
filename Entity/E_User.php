@@ -19,21 +19,18 @@ class E_User
     private $email;
 
     /**
-     * Roles that describe each user
-     * @type int
+     * @type int The Role number that describes each user
      */
     //BANNED = 0; STANDARD = 1; PRO = 2; MOD = 3; ADMIN = 4;
     private $role; //Default is STANDARD USER
 
     /**
-     * Daily counter of total uploaded photos
-     * @type int
+     * @type int Daily counter of total uploaded photos
      */
     private $up_Count;
 
     /**
-     * Holds the Date of the last uploaded photo in time() format
-     * @type int
+     * @type int The Date of the last uploaded photo in time() format
      */
     private $last_Upload;
 
@@ -50,8 +47,8 @@ class E_User
      */
     public function __construct($username, $password, $email, $role, $up_Count, $last_up='')
     {
-        $this->username = $username;
-        $this->password = $password;
+        $this->set_username($username);
+        $this->set_password($password);
         $this->set_email($email);
         $this->set_role($role);
         $this->set_up_Count($up_Count);
@@ -61,7 +58,7 @@ class E_User
 
     /**
      * Retrieves the username of the User
-     * @return string
+     * @return string The user username
      */
     public function get_username()
     {
@@ -71,29 +68,62 @@ class E_User
 
     /**
      * Sets a new username for the User
-     * @param string
+     * @param string The username input by the user
+     * @throws \Exceptions\InvalidInput Thrown in case of non allowed chars in the username
      */
     public function set_username($new_username)
     {
-        $this->username = $new_username;
+        try
+        {
+            if($this->check_username($new_username))
+            {
+                $this->username = $new_username;
+            }
+            else {throw new \Exceptions\InvalidInput(0, $new_username);}
+        }
+        catch(\Exceptions\InvalidInput $ex)
+        {
+            echo($ex->getMessage().nl2br("\r\n"));
+        }
+    }
+
+
+    /**
+     * Checks whether the username is a valid entry
+     * @param string $us The username input
+     * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
+     */
+    private function check_username($us)
+    {
+        $allowed = array('-', '_', '.'); //Allows -_. inside a Username
+        if(ctype_alnum(str_replace($allowed, '', $us))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 
     /**
      * Retrieves the hashed password of the User
-     * @return string
+     * @return string The user password
      */
     public function get_password()
     {
         return $this->password;
     }
 
+
+    //TO DO: ABILITA L'HASH DELLA PASS. RICORDA CHE PRENDI LA PASS CRITTATA CON IL NONCE
+    //QUINDI VA PRIMA DECRITTATA DAL NONCE E POI CRITTATA CON SHA512+SALT
     /**
      * Sets a new hashed password for the User
-     * @param string
+     * @param string The user password
      */
     public function set_password($new_pass)
     {
+        //global $config; //To rethrive the salt
+        //$new_pass = hash('sha512', $new_pass.$config['salt']);
         $this->password = $new_pass;
     }
 
@@ -102,7 +132,7 @@ class E_User
      * Retrieves the email of the User
      * @return string
      */
-    public function get_mail()
+    public function get_email()
     {
         return $this->email;
     }
@@ -111,16 +141,22 @@ class E_User
     /**
      * Sets a new email for the User
      * @param string
-     * @return bool If the $new_email is not validated returns FALSE, else sets the user email to the $new_email
+     * @throws \Exceptions\InvalidInput
      */
     public function set_email($new_email)
     {
-        if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
+        try
         {
-            return FALSE;
-        }
+            if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
+            {
+                throw new \Exceptions\InvalidInput(1, $new_email);
+            }
         $this->email = $new_email;
-        return TRUE;
+        }
+        catch(\Exceptions\InvalidInput $ex)
+        {
+            echo($ex->getMessage().nl2br("\r\n"));
+        }
     }
 
 
@@ -137,46 +173,68 @@ class E_User
     /**
      * Sets a new role for the User if $new_role is a valid entry
      * @param int $new_role
+     * @throws \Exceptions\UserRole
      */
     public function set_role($new_role)
     {
-        global $config;
-        if ($new_role >= 0 && $new_role < count($config['user']))
+        try
         {
-            $this->role = $new_role;
+            global $config;
+            if ($new_role >= 0 && $new_role < count($config['user']))
+            {
+                $this->role = $new_role;
+            }
+            else {throw new \Exceptions\UserRole(0, $new_role);}
         }
-        else {$this->role = 1;}
+        catch(\Exceptions\UserRole $ex)
+        {
+            echo($ex->getMessage().nl2br("\r\n"));
+        }
     }
 
 
     /**
      * Promotes the user to the next ranking role; returns TRUE only if promoted successfully
      * @return bool
+     * @throws \Exceptions\UserRole
      */
     public function promote()
     {
-        global $config;
-        if ($this->role < count($config['user'])-1) //count() inizia da 1 ma gli utenti inseriti partono da 0 quindi l'ultimo elemento è count()-1
+        try
         {
-            $this->role = $this->role + 1;
-            return TRUE;
+            global $config;
+            if ($this->role < count($config['user'])-1) //count() inizia da 1 ma gli utenti inseriti partono da 0 quindi l'ultimo elemento è count()-1
+            {
+                $this->role = $this->role + 1;
+            }
+            else {throw new \Exceptions\UserRole(1);}
         }
-        return FALSE;
+        catch(\Exceptions\UserRole $ex)
+        {
+            echo($ex->getMessage().nl2br("\r\n"));
+        }
     }
 
 
     /**
      * Demotes the user to the previous ranking role; returns TRUE only if demoted successfully
      * @return bool
+     * @throws \Exceptions\UserRole
      */
     public function demote()
     {
-        if ($this->role > 0)
+        try
         {
-            $this->role = $this->role - 1;
-            return TRUE;
+            if ($this->role > 0)
+            {
+                $this->role = $this->role - 1;
+            }
+            else {throw new \Exceptions\UserRole(2);}
         }
-        return FALSE;
+        catch(\Exceptions\UserRole $ex)
+        {
+            echo($ex->getMessage().nl2br("\r\n"));
+        }
     }
 
 
@@ -189,13 +247,17 @@ class E_User
     {
         if (date('d-m-y', $this->last_Upload) != date('d-m-y')) //date(...) is a STRING!! Can NOT use < or >
         {
-            $this->set_last_Upload(time());
+            $this->set_last_Upload();
             $this->reset_Up_Count();
         }
         return $this->up_Count;
     }
 
 
+    /**
+     * Sets the number of uploads done by the user
+     * @param int $upc The number of uploads done already
+     */
     public function set_up_Count($upc)
     {
         if($upc<0)
@@ -248,7 +310,7 @@ class E_User
 
 
     /**
-     * Checks if the user can still upload
+     * Checks whether the user can still upload
      * @return bool
      */
     public function can_upload()
@@ -256,7 +318,7 @@ class E_User
         global $config;
         $std_role = array_search('Standard', $config['user']);
         $std_max_up = $config['upload_limit']['Standard'];
-        $this->up_Count = $this->get_up_Count();
+        $this->get_up_Count();
 
         if ($this->role > $std_role) //If the user is PRO at least...
         {
@@ -268,5 +330,4 @@ class E_User
         }
         return FALSE;
     }
-
 }

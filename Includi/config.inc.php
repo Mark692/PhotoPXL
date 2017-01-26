@@ -41,3 +41,6 @@ $config['categories'][] = 'Natura Morta';
 $config['categories'][] = 'Sport';
 
 
+//---Password salt---
+$config['salt'] = "Salt this pass"; //Change it to change salt of all passwords
+

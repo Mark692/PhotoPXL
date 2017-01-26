@@ -39,7 +39,7 @@ class Test extends \Prove\Fun
 
 
         //Dati da usare
-        $username = array("Nuovo Username", "Nùòvò Usern4m3", "|V(_)0\/0 (_)532|V4|\/|3", "|\||_|[]|/[] |_|$[-/2|\|/-\/\/\[-");
+        $username = array("NuovoUsername", "NùòvòUsern4m3", "|V(_)0\/0 (_)532|V4|\/|3", "|\||_|[]|/[] |_|$[-/2|\|/-\/\/\[-");
         $password = array("Nuova Password", "Nu0v5 P455wòr|)", "|V(_)0\/4 |*455\/\/02[)", "|\||_|[]|//-\ |>/-\$$\|/[]/2|)");
         $mail = array("chiocciola@libero.it", "ch1òcc101à@118320.17", "(|-|10((1014@118320.17", "(#![]((![]|_/-\@|_!|3[-/2[].!'|'");
         //Testa i metodi dell'oggetto con i dati di sopra
@@ -54,55 +54,62 @@ class Test extends \Prove\Fun
             echo("Password: ".$password[$i]." -> ".$e_user->get_password().nl2br("\r\n"));
 
             $e_user->set_email($mail[$i]);
-            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$e_user->get_mail()." (".strlen($e_user->get_mail()).")".nl2br("\r\n"));
+            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$e_user->get_email()." (".strlen($e_user->get_email()).")".nl2br("\r\n"));
             echo("var_dump = ");
-            var_dump($e_user->get_mail());
+            var_dump($e_user->get_email());
             echo(nl2br("\r\n").nl2br("\r\n"));
         }
 
 
         echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
-        echo("Prova di Set, Get e Promote.".nl2br("\r\n").nl2br("\r\n"));
+        echo("Prova di Set, Get e PROMOTE.".nl2br("\r\n").nl2br("\r\n"));
         for($i=-2; $i<7; $i++)
         {
             $e_user->set_role($i);
-            echo("Set: ".$i.", Get: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()]);
-            if($e_user->promote($i))
+            echo("Set: ".$i.", Get: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()].nl2br("\r\n"));
+            $e_user->promote($i);
+            if($e_user->get_role()>$i && $e_user->get_role()<5) //Controllo già fatto in E_User->promote()
             {
-                echo(", Promoted a ".$e_user->get_role().", promosso!!".nl2br("\r\n"));
+                echo(" - Promosso a ".$e_user->get_role().nl2br("\r\n"));
             }
-            else {echo(", Promozione Fallita :(".nl2br("\r\n"));}
+            else {echo(" - Fallito :(".nl2br("\r\n"));}
             echo(nl2br("\r\n"));
         }
 
 
         echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
-        echo("Prova di Set, Get e Demote.".nl2br("\r\n").nl2br("\r\n"));
+        echo("Prova di Set, Get e DEMOTE.".nl2br("\r\n").nl2br("\r\n"));
         for($i=-2; $i<7; $i++)
         {
             $e_user->set_role($i);
             echo("Set: ".$i.", Get: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()]);
-            if($e_user->demote($i))
+            $e_user->demote($i);
+            if($e_user->get_role()!=$i && $e_user->get_role()>=0) //Controllo già fatto in E_User->demote()
             {
-                echo(", Demoted a ".$e_user->get_role().", bocciato!!".nl2br("\r\n"));
+                echo(" - Bocciato a ".$e_user->get_role().nl2br("\r\n"));
             }
-            else {echo(", Demozione Fallita :(".nl2br("\r\n"));}
+            else {echo(" - Fallito :(".nl2br("\r\n"));}
             echo(nl2br("\r\n"));
         }
 
+
         echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
+
         echo("Prova metodi per upload e data upload".nl2br("\r\n").nl2br("\r\n"));
         $ttt = time() - 1400000000;
         $e_user = new \Entity\E_User($rn_user, $rn_pass, $rn_email, $rn_role, 0, $ttt);
         echo("Data attuale: ".time()." = ".date('d-m-Y', time()).nl2br("\r\n"));
-
         //Controllo metodo get_last_Upload()
         echo("Get_last_Upload: ".$e_user->get_last_Upload()." = ".date('d-m-Y', $ttt).nl2br("\r\n"));
         for($i=0; $i<=count($config['user']); $i++) //Per ogni ruolo, da 0 a 5
         {
             $e_user = new \Entity\E_User($rn_user, $rn_pass, $rn_email, $i, 0, $ttt);
             echo("Ruolo: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()].nl2br("\r\n"));
-            //Impongo 0 upload fatti ed ultimo upload fatto molto tempo fa
+            echo("Se il ruolo riporta l'errore UNDEFINED INDEX IN [...] è perchè ".
+                    nl2br("\r\n").
+                    "si è cercato di accedere all'array config in indici maggiori di quelli esistenti".
+                    nl2br("\r\n").nl2br("\r\n"));
+            //Impongo l'ultimo upload fatto a molto tempo fa
             for($j=0; $j<13; $j++)
             {
                 //Controllo metodo can_upload()
