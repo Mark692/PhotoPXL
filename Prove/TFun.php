@@ -8,7 +8,7 @@
 
 namespace Prove;
 
-class Fun
+class TFun
 {
     /**
      * Genera una stringa di caratteri casuali, la lunghezza è passata come parametro

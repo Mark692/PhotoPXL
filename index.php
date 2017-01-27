@@ -13,8 +13,12 @@ global $config;
 
 
 //------------------------------PROVE------------------------------//
-$tryme = new \Prove\Test();
-$arr = $tryme->TE_User(); //Crea un utente con dati casuali
+$tryme = new \Prove\TE_User();
+//$tryme->T_uconstr(); //Stampa due utente con dati casuali
+//$tryme->T_PromoteDemote(); //Stampa due utente con dati casuali
+//$tryme->T_SetGet(); //Stampa due utente con dati casuali
+$tryme->T_Data(); //Stampa due utente con dati casuali
+
 
 //var_dump($arr);
 //echo(nl2br("\r\n"));
