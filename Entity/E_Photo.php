@@ -10,7 +10,6 @@ namespace Entity;
 
 class E_Photo
 {
-
     private $id;
     private $title;
     private $description;

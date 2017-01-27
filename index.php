@@ -6,22 +6,31 @@
  * and open the template in the editor.
  */
 
-require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."Autoloader.php";
-require_once ".".DIRECTORY_SEPARATOR."Includi".DIRECTORY_SEPARATOR."config.inc.php";
+$path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
+require_once $path."Autoloader.php";
+require_once $path."config.inc.php";
 
-global $config;
 
 
 //------------------------------PROVE------------------------------//
-$tryme = new \Prove\TE_User();
-//$tryme->T_uconstr(); //Stampa due utente con dati casuali
-//$tryme->T_PromoteDemote(); //Stampa due utente con dati casuali
-//$tryme->T_SetGet(); //Stampa due utente con dati casuali
-$tryme->T_Data(); //Stampa due utente con dati casuali
+global $config;
+
+//---Prova per E_User()
+//$tryme = new \Prove\TE_User();
+//$tryme->T_uconstr(); //Stampa due utenti con dati casuali
+//$tryme->T_PromoteDemote();
+//$tryme->T_SetGet();
+//$tryme->T_Data();
 
 
-//var_dump($arr);
-//echo(nl2br("\r\n"));
+//---Prova per U_Nonce()
+$n_tryme = new \Prove\TU_Nonce();
+$n_tryme->T_check();
+
+
+
+
+
 
 echo(nl2br("\r\n"));
 
@@ -29,5 +38,6 @@ echo(nl2br("\r\n"));
 
 
 
+//-----------------------------FINE-PROVE--------------------------//
 
 //$avvia = new \View\V_Home();

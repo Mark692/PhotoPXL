@@ -15,7 +15,7 @@ class TFun
      * @param int $tot_caratteri
      * @return string
      */
-    public function rnd_str($tot_caratteri)
+    protected function rnd_str($tot_caratteri)
     {
         $char_ammessi = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //62 caratteri totali
         $max_chars = strlen($char_ammessi) - 1; //=61
@@ -32,7 +32,7 @@ class TFun
      * Permette di stampare l'oggetto in forma di array
      * @param obj $obj l'oggetto da stampare
      */
-    public function ogg2arr($obj)
+    protected function ogg2arr($obj)
     {
         $ref = new \ReflectionClass($obj);
         foreach((array) $obj as $field=>$value)

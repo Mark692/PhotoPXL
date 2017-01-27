@@ -10,13 +10,11 @@ namespace Entity;
 
 class E_Album
 {
-
     private $title;
     private $description;
     private $photo;
     private $category;
     private $create_date;
-
 
 
     /**

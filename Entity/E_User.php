@@ -13,7 +13,6 @@ namespace Entity;
  */
 class E_User
 {
-
     private $username;
     private $password;
     private $email;
@@ -33,7 +32,6 @@ class E_User
      * @type int The Date of the last uploaded photo in time() format
      */
     private $last_Upload;
-
 
 
     /**
@@ -114,21 +112,13 @@ class E_User
     }
 
 
-    //TO DO: ABILITA L'HASH DELLA PASS. RICORDA CHE PRENDI LA PASS CRITTATA CON IL NONCE
-    //QUINDI VA PRIMA DECRITTATA DAL NONCE E POI CRITTATA CON SHA512+SALT
     /**
      * Sets a new hashed password for the User
      * @param string The user password
      */
-    public function set_password($pass, $nonce='')
+    public function set_password($pass)
     {
-        if($nonce!=='')
-        {
-            $pass = decryptNonce(); //IMPLEMETA STA ROBBA!!
-        }
-        global $config; //To rethrive the salt
-        $pass = hash('sha512', $pass.$config['salt']);
-        $this->password = $pass;
+        $this->password = hash('sha512', $pass);;
     }
 
 

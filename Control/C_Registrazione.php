@@ -2,54 +2,51 @@
 
 namespace Control;
 
-class C_Login_Processor {
-
-    private $username;
-    private $password;
-    private $email;
-    private $ruolo;
-
+class C_Login_Processor
+{
 
     /**
-     * @param string $username
-     * @param string $password
-     * @param string $email
-     * @param string $ruolo
+     * PSEUDO CODICE!!!
+     * Controlla se l'utente $input_username ha inserito la password corretta
+     * @param string $input_username The user username
+     * @param array $nonce_pass The nonce array generated client side
      */
-    public function __construct($username, $password, $email, $ruolo) {
+    public function check_user_pass($input_username, $nonce_pass)
+    {
+        //PSEUDO CODICE!!! - IMPLEMENTA DECENTEMENTE STA ROBBA
 
-        $this->username = $username;
-        $this->password = $this->crit_Pass($password);
-        $this->email = $email;
-        $this->ruolo = $ruolo;
+        /*
+         * Nota per generare il $nonce_pass:
+         * C'è bisogno che l'utente utilizzi la funzione
+         * \Utilities\U_Nonce::generate($input_password, $salt_length)
+         * per generare l'array $nonce_pass.
+         * Una volta ottenuto tale array, bisogna passarlo come parametro a
+         * questa funzione per controllare la correttezza dell'input e quindi
+         * verificare o meno il login.
+         */
+
+        $db_user = new \Foundation\F_User(); //Istanzia un oggetto Foundation
+        $e_user = $db_user->get_record($input_username); //Prendi l'utente dal DB
+        $user_pass = $e_user->get_password(); //Prendi la pass dell'utente
+        if(\Utilities\U_Nonce::check($user_pass, $nonce_pass))
+        {
+            //Verifica OK. Logga l'utente
+        }
+        else
+        {
+            //Verifica FALLITA. Notifica l'utente di aver sbagliato username O password
+        }
     }
 
 
-    /*
-     * Permette di calcolare il valore finale della $password utente
-     * per poi andarlo ad usare per il record Utente nel DB
-     * @return string
-     */
-    private function crit_Pass() {
 
-        return $password = hash("sha256", $_POST["password"] . crypt($_POST["username"], $_POST["password"]) );
-    }
+
+
+
 
 
     /**
-     * Funzione per registrare un nuovo utente
-     */
-    public function salva() {
-
-        $ruoloStandard = 0x2;
-        $f_utente = new \Foundation\F_Utente($this->username);
-        $obj_utente = new \Entity\E_Utente($this->username, $this->password, $this->email, $ruoloStandard);
-        $f_utente->set($obj_utente);
-    }
-
-
-    /**
-     * Metodo per effettuare il logout
+     * Effettua il logout
      */
     public static function logout() {
         session_unset();

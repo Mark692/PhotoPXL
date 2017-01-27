@@ -10,7 +10,6 @@ namespace Entity;
 
 class E_Comment
 {
-
     private $text = '';
     private $photo;
     private $user;
