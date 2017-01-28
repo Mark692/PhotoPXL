@@ -9,8 +9,8 @@
 namespace Prove;
 
 /**
- * Questa classe testa i vari oggetti Entity ed i metodi di classe. Viene fornito
- * output per ogni metodo testato
+ * Questa classe testa i vari metodi di E_User.
+ * Viene fornito output per ogni metodo testato.
  */
 class TE_User extends \Prove\TFun
 {
@@ -38,13 +38,13 @@ class TE_User extends \Prove\TFun
         $this->tot_uploads = rand(-4, 14);
         $this->last_up_date = time() - 1400000000;
 
-        $this->e_user = new \Entity\E_User($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads);
+        $this->e_user = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads);
     }
 
 
     /**
      * Testa il costruttore di E_User.
-     * Dato che il costruttore si basa su delle set vengono testate con dati casuali
+     * Dato che il costruttore si basa su delle set, queste vengono testate con dati casuali
      */
     public function T_uconstr()
     {
@@ -55,9 +55,16 @@ class TE_User extends \Prove\TFun
         echo(nl2br("\r\n").nl2br("\r\n"));
 
         //Stampa un oggetto E_User2 ma con ultimo upload fatto molto tempo fa
-        $e_user2 = new \Entity\E_User($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads, $this->last_up_date);
-        echo("Oggetto utente con costruttore completo: timestamp nel passato.".nl2br("\r\n"));
+        $e_user2 = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads, -1992);
+        echo("Oggetto utente con costruttore completo: timestamp negativo.".nl2br("\r\n"));
         parent::ogg2arr($e_user2);
+
+        echo(nl2br("\r\n").nl2br("\r\n"));
+
+        //Stampa un oggetto E_User2 ma con ultimo upload fatto molto tempo fa
+        $e_user3 = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads, $this->last_up_date);
+        echo("Oggetto utente con costruttore completo: timestamp nel passato.".nl2br("\r\n"));
+        parent::ogg2arr($e_user3);
     }
 
 
@@ -137,13 +144,13 @@ class TE_User extends \Prove\TFun
                     "IN TESTING, si è cercato di accedere all'array config in indici maggiori di quelli esistenti".
                     nl2br("\r\n").
                 "----------------------------------------------------------------------------------------------".nl2br("\r\n").nl2br("\r\n"));
-        $e_user = new \Entity\E_User($this->username, $this->password, $this->email, $this->ruolo, 0, $this->last_up_date);
+        $e_user = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->ruolo, 0, $this->last_up_date);
         echo("Data attuale: ".time()." = ".date('d-m-Y', time()).nl2br("\r\n"));
         //Controllo metodo get_last_Upload()
         echo("Get_last_Upload: ".$e_user->get_last_Upload()." = ".date('d-m-Y', $this->last_up_date).nl2br("\r\n"));
         for($i=0; $i<=count($config['user']); $i++) //Per ogni ruolo, da 0 a 5
         {
-            $e_user = new \Entity\E_User($this->username, $this->password, $this->email, $i, 0, $this->last_up_date);
+            $e_user = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $i, 0, $this->last_up_date);
             echo("Ruolo: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()].nl2br("\r\n"));
 
             //Impongo l'ultimo upload fatto a molto tempo fa

@@ -15,17 +15,28 @@ require_once $path."config.inc.php";
 //------------------------------PROVE------------------------------//
 global $config;
 
+//---Prova per E_Photo
+$p_tryme = new \Prove\TE_Photo();
+$p_tryme->T_pconstr();
+
+
+
+
+
+
+
+
 //---Prova per E_User()
-//$tryme = new \Prove\TE_User();
-//$tryme->T_uconstr(); //Stampa due utenti con dati casuali
-//$tryme->T_PromoteDemote();
-//$tryme->T_SetGet();
-//$tryme->T_Data();
+//$e_tryme = new \Prove\TE_User();
+//$e_tryme->T_uconstr(); //Stampa tre utenti con dati casuali
+//$e_tryme->T_PromoteDemote();
+//$e_tryme->T_SetGet();
+//$e_tryme->T_Data();
 
 
 //---Prova per U_Nonce()
-$n_tryme = new \Prove\TU_Nonce();
-$n_tryme->T_check();
+//$n_tryme = new \Prove\TU_Nonce();
+//$n_tryme->T_check();
 
 
 

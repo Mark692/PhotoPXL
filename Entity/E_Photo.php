@@ -15,28 +15,28 @@ class E_Photo
     private $description;
     private $upload_date;
     private $user; //L'utente che ne fa l'upload
-    private $categories; //Categorie della foto
+    private $categories = []; //Categorie della foto
 
     /**
      * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted
      * and visible to himself only. Default = FALSE, meaning it's visible to any user
      * @var bool
      */
-    private $reserved = FALSE;
+    private $privacy;
 
     private $like = 0; //@type int
 
 
     /**
      *
-     * @param string $id
-     * @param string $title
-     * @param string $desc
-     * @param int $like
-     * @param bool $reserved
-     * @param string $user
-     * @param array $cat
-     * @param int $up_date
+     * @param string $id The photo unique id
+     * @param string $title The title given by the user
+     * @param string $desc The description given by the user
+     * @param int $like The number of like this photo earned
+     * @param bool $reserved Whether the photo is reserved or public
+     * @param string $user The uploader username
+     * @param array $cat The categories of this photo
+     * @param int $up_date The date of upload
      */
     public function __construct($id, $title, $desc, $like, $reserved, $user, $cat, $up_date='')
     {
@@ -44,14 +44,32 @@ class E_Photo
         $this->title = $title;
         $this->description = $desc;
         $this->like = $like;
-        $this->reserved = $reserved;
+        $this->set_reserved($reserved);
         $this->user = $user;
-        $this->categories = $cat;
-        if ($up_date == '')
-        {
-            $this->set_upload_date(time());
-        }
-        else {$this->upload_date = $up_date;}
+        $this->set_cat($cat);
+        $this->set_upload_date($up_date);
+    }
+
+
+    /**
+     * Sets the Photo privacy as
+     * Reserved (if $privacy === TRUE):  only certain users will be able to see the photo
+     * Public   (if $privacy === FALSE): ALL users will be able to see the photo
+     * @param bool $privacy The new Photo privacy
+     */
+    public function set_privacy(bool $privacy)
+    {
+        $this->privacy = $privacy;
+    }
+
+
+    /**
+     * Retrieves the visibility of the Photo
+     * @return bool Retrieves the visibility of the Photo
+     */
+    public function get_reserved()
+    {
+        return $this->privacy;
     }
 
 
@@ -120,9 +138,13 @@ class E_Photo
      * Sets the date for the Photo
      * @param string
      */
-    public function set_upload_date($date)
+    public function set_upload_date($up_date = '')
     {
-        $this->upload_date = $date;
+        if ($up_date==='' || $up_date<0)
+        {
+            $up_date = time();
+        }
+        $this->upload_date = $up_date;
     }
 
 
@@ -175,41 +197,18 @@ class E_Photo
 
 
     /**
-     * Sets a new visibility for the Photo
-     * @param bool
-     */
-    public function set_reserved($reserved)
-    {
-        if (is_bool($reserved))
-        {
-            $this->reserved = $reserved;
-        }
-    }
-
-
-    /**
-     * Retrieves the visibility of the Photo
-     * @return bool
-     */
-    public function get_reserved()
-    {
-        return $this->reserved;
-    }
-
-
-    /**
      * Sets an uploader user for the Photo
      * @param string
      */
     public function set_user($user)
     {
-        $this->reserved = $user;
+        $this->user = $user;
     }
 
 
     /**
      * Retrieves the uploader user
-     * @return bool
+     * @return string
      */
     public function get_user()
     {

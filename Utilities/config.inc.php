@@ -15,32 +15,28 @@ $config['mysql']['user'] = 'root';
 $config['mysql']['password'] = 'FRIGO A LEGNA';
 
 
-//---User Roles Parameters---
-$config['user'][] = "Banned";
-$config['user'][] = "Standard";
-$config['user'][] = "PRO";
-$config['user'][] = "MOD";
-$config['user'][] = "Admin";
+////---User Roles Parameters--- IMPLEMENTED IN \Utilities\U_Roles as constants
+//$config['user'][] = "Banned";
+//$config['user'][] = "Standard";
+//$config['user'][] = "PRO";
+//$config['user'][] = "MOD";
+//$config['user'][] = "Admin";
 
 
 //---User Upload Limits Parameters---
-$config['upload_limit']['Standard'] = 10;
+//$config['upload_limit']['Standard'] = 10; --- IMPLEMENTED IN \Utilities\U_Roles as constant
 //$config['upload_limit']['PRO'] = -1; //No limit
 //$config['upload_limit']['Banned'] = 0; //No upload available
 
 
-//---Photo/Album Categories---
-$config['categories'][] = 'Paesaggi';
-$config['categories'][] = 'Ritratti';
-$config['categories'][] = 'Fauna';
-$config['categories'][] = 'Macro';
-$config['categories'][] = 'Bianco e Nero';
-$config['categories'][] = 'Astronomia';
-$config['categories'][] = 'Street';
-$config['categories'][] = 'Natura Morta';
-$config['categories'][] = 'Sport';
+////---Photo/Album Categories--- IMPLEMENTED IN \Utilities\U_Categories as constants
+//$config['categories'][] = 'Paesaggi';
+//$config['categories'][] = 'Ritratti';
+//$config['categories'][] = 'Fauna';
+//$config['categories'][] = 'Bianco e Nero';
+//$config['categories'][] = 'Astronomia';
+//$config['categories'][] = 'Street';
+//$config['categories'][] = 'Natura Morta';
+//$config['categories'][] = 'Sport';
 
-
-//---Password salt---
-$config['salt'] = "Salt this pass"; //Change it to change salt of all passwords
 

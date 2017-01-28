@@ -40,7 +40,15 @@ class TFun
             $field = str_replace($ref->getName(), '', $field); //Rimozione di Namespace/Class da ogni $field
             $field = filter_var($field, FILTER_SANITIZE_STRING); //Rimuove i caratteri non voluti
 
-            echo(ucfirst($field)." = ".$value.nl2br("\r\n"));
+            if(!is_array($value))
+            {
+                echo(ucfirst($field)." = ".$value.nl2br("\r\n"));
+            }
+            else
+            {
+                print_r($value);
+                echo(nl2br("\r\n"));
+            }
         }
     }
 
