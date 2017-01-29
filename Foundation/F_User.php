@@ -47,9 +47,9 @@ class F_User extends \Foundation\F_Database
 
     /**
      * Saves the user into the DB
-     * @param \Entity\E_User_Standard $user
+     * @param \Entity\E_User_Basic $user
      */
-    public static function set_user(\Entity\E_User_Standard $user)
+    public static function set_user(\Entity\E_User_Basic $user)
     {
         $query = "INSERT INTO users SET ";
         parent::set($user, $query);

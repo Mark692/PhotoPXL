@@ -10,34 +10,32 @@ namespace Entity;
 
 class E_Album
 {
+    private $ID;
     private $title;
     private $description;
-    private $photo;
-    private $category;
+    private $categories = [];
     private $create_date;
 
 
     /**
-     *
-     * @param string $title
-     * @param string $desc
-     * @param array $photo the id list of all photos included in the album
-     * @param array $category the SINGLE category of the album
-     * @param int $create_date
+     * @param string $title The  title of the album
+     * @param string $desc The description of the album
+     * @param array $categories The categories array of the album
+     * @param int $create_date The creation date of the album
      */
-    public function __construct($title, $desc, $photo, $category, $create_date)
+    public function __construct($ID, $title, $desc, $categories, $create_date='')
     {
-        $this->title = $title;
-        $this->description = $desc;
-        $this->photo = $photo;
-        $this->categories = $category;
+        $this->set_ID($ID);
+        $this->set_title($title);
+        $this->set_description($desc);
+        $this->set_categories($categories);
         $this->set_date($create_date);
     }
 
 
     /**
      * Sets a new title for the Album
-     * @param string
+     * @param string The album title
      */
     public function set_title($new_title)
     {
@@ -47,7 +45,7 @@ class E_Album
 
     /**
      * Retrieves the title of the Album
-     * @return string
+     * @return string The album title
      */
     public function get_title()
     {
@@ -74,50 +72,67 @@ class E_Album
         return $this->description;
     }
 
-////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * Sets a photo for the Album
-     * @param string  <-------WAT. Controlla come aggiungere le foto
+     * Sets an array of categories for the Album
+     * @param string or array $cat The array/string of categories to set for the album
      */
-    public function set_photo($photo)
+    public function set_cat($cat)
     {
-        $this->photo = $photo;
+        $this->categories = $cat;
     }
 
 
     /**
-     * Retrieves the photos of the Album
-     * @return string  <-------WAT. Controlla come aggiungere le foto
+     * Sets an array of categories for the Album
+     * To remove the current category use an empty string as parameter
+     * @param string or array $to_add The array/string of categories to add at the current array
      */
-    public function get_photo()
+    public function add_cat($to_add)
     {
-        return $this->photo;
+        foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
+        {
+            if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
+            {
+                array_push($this->categories, $val);
+                //Si può aggiungere un return TRUE qui
+            }
+            //ed un return FALSE qui per gestire l'esito della set_cat
+        }
     }
-////////////////////////////////////////////////////////////////////////////////
+
 
     /**
-     * Sets a category for the Album
-     * @param string
+     * Retrives the categories array
+     * @return array
      */
-    public function set_category($category)
+    public function get_cat()
     {
-        $this->category = $category;
+        return (array) $this->categories;
     }
 
 
     /**
-     * Retrieves the category of the Album
-     * @return string
+     * Removes the array of categories from $this->categories if present
+     * @param string or array $to_del
      */
-    public function get_category()
+    public function remove_cat($to_del)
     {
-        return $this->category;
+        foreach((array) $to_del as $val)
+        {
+            $cat_key = array_search($val, $this->categories); //Key of the value $to_del
+            if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
+            {
+                unset($this->categories[$cat_key]);
+            }
+        }
+        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
     }
 
 
     /**
      * Sets a creation date for the Album
-     * @param string
+     * @param int The timestamp of the Album's creation
      */
     public function set_date($date='')
     {
@@ -125,19 +140,38 @@ class E_Album
         {
             $this->create_date = time();
         }
-        else {$this->create_date = $date;}
+        else
+        {
+            $this->create_date = $date;
+        }
     }
 
 
     /**
      * Retrieves the creation date of the Album
-     * @return string
+     * @return int The timestamp of the Album's creation
      */
     public function get_date()
     {
         return $this->create_date;
     }
 
+
+    /**
+     * Sets the ID for the album. It is the Database ID, so it should be used in __construct() only
+     * @param int $ID The album ID. Rethrived from the Database.
+     */
+    public function set_ID($ID)
+    {
+        $this->ID = $ID;
+    }
+    /**
+     * @return int The Database ID of the album
+     */
+    public function get_ID()
+    {
+        return $this->ID;
+    }
 
 
 }

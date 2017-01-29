@@ -10,41 +10,35 @@ namespace Entity;
 
 class E_Photo
 {
-    private $id;
     private $title;
     private $description;
+    private $is_reserved;
     private $upload_date;
-    private $user; //L'utente che ne fa l'upload
     private $categories = []; //Categorie della foto
-
-    /**
-     * A "PRO (or higher) User" may decide to declare a photo as Reserved to make it unlisted
-     * and visible to himself only. Default = FALSE, meaning it's visible to any user
-     * @var bool
-     */
-    private $privacy;
-
-    private $like = 0; //@type int
+    private $n_likes;
+    private $n_comments;
 
 
     /**
+     * Instantiates a Photo object taken from the DB or just uploaded.
+     * In case the Photo has been just uploaded use the short-construct in order
+     * to set the $up_date to now automatically
      *
-     * @param string $id The photo unique id
+     * @param string $id The photo's unique id
      * @param string $title The title given by the user
      * @param string $desc The description given by the user
      * @param int $like The number of like this photo earned
      * @param bool $reserved Whether the photo is reserved or public
      * @param string $user The uploader username
      * @param array $cat The categories of this photo
-     * @param int $up_date The date of upload
+     * @param int $up_date The date of upload. If just uploaded set it to an empty string or don't use touch this parameter
      */
-    public function __construct($id, $title, $desc, $like, $reserved, $user, $cat, $up_date='')
+    public function __construct($title, $desc, $like, $is_reserved, $user, $cat, $up_date='')
     {
-        $this->id = $id;
         $this->title = $title;
         $this->description = $desc;
         $this->like = $like;
-        $this->set_reserved($reserved);
+        $this->set_reserved($is_reserved);
         $this->user = $user;
         $this->set_cat($cat);
         $this->set_upload_date($up_date);
@@ -53,13 +47,13 @@ class E_Photo
 
     /**
      * Sets the Photo privacy as
-     * Reserved (if $privacy === TRUE):  only certain users will be able to see the photo
-     * Public   (if $privacy === FALSE): ALL users will be able to see the photo
-     * @param bool $privacy The new Photo privacy
+     * Reserved (if $is_reserved === TRUE):  only certain users will be able to see the photo
+     * Public   (if $is_reserved === FALSE): ALL users will be able to see the photo
+     * @param bool $is_reserved The new Photo privacy
      */
-    public function set_privacy(bool $privacy)
+    public function set_reserved(bool $is_reserved)
     {
-        $this->privacy = $privacy;
+        $this->is_reserved = $is_reserved;
     }
 
 
@@ -69,29 +63,8 @@ class E_Photo
      */
     public function get_reserved()
     {
-        return $this->privacy;
+        return $this->is_reserved;
     }
-
-
-    /**
-     * Sets a new id for the Photo
-     * @param string
-     */
-    public function set_id($new_id)
-    {
-        $this->id = $new_id;
-    }
-
-
-    /**
-     * Retrieves the id of the Photo
-     * @return string
-     */
-    public function get_id()
-    {
-        return $this->id;
-    }
-
 
 
     /**
@@ -217,10 +190,20 @@ class E_Photo
 
 
     /**
-     * Adds the array of categories to $this->categories, if not already present
-     * @param string or array $to_add
+     * Sets an array of categories for the Photo
+     * @param string or array $cat The array/string of categories to set for the photo
      */
-    public function set_cat($to_add)
+    public function set_cat($cat)
+    {
+        $this->categories = $cat;
+    }
+
+
+    /**
+     * Adds the array of categories to $this->categories, if not already present
+     * @param string or array $to_add The array/string of categories to add at the current categories
+     */
+    public function add_cat($to_add)
     {
         foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
         {

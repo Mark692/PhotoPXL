@@ -10,28 +10,14 @@ namespace Entity;
 
 class E_User_Admin extends E_User_MOD
 {
-
-    public function __construct($username, $password, $email, $up_Count, $last_up = '')
-    {
-        parent::__construct($username, $password, $email, $up_Count, $last_up);
-
-        $this->set_role();
-    }
+    private $role = \Utilities\ADMIN;
 
 
-    protected function set_role($new_role='')
-    {
-        if($new_role==='')
-        {
-            $this->role = \Utilities\ADMIN;
-        }
-        else
-        {
-            $this->role = $new_role;
-        }
-    }
-
-
+    /**
+     *
+     * @param E_User_ $obj_User The user to whom the Admin has to change the role
+     * @param enum $new_Role The new role for the user
+     */
     public function change_Role($obj_User, $new_Role)
     {
         $obj_User->set_role($new_Role);

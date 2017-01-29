@@ -15,7 +15,7 @@ class E_User
     private $email;
 
     /**
-     * @type int
+     * @type enum The user role
      */
     private $role;
 
@@ -134,13 +134,13 @@ class E_User
     }
 
 
-    protected function set_role($new_role)
+    public function set_role($new_role)
     {
         $this->role = $new_role;
     }
 
 
-    protected function get_role()
+    public function get_role()
     {
         return $this->role;
     }
