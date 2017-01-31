@@ -19,24 +19,24 @@ $config['mysql']['password'] = 'FRIGO A LEGNA';
 
 
 //----Photo/Album Categories----\\
-define("PAESAGGI", 0);
-define("RITRATTI", 1);
-define("FAUNA", 2);
-define("BIANCO_NERO", 3);
-define("ASTRONOMIA", 4);
-define("STREET", 5);
-define("NATURA_MORTA", 6);
-define("SPORT", 7);
+define("PAESAGGI", "Paesaggi");
+define("RITRATTI", "Ritratti");
+define("FAUNA", "Fauna");
+define("BIANCO_NERO", "Bianco e Nero");
+define("ASTRONOMIA", "Astronomia");
+define("STREET", "Street");
+define("NATURA_MORTA", "Natura morta");
+define("SPORT", "Sport");
 
 
 //----USERS----\\
 
 //Roles
-define("BANNED", 0);
-define("STANDARD", 1);
-define("PRO", 2);
-define("MOD", 3);
-define("ADMIN", 4);
+define("BANNED", "Banned");
+define("STANDARD", "Standard");
+define("PRO", "Pro");
+define("MOD", "Mod");
+define("ADMIN", "Admin");
 
 //----Limits
 define("UPLOAD_STD_LIMIT", 10);

@@ -124,22 +124,22 @@ class TE_User extends \Prove\TFun
         echo("__________________________________________________________________".nl2br("\r\n"));
         echo("Prova di T_Roles()".nl2br("\r\n").nl2br("\r\n"));
         $this->e_userSTD->become_PRO();
-        echo("L'utente STD usa la funzione becomePRO(), il suo ruolo deve diventare 2".nl2br("\r\n"));
+        echo("L'utente STD usa la funzione becomePRO(), il suo ruolo deve diventare ".PRO.nl2br("\r\n"));
         parent::ogg2arr($this->e_userSTD, $this->parent_path);
         echo(nl2br("\r\n").nl2br("\r\n"));
 
         $this->e_userMOD->ban_user($this->e_userSTD);
-        echo("L'utente MOD usa la funzione ban_user() sull'utente precedente, il suo ruolo deve diventare 0".nl2br("\r\n"));
+        echo("L'utente MOD usa la funzione ban_user() sull'utente precedente, il suo ruolo deve diventare ".BANNED.nl2br("\r\n"));
         parent::ogg2arr($this->e_userSTD, $this->parent_path);
         echo(nl2br("\r\n").nl2br("\r\n"));
 
         $this->e_userAdmin->change_Role($this->e_userSTD, MOD);
-        echo("L'utente Admin non approva l'operato del MOD ed usa la funzione change_Role() sull'utente precedente, il suo ruolo deve diventare 3".nl2br("\r\n"));
+        echo("L'utente Admin non approva l'operato del MOD ed usa la funzione change_Role() sull'utente precedente, il suo ruolo deve diventare ".MOD.nl2br("\r\n"));
         parent::ogg2arr($this->e_userSTD, $this->parent_path);
         echo(nl2br("\r\n").nl2br("\r\n"));
 
         $this->e_userSTD->ban_user($this->e_userMOD);
-        echo("Il nuovo MOD, forte del suo potere e ricolmo di rabbia, prova a bannare il MOD. Il ruolo del MOD deve diventare 0".nl2br("\r\n"));
+        echo("Il nuovo MOD, forte del suo potere e ricolmo di rabbia, prova a bannare il MOD. Il ruolo del MOD deve diventare ".BANNED.nl2br("\r\n"));
         parent::ogg2arr($this->e_userMOD, $this->parent_path);
         echo(nl2br("\r\n").nl2br("\r\n"));
 
