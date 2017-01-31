@@ -17,12 +17,7 @@ class E_User
     /**
      * @type enum The user role
      */
-    private $role;
-
-    /**
-     * @type int Daily counter of total uploaded photos
-     */
-    private $up_Count;
+    protected $role;
 
     /**
      * @type int The Date of the last uploaded photo in time() format
@@ -155,56 +150,8 @@ class E_User
     public function get_role()
     {
         return $this->role;
+        // foundation goes here
     }
-
-
-    /**
-     * Returns the total of Uploads done today.
-     * Resets the Upload count to 0 if the date of the last upload is different from "today"'s date.
-     * @return int
-     */
-    public function get_up_Count()
-    {
-        if (date('d-m-y', $this->last_Upload) !== date('d-m-y')) //date(...) is a STRING!! Can NOT use < or >
-        {
-            $this->set_last_Upload();
-            $this->reset_Up_Count();
-        }
-        return $this->up_Count;
-    }
-
-
-    /**
-     * Sets the number of uploads done by the user
-     * @param int $upc The number of uploads done already
-     */
-    public function set_up_Count($upc)
-    {
-        if($upc<0)
-        {
-            $upc = 0;
-        }
-        $this->up_Count = $upc;
-    }
-
-
-    /**
-     * Increments the count of uploads by 1
-     */
-    public function add_up_Count()
-    {
-        $this->up_Count = $this->up_Count + 1;
-    }
-
-
-    /**
-     * Resets the Upload Count
-     */
-    private function reset_Up_Count()
-    {
-        $this->up_Count = 0;
-    }
-
 
     /**
      * Gets the last upload date in seconds
