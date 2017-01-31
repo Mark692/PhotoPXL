@@ -10,6 +10,7 @@ namespace Entity;
 
 class E_Photo
 {
+    private $id;
     private $title;
     private $description;
     private $is_reserved;
@@ -34,8 +35,9 @@ class E_Photo
      * @param int $like The number of like this photo earned
      * @param int $up_date The date of upload. If just uploaded set it to an empty string or don't use touch this parameter
      */
-    public function __construct($title, $desc, $is_reserved, $cat, $like=0, $up_date='')
+    public function __construct($id, $title, $desc, $is_reserved, $cat, $like=0, $up_date='')
     {
+        $this->id = $id;
         $this->title = $title;
         $this->description = $desc;
         $this->setlike($like);

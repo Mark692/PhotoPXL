@@ -55,47 +55,51 @@ class E_User_Basic extends E_User
      */
     public function upload_photo($title, $description, $is_reserved, $categories)
     {
-        $photo = new \Entity\E_Photo($title, $description, $is_reserved, $categories);
+        
+        //passaggio dei parametri a foundation che ritorna l'id della foto appena creata
+        // $id from foundation
+        $photo = new \Entity\E_Photo($id, $title, $description, $is_reserved, $categories);
         return $photo;
     }
 
 
     public function remove_Photo($photo_ID)
     {
-
+        //call foundation
     }
 
 
     public function move_Photo($photo_ID, $target_Album)
     {
         $photo_ID->set_album($target_Album);
+        // call foundation
     }
 
 
     /**
      * Adds a like to the photo
-     * @param \Entity\E_Photo $photo The liked photo
+     * @param \Entity\E_Photo $photo_id The liked photo
      */
-    public function add_like($photo)
+    public function add_like($photo_id)
     {
-        $photo->add_like();
+        // foundation insert like values ($this->id, $photo_id)
     }
 
 
-    public function remove_like_from($photo)
+    public function remove_like_from($photo_id)
     {
-        $photo->remove_like();
+       // foundation delete from like where $this->id, $photo_id
     }
 
-    public function add_comment($photo, $text)
+    public function add_comment($photo_id, $text)
     {
-        $photo->add_comment($text);
+        // foundation insert comments values (photoid, text, $this->id)
     }
 
 
-    public function remove_comment_from($photo)
+    public function remove_comment($comment_id)
     {
-
+        // foundation delete from comments where comment_id
     }
 
 }

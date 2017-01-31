@@ -31,12 +31,6 @@ define("SPORT", "Sport");
 
 //----USERS----\\
 
-//Roles
-define("BANNED", "Banned");
-define("STANDARD", "Standard");
-define("PRO", "Pro");
-define("MOD", "Mod");
-define("ADMIN", "Admin");
 
 //----Limits
 define("UPLOAD_STD_LIMIT", 10);
