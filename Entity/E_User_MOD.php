@@ -10,18 +10,22 @@ namespace Entity;
 
 class E_User_MOD extends E_User_PRO
 {
-    private $role = \Utilities\MOD;
+    public function __construct($username, $password, $email, $up_Count, $last_up = '')
+    {
+        parent::__construct($username, $password, $email, $up_Count, $last_up);
+        parent::set_role(MOD);
+    }
 
 
     /**
      * Enables the MOD to ban a user if it's not an Admin
-     * @param E_User_ $obj_user The user to ban
+     * @param \Entity\E_User $obj_user The user to ban
      */
-    public function ban_user($obj_user)
+    public function ban_user(\Entity\E_User $obj_user)
     {
-        if($obj_user->get_role() !== \Utilities\Admin)
+        if($obj_user->get_role() !== ADMIN)
         {
-            $obj_user->set_role(\Utilities\BANNED);
+            $obj_user->set_role(BANNED);
         }
     }
 

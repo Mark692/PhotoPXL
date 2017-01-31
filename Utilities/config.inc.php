@@ -6,37 +6,37 @@
  * and open the template in the editor.
  */
 
+namespace Utilities;
+
 global $config;
 
-//----Database Connection Parameters---
+//----Database Connection Parameters----\\
 $config['mysql']['host'] = 'localhost';
 $config['mysql']['database'] = 'photopxl';
 $config['mysql']['user'] = 'root';
 $config['mysql']['password'] = 'FRIGO A LEGNA';
 
 
-////---User Roles Parameters--- IMPLEMENTED IN \Utilities\U_Roles as constants
-//$config['user'][] = "Banned";
-//$config['user'][] = "Standard";
-//$config['user'][] = "PRO";
-//$config['user'][] = "MOD";
-//$config['user'][] = "Admin";
+
+//----Photo/Album Categories----\\
+define("PAESAGGI", 0);
+define("RITRATTI", 1);
+define("FAUNA", 2);
+define("BIANCO_NERO", 3);
+define("ASTRONOMIA", 4);
+define("STREET", 5);
+define("NATURA_MORTA", 6);
+define("SPORT", 7);
 
 
-//---User Upload Limits Parameters---
-//$config['upload_limit']['Standard'] = 10; --- IMPLEMENTED IN \Utilities\U_Roles as constant
-//$config['upload_limit']['PRO'] = -1; //No limit
-//$config['upload_limit']['Banned'] = 0; //No upload available
+//----USERS----\\
 
+//Roles
+define("BANNED", 0);
+define("STANDARD", 1);
+define("PRO", 2);
+define("MOD", 3);
+define("ADMIN", 4);
 
-////---Photo/Album Categories--- IMPLEMENTED IN \Utilities\U_Categories as constants
-//$config['categories'][] = 'Paesaggi';
-//$config['categories'][] = 'Ritratti';
-//$config['categories'][] = 'Fauna';
-//$config['categories'][] = 'Bianco e Nero';
-//$config['categories'][] = 'Astronomia';
-//$config['categories'][] = 'Street';
-//$config['categories'][] = 'Natura Morta';
-//$config['categories'][] = 'Sport';
-
-
+//----Limits
+define("UPLOAD_STD_LIMIT", 10);

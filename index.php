@@ -9,6 +9,7 @@
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."Autoloader.php";
 require_once $path."config.inc.php";
+require_once $path."U_Nonce.php";
 
 
 
@@ -16,8 +17,8 @@ require_once $path."config.inc.php";
 global $config;
 
 //---Prova per E_Photo
-$p_tryme = new \Prove\TE_Photo();
-$p_tryme->T_pconstr();
+//$p_tryme = new \Prove\TE_Photo();
+//$p_tryme->T_pconstr();
 
 
 
@@ -27,11 +28,11 @@ $p_tryme->T_pconstr();
 
 
 //---Prova per E_User()
-//$e_tryme = new \Prove\TE_User();
-//$e_tryme->T_uconstr(); //Stampa tre utenti con dati casuali
-//$e_tryme->T_PromoteDemote();
-//$e_tryme->T_SetGet();
-//$e_tryme->T_Data();
+$e_tryme = new \Prove\TE_User();
+$e_tryme->T_uconstr(); //Stampa gli utenti STD, PRO, MOD, Admin
+$e_tryme->T_SetGet();
+$e_tryme->T_Roles();
+$e_tryme->T_Data();
 
 
 //---Prova per U_Nonce()

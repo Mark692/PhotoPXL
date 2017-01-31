@@ -11,7 +11,11 @@ namespace Entity;
 class E_User_Standard extends E_User_Basic
 {
 
-    private $role = \Utilities\STANDARD;
+    public function __construct($username, $password, $email, $up_Count, $last_up = '')
+    {
+        parent::__construct($username, $password, $email, $up_Count, $last_up);
+        parent::set_role(STANDARD);
+    }
 
 
     /**
@@ -19,7 +23,8 @@ class E_User_Standard extends E_User_Basic
      */
     public function become_PRO()
     {
-        $this->role = \Utilities\PRO;
+        parent::__construct($this->get_username(), $this->get_password(), $this->get_email(), $this->get_up_Count(), $this->get_last_Upload());
+        parent::set_role(PRO);
     }
 
 
@@ -29,7 +34,7 @@ class E_User_Standard extends E_User_Basic
      */
     public function can_upload()
     {
-        if (parent::get_up_Count <= \Utilities\UPLOAD_STD_LIMIT) //STD User with less or equal to 10 uploads done today
+        if (parent::get_up_Count <= UPLOAD_STD_LIMIT) //STD User with less or equal to 10 uploads done today
         {
             return TRUE;
         }

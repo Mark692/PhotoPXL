@@ -9,108 +9,93 @@
 namespace Entity;
 
 /**
- * This class defines the attributes of each user
+ * This class defines the basic functions of each user
  */
 class E_User_Basic extends E_User
 {
 
-    private $role;
-
     /**
-     * @type int Daily counter of total uploaded photos
+     * Creates a new Album. The creation date will be set to the current time()
+     * automatically
+     *
+     * @param string $title The album title
+     * @param string $description The album description
+     * @param array or string $categories The album categories
+     * @return \Entity\E_Album The $album just created
      */
-    private $up_Count;
-
-    /**
-     * @type int The Date of the last uploaded photo in time() format
-     */
-    private $last_Upload;
-
-
-    /**
-     * Sets the parameters needed to instantiate a new User
-     * @param string $username
-     * @param string $password
-     * @param string $email
-     * @param int $up_Count
-     * @param int $last_up
-     */
-    public function __construct($username, $password, $email, $up_Count, $last_up='')
+    public function create_Album($title, $description, $categories)
     {
-        parent::__construct($username, $password, $email);
+        $album = new \Entity\E_Album($title, $description, $categories);
+        return $album;
+    }
 
-        $this->set_up_Count($up_Count);
-        $this->set_last_Upload($last_up);
+
+    public function get_Albums()
+    {
+
+    }
+
+
+    public function remove_Album($Album_ID)
+    {
+
     }
 
 
     /**
-     * Returns the total of Uploads done today.
-     * Resets the Upload count to 0 if the date of the last upload is different from "today"'s date.
-     * @return int
+     * Creates a new Photo. With the following parameters:
+     * Like number = 0
+     * Creation Date = time()
+     *
+     * @param string $title The photo title
+     * @param string $description The photo description
+     * @param bool $is_reserved Whether the photo is reserved or public
+     * @param array or string $categories The categories for the photo
+     * @return \Entity\E_Photo The $photo just created
      */
-    public function get_up_Count()
+    public function upload_photo($title, $description, $is_reserved, $categories)
     {
-        if (date('d-m-y', $this->last_Upload) !== date('d-m-y')) //date(...) is a STRING!! Can NOT use < or >
-        {
-            $this->set_last_Upload();
-            $this->reset_Up_Count();
-        }
-        return $this->up_Count;
+        $photo = new \Entity\E_Photo($title, $description, $is_reserved, $categories);
+        return $photo;
+    }
+
+
+    public function remove_Photo($photo_ID)
+    {
+
+    }
+
+
+    public function move_Photo($photo_ID, $target_Album)
+    {
+        $photo_ID->set_album($target_Album);
     }
 
 
     /**
-     * Sets the number of uploads done by the user
-     * @param int $upc The number of uploads done already
+     * Adds a like to the photo
+     * @param \Entity\E_Photo $photo The liked photo
      */
-    public function set_up_Count($upc)
+    public function add_like($photo)
     {
-        if($upc<0)
-        {
-            $upc = 0;
-        }
-        $this->up_Count = $upc;
+        $photo->add_like();
     }
 
 
-    /**
-     * Increments the count of uploads by 1
-     */
-    public function add_up_Count()
+    public function remove_like_from($photo)
     {
-        $this->up_Count = $this->up_Count + 1;
+        $photo->remove_like();
+    }
+
+    public function add_comment($photo, $text)
+    {
+        $photo->add_comment($text);
     }
 
 
-    /**
-     * Resets the Upload Count
-     */
-    private function reset_Up_Count()
+    public function remove_comment_from($photo)
     {
-        $this->up_Count = 0;
+
     }
 
-
-    /**
-     * Gets the last upload date in seconds
-     * @return int
-     */
-    public function get_last_Upload()
-    {
-        return $this->last_Upload;
-    }
-
-
-    /**
-     * Sets the last upload date
-     */
-    private function set_last_Upload($date = '')
-    {
-        if ($date==='' || $date<0)
-        {
-            $date = time();
-        }
-        $this->last_Upload = $date;
-    }
 }

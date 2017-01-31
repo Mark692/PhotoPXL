@@ -17,11 +17,17 @@ class TE_User extends \Prove\TFun
     private $username;
     private $password;
     private $email;
-    private $ruolo;
     private $tot_uploads;
     private $last_up_date;
 
-    private $e_user;
+    private $e_prove;
+    private $e_userSTD;
+    private $e_userPRO;
+    private $e_userMOD;
+    private $e_userAdmin;
+
+    private $parent_path = "Entity\E_User";
+
 
 
     /**
@@ -34,11 +40,15 @@ class TE_User extends \Prove\TFun
         $this->username    = parent::rnd_str(7);
         $this->password    = parent::rnd_str(10);
         $this->email       = parent::rnd_str(rand(5, 10))."@".parent::rnd_str(rand(2, 5)).".".parent::rnd_str(rand(2, 3));
-        $this->ruolo       = rand(0, 4);
         $this->tot_uploads = rand(-4, 14);
         $this->last_up_date = time() - 1400000000;
 
-        $this->e_user = new \Entity\E_User_Basic($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads);
+        $this->e_prove = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->tot_uploads);
+
+        $this->e_userSTD   = new \Entity\E_User_Standard("UsSTD", "A PASS...", "mail@mail.com", $this->tot_uploads);
+        $this->e_userPRO   = new \Entity\E_User_PRO     ("UsPRO", "A PASS...", "mail@mail.com", $this->tot_uploads);
+        $this->e_userMOD   = new \Entity\E_User_MOD     ("UsMOD", "A PASS...", "mail@mail.com", $this->tot_uploads);
+        $this->e_userAdmin = new \Entity\E_User_Admin   ("UsADMIN", "A PASS...", "mail@mail.com", $this->tot_uploads);
     }
 
 
@@ -48,23 +58,34 @@ class TE_User extends \Prove\TFun
      */
     public function T_uconstr()
     {
-        //Stampa l'oggetto casuale E_User
+        echo("_______________________________________________________________________________".nl2br("\r\n"));
+        echo("Prova di T_uconstr()".nl2br("\r\n").nl2br("\r\n"));
+        //Stampa l'oggetto casuale e_userSTD
         echo("Oggetto utente con costruttore ridotto: niente timestamp.".nl2br("\r\n"));
-        parent::ogg2arr($this->e_user);
+        parent::ogg2arr($this->e_prove, $this->parent_path);
 
         echo(nl2br("\r\n").nl2br("\r\n"));
 
-        //Stampa un oggetto E_User2 ma con ultimo upload fatto molto tempo fa
-        $e_user2 = new \Entity\E_User_Basic($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads, -1992);
+        //Stampa un oggetto $e_userPRO ma con ultimo upload fatto molto tempo fa
+        $e_userPRO = new \Entity\E_User_PRO($this->username, $this->password, $this->email, $this->tot_uploads, -1992);
         echo("Oggetto utente con costruttore completo: timestamp negativo.".nl2br("\r\n"));
-        parent::ogg2arr($e_user2);
+        parent::ogg2arr($e_userPRO, $this->parent_path);
 
         echo(nl2br("\r\n").nl2br("\r\n"));
 
-        //Stampa un oggetto E_User2 ma con ultimo upload fatto molto tempo fa
-        $e_user3 = new \Entity\E_User_Basic($this->username, $this->password, $this->email, $this->ruolo, $this->tot_uploads, $this->last_up_date);
+        //Stampa un oggetto $e_userMOD ma con ultimo upload fatto molto tempo fa
+        $e_userMOD = new \Entity\E_User_MOD($this->username, $this->password, $this->email, $this->tot_uploads, $this->last_up_date);
         echo("Oggetto utente con costruttore completo: timestamp nel passato.".nl2br("\r\n"));
-        parent::ogg2arr($e_user3);
+        parent::ogg2arr($e_userMOD, $this->parent_path);
+
+        echo(nl2br("\r\n").nl2br("\r\n"));
+
+        //Stampa un oggetto $e_userADMIN ma con ultimo upload fatto molto tempo fa
+        $e_userADMIN = new \Entity\E_User_Admin($this->username, $this->password, $this->email, $this->tot_uploads, $this->last_up_date);
+        echo("Oggetto utente con costruttore completo: timestamp nel passato.".nl2br("\r\n"));
+        parent::ogg2arr($e_userADMIN, $this->parent_path);
+
+
     }
 
 
@@ -73,64 +94,55 @@ class TE_User extends \Prove\TFun
      */
     public function T_SetGet()
     {
+        echo("__________________________________________________________________".nl2br("\r\n"));
+        echo("Prova di T_SetGet()".nl2br("\r\n").nl2br("\r\n"));
         //Dati da usare
-        $username = array("NuovoUsername", "NùòvòUsern4m3", "|V(_)0\/0 (_)532|V4|\/|3", "|\||_|[]|/[] |_|$[-/2|\|/-\/\/\[-");
-        $password = array("Nuova Password", "Nu0v5 P455wòr|)", "|V(_)0\/4 |*455\/\/02[)", "|\||_|[]|//-\ |>/-\$$\|/[]/2|)");
-        $mail = array("chiocciola@libero.it", "ch1òcc101à@118320.17", "(|-|10((1014@118320.17", "(#![]((![]|_/-\@|_!|3[-/2[].!'|'");
+        $username = array("NuovoUsername", "NùòvòUsern4m3", "|V(_)0\/0 (_)532|V4|\/|3");
+        $password = array("Nuova Password", "Nu0v5 P455wòr|)", "|V(_)0\/4 |*455\/\/02[)");
+        $mail = array("chiocciola@libero.it", "ch1òcc101à@118320.17", "(|-|10((1014@118320.17");
         //Testa i metodi dell'oggetto con i dati di sopra
         echo("Test dei metodi Set e Get. Formato: Originale -> get_()".nl2br("\r\n").nl2br("\r\n"));
         for($i=0; $i<count($username); $i++)
         {
-            $this->e_user->set_username($username[$i]);
-            echo("Username: ".$username[$i]." -> ".$this->e_user->get_username().nl2br("\r\n"));
+            $this->e_prove->set_username($username[$i]);
+            echo("Username: ".$username[$i]." -> ".$this->e_prove->get_username().nl2br("\r\n"));
 
-            $this->e_user->set_password($password[$i]);
-            echo("Password: ".$password[$i]." -> ".$this->e_user->get_password().nl2br("\r\n"));
+            $this->e_prove->set_password($password[$i]);
+            echo("Password: ".$password[$i]." -> ".$this->e_prove->get_password().nl2br("\r\n"));
 
-            $this->e_user->set_email($mail[$i]);
-            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$this->e_user->get_email()." (".strlen($this->e_user->get_email()).")".nl2br("\r\n"));
+            $this->e_prove->set_email($mail[$i]);
+            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$this->e_prove->get_email()." (".strlen($this->e_userSTD->get_email()).")".nl2br("\r\n"));
             echo("var_dump = ");
-            var_dump($this->e_user->get_email());
-            echo(nl2br("\r\n"));
-            echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
+            var_dump($this->e_prove->get_email());
+            echo(nl2br("\r\n").nl2br("\r\n").nl2br("\r\n"));
         }
     }
 
 
-    public function T_PromoteDemote()
+    public function T_Roles()
     {
-        //$e_user viene preso dalla precedente T_E_User_rnd
-        global $config;
-        echo("Prova di Set, Get e PROMOTE.".nl2br("\r\n").nl2br("\r\n"));
-        for($i=-2; $i<7; $i++)
-        {
-            $this->e_user->set_role($i);
-            echo("Set: ".$i.", Get: ".$this->e_user->get_role()." = ".$config['user'][$this->e_user->get_role()].nl2br("\r\n"));
-            $this->e_user->promote($i);
-            if($this->e_user->get_role()>$i && $this->e_user->get_role()<5) //Controllo già fatto in E_User->promote()
-            {
-                echo(" - Promosso a ".$this->e_user->get_role().nl2br("\r\n"));
-            }
-            else {echo(" - Fallito :(".nl2br("\r\n"));}
-            echo(nl2br("\r\n"));
-        }
+        echo("__________________________________________________________________".nl2br("\r\n"));
+        echo("Prova di T_Roles()".nl2br("\r\n").nl2br("\r\n"));
+        $this->e_userSTD->become_PRO();
+        echo("L'utente STD usa la funzione becomePRO(), il suo ruolo deve diventare 2".nl2br("\r\n"));
+        parent::ogg2arr($this->e_userSTD, $this->parent_path);
+        echo(nl2br("\r\n").nl2br("\r\n"));
 
+        $this->e_userMOD->ban_user($this->e_userSTD);
+        echo("L'utente MOD usa la funzione ban_user() sull'utente precedente, il suo ruolo deve diventare 0".nl2br("\r\n"));
+        parent::ogg2arr($this->e_userSTD, $this->parent_path);
+        echo(nl2br("\r\n").nl2br("\r\n"));
 
-        echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
-        echo("Prova di Set, Get e DEMOTE.".nl2br("\r\n").nl2br("\r\n"));
-        for($i=-2; $i<7; $i++)
-        {
-            $this->e_user->set_role($i);
-            echo("Set: ".$i.", Get: ".$this->e_user->get_role()." = ".$config['user'][$this->e_user->get_role()]);
-            $this->e_user->demote($i);
-            if($this->e_user->get_role()!=$i && $this->e_user->get_role()>=0) //Controllo già fatto in E_User->demote()
-            {
-                echo(" - Bocciato a ".$this->e_user->get_role().nl2br("\r\n"));
-            }
-            else {echo(" - Fallito :(".nl2br("\r\n"));}
-            echo(nl2br("\r\n"));
-        }
-        echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
+        $this->e_userAdmin->change_Role($this->e_userSTD, MOD);
+        echo("L'utente Admin non approva l'operato del MOD ed usa la funzione change_Role() sull'utente precedente, il suo ruolo deve diventare 3".nl2br("\r\n"));
+        parent::ogg2arr($this->e_userSTD, $this->parent_path);
+        echo(nl2br("\r\n").nl2br("\r\n"));
+
+        $this->e_userSTD->ban_user($this->e_userMOD);
+        echo("Il nuovo MOD, forte del suo potere e ricolmo di rabbia, prova a bannare il MOD. Il ruolo del MOD deve diventare 0".nl2br("\r\n"));
+        parent::ogg2arr($this->e_userMOD, $this->parent_path);
+        echo(nl2br("\r\n").nl2br("\r\n"));
+
     }
 
 

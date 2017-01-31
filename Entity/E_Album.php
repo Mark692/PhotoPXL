@@ -10,7 +10,7 @@ namespace Entity;
 
 class E_Album
 {
-    private $ID;
+    private $ID; //CONTROLLA L'USO DI QUESTO ATTRIBUTO!! COME LO USO? QUANDO LO AGGIORNO??
     private $title;
     private $description;
     private $categories = [];
@@ -18,14 +18,17 @@ class E_Album
 
 
     /**
+     * Instantiates an Album object taken from the DB or just uploaded.
+     * In case the Album has been just uploaded use the short-construct in order
+     * to set the $up_date to now automatically
+     *
      * @param string $title The  title of the album
      * @param string $desc The description of the album
      * @param array $categories The categories array of the album
      * @param int $create_date The creation date of the album
      */
-    public function __construct($ID, $title, $desc, $categories, $create_date='')
+    public function __construct($title, $desc, $categories, $create_date='')
     {
-        $this->set_ID($ID);
         $this->set_title($title);
         $this->set_description($desc);
         $this->set_categories($categories);
@@ -120,7 +123,7 @@ class E_Album
     {
         foreach((array) $to_del as $val)
         {
-            $cat_key = array_search($val, $this->categories); //Key of the value $to_del
+            $cat_key = array_search($val, $this->categories); //Key of the value $val (that is $to_del)
             if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
             {
                 unset($this->categories[$cat_key]);

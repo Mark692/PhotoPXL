@@ -15,31 +15,31 @@ class E_Photo
     private $is_reserved;
     private $upload_date;
     private $categories = []; //Categorie della foto
-    private $n_likes;
-    private $n_comments;
+    private $like;
+    private $comments = [];
 
 
     /**
      * Instantiates a Photo object taken from the DB or just uploaded.
-     * In case the Photo has been just uploaded use the short-construct in order
-     * to set the $up_date to now automatically
+     * In case the Photo has been just uploaded use the short-construct in order to set:
+     * $up_date = time()
+     * $like = 0
      *
      * @param string $id The photo's unique id
      * @param string $title The title given by the user
      * @param string $desc The description given by the user
-     * @param int $like The number of like this photo earned
      * @param bool $reserved Whether the photo is reserved or public
      * @param string $user The uploader username
      * @param array $cat The categories of this photo
+     * @param int $like The number of like this photo earned
      * @param int $up_date The date of upload. If just uploaded set it to an empty string or don't use touch this parameter
      */
-    public function __construct($title, $desc, $like, $is_reserved, $user, $cat, $up_date='')
+    public function __construct($title, $desc, $is_reserved, $cat, $like=0, $up_date='')
     {
         $this->title = $title;
         $this->description = $desc;
-        $this->like = $like;
+        $this->setlike($like);
         $this->set_reserved($is_reserved);
-        $this->user = $user;
         $this->set_cat($cat);
         $this->set_upload_date($up_date);
     }
@@ -243,7 +243,42 @@ class E_Photo
     }
 
 
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
+//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
 
+
+    public function add_Comment($comment)
+    {
+        array_push($this->comments, $comment);
+    }
+
+
+    public function get_Comments()
+    {
+        return $this->comments;
+    }
+
+
+    public function remove_Comment($comment_ID)
+    {
+        if(in_array($comment_ID, $this->comments))
+        {
+            unset($this->comments[$comment_ID]);
+        }
+        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
+    }
 
 
 

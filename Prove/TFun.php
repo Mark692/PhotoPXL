@@ -31,13 +31,22 @@ class TFun
     /**
      * Permette di stampare l'oggetto in forma di array
      * @param obj $obj l'oggetto da stampare
+     * @param string $parent_path il percorso Namespace/Parent da eliminare negli attributi dell'oggetto
      */
-    protected function ogg2arr($obj)
+    protected function ogg2arr($obj, $parent_path='')
     {
         $ref = new \ReflectionClass($obj);
         foreach((array) $obj as $field=>$value)
         {
-            $field = str_replace($ref->getName(), '', $field); //Rimozione di Namespace/Class da ogni $field
+            if($parent_path==='')
+            {
+                //NOTA: $ref->getName() NON funziona con classi ereditate
+                $field = str_replace($ref->getName(), '', $field); //Rimozione di Namespace/Class da ogni $field
+            }
+            else //Caso in cui si ha una classe figlia
+            {
+                $field = str_replace($parent_path, '', $field);
+            }
             $field = filter_var($field, FILTER_SANITIZE_STRING); //Rimuove i caratteri non voluti
 
             if(!is_array($value))
