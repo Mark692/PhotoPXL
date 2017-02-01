@@ -8,41 +8,85 @@
 
 namespace Entity;
 
+/**
+ * This class allows the creation of photo albums.
+ */
 class E_Album
 {
-    private $ID; //CONTROLLA L'USO DI QUESTO ATTRIBUTO!! COME LO USO? QUANDO LO AGGIORNO??
+    private $ID;
     private $title;
     private $description;
     private $categories = [];
-    private $create_date;
+    private $creation_date;
 
 
     /**
      * Instantiates an Album object taken from the DB or just uploaded.
-     * In case the Album has been just uploaded use the short-construct in order
-     * to set the $up_date to now automatically
+     * In case the Album has just been created use the short-construct in order
+     * to set the $up_date to NOW automatically
      *
+     * @param int $ID The ID of the album
      * @param string $title The  title of the album
      * @param string $desc The description of the album
      * @param array $categories The categories array of the album
-     * @param int $create_date The creation date of the album
+     * @param int $creation_date The creation date of the album
      */
-    public function __construct($title, $desc, $categories, $create_date='')
+    public function __construct($ID, $title, $desc, $categories, $creation_date='')
     {
-        $this->set_title($title);
-        $this->set_description($desc);
-        $this->set_categories($categories);
-        $this->set_date($create_date);
+        $this->set_ID($ID);
+        $this->set_Title($title);
+        $this->set_Description($desc);
+        $this->set_Categories($categories);
+        $this->set_Creation_Date($creation_date);
+    }
+
+
+    /**
+     * Sets the ID for the album. It is the Database ID, so it should be used in __construct() only
+     * @param int $ID The album ID. Rethrived from the Database.
+     */
+    private function set_ID($ID)
+    {
+        $this->ID = $ID;
+    }
+
+
+    /**
+     * Returns the ID of this album
+     * @return int The Database ID of the album
+     */
+    public function get_ID()
+    {
+        return $this->ID;
     }
 
 
     /**
      * Sets a new title for the Album
-     * @param string The album title
+     * @param string $new_title The album title
      */
-    public function set_title($new_title)
+    public function set_Title($new_title)
     {
-        $this->title = $new_title;
+        if($this->check_title($new_title))
+        {
+            $this->title = $new_title;
+        }
+    }
+
+
+    /**
+     * Checks whether the title is a valid entry
+     * @param string $title The title input
+     * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
+     */
+    private function check_title($title)
+    {
+        $allowed = array('-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
+        if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 
@@ -50,7 +94,7 @@ class E_Album
      * Retrieves the title of the Album
      * @return string The album title
      */
-    public function get_title()
+    public function get_Title()
     {
         return $this->title;
     }
@@ -58,9 +102,9 @@ class E_Album
 
     /**
      * Sets a new description for the Album
-     * @param string
+     * @param string $new_description Sets a new description for this album
      */
-    public function set_description($new_description)
+    public function set_Description($new_description)
     {
         $this->description = $new_description;
     }
@@ -68,58 +112,55 @@ class E_Album
 
     /**
      * Retrieves the description of the Album
-     * @return string
+     * @return string This album's description
      */
-    public function get_description()
+    public function get_Description()
     {
         return $this->description;
     }
 
 
     /**
-     * Sets an array of categories for the Album
-     * @param string or array $cat The array/string of categories to set for the album
+     * Sets a string/array of category/ies for the Album
+     * @param string or array $cat The string/array of category/ies to set for the album
      */
-    public function set_cat($cat)
+    public function set_Categories($cat)
     {
         $this->categories = $cat;
     }
 
 
     /**
-     * Sets an array of categories for the Album
-     * To remove the current category use an empty string as parameter
-     * @param string or array $to_add The array/string of categories to add at the current array
+     * Sets a string/array of category/ies for the Album
+     * @param string or array $to_add The string/array of category/ies to add at the current array
      */
-    public function add_cat($to_add)
+    public function add_Cat($to_add)
     {
         foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
         {
             if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
             {
                 array_push($this->categories, $val);
-                //Si può aggiungere un return TRUE qui
             }
-            //ed un return FALSE qui per gestire l'esito della set_cat
         }
     }
 
 
     /**
-     * Retrives the categories array
-     * @return array
+     * Retrives the categories array for this album
+     * @return array The list of categories for the Album
      */
-    public function get_cat()
+    public function get_Categories()
     {
         return (array) $this->categories;
     }
 
 
     /**
-     * Removes the array of categories from $this->categories if present
-     * @param string or array $to_del
+     * Removes the string/array of category/ies from $this->categories if present
+     * @param string or array $to_del The category/ies to remove from the current array
      */
-    public function remove_cat($to_del)
+    public function remove_Cat($to_del)
     {
         foreach((array) $to_del as $val)
         {
@@ -135,45 +176,28 @@ class E_Album
 
     /**
      * Sets a creation date for the Album
-     * @param int The timestamp of the Album's creation
+     * @param int $date The timestamp of the Album's creation
      */
-    public function set_date($date='')
+    private function set_Creation_Date($date='')
     {
-        if ($date == '')
+        if ($date==='' || $date<0)
         {
-            $this->create_date = time();
+            $this->creation_date = time();
         }
         else
         {
-            $this->create_date = $date;
+            $this->creation_date = $date;
         }
     }
 
 
     /**
-     * Retrieves the creation date of the Album
+     * Retrieves the Timestamp of album's creation date
      * @return int The timestamp of the Album's creation
      */
-    public function get_date()
+    public function get_Creation_Date()
     {
-        return $this->create_date;
-    }
-
-
-    /**
-     * Sets the ID for the album. It is the Database ID, so it should be used in __construct() only
-     * @param int $ID The album ID. Rethrived from the Database.
-     */
-    public function set_ID($ID)
-    {
-        $this->ID = $ID;
-    }
-    /**
-     * @return int The Database ID of the album
-     */
-    public function get_ID()
-    {
-        return $this->ID;
+        return $this->creation_date;
     }
 
 

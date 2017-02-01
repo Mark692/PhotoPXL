@@ -7,7 +7,6 @@
  */
 
 namespace Exceptions;
-//use \Exception;
 
 /**
  * This class handles exception about the User Role and related functions

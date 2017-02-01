@@ -27,7 +27,7 @@ class C_Login_Processor
 
         $db_user = new \Foundation\F_User(); //Istanzia un oggetto Foundation
         $e_user = $db_user->get_record($input_username); //Prendi l'utente dal DB
-        $user_pass = $e_user->get_password(); //Prendi la pass dell'utente
+        $user_pass = $e_user->get_Password(); //Prendi la pass dell'utente
         if(\Utilities\U_Nonce::check($user_pass, $nonce_pass))
         {
             //Verifica OK. Logga l'utente

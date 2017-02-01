@@ -104,16 +104,16 @@ class TE_User extends \Prove\TFun
         echo("Test dei metodi Set e Get. Formato: Originale -> get_()".nl2br("\r\n").nl2br("\r\n"));
         for($i=0; $i<count($username); $i++)
         {
-            $this->e_prove->set_username($username[$i]);
-            echo("Username: ".$username[$i]." -> ".$this->e_prove->get_username().nl2br("\r\n"));
+            $this->e_prove->set_Username($username[$i]);
+            echo("Username: ".$username[$i]." -> ".$this->e_prove->get_Username().nl2br("\r\n"));
 
-            $this->e_prove->set_password($password[$i]);
-            echo("Password: ".$password[$i]." -> ".$this->e_prove->get_password().nl2br("\r\n"));
+            $this->e_prove->set_Password($password[$i]);
+            echo("Password: ".$password[$i]." -> ".$this->e_prove->get_Password().nl2br("\r\n"));
 
-            $this->e_prove->set_email($mail[$i]);
-            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$this->e_prove->get_email()." (".strlen($this->e_userSTD->get_email()).")".nl2br("\r\n"));
+            $this->e_prove->set_Email($mail[$i]);
+            echo("Mail: ".$mail[$i]." (".strlen($mail[$i])."), Mail impostata: ".$this->e_prove->get_Email()." (".strlen($this->e_userSTD->get_Email()).")".nl2br("\r\n"));
             echo("var_dump = ");
-            var_dump($this->e_prove->get_email());
+            var_dump($this->e_prove->get_Email());
             echo(nl2br("\r\n").nl2br("\r\n").nl2br("\r\n"));
         }
     }
@@ -159,17 +159,17 @@ class TE_User extends \Prove\TFun
         $e_user = new \Entity\E_User_Basic($this->username, $this->password, $this->email, $this->ruolo, 0, $this->last_up_date);
         echo("Data attuale: ".time()." = ".date('d-m-Y', time()).nl2br("\r\n"));
         //Controllo metodo get_last_Upload()
-        echo("Get_last_Upload: ".$e_user->get_last_Upload()." = ".date('d-m-Y', $this->last_up_date).nl2br("\r\n"));
+        echo("Get_last_Upload: ".$e_user->get_Last_Upload()." = ".date('d-m-Y', $this->last_up_date).nl2br("\r\n"));
         for($i=0; $i<=count($config['user']); $i++) //Per ogni ruolo, da 0 a 5
         {
             $e_user = new \Entity\E_User_Basic($this->username, $this->password, $this->email, $i, 0, $this->last_up_date);
-            echo("Ruolo: ".$e_user->get_role()." = ".$config['user'][$e_user->get_role()].nl2br("\r\n"));
+            echo("Ruolo: ".$e_user->get_Role()." = ".$config['user'][$e_user->get_Role()].nl2br("\r\n"));
 
             //Impongo l'ultimo upload fatto a molto tempo fa
             for($j=0; $j<13; $j++)
             {
                 //Controllo metodo can_upload()
-                if($e_user->can_upload())
+                if($e_user->can_Upload())
                 {
                     echo("Up fatti: ".$e_user->get_up_Count()." Up ok! ");
                     $e_user->add_up_Count();

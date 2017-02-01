@@ -8,13 +8,16 @@
 
 namespace Entity;
 
+/**
+ * This class allows to set detailed informations about photos
+ */
 class E_Photo
 {
-    private $id;
+    private $ID;
     private $title;
     private $description;
-    private $is_reserved;
-    private $upload_date;
+    private $is_Reserved;
+    private $upload_Date;
     private $categories = []; //Categorie della foto
     private $like;
     private $comments = [];
@@ -22,40 +25,61 @@ class E_Photo
 
     /**
      * Instantiates a Photo object taken from the DB or just uploaded.
-     * In case the Photo has been just uploaded use the short-construct in order to set:
-     * $up_date = time()
-     * $like = 0
+     * In case the Photo has just been uploaded use the short-construct in order to set:
+     * - $likes = 0
+     * - $up_date = time()
      *
-     * @param string $id The photo's unique id
+     * @param string $ID The photo's unique id
      * @param string $title The title given by the user
      * @param string $desc The description given by the user
      * @param bool $reserved Whether the photo is reserved or public
      * @param string $user The uploader username
      * @param array $cat The categories of this photo
-     * @param int $like The number of like this photo earned
-     * @param int $up_date The date of upload. If just uploaded set it to an empty string or don't use touch this parameter
+     * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
+     * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($id, $title, $desc, $is_reserved, $cat, $like=0, $up_date='')
+    public function __construct($ID, $title, $desc, $is_Reserved, $cat, $likes=0, $up_Date='')
     {
-        $this->id = $id;
-        $this->title = $title;
-        $this->description = $desc;
-        $this->setlike($like);
-        $this->set_reserved($is_reserved);
-        $this->set_cat($cat);
-        $this->set_upload_date($up_date);
+        $this->set_ID($ID);
+        $this->set_Title($title);
+        $this->set_Description($desc);
+        $this->set_Likes($likes);
+        $this->set_Reserved($is_Reserved);
+        $this->set_Categories($cat);
+        $this->set_Upload_Date($up_Date);
+    }
+
+
+    /**
+     * Sets the ID for the photo. It is the Database ID, so it should be used in __construct() only
+     * @param string $ID The photo ID. Rethrived from the Database.
+     */
+    private function set_ID($ID)
+    {
+        $this->ID = $ID;
+    }
+
+
+    /**
+     * Returns the ID of this photo
+     * @return string The Database ID of the photo
+     */
+    public function get_ID()
+    {
+        return $this->ID;
     }
 
 
     /**
      * Sets the Photo privacy as
-     * Reserved (if $is_reserved === TRUE):  only certain users will be able to see the photo
-     * Public   (if $is_reserved === FALSE): ALL users will be able to see the photo
+     * - Reserved (TRUE): only certain users will be able to see the photo
+     * - Public  (FALSE): ALL users will be able to see the photo
+     *
      * @param bool $is_reserved The new Photo privacy
      */
-    public function set_reserved(bool $is_reserved)
+    public function set_Reserved(bool $is_reserved)
     {
-        $this->is_reserved = $is_reserved;
+        $this->is_Reserved = $is_reserved;
     }
 
 
@@ -63,27 +87,46 @@ class E_Photo
      * Retrieves the visibility of the Photo
      * @return bool Retrieves the visibility of the Photo
      */
-    public function get_reserved()
+    public function get_Reserved()
     {
-        return $this->is_reserved;
+        return $this->is_Reserved;
     }
 
 
     /**
-     * Sets a new title for the Photo
-     * @param string
+     * Sets a new title for the photo
+     * @param string $new_title The photo title
      */
-    public function set_title($new_title)
+    public function set_Title($new_title)
     {
-        $this->title = $new_title;
+        if($this->check_title($new_title))
+        {
+            $this->title = $new_title;
+        }
+    }
+
+
+    /**
+     * Checks whether the title is a valid entry
+     * @param string $title The photo title input
+     * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
+     */
+    private function check_title($title)
+    {
+        $allowed = array('-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
+        if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 
     /**
      * Retrieves the title of the Photo
-     * @return string
+     * @return string The photo's title
      */
-    public function get_title()
+    public function get_Title()
     {
         return $this->title;
     }
@@ -91,9 +134,9 @@ class E_Photo
 
     /**
      * Sets a new description for the Photo
-     * @param string
+     * @param string The description for the photo
      */
-    public function set_description($new_description)
+    public function set_Description($new_description)
     {
         $this->description = $new_description;
     }
@@ -101,53 +144,53 @@ class E_Photo
 
     /**
      * Retrieves the description of the Photo
-     * @return string
+     * @return string This photo's description
      */
-    public function get_description()
+    public function get_Description()
     {
         return $this->description;
     }
 
 
     /**
-     * Sets the date for the Photo
-     * @param string
+     * Sets the date in Timestamp format of the Photo's upload
+     * @param int The timestamp of uploading
      */
-    public function set_upload_date($up_date = '')
+    public function set_Upload_Date($up_date = '')
     {
         if ($up_date==='' || $up_date<0)
         {
             $up_date = time();
         }
-        $this->upload_date = $up_date;
+        $this->upload_Date = $up_date;
     }
 
 
     /**
-     * Retrieves the upload date of the Photo
-     * @return string
+     * Retrieves the timestamp of this Photo's upload
+     * @return int The timestamp of this Photo's upload
      */
-    public function get_upload_date()
+    public function get_Upload_Date()
     {
-        return $this->upload_date;
+        return $this->upload_Date;
     }
 
 
     /**
-     * Sets the like number for the Photo
-     * @param int
+     * Sets the likes the Photo received
+     * @param int $number The number of likes  the Photo received
      */
-    public function set_like($number)
+    public function set_Likes($number)
     {
         $this->like = $number;
     }
 
 
     /**
-     * Retrieves the like number of the Photo
-     * @return int
+     * Retrieves the likes the Photo received
+     * @return int The likes the Photo received
      */
-    public function get_like()
+    public function get_Likes()
     {
         return $this->like;
     }
@@ -156,16 +199,16 @@ class E_Photo
     /**
      * Adds a like to the current Photo
      */
-    public function add_like()
+    public function add_Like()
     {
         $this->like = $this->like +1;
     }
 
 
     /**
-     * Removes a like for the current Photo
+     * Removes a like from the current Photo
      */
-    public function remove_like()
+    public function remove_Like()
     {
         $this->like = $this->like -1;
     }
@@ -173,9 +216,9 @@ class E_Photo
 
     /**
      * Sets an uploader user for the Photo
-     * @param string
+     * @param string The uploader's username
      */
-    public function set_user($user)
+    public function set_User($user)
     {
         $this->user = $user;
     }
@@ -183,29 +226,29 @@ class E_Photo
 
     /**
      * Retrieves the uploader user
-     * @return string
+     * @return string The uploader's username
      */
-    public function get_user()
+    public function get_User()
     {
         return $this->user;
     }
 
 
     /**
-     * Sets an array of categories for the Photo
-     * @param string or array $cat The array/string of categories to set for the photo
+     * Sets a string/array of category/ies for the Photo
+     * @param string or array $cat The string/array of category/ies to set for the photo
      */
-    public function set_cat($cat)
+    public function set_Categories($cat)
     {
         $this->categories = $cat;
     }
 
 
     /**
-     * Adds the array of categories to $this->categories, if not already present
-     * @param string or array $to_add The array/string of categories to add at the current categories
+     * Adds the string/array of category/ies to $this->categories, if not already present
+     * @param string or array $to_add The string/array of category/ies to add at the current categories
      */
-    public function add_cat($to_add)
+    public function add_Cat($to_add)
     {
         foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
         {
@@ -219,19 +262,19 @@ class E_Photo
 
     /**
      * Retrives the categories array
-     * @return array
+     * @return array The array of this photo's categories
      */
-    public function get_cat()
+    public function get_Cat()
     {
         return $this->categories;
     }
 
 
     /**
-     * Removes the array of categories from $this->categories if present
+     * Removes the string/array of category/ies from $this->categories if present
      * @param string or array $to_del
      */
-    public function remove_cat($to_del)
+    public function remove_Cat($to_del)
     {
         foreach((array) $to_del as $val)
         {
@@ -281,6 +324,19 @@ class E_Photo
         }
         $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
     }
+
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
+    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
 
 
 

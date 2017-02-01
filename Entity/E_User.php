@@ -8,6 +8,10 @@
 
 namespace Entity;
 
+/**
+ * This class implements basic User functions related to login credentials
+ * Also it implements functions about Users Roles to be used in children implementations
+ */
 class E_User
 {
     private $username;
@@ -15,39 +19,23 @@ class E_User
     private $email;
 
     /**
-     * @type enum The user role
+     * @type int The user role
      */
     protected $role;
 
-    /**
-     * @type int The Date of the last uploaded photo in time() format
-     */
-    private $last_Upload;
-
 
     /**
-     * Sets the parameters needed to instantiate a new User
-     * @param string $username
-     * @param string $password
-     * @param string $email
+     * Sets the parameters needed to instantiate an User
+     *
+     * @param string $username This user's username
+     * @param string $password This user's password
+     * @param string $email This user's email
      */
-    public function __construct($username, $password, $email, $up_Count, $last_up='')
+    protected function __construct($username, $password, $email)
     {
-        $this->set_username($username);
-        $this->set_password($password);
-        $this->set_email($email);
-        $this->set_up_Count($up_Count);
-        $this->set_last_Upload($last_up);
-    }
-
-
-    /**
-     * Retrieves the username of the User
-     * @return string The user username
-     */
-    public function get_username()
-    {
-        return $this->username;
+        $this->set_Username($username);
+        $this->set_Password($password);
+        $this->set_Email($email);
     }
 
 
@@ -56,32 +44,50 @@ class E_User
      * @param string The username input by the user
      * @throws \Exceptions\InvalidInput Thrown in case of non allowed chars in the username
      */
-    public function set_username($new_username)
+    public function set_Username($new_username)
     {
-        try
+        if($this->check_Username($new_username))
         {
-            if($this->check_username($new_username))
-            {
-                $this->username = $new_username;
-            }
-            else {throw new \Exceptions\InvalidInput(0, $new_username);}
+            $this->username = $new_username;
         }
-        catch(\Exceptions\InvalidInput $ex)
+    }
+
+
+    /**
+     * Retrieves the username of the User
+     *
+     * @return string The user username
+     */
+    public function get_Username()
+    {
+        return $this->username;
+    }
+
+
+    /**
+     * Sets an username for the User
+     *
+     * @param string The username input by the user
+     */
+    public function set_Username($new_username)
+    {
+        if($this->check_Username($new_username))
         {
-            echo($ex->getMessage().nl2br("\r\n"));
+            $this->username = $new_username;
         }
     }
 
 
     /**
      * Checks whether the username is a valid entry
-     * @param string $us The username input
+     *
+     * @param string $username The username input
      * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
      */
-    protected function check_username($us)
+    protected function check_Username($username)
     {
         $allowed = array('-', '_', '.'); //Allows -_. inside a Username
-        if(ctype_alnum(str_replace($allowed, '', $us))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
         {
             return TRUE;
         }
@@ -90,22 +96,37 @@ class E_User
 
 
     /**
-     * Retrieves the hashed password of the User
+     * Sets an ALREADY HASHED password for the User
+     * @param string $pass The user's hash('sha512', password)
+     */
+    public function set_Password($pass)
+    {
+        $this->password = $pass;
+    }
+
+
+    /**
+     * Retrieves the HASHED password of the User
      * @return string The user password
      */
-    public function get_password()
+    public function get_Password()
     {
         return $this->password;
     }
 
 
     /**
-     * Sets a new hashed password for the User
-     * @param string The user password
+     * Sets an email for the User
+     * @param string The user's email
+     * @throws \Exceptions\InvalidInput
      */
-    public function set_password($pass)
+    public function set_Email($new_email)
     {
-        $this->password = hash('sha512', $pass);
+        if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
+        {
+            throw new \Exceptions\InvalidInput(1, $new_email);
+        }
+        $this->email = $new_email;
     }
 
 
@@ -113,65 +134,30 @@ class E_User
      * Retrieves the email of the User
      * @return string
      */
-    public function get_email()
+    public function get_Email()
     {
         return $this->email;
     }
 
 
     /**
-     * Sets a new email for the User
-     * @param string
-     * @throws \Exceptions\InvalidInput
+     * This function sets a role for the user.
+     * It is used in children __constructs() and in some role related functions.
+     *
+     * @param int $new_role The role of the user
      */
-    public function set_email($new_email)
-    {
-        try
-        {
-            if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
-            {
-                throw new \Exceptions\InvalidInput(1, $new_email);
-            }
-        $this->email = $new_email;
-        }
-        catch(\Exceptions\InvalidInput $ex)
-        {
-            echo($ex->getMessage().nl2br("\r\n"));
-        }
-    }
-
-
-    protected function set_role($new_role)
+    protected function set_Role($new_role)
     {
         $this->role = $new_role;
     }
 
 
-    public function get_role()
+    /**
+     * Returns the user's role
+     * @return int The user's role
+     */
+    protected function get_Role()
     {
         return $this->role;
-        // foundation goes here
-    }
-
-    /**
-     * Gets the last upload date in seconds
-     * @return int
-     */
-    public function get_last_Upload()
-    {
-        return $this->last_Upload;
-    }
-
-
-    /**
-     * Sets the last upload date
-     */
-    private function set_last_Upload($date = '')
-    {
-        if ($date==='' || $date<0)
-        {
-            $date = time();
-        }
-        $this->last_Upload = $date;
     }
 }

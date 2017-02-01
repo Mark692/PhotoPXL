@@ -8,25 +8,42 @@
 
 namespace Entity;
 
-class E_User_PRO extends E_User_Basic
+use Utilities\Roles;
+
+/**
+ * This class represents higher level users than Standard ones.
+ * PRO Users are able to set a privacy to their photos and are not limited in daily uploads
+ */
+class E_User_PRO extends E_User
 {
-    public function __construct($username, $password, $email, $up_Count, $last_up = '')
+    /**
+     * Instantiates a PRO User
+     * 
+     * @param string $username This user's username
+     * @param string $password This user's password
+     * @param string $email This user's email
+     */
+    public function __construct($username, $password, $email)
     {
-        parent::__construct($username, $password, $email, $up_Count, $last_up);
-        parent::set_role(PRO);
+        parent::__construct($username, $password, $email);
+        parent::set_Role(Roles::PRO);
     }
 
 
     /**
+     * CONTROLLA QUESTA FUNZIONE!!! BISOGNA AGGIUNGERE
+     * - CONTROLLI SULLA FOTO
+     * - CONTROLLI SULL'OGGETTO PASSATO
      *
      * Sets the Photo privacy as
-     * Reserved (if $privacy === TRUE):  only certain users will be able to see the photo
-     * Public   (if $privacy === FALSE): ALL users will be able to see the photo
-     * @param \Entity\E_Photo object The photo object to set the privacy
+     * Reserved (TRUE):  only certain users will be able to see the photo
+     * Public  (FALSE): ALL users will be able to see the photo
+     *
+     * @param ??? $photo The photo object to set the privacy
      * @param bool $privacy The privacy setting for the photo
      */
-    public function set_privacy(\Entity\E_Photo $obj_photo, bool $privacy)
+    public function set_privacy(\Entity\E_Photo $photo, bool $privacy)
     {
-        $obj_photo->set_privacy($privacy);
+        $photo->set_privacy($privacy);
     }
 }
