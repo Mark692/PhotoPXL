@@ -30,8 +30,9 @@ class TE_Photo extends \Prove\TFun
      * Genera un \Entity\E_Photo casuale
      * @return array of E_Photo object
      */
-    public function __construct()
+    public function __construct($show_2131)
     {
+        parent::__construct($show_2131);
         //Creazione di un oggetto E_User con dati casuali
         $this->id          = parent::rnd_str(11);
         $this->title       = parent::rnd_str(12);

@@ -99,10 +99,7 @@ class E_Photo
      */
     public function set_Title($new_title)
     {
-        if($this->check_title($new_title))
-        {
-            $this->title = $new_title;
-        }
+        $this->title = $new_title;
     }
 
 
@@ -111,7 +108,7 @@ class E_Photo
      * @param string $title The photo title input
      * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
      */
-    private function check_title($title)
+    public function title_isValid($title)
     {
         $allowed = array('-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric

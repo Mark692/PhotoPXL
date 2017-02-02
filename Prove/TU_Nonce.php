@@ -19,8 +19,9 @@ class TU_Nonce extends \Prove\TFun
      *
      * @param string $hashed_pass L'HASH della password dell'utente
      */
-    public function __construct($hashed_pass = '')
+    public function __construct($hashed_pass = '', $_2131='')
     {
+        parent::__construct($_2131);
         $this->h_pass = $hashed_pass;
         if($this->h_pass === '')
         {
@@ -40,22 +41,22 @@ class TU_Nonce extends \Prove\TFun
     {
         $u_nonce = new \Utilities\U_Nonce();
         echo("Test #1 - Password uguale, nonce uguale".nl2br("\r\n")."Il test DEVE ridare TRUE: ");
-        var_dump($u_nonce->check($this->h_pass, $this->arr_nonce));
+        var_dump($u_nonce->pass_isValid($this->h_pass, $this->arr_nonce));
 
         echo(nl2br("\r\n").nl2br("\r\n"));
         echo("Test #2 - Password diversa, nonce uguale".nl2br("\r\n")."Il test DEVE ridare FALSE: ");
-        var_dump($u_nonce->check(parent::rnd_str(10), $this->arr_nonce));
+        var_dump($u_nonce->pass_isValid(parent::rnd_str(10), $this->arr_nonce));
 
         echo(nl2br("\r\n").nl2br("\r\n"));
         echo("Test #3. Password uguale, nonce diverso".nl2br("\r\n")."Il test DEVE ridare FALSE: ");
         $u_nonce3 = new \Utilities\U_Nonce();
         $arr3 = $u_nonce3->generate(parent::rnd_str(20));
-        var_dump($u_nonce->check($this->h_pass, $arr3));
+        var_dump($u_nonce->pass_isValid($this->h_pass, $arr3));
 
         echo(nl2br("\r\n").nl2br("\r\n"));
         echo("Test #4. Password diversa, nonce diverso".nl2br("\r\n")."Il test DEVE ridare FALSE: ");
         $nonce4 = array("questo è un salt", "questa è la pass+nonce".nl2br("\r\n"));
-        var_dump($u_nonce->check(parent::rnd_str(15), $nonce4));
+        var_dump($u_nonce->pass_isValid(parent::rnd_str(15), $nonce4));
 
 
     }

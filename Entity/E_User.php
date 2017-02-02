@@ -21,7 +21,7 @@ class E_User
     /**
      * @type int The user role
      */
-    protected $role;
+    private $role;
 
 
     /**
@@ -42,14 +42,10 @@ class E_User
     /**
      * Sets a new username for the User
      * @param string The username input by the user
-     * @throws \Exceptions\InvalidInput Thrown in case of non allowed chars in the username
      */
     public function set_Username($new_username)
     {
-        if($this->check_Username($new_username))
-        {
-            $this->username = $new_username;
-        }
+        $this->username = $new_username;
     }
 
 
@@ -65,26 +61,12 @@ class E_User
 
 
     /**
-     * Sets an username for the User
-     *
-     * @param string The username input by the user
-     */
-    public function set_Username($new_username)
-    {
-        if($this->check_Username($new_username))
-        {
-            $this->username = $new_username;
-        }
-    }
-
-
-    /**
      * Checks whether the username is a valid entry
      *
      * @param string $username The username input
      * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
      */
-    protected function check_Username($username)
+    public static function username_isValid($username)
     {
         $allowed = array('-', '_', '.'); //Allows -_. inside a Username
         if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -106,6 +88,17 @@ class E_User
 
 
     /**
+     * Hashes the password received from the login
+     * @param string $pass2hash The password in clear text to hash before save it
+     * @return string The hashed password
+     */
+    public static function hash_of($pass2hash)
+    {
+        return hash('sha512', $pass2hash);
+    }
+
+
+    /**
      * Retrieves the HASHED password of the User
      * @return string The user password
      */
@@ -117,22 +110,28 @@ class E_User
 
     /**
      * Sets an email for the User
-     * @param string The user's email
-     * @throws \Exceptions\InvalidInput
+     * @param string $new_email The user's email
      */
     public function set_Email($new_email)
     {
-        if(filter_var($new_email, FILTER_VALIDATE_EMAIL) === FALSE)
-        {
-            throw new \Exceptions\InvalidInput(1, $new_email);
-        }
         $this->email = $new_email;
     }
 
 
     /**
+     * Checks whether the parameter email is in a correct format
+     * @param string $email The email to check if valid
+     * @return bool Whether the email is correctly written
+     */
+    public static function email_isValid($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+
+    /**
      * Retrieves the email of the User
-     * @return string
+     * @return string This user's email
      */
     public function get_Email()
     {
@@ -146,7 +145,7 @@ class E_User
      *
      * @param int $new_role The role of the user
      */
-    protected function set_Role($new_role)
+    public function set_Role($new_role)
     {
         $this->role = $new_role;
     }
@@ -156,7 +155,7 @@ class E_User
      * Returns the user's role
      * @return int The user's role
      */
-    protected function get_Role()
+    public function get_Role()
     {
         return $this->role;
     }

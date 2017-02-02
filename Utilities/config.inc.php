@@ -11,10 +11,10 @@ namespace Utilities;
 global $config;
 
 //----Database Connection Parameters----\\
-$config['mysql']['host'] = 'localhost';
-$config['mysql']['database'] = 'photopxl';
-$config['mysql']['user'] = 'root';
-$config['mysql']['password'] = 'FRIGO A LEGNA';
+$config['mysql_host']     = 'localhost';
+$config['mysql_database'] = 'photopxl';
+$config['mysql_user']     = 'root';
+$config['mysql_password'] = 'FRIGO A LEGNA';
 
 
 

@@ -34,8 +34,9 @@ class TE_User extends \Prove\TFun
      * Genera un \Entity\E_User casuale
      * @return array of E_User object
      */
-    public function __construct()
+    public function __construct($show_2131='')
     {
+        parent::__construct($show_2131);
         //Creazione di un oggetto E_User con dati casuali
         $this->username    = parent::rnd_str(7);
         $this->password    = parent::rnd_str(10);
@@ -49,6 +50,12 @@ class TE_User extends \Prove\TFun
         $this->e_userPRO   = new \Entity\E_User_PRO     ("UsPRO", "A PASS...", "mail@mail.com", $this->tot_uploads);
         $this->e_userMOD   = new \Entity\E_User_MOD     ("UsMOD", "A PASS...", "mail@mail.com", $this->tot_uploads);
         $this->e_userAdmin = new \Entity\E_User_Admin   ("UsADMIN", "A PASS...", "mail@mail.com", $this->tot_uploads);
+    }
+
+
+    public function T_public_protected_private()
+    {
+        echo($this->e_userSTD->get_Username());
     }
 
 

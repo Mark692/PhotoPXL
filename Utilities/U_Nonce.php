@@ -9,7 +9,24 @@
 namespace Utilities;
 
 /**
- * Nonce generator with variable time-outs.
+ * HOW TO USE:
+ * 1. Registatione - The user inputs his password. E_User will hash it with E_User_Standard->hash_of($input_password)
+ *                   Now we have $hashed_pass = hash_of($input_password);
+ *                   and we save it to the DB
+ *
+ * 2. Login - The user inputs his password. We get the nonce of that by using
+ *            $login_nonce = $this->generate($login_pass);
+ *            Now we can use the $this->pass_isValid($hashed_pass, $login_nonce);
+ *
+ *            if($this->pass_isValid($hashed_pass, $login_nonce))
+ *            {
+ *                //Logga l'utente, OK!
+ *            }
+ *            else
+ *            {
+ *                //La pass immessa è sbagliata
+ *            }
+ *
  */
 class U_Nonce
 {
@@ -19,14 +36,14 @@ class U_Nonce
      * 1 - Salt.
      * 2 - Hash of salt and pass.
      *
-     * @param string $h_pass The hashed user password.
+     * @param string $login_pass The hashed user password.
      * @param int $salt_length The length of the salt to generate for the nonce
-     * The same value must be passed to the method check().
+     * The same value must be passed to the method pass_isValid().
      *
      * @return array The Nonce.
      *
      */
-    public static function generate($h_pass, $salt_length = 15)
+    public static function generate($login_pass, $salt_length = 15)
     {
         if($salt_length<15) //If the length is less than 15
         {
@@ -39,24 +56,26 @@ class U_Nonce
         {
             $salt .= $allowed_chars[rand(0, $max_chars)];
         }
-        $hash = hash('sha512', $salt.$h_pass);
+        $hashed_loginPass = \Entity\E_User::hash_of($login_pass);
+        $hash = hash('sha512', $salt.$hashed_loginPass);
         return $nonce = array($salt, $hash);
     }
 
 
     /**
      * Check a hashed password against the previously generated Nonce.
+     *
      * @param string $db_pass The user hashed password saved in the DB.
-     * @param array $nonce_pass The array generated with generate() method.
+     * @param array $nonce The array generated with generate() method.
      * @returns bool Whether the Nonce is valid.
      */
-    public static function check($db_pass, $nonce_pass)
+    public static function pass_isValid($db_pass, $nonce)
     {
-        $n_salt = $nonce_pass[0];
-        $n_hash = $nonce_pass[1];
+        $salt = $nonce[0];
+        $generated_nonceHash = $nonce[1];
 
-        $check = hash('sha512', $n_salt.$db_pass);
-        if ($check !== $n_hash)
+        $DB_nonceHash = hash('sha512', $salt.$db_pass);
+        if ($DB_nonceHash !== $generated_nonceHash)
         {
             return FALSE;
         }

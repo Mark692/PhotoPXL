@@ -24,6 +24,8 @@ class InvalidInput extends \Exception
                 $message = "ATTENZIONE! L'email inserita ($exc) comprende caratteri non permessi.";
                 break;
 
+            //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
+
             default: $message = "ATTENZIONE! Parametro non valido: $exc";
         }
         parent::__construct($message, NULL, NULL);
