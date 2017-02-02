@@ -10,6 +10,10 @@ namespace Foundation;
 
 //use \PDO; //Per evitare errori con l'autoloader
 
+/**
+ * This class contains basic functions to be inherited and overridden by
+ * child classes
+ */
 class F_User extends \Foundation\F_Database
 {
 
@@ -26,34 +30,39 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrives all the users that match the query
-     * @param type $value searched with the query
-     * @param bool $orderBy to select the preferred order to display results
-     * @param string $column the column to search
+     * Saves the user into the DB
+     *
+     * @param array $values The user details to save in the DB
      */
-    public static function get_record($value, $orderBy, $column = "username")
-    {
-        $query = "SELECT * "
-                ."FROM users "
-                ."WHERE ".$column." = '".$value."'";
-        if (!$orderBy)
-        {
-            $query = $query."ORDER BY DESC";
-        }
-        $record = parent::get($query);
-        return $record;
-    }
+//    protected static function set_user($values)
+//    {
+//        $query = 'INSERT INTO users '
+//               . 'SET username=\''.$values['username'].'\', '
+//                    .'password=\''.$values['password'].'\', '
+//                    .'email=\''.$values['email'].'\', '
+//                    .'role=\''.$values['role'].'\'';
+//
+//        parent::set($query);
+//    }
 
 
     /**
-     * Saves the user into the DB
+     * Retrives all the users that match the query
      *
-     * @param \Entity\E_User $user
+     * @param type $value The value to search with the query
+     * @param string $column The column attribute to search in
+     * @param bool $order_by_DESC Sets the preferred order to display results
      */
-    public static function set_user(\Entity\E_User $user)
+    protected static function get_by($value, $column = "username", $order_by_DESC=FALSE)
     {
-        $query = "INSERT INTO users SET ";
-        parent::set($user, $query);
+        $query = 'SELECT * '
+                .'FROM users '
+                .'WHERE '.$column.' = \''.$value.'\'';
+        if ($order_by_DESC===TRUE)
+        {
+            $query = $query." ORDER BY DESC";
+        }
+        return parent::get($query);
     }
 
 

@@ -50,17 +50,34 @@ class F_Database
 
 
     /*
-     * Allows to save an object on the DB
+     * Saves an object on the DB
      *
      * @param string $query The query used to save a record on the DB
      */
-    public static function set($query)
+    protected static function set($query)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
+    }
+
+
+    /**
+     * Executes and rethrives a record from the DB
+     *
+     * @param type $query The query to execute
+     * @return array The result array of the query
+     */
+    protected static function get($query)
+    {
+        $pdo = self::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -70,27 +87,15 @@ class F_Database
      * @param string $query The query to execute
      * @return PDOStatement object The result of the query
      */
-    protected static function execute_query($query)
-    {
-        $pdo = self::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt;
-    }
-
-
-    /**
-     * Rethrives a record from the DB
-     *
-     * @param type $query The query to execute
-     * @return array The result array of the query
-     */
-    public static function get($query)
-    {
-        return self::execute_query($query)->fetch(PDO::FETCH_ASSOC);
-    }
+//    protected static function execute_query($query)
+//    {
+//        $pdo = self::connettiti();
+//        $pdo_stmt = $pdo->prepare($query);
+//        $pdo_stmt->execute();
+//
+//        $pdo = NULL; //Closes DB connection
+//        return $pdo_stmt;
+//    }
 
 
     /**
@@ -99,39 +104,39 @@ class F_Database
      * @param string Chiave Primaria della tabella
      * @return bool
      */
-    public static function aggiorna($oggetto)
-    {
-        $memorizzato = $this->get($oggetto->chiave_Primaria);
-        $prima_iterazione = TRUE;
-
-        foreach ($oggetto as $campo => $valore) //Controlla quali campi di $oggetto...
-        {
-            if ($valore != $memorizzato[$campo]) //...differiscono da quelli salvati nel DB
-            {
-                if ($prima_iterazione)
-                {
-                    $modifiche = '`'.$campo.'` = '.$valore;
-                    $prima_iterazione = FALSE;
-                }
-                else
-                {
-                    $modifiche = $modifiche.', `'.$campo.'` = '.$valore;
-                }
-            }
-        }
-        $query = 'UPDATE :ph_tabella '
-                .'SET :ph_modifiche '
-                .'WHERE :ph_chiave_Primaria = :ph_chiave';
-
-        $pdo = self::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->execute(array (
-            ":ph_tabella"         => self::$table,
-            ":ph_modifiche"       => $modifiche,
-            ":ph_chiave_Primaria" => self::$primary_Key,
-            ":ph_chiave"          => $oggetto->chiave_Primaria));
-
-        $pdo = NULL; //Chiude la connessione a DB
-        return boolval($pdo_stmt->rowCount());
-    }
+//    public static function aggiorna($oggetto)
+//    {
+//        $memorizzato = $this->get($oggetto->chiave_Primaria);
+//        $prima_iterazione = TRUE;
+//
+//        foreach ($oggetto as $campo => $valore) //Controlla quali campi di $oggetto...
+//        {
+//            if ($valore != $memorizzato[$campo]) //...differiscono da quelli salvati nel DB
+//            {
+//                if ($prima_iterazione)
+//                {
+//                    $modifiche = '`'.$campo.'` = '.$valore;
+//                    $prima_iterazione = FALSE;
+//                }
+//                else
+//                {
+//                    $modifiche = $modifiche.', `'.$campo.'` = '.$valore;
+//                }
+//            }
+//        }
+//        $query = 'UPDATE :ph_tabella '
+//                .'SET :ph_modifiche '
+//                .'WHERE :ph_chiave_Primaria = :ph_chiave';
+//
+//        $pdo = self::connettiti();
+//        $pdo_stmt = $pdo->prepare($query);
+//        $pdo_stmt->execute(array (
+//            ":ph_tabella"         => self::$table,
+//            ":ph_modifiche"       => $modifiche,
+//            ":ph_chiave_Primaria" => self::$primary_Key,
+//            ":ph_chiave"          => $oggetto->chiave_Primaria));
+//
+//        $pdo = NULL; //Chiude la connessione a DB
+//        return boolval($pdo_stmt->rowCount());
+//    }
 }

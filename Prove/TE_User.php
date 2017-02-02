@@ -46,10 +46,10 @@ class TE_User extends \Prove\TFun
 
         $this->e_prove = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->tot_uploads);
 
-        $this->e_userSTD   = new \Entity\E_User_Standard("UsSTD", "A PASS...", "mail@mail.com", $this->tot_uploads);
-        $this->e_userPRO   = new \Entity\E_User_PRO     ("UsPRO", "A PASS...", "mail@mail.com", $this->tot_uploads);
-        $this->e_userMOD   = new \Entity\E_User_MOD     ("UsMOD", "A PASS...", "mail@mail.com", $this->tot_uploads);
-        $this->e_userAdmin = new \Entity\E_User_Admin   ("UsADMIN", "A PASS...", "mail@mail.com", $this->tot_uploads);
+        $this->e_userSTD   = new \Entity\E_User_Standard("UsSTD", "A PASS...", "STD@mail.com", $this->tot_uploads);
+        $this->e_userPRO   = new \Entity\E_User_PRO     ("UsPRO", "A PASS...", "PRO@mail.com", $this->tot_uploads);
+        $this->e_userMOD   = new \Entity\E_User_MOD     ("UsMOD", "A PASS...", "MOD@mail.com", $this->tot_uploads);
+        $this->e_userAdmin = new \Entity\E_User_Admin   ("UsADMIN", "A PASS...", "ADMIN@mail.com", $this->tot_uploads);
     }
 
 

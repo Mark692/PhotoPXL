@@ -31,7 +31,7 @@ class E_User
      * @param string $password This user's password
      * @param string $email This user's email
      */
-    protected function __construct($username, $password, $email)
+    public function __construct($username, $password, $email)
     {
         $this->set_Username($username);
         $this->set_Password($password);
@@ -79,6 +79,7 @@ class E_User
 
     /**
      * Sets an ALREADY HASHED password for the User
+     *
      * @param string $pass The user's hash('sha512', password)
      */
     public function set_Password($pass)
@@ -89,6 +90,7 @@ class E_User
 
     /**
      * Hashes the password received from the login
+     *
      * @param string $pass2hash The password in clear text to hash before save it
      * @return string The hashed password
      */
@@ -100,6 +102,7 @@ class E_User
 
     /**
      * Retrieves the HASHED password of the User
+     *
      * @return string The user password
      */
     public function get_Password()
@@ -110,6 +113,7 @@ class E_User
 
     /**
      * Sets an email for the User
+     *
      * @param string $new_email The user's email
      */
     public function set_Email($new_email)
@@ -120,6 +124,7 @@ class E_User
 
     /**
      * Checks whether the parameter email is in a correct format
+     *
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
@@ -131,6 +136,7 @@ class E_User
 
     /**
      * Retrieves the email of the User
+     *
      * @return string This user's email
      */
     public function get_Email()
@@ -141,7 +147,7 @@ class E_User
 
     /**
      * This function sets a role for the user.
-     * It is used in children __constructs() and in some role related functions.
+     * It is used in inherited __constructs() and in some role related functions.
      *
      * @param int $new_role The role of the user
      */
@@ -153,6 +159,7 @@ class E_User
 
     /**
      * Returns the user's role
+     *
      * @return int The user's role
      */
     public function get_Role()
