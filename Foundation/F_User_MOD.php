@@ -19,7 +19,7 @@ class F_User_MOD extends F_User_PRO
      *
      * @param \Entity\E_User_MOD $user The user to insert into the DB
      */
-    public static function insert_this(\Entity\E_User_MOD $user)
+    public static function insert(\Entity\E_User_MOD $user)
     {
         $values['username'] = $user->get_Username();
         $values['password'] = $user->get_Password();

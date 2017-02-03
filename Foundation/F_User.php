@@ -17,53 +17,44 @@ namespace Foundation;
 class F_User extends \Foundation\F_Database
 {
 
-
-    /*
-     * Imposta i parametri base per la connessione a DB come il nome della tabella
-     * sulla quale operare ed il nome della chiave primaria.
-     */
-//    public function __construct()
-//    {
-//        parent::$tabella = 'users';
-//        parent::$chiave_Primaria = 'username';
-//    }
-
-
-    /**
-     * Saves the user into the DB
-     *
-     * @param array $values The user details to save in the DB
-     */
-//    protected static function set_user($values)
-//    {
-//        $query = 'INSERT INTO users '
-//               . 'SET username=\''.$values['username'].'\', '
-//                    .'password=\''.$values['password'].'\', '
-//                    .'email=\''.$values['email'].'\', '
-//                    .'role=\''.$values['role'].'\'';
-//
-//        parent::set($query);
-//    }
-
-
     /**
      * Retrives all the users that match the query
      *
-     * @param type $value The value to search with the query
-     * @param string $column The column attribute to search in
+     * @param string $value The value to search with the query
+     * @param string $DB_column The column attribute to search in
      * @param bool $order_by_DESC Sets the preferred order to display results
      */
-    protected static function get_by($value, $column = "username", $order_by_DESC=FALSE)
+    public static function get_by($value, $DB_column = "username", $order_by_DESC=FALSE)
     {
         $query = 'SELECT * '
-                .'FROM users '
-                .'WHERE '.$column.' = \''.$value.'\'';
+                .'FROM `users` '
+                .'WHERE `'.$DB_column.'` = \''.$value.'\'';
         if ($order_by_DESC===TRUE)
         {
-            $query = $query." ORDER BY DESC";
+            $query .= " ORDER BY DESC";
         }
         return parent::get($query);
     }
+
+
+    /**
+     * Updates a record from the "users" table
+     *
+     * @param array $new_user The ARRAY containing the new user details got from "View"
+     * @param array $old_user The ARRAY containing the old user details. The array "old user" is the DB record got from the get_by()
+     */
+    public function update($new_user, $old_user)
+    {
+        $_table = "users";
+        $_primaryKey = "username";
+        parent::update($new_user, $old_user, $_table, $_primaryKey);
+    }
+
+
+
+
+
+
 
 
     //----AGGIUNTE DA E_User_Basic----\\

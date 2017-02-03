@@ -19,16 +19,19 @@ class F_User_Standard extends F_User
      *
      * @param \Entity\E_User_Standard $user The user to insert into the DB
      */
-    public static function insert_this(\Entity\E_User_Standard $user)
+    public static function insert(\Entity\E_User_Standard $user)
     {
         $query = 'INSERT INTO users SET '
-                .'username=\''.$user->get_Username().'\', '
-                .'password=\''.$user->get_Password().'\', '
-                .'email=\''.$user->get_Email().'\', '
-                .'role=\''.$user->get_Role().'\', '
-                .'last_Upload=\''.$user->get_Last_Upload().'\', '
-                .'up_Count=\''.$user->get_up_Count().'\'';
+                .'`username`=\''.$user->get_Username().'\', '
+                .'`password`=\''.$user->get_Password().'\', '
+                .'`email`=\''.$user->get_Email().'\', '
+                .'`role`=\''.$user->get_Role().'\', '
+                .'`last_Upload`=\''.$user->get_Last_Upload().'\', '
+                .'`up_Count`=\''.$user->get_up_Count().'\'';
 
         parent::set($query);
     }
+
+
+
 }

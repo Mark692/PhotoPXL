@@ -16,9 +16,6 @@ use \PDO,
  */
 class F_Database
 {
-    public static $table;
-    protected static $primary_Key;
-
 
     /**
      * Tries to connect to the DB
@@ -67,76 +64,51 @@ class F_Database
     /**
      * Executes and rethrives a record from the DB
      *
-     * @param type $query The query to execute
+     * @param string $query The query to execute
+     * @param bool $fetchAll Whether to return ALL record or only one
      * @return array The result array of the query
      */
-    protected static function get($query)
+    protected static function get($query, $fetchAll=FALSE)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetch(PDO::FETCH_ASSOC);
+        if($fetchAll===TRUE)
+        {
+            return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC); //Returns a multidimensional array. Different keys mean different records
+        }
+        return $pdo_stmt->fetch(PDO::FETCH_ASSOC); //Returns an array with a single record
     }
 
 
     /**
-     * Executes a query
+     * Updates a record from the "users" table. Can only be used in inherited
+     * classes which will define the attributes $_table and $_primaryKey
      *
-     * @param string $query The query to execute
-     * @return PDOStatement object The result of the query
+     * @param array $new_Details An ARRAY containing new details got from "View"
+     * @param array $old_Details An ARRAY containing old details. This is the DB record got from the get_by().
+     *        Will be used as $old_Details[0] meaning the first (and only) record got from the get_by
+     * @param string $_table The DB table into execute the query
+     * @param string $_primaryKey The $_table's primary key
      */
-//    protected static function execute_query($query)
-//    {
-//        $pdo = self::connettiti();
-//        $pdo_stmt = $pdo->prepare($query);
-//        $pdo_stmt->execute();
-//
-//        $pdo = NULL; //Closes DB connection
-//        return $pdo_stmt;
-//    }
+    protected function update($new_Details, $old_Details, $_table, $_primaryKey)
+    {
+        $set = '';
+        foreach($old_Details as $key => $value)
+        {
+            if($old_Details[$key] !== $new_Details[$key])
+            {
+                $set .= '`'.$key.'`=\''.$new_Details[$key].'\',';
+            }
+        }
+        $set = substr($set, 0, -1); //Removes the trailing char: ","
+        $where = $old_Details['username'];
+        $query = "UPDATE `$_table` "
+               . "SET $set "
+               . "WHERE `$_primaryKey`='$where'";
 
-
-    /**
-     * Allows to update an object details
-     *
-     * @param string Chiave Primaria della tabella
-     * @return bool
-     */
-//    public static function aggiorna($oggetto)
-//    {
-//        $memorizzato = $this->get($oggetto->chiave_Primaria);
-//        $prima_iterazione = TRUE;
-//
-//        foreach ($oggetto as $campo => $valore) //Controlla quali campi di $oggetto...
-//        {
-//            if ($valore != $memorizzato[$campo]) //...differiscono da quelli salvati nel DB
-//            {
-//                if ($prima_iterazione)
-//                {
-//                    $modifiche = '`'.$campo.'` = '.$valore;
-//                    $prima_iterazione = FALSE;
-//                }
-//                else
-//                {
-//                    $modifiche = $modifiche.', `'.$campo.'` = '.$valore;
-//                }
-//            }
-//        }
-//        $query = 'UPDATE :ph_tabella '
-//                .'SET :ph_modifiche '
-//                .'WHERE :ph_chiave_Primaria = :ph_chiave';
-//
-//        $pdo = self::connettiti();
-//        $pdo_stmt = $pdo->prepare($query);
-//        $pdo_stmt->execute(array (
-//            ":ph_tabella"         => self::$table,
-//            ":ph_modifiche"       => $modifiche,
-//            ":ph_chiave_Primaria" => self::$primary_Key,
-//            ":ph_chiave"          => $oggetto->chiave_Primaria));
-//
-//        $pdo = NULL; //Chiude la connessione a DB
-//        return boolval($pdo_stmt->rowCount());
-//    }
+        self::set($query);
+    }
 }

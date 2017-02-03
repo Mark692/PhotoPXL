@@ -19,7 +19,7 @@ class F_User_PRO extends F_User
      *
      * @param \Entity\E_User_PRO $user The user to insert into the DB
      */
-    public static function insert_this(\Entity\E_User_PRO $user)
+    public static function insert(\Entity\E_User_PRO $user)
     {
         $values['username'] = $user->get_Username();
         $values['password'] = $user->get_Password();
@@ -37,11 +37,11 @@ class F_User_PRO extends F_User
      */
     protected static function query_insert($values)
     {
-        $query = 'INSERT INTO users SET '
-                .'username=\''.$values['username'].'\', '
-                .'password=\''.$values['password'].'\', '
-                .'email=\''.$values['email'].'\', '
-                .'role=\''.$values['role'].'\'';
+        $query = 'INSERT INTO `users` SET '
+                .'`username`=\''.$values['username'].'\', '
+                .'`password`=\''.$values['password'].'\', '
+                .'`email`=\''.$values['email'].'\', '
+                .'`role`=\''.$values['role'].'\'';
 
         parent::set($query);
     }

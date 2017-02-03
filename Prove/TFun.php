@@ -10,6 +10,8 @@ namespace Prove;
 
 class TFun
 {
+    protected $separate;
+
 
     /**
      * Stampa a video classi e funzioni che necessitano di ulteriore implementazione
@@ -17,31 +19,32 @@ class TFun
      */
     public function __construct($show_2131='')
     {
+        $this->separate = nl2br("\r\n")."----------------------------------------------".nl2br("\r\n").nl2br("\r\n");
+
         if($show_2131===2131)
         {
-            $separate = nl2br("\r\n")."----------------------------------------------".nl2br("\r\n").nl2br("\r\n");
 
             echo("Error Code 2131 (To Be Implemented):".nl2br("\r\n").nl2br("\r\n"));
             echo("E_Comment:".nl2br("\r\n"));
             echo("1. set_User".nl2br("\r\n"));
             echo("2. get_User".nl2br("\r\n"));
             echo("3. set_Photo".nl2br("\r\n"));
-            echo("4. get_User".$separate);
+            echo("4. get_User".$this->separate);
 
 
             echo("E_Photo:".nl2br("\r\n"));
             echo("1. add_Comment".nl2br("\r\n"));
             echo("2. get_Comment".nl2br("\r\n"));
-            echo("3. remove_Comment".$separate);
+            echo("3. remove_Comment".$this->separate);
 
             echo("E_User_PRO:".nl2br("\r\n"));
-            echo("1. set_privacy".$separate);
+            echo("1. set_privacy".$this->separate);
 
             echo("E_User_MOD:".nl2br("\r\n"));
-            echo("1. ban_user".$separate);
+            echo("1. ban_user".$this->separate);
 
             echo("E_User_Admin:".nl2br("\r\n"));
-            echo("1. change_Role".$separate);
+            echo("1. change_Role".$this->separate);
 
 
             //Separa gli output
@@ -103,6 +106,13 @@ class TFun
     }
 
 
+    protected static function arr_2format($array)
+    {
+        foreach((array) $array as $chiave => $valore)
+        {
+            echo($chiave." => ".$valore.nl2br("\r\n"));
+        }
+    }
 
 
 
