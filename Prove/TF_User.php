@@ -98,71 +98,19 @@ class TF_User extends TFun
 
     public function update()
     {
-        $getby_STD = \Foundation\F_User::get_by("MODFdVZVXI");
+        $getby_STD = \Foundation\F_User::get_by("provaDB");
+        echo("Oggetto preso da DB:".nl2br("\r\n"));
         print_r($getby_STD);
-        echo(nl2br("\r\n"));
-//        $getby_PRO = \Foundation\F_User::get_by($this->e_userPRO->get_Username());
-//        $getby_MOD = \Foundation\F_User::get_by($this->e_userMOD->get_Username());
-//        $getby_Admin = \Foundation\F_User::get_by($this->e_userAdmin->get_Username());
+        echo(nl2br("\r\n").nl2br("\r\n"));
 
         $newSTD = array(
-            "username" => "MODFdVZVXI",
-            "password" => "CAMBIATA",
-            "email" => "DOH@beh.boh",
-            "role" => "4",
-            "up_Count" => 1,
-            "last_Upload" => 5215435);
-
-        $newPRO = array(
-            "username" => "PRO1?",
-            "password" => "PROpass",
-            "email" => "boh@boh.boh",
-            "role" => "3",
-            "up_Count" => 99,
-            "last_Upload" => 55435);
-
-        $newMOD = array(
-            "username" => "MOD!",
-            "password" => "MODDDDDDD",
-            "email" => "boh@boh.boh",
-            "role" => "3",
-            "up_Count" => 99,
-            "last_Upload" => 55435);
-
-        $newAD = array(
-            "username" => "ADADAD-",
-            "password" => "eh eh -",
-            "email" => "boh@boh.boh",
-            "role" => "3",
-            "up_Count" => 99,
-            "last_Upload" => 55435);
-
-//        $set = '';
-//        foreach($getby_STD as $key => $value)
-//        {
-//            if($getby_STD[$key] !== $newSTD[$key])
-//            {
-//                $set .= '`'.$key.'`=\''.$newSTD[$key].'\',';
-//            }
-//            $value = 3;
-//        }
-//
-//        $_table = "users";
-//        $_primaryKey = "username";
-//
-//        $set = substr($set, 0, -1); //Removes the trailing char: ","
-//        $where = $getby_STD['username'];
-//        $query = "UPDATE `$_table` "
-//               . "SET $set "
-//               . "WHERE `$_primaryKey`='$where'";
-//        echo("My query: ".nl2br("\r\n").$query.nl2br("\r\n").nl2br("\r\n"));
-//
-//        echo("Foundation Query: ".nl2br("\r\n"));
-//        echo(\Foundation\F_User::update($newSTD, $getby_STD));
+//            "username" => "provaDB", //Non serve mettere tutti i campi.
+            "password" => "nuova update con",
+            "email" => "bind@params.boh",
+            "role" => rand(0, \Utilities\Roles::ADMIN),
+            "up_Count" => rand(0, 30),
+            "last_Upload" => rand(0, 50000));
 
         \Foundation\F_User::update($newSTD, $getby_STD);
-//        \Foundation\F_User::update($getby_PRO, $newPRO);
-//        \Foundation\F_User::update($getby_MOD, $newMOD);
-//        \Foundation\F_User::update($getby_Admin, $newAD);
     }
 }
