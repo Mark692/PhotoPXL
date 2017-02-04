@@ -29,7 +29,7 @@ class F_User extends \Foundation\F_Database
     public static function get($value, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
         $DB_table = "users";
-        return parent::get($value, $DB_table, $fetchAll);
+        return parent::get($value, $DB_table, $fetchAll, $orderBy, $orderStyle);
     }
 
 

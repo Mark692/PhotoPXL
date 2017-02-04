@@ -61,7 +61,7 @@ class F_Database
 
         $pdo = NULL; //Closes DB connection
     }
-    
+
 
     /**
      * Rethrives all the records that match the query
@@ -87,11 +87,9 @@ class F_Database
                 .'WHERE '.$where;
         if($orderBy!=='' && ($orderStyle==="ASC" || $orderStyle==="DESC"))
         {
-            $query .= 'ORDER BY '.$orderBy.' '.$orderStyle;
+            $query .= ' ORDER BY '.$orderBy.' '.$orderStyle;
         }
-
-        echo($query);
-
+        
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
         $pdo_stmt = self::bind_params($pdo_stmt, $toSearch);

@@ -74,7 +74,9 @@ class TF_User extends TFun
         $values = array(
             "password" => "A PASS 2",
             "email" => "STD2@mail.com");
-        $getby_STD = \Foundation\F_User::get($values, TRUE, "username", "ASC");
+//        $getby_STD = \Foundation\F_User::get($values, TRUE, "username", "ASC");
+        $orderby = "username";
+        $getby_STD = \Foundation\F_User::get($values, TRUE, $orderby, "DESC");
 
 
 //        $getby_STD = \Foundation\F_User::get("provaDB");
