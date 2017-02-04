@@ -21,11 +21,12 @@ class F_User_MOD extends F_User_PRO
      */
     public static function insert(\Entity\E_User_MOD $user)
     {
-        $values['username'] = $user->get_Username();
-        $values['password'] = $user->get_Password();
-        $values['email'] = $user->get_Email();
-        $values['role'] = $user->get_Role();
+        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            $user->get_Username(),
+            $user->get_Password(),
+            $user->get_Email(),
+            $user->get_Role());
 
-        parent::query_insert($values);
+        parent::query_insert($toBind);
     }
 }

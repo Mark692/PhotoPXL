@@ -18,8 +18,8 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 global $config;
 
 $provaFOUND = new \Prove\TF_User();
-$provaFOUND->insert_and_get();
-$provaFOUND->update();
+//$provaFOUND->insert_and_get();
+//$provaFOUND->update();
 //$user = new \Entity\E_User_PRO("username casuale", "pass cass", "mail@we.iti");
 //var_dump($user);
 

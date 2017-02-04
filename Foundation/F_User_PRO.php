@@ -21,28 +21,29 @@ class F_User_PRO extends F_User
      */
     public static function insert(\Entity\E_User_PRO $user)
     {
-        $values['username'] = $user->get_Username();
-        $values['password'] = $user->get_Password();
-        $values['email'] = $user->get_Email();
-        $values['role'] = $user->get_Role();
+        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            $user->get_Username(),
+            $user->get_Password(),
+            $user->get_Email(),
+            $user->get_Role());
 
-        self::query_insert($values);
+        self::query_insert($toBind);
     }
 
 
     /**
      * Saves the array value into the DB
      *
-     * @param array $values The user details to save in the DB
+     * @param array $toBind The user details to save in the DB
      */
-    protected static function query_insert($values)
+    protected static function query_insert($toBind)
     {
         $query = 'INSERT INTO `users` SET '
-                .'`username`=\''.$values['username'].'\', '
-                .'`password`=\''.$values['password'].'\', '
-                .'`email`=\''.$values['email'].'\', '
-                .'`role`=\''.$values['role'].'\'';
+                .'`username`=?, '
+                .'`password`=?, '
+                .'`email`=?, '
+                .'`role`=?';
 
-        parent::set($query);
+        parent::set($query, $toBind);
     }
 }
