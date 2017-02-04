@@ -32,7 +32,7 @@ class F_User_PRO extends F_User
 
 
     /**
-     * Saves the array value into the DB
+     * Generates the query INSERT and passes the array value to set() to bind them
      *
      * @param array $toBind The user details to save in the DB
      */
@@ -44,6 +44,6 @@ class F_User_PRO extends F_User
                 .'`email`=?, '
                 .'`role`=?';
 
-        parent::set($query, $toBind);
+        parent::insert($query, $toBind);
     }
 }

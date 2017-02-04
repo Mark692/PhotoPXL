@@ -17,24 +17,19 @@ namespace Foundation;
 class F_User extends \Foundation\F_Database
 {
 
+
     /**
      * Retrives all the users that match the query
      *
-     * @param string $value The value to search with the query
-     * @param string $DB_column The column attribute to search in
+     * @param array $value The value to search with the query
      * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
-     * @param bool $order_by_DESC Sets the preferred order to display results
+     * @param string $orderBy The table column chosen to order the results
+     * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
      */
-    public static function get_by($value, $DB_column = "username", $fetchAll=FALSE, $order_by_DESC=FALSE)
+    public static function get($value, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
-        $query = 'SELECT * '
-                .'FROM `users` '
-                .'WHERE `'.$DB_column.'` = \''.$value.'\'';
-        if ($order_by_DESC===TRUE)
-        {
-            $query .= " ORDER BY DESC";
-        }
-        return parent::get($query, $fetchAll);
+        $DB_table = "users";
+        return parent::get($value, $DB_table, $fetchAll);
     }
 
 

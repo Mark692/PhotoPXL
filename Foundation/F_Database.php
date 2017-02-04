@@ -52,7 +52,7 @@ class F_Database
      * @param string $query The query used to save a record on the DB
      * @param array $toBind The array of values to bind at the query
      */
-    protected static function set($query, $toBind)
+    protected static function insert($query, $toBind)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -61,19 +61,40 @@ class F_Database
 
         $pdo = NULL; //Closes DB connection
     }
-
+    
 
     /**
-     * Rethrives a record from the DB
+     * Rethrives all the records that match the query
      *
-     * @param string $query The query to execute
-     * @param bool $fetchAll Whether to return ALL record or only one
-     * @return array The result array of the query
+     * @param array $toSearch The associative array with the values to search for
+     * @param string $DB_table The DB table to search in
+     * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
+     * @param string $orderBy The table column chosen to order the results
+     * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
+     * @return array The associative array with all the records that matched the query
      */
-    protected static function get($query, $fetchAll=FALSE)
+    protected static function get($toSearch, $DB_table, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
+        $where = '';
+        foreach ($toSearch as $key => $v)
+        {
+            $where .= '`'.$key.'`=? AND ';
+        }
+        $where = substr($where, 0, -5); //Removes the " AND " at the end of the string
+
+        $query = 'SELECT * '
+                .'FROM `'.$DB_table.'` '
+                .'WHERE '.$where;
+        if($orderBy!=='' && ($orderStyle==="ASC" || $orderStyle==="DESC"))
+        {
+            $query .= 'ORDER BY '.$orderBy.' '.$orderStyle;
+        }
+
+        echo($query);
+
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt = self::bind_params($pdo_stmt, $toSearch);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
@@ -115,13 +136,13 @@ class F_Database
                    . "SET $set "
                    . "WHERE `$_primaryKey`='$where'";
 
-            self::set($query, $toBind);
+            self::insert($query, $toBind);
         }
     }
 
 
     /**
-     * Binds an array of parameters to the query
+        * Binds an array of parameters to the query using Question Marks
      *
      * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
      * @param array $toBind The array of parameters to bind
@@ -130,11 +151,30 @@ class F_Database
     private static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
         $i=1; //Needed to specify which placeholder to bind
-        foreach((array) $toBind as $k => $v)
+        foreach($toBind as $k => $v)
         {
             //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
             $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
             $i++;
+        }
+        return $pdo_stmt;
+    }
+
+
+    /**
+     * Binds an array of parameters to the query using PlaceHolders
+     *
+     * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
+     * @param array $toBind The array of parameters to bind
+     * @return \PDOStatement The object to execute()
+     */
+    private static function bind_params_PH(\PDOStatement $pdo_stmt, $toBind)
+    {
+        foreach($toBind as $k => $v)
+        {
+            $placeholder = ":$k";
+            //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
+            $pdo_stmt->bindParam($placeholder, $toBind[$k]); //Correctly binds parameters
         }
         return $pdo_stmt;
     }
