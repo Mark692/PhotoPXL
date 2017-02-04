@@ -64,7 +64,7 @@ class F_Database
 
 
     /**
-     * Executes and rethrives a record from the DB
+     * Rethrives a record from the DB
      *
      * @param string $query The query to execute
      * @param bool $fetchAll Whether to return ALL record or only one

@@ -49,10 +49,10 @@ class TF_User extends TFun
 
         $this->e_prove = new \Entity\E_User_Standard($this->username, $this->password, $this->email, $this->tot_uploads);
 
-        $this->e_userSTD   = new \Entity\E_User_Standard("STD".parent::rnd_str(7), "A PASS...", "STD@mail.com", $this->tot_uploads);
-        $this->e_userPRO   = new \Entity\E_User_PRO     ("PRO".parent::rnd_str(7), "A PASS...", "PRO@mail.com", $this->tot_uploads);
-        $this->e_userMOD   = new \Entity\E_User_MOD     ("MOD".parent::rnd_str(7), "A PASS...", "MOD@mail.com", $this->tot_uploads);
-        $this->e_userAdmin = new \Entity\E_User_Admin   ("ADMIN".parent::rnd_str(7), "A PASS...", "ADMIN@mail.com", $this->tot_uploads);
+        $this->e_userSTD   = new \Entity\E_User_Standard("STD_".parent::rnd_str(7), "A PASS...", "STD@mail.com", $this->tot_uploads);
+        $this->e_userPRO   = new \Entity\E_User_PRO     ("PRO_".parent::rnd_str(7), "A PASS...", "PRO@mail.com", $this->tot_uploads);
+        $this->e_userMOD   = new \Entity\E_User_MOD     ("MOD_".parent::rnd_str(7), "A PASS...", "MOD@mail.com", $this->tot_uploads);
+        $this->e_userAdmin = new \Entity\E_User_Admin   ("ADMIN_".parent::rnd_str(7), "A PASS...", "ADMIN@mail.com", $this->tot_uploads);
     }
 
 
@@ -75,7 +75,7 @@ class TF_User extends TFun
 //        echo(nl2br("\r\n"));
 //        \Foundation\F_User_PRO::insert($this->e_userPRO);
 //        echo("Funzione get_by( _password_ ) - Risultati: ".nl2br("\r\n"));
-//        $getby_PRO = \Foundation\F_User::get_by($this->e_userPRO->get_Username());
+//        $getby_PRO = \Foundation\F_User::get_by($this->e_userPRO->get_Password(), "password");
 //        print_r($getby_PRO);
 //        echo($this->separate);
 //
@@ -83,7 +83,7 @@ class TF_User extends TFun
 //        echo(nl2br("\r\n"));
 //        \Foundation\F_User_MOD::insert($this->e_userMOD);
 //        echo("Funzione get_by( _email_ ) - Risultati: ".nl2br("\r\n"));
-//        $getby_MOD = \Foundation\F_User::get_by($this->e_userMOD->get_Username());
+//        $getby_MOD = \Foundation\F_User::get_by($this->e_userMOD->get_Email(), "email");
 //        print_r($getby_MOD);
 //        echo($this->separate);
 //
@@ -91,7 +91,7 @@ class TF_User extends TFun
 //        echo(nl2br("\r\n"));
 //        \Foundation\F_User_Admin::insert($this->e_userAdmin);
 //        echo("Funzione get_by( _ruolo_ ) - Risultati: ".nl2br("\r\n"));
-//        $getby_Admin = \Foundation\F_User::get_by($this->e_userAdmin->get_Username());
+//        $getby_Admin = \Foundation\F_User::get_by($this->e_userAdmin->get_Role(), "role");
 //        print_r($getby_Admin);
 //        echo($this->separate);
     }
@@ -105,7 +105,7 @@ class TF_User extends TFun
 
         $newSTD = array(
 //            "username" => "provaDB", //Non serve mettere tutti i campi.
-            "password" => "nuova update con",
+            "password" => "nuova update v2",
             "email" => "bind@params.boh",
             "role" => rand(0, \Utilities\Roles::ADMIN),
             "up_Count" => rand(0, 30),

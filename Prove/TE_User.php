@@ -91,8 +91,6 @@ class TE_User extends \Prove\TFun
         $e_userADMIN = new \Entity\E_User_Admin($this->username, $this->password, $this->email, $this->tot_uploads, $this->last_up_date);
         echo("Oggetto utente con costruttore completo: timestamp nel passato.".nl2br("\r\n"));
         parent::ogg2arr($e_userADMIN, $this->parent_path);
-
-
     }
 
 
