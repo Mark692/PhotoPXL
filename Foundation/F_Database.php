@@ -46,7 +46,7 @@ class F_Database
     }
 
 
-    /*
+    /**
      * Saves an object on the DB
      *
      * @param string $query The query used to save a record on the DB
@@ -88,27 +88,40 @@ class F_Database
      * classes which will define the attributes $_table and $_primaryKey
      *
      * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param array $old_Details An ARRAY containing old details. This is the DB record got from the get_by().
-     *        Will be used as $old_Details[0] meaning the first (and only) record got from the get_by
+     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by($q, FALSE).
      * @param string $_table The DB table into execute the query
      * @param string $_primaryKey The $_table's primary key
      */
     protected function update($new_Details, $old_Details, $_table, $_primaryKey)
     {
         $set = '';
-        foreach($old_Details as $key => $value)
+        foreach($old_Details as $key => $old_value)
         {
-            if($old_Details[$key] !== $new_Details[$key])
+            if($old_value !== $new_Details[$key])
             {
                 $set .= '`'.$key.'`=\''.$new_Details[$key].'\',';
             }
         }
-        $set = substr($set, 0, -1); //Removes the trailing char: ","
-        $where = $old_Details['username'];
-        $query = "UPDATE `$_table` "
-               . "SET $set "
-               . "WHERE `$_primaryKey`='$where'";
+        if($set!=='') //$set==='' only if NO changes were made. In this case no update will be done.
+        {
+            $set = substr($set, 0, -1); //Removes the trailing char: ","
+            $where = $old_Details['username'];
+            $query = "UPDATE `$_table` "
+                   . "SET $set "
+                   . "WHERE `$_primaryKey`='$where'";
 
-        self::set($query);
+            echo($query); //SOLO PER TEST! ELIMINA QUESTA RIGA
+            self::set($query);
+        }
+    }
+
+
+    private static function bind_params(\PDOStatement $pdo_stmt, $toBind)
+    {
+        foreach((array) $toBind as $k => $v)
+        {
+            $placeholder = ":".$k;
+            $pdo_stmt->bindParam($placeholder, $v);
+        }
     }
 }

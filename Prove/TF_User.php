@@ -101,13 +101,6 @@ class TF_User extends TFun
         $getby_STD = \Foundation\F_User::get_by("MODFdVZVXI");
         print_r($getby_STD);
         echo(nl2br("\r\n"));
-
-
-
-
-
-
-
 //        $getby_PRO = \Foundation\F_User::get_by($this->e_userPRO->get_Username());
 //        $getby_MOD = \Foundation\F_User::get_by($this->e_userMOD->get_Username());
 //        $getby_Admin = \Foundation\F_User::get_by($this->e_userAdmin->get_Username());
@@ -144,31 +137,32 @@ class TF_User extends TFun
             "up_Count" => 99,
             "last_Upload" => 55435);
 
-        $set = '';
-        foreach($getby_STD as $key => $value)
-        {
-            if($getby_STD[$key] !== $newSTD[$key])
-            {
-                $set .= '`'.$key.'`=\''.$newSTD[$key].'\',';
-            }
-            $value = 3;
-        }
+//        $set = '';
+//        foreach($getby_STD as $key => $value)
+//        {
+//            if($getby_STD[$key] !== $newSTD[$key])
+//            {
+//                $set .= '`'.$key.'`=\''.$newSTD[$key].'\',';
+//            }
+//            $value = 3;
+//        }
+//
+//        $_table = "users";
+//        $_primaryKey = "username";
+//
+//        $set = substr($set, 0, -1); //Removes the trailing char: ","
+//        $where = $getby_STD['username'];
+//        $query = "UPDATE `$_table` "
+//               . "SET $set "
+//               . "WHERE `$_primaryKey`='$where'";
+//        echo("My query: ".nl2br("\r\n").$query.nl2br("\r\n").nl2br("\r\n"));
+//
+//        echo("Foundation Query: ".nl2br("\r\n"));
+//        echo(\Foundation\F_User::update($newSTD, $getby_STD));
 
-        $_table = "users";
-        $_primaryKey = "username";
-
-        $set = substr($set, 0, -1); //Removes the trailing char: ","
-        $where = $getby_STD['username'];
-        $query = "UPDATE `$_table` "
-               . "SET $set "
-               . "WHERE `$_primaryKey`='$where'";
-        echo("My query: ".nl2br("\r\n").$query.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("Foundation Query: ".nl2br("\r\n"));
-        echo(\Foundation\F_User::update($newSTD, $getby_STD));
-
-        \Foundation\F_User::update($getby_PRO, $newPRO);
-        \Foundation\F_User::update($getby_MOD, $newMOD);
-        \Foundation\F_User::update($getby_Admin, $newAD);
+        \Foundation\F_User::update($newSTD, $getby_STD);
+//        \Foundation\F_User::update($getby_PRO, $newPRO);
+//        \Foundation\F_User::update($getby_MOD, $newMOD);
+//        \Foundation\F_User::update($getby_Admin, $newAD);
     }
 }

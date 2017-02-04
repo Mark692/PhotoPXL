@@ -22,9 +22,10 @@ class F_User extends \Foundation\F_Database
      *
      * @param string $value The value to search with the query
      * @param string $DB_column The column attribute to search in
+     * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
      * @param bool $order_by_DESC Sets the preferred order to display results
      */
-    public static function get_by($value, $DB_column = "username", $order_by_DESC=FALSE)
+    public static function get_by($value, $DB_column = "username", $fetchAll=FALSE, $order_by_DESC=FALSE)
     {
         $query = 'SELECT * '
                 .'FROM `users` '
@@ -33,7 +34,7 @@ class F_User extends \Foundation\F_Database
         {
             $query .= " ORDER BY DESC";
         }
-        return parent::get($query);
+        return parent::get($query, $fetchAll);
     }
 
 
