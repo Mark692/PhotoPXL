@@ -19,8 +19,8 @@ global $config;
 
 //---Prova per TF_Comment---\\
 //
-//$testCommento = new \Prove\TF_Comment();
-//$testCommento->insert();
+$testCommento = new \Prove\TF_Comment();
+$testCommento->insert();
 
 
 

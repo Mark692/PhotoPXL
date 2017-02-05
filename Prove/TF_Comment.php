@@ -18,6 +18,7 @@ class TF_Comment extends TFun
         $photo = "PH_".parent::rnd_str(5);
 
         $commento = new \Entity\E_Comment($testo, $user, $photo);
-        echo("We, io sono l'ultimo ID inserito: ".\Foundation\F_Comment::insert($commento));
+        \Foundation\F_Comment::insert($commento);
+        echo("We, io sono l'ultimo ID inserito: ".$commento->get_ID());
     }
 }

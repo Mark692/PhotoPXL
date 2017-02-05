@@ -16,41 +16,28 @@ class E_Comment
     private $id;
     private $text = '';
     private $user;
-    private $photo;
+    private $photo_ID;
 
 
     /**
+     * Instantiates a new comment.
+     * The comment's ID will be set by Foundation\F_Comment based on the DB's ID
      *
-     * @param int $id The comment's ID
      * @param string $text The text of the comment
-     * @param string $user The commenting user's username
-     * @param string $photo The commented photo
+     * @param string $user_ID The commenting user's username
+     * @param string $photo_ID The commented photo's ID
      */
-//    public function __construct($id, $text, $user, $photo)
-//    {
-//        $this->set_ID($id);
-//        $this->set_Text($text);
-//        $this->set_User($user);
-//        $this->set_Photo($photo);
-//    }
-
-    
-
-    /**
-     * @param string $text The text of the comment
-     * @param string $user The commenting user's username
-     * @param string $photo The commented photo
-     */
-    public function __construct($text, $user, $photo)
+    public function __construct($text, $user_ID, $photo_ID)
     {
         $this->set_Text($text);
-        $this->set_User($user);
-        $this->set_Photo($photo);
+        $this->set_User($user_ID);
+        $this->set_PhotoID($photo_ID);
     }
 
 
     /**
-     * Sets an ID for the comment
+     * Sets the ID for the comment
+     *
      * @param int $id The comment's ID
      */
     public function set_ID($id)
@@ -61,6 +48,7 @@ class E_Comment
 
     /**
      * Retrieves the comment ID
+     *
      * @return int The comment's ID
      */
     public function get_ID()
@@ -71,6 +59,7 @@ class E_Comment
 
     /**
      * Sets a new text
+     *
      * @param string $new_text The text to apphend on a photo
      */
     public function set_Text($new_text)
@@ -81,6 +70,7 @@ class E_Comment
 
     /**
      * Retrieves the text
+     *
      * @return string The comment made by a user
      */
     public function get_Text()
@@ -91,6 +81,7 @@ class E_Comment
 
     /**
      * Sets the user that commented
+     *
      * @param string $user The user's username
      */
     public function set_User($user)
@@ -101,6 +92,7 @@ class E_Comment
 
     /**
      * Retrieves the user that commented
+     *
      * @return string The user's username
      */
     public function get_User()
@@ -109,29 +101,24 @@ class E_Comment
     }
 
 
-//------------------------------CONTROLLA QUESTE DUE FUNZIONI
-//------------------------E COME DEVONO PRENDERE E RESTITUIRE $photo
-//--------------------Tutto l'oggetto? L'ID? Cosa???????????????????????????
     /**
      * Sets the commented photo's ID
-     * @param string The photo's ID
+     *
+     * @param int The photo's ID
      */
-    public function set_Photo($photo)
+    public function set_PhotoID($photo_ID)
     {
-        $this->photo = $photo;
+        $this->photo_ID= $photo_ID;
     }
 
 
     /**
      * Retrieves the commented photo's ID
-     * @return string The photo's ID
+     *
+     * @return int The photo's ID
      */
-    public function get_Photo()
+    public function get_PhotoID()
     {
-        return $this->photo;
+        return $this->photo_ID;
     }
-//------------------------------CONTROLLA QUESTE DUE FUNZIONI
-//------------------------E COME DEVONO PRENDERE E RESTITUIRE $photo
-//--------------------Tutto l'oggetto? L'ID? Cosa???????????????????????????
-
 }

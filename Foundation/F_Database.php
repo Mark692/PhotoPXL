@@ -119,10 +119,10 @@ class F_Database
      * @param array $new_Details An ARRAY containing new details got from "View"
      * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by($q)
      * @param string $_table The DB table into execute the query
-     * @param string $_primaryKey The $_table's primary key
+     * @param string $where_column The $_table's column used as reference by the WHERE clause
      * @return string The last updated (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
-    protected function update($new_Details, $old_Details, $_table, $_primaryKey)
+    protected function update($new_Details, $old_Details, $_table, $where_column)
     {
         $set = ''; //String to use for the SET
         $toBind = []; //Array to pass at the self::set() function to Bind the correct parameters
@@ -137,10 +137,10 @@ class F_Database
         if ($set !== '') //$set==='' only if NO changes were made. In this case no update will be done.
         {
             $set = substr($set, 0, -1); //Removes the trailing char: ","
-            $primaryKey_value = $old_Details[$_primaryKey]; //This will return the value of the Primary Key whatever class inherits this $update()
+            $where_value = $old_Details[$where_column]; //This will return the value of the column
             $query = "UPDATE `$_table` "
                     ."SET $set "
-                    ."WHERE `$_primaryKey`='$primaryKey_value'";
+                    ."WHERE `$where_column`='$where_value'";
 
             return self::insert($query, $toBind);
         }
