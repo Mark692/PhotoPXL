@@ -9,7 +9,7 @@
 namespace Foundation;
 
 /**
- * This class permits to save and load comments
+ * This class enables to save and load comments
  */
 class F_Comment extends F_Database
 {
@@ -38,7 +38,7 @@ class F_Comment extends F_Database
 
     /**
      * Rethrives the comments posted on a photo passing its ID.
-     * The output order will be in ASCendent order = from the first comment made to
+     * The output will be in ASCendent order = from the first comment made to
      * the latest one.
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
@@ -49,7 +49,7 @@ class F_Comment extends F_Database
         $toSearch = array("photo_ID" => $photo_ID);
         $DB_table = "comment";
         $fetchAll = TRUE;
-        $orderBy_column = "id"; //Orders by the autoincremental ID so the order will be from the oldest to the newest
+        $orderBy_column = "id"; //Orders by the autoincremental ID: from the oldest to the newest
         parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
     }
 

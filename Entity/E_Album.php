@@ -25,15 +25,13 @@ class E_Album
      * In case the Album has just been created use the short-construct in order
      * to set the $up_date to NOW automatically
      *
-     * @param int $ID The ID of the album
      * @param string $title The  title of the album
      * @param string $desc The description of the album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album
      */
-    public function __construct($ID, $title, $desc, $categories, $creation_date='')
+    public function __construct($title, $desc, $categories, $creation_date='')
     {
-        $this->set_ID($ID);
         $this->set_Title($title);
         $this->set_Description($desc);
         $this->set_Categories($categories);
@@ -45,7 +43,7 @@ class E_Album
      * Sets the ID for the album. It is the Database ID, so it should be used in __construct() only
      * @param int $ID The album ID. Rethrived from the Database.
      */
-    private function set_ID($ID)
+    public function set_ID($ID)
     {
         $this->ID = $ID;
     }

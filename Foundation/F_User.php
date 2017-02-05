@@ -38,19 +38,36 @@ class F_User extends \Foundation\F_Database
      *
      * @param array $new_user The ARRAY containing the new user details got from "View"
      * @param array $old_user The ARRAY containing the old user details. The array "old user" is the DB record got from the get_by()
+     * @param string $where_column The column to refer to make changes in the table
      */
-    public function update($new_user, $old_user)
+    public static function update($new_user, $old_user, $where_column="username")
     {
         $DB_table = "users";
-        $_primaryKey = "username";
-        parent::update($new_user, $old_user, $DB_table, $_primaryKey);
+        parent::update($new_user, $old_user, $DB_table, $where_column);
+        self::changed_username_updates($new_user["username"], $old_user["username"]);
     }
 
 
+    /**
+     * This function updates the user's username in photo, album and comment tables
+     * if it's been changed
+     *
+     * @param string $new_username The new user's username
+     * @param string $old_username The old user's username
+     */
+    private static function changed_username_updates($new_username, $old_username)
+    {
+        if($new_username !== $old_username)
+        {
+            $DB_column = "user";
+            $new = array($DB_column => $new_username);
+            $old = array($DB_column => $old_username);
 
-
-
-
+            \Foundation\F_Photo::update($new, $old, $DB_column);
+            \Foundation\F_Album::update($new, $old, $DB_column);
+            \Foundation\F_Comment::update($new, $old, $DB_column);
+        }
+    }
 
 
     //----AGGIUNTE DA E_User_Basic----\\

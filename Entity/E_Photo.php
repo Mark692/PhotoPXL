@@ -16,10 +16,10 @@ class E_Photo
     private $ID;
     private $title;
     private $description;
-    private $is_Reserved;
-    private $upload_Date;
+    private $is_reserved;
+    private $upload_date;
     private $categories = []; //Categorie della foto
-    private $like;
+    private $likes;
     private $comments = [];
 
 
@@ -29,18 +29,15 @@ class E_Photo
      * - $likes = 0
      * - $up_date = time()
      *
-     * @param string $ID The photo's unique id
      * @param string $title The title given by the user
      * @param string $desc The description given by the user
-     * @param bool $reserved Whether the photo is reserved or public
-     * @param string $user The uploader username
+     * @param bool $is_Reserved Whether the photo is reserved or public
      * @param array $cat The categories of this photo
      * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($ID, $title, $desc, $is_Reserved, $cat, $likes=0, $up_Date='')
+    public function __construct($title, $desc, $is_Reserved, $cat, $likes=0, $up_Date='')
     {
-        $this->set_ID($ID);
         $this->set_Title($title);
         $this->set_Description($desc);
         $this->set_Likes($likes);
@@ -54,7 +51,7 @@ class E_Photo
      * Sets the ID for the photo. It is the Database ID, so it should be used in __construct() only
      * @param string $ID The photo ID. Rethrived from the Database.
      */
-    private function set_ID($ID)
+    public function set_ID($ID)
     {
         $this->ID = $ID;
     }
@@ -79,7 +76,7 @@ class E_Photo
      */
     public function set_Reserved(bool $is_reserved)
     {
-        $this->is_Reserved = $is_reserved;
+        $this->is_reserved = $is_reserved;
     }
 
 
@@ -89,7 +86,7 @@ class E_Photo
      */
     public function get_Reserved()
     {
-        return $this->is_Reserved;
+        return $this->is_reserved;
     }
 
 
@@ -159,7 +156,7 @@ class E_Photo
         {
             $up_date = time();
         }
-        $this->upload_Date = $up_date;
+        $this->upload_date = $up_date;
     }
 
 
@@ -169,7 +166,7 @@ class E_Photo
      */
     public function get_Upload_Date()
     {
-        return $this->upload_Date;
+        return $this->upload_date;
     }
 
 
@@ -179,7 +176,7 @@ class E_Photo
      */
     public function set_Likes($number)
     {
-        $this->like = $number;
+        $this->likes = $number;
     }
 
 
@@ -189,7 +186,7 @@ class E_Photo
      */
     public function get_Likes()
     {
-        return $this->like;
+        return $this->likes;
     }
 
 
@@ -198,7 +195,7 @@ class E_Photo
      */
     public function add_Like()
     {
-        $this->like = $this->like +1;
+        $this->likes = $this->likes +1;
     }
 
 
@@ -207,30 +204,10 @@ class E_Photo
      */
     public function remove_Like()
     {
-        $this->like = $this->like -1;
+        $this->likes = $this->likes -1;
     }
 
-
-    /**
-     * Sets an uploader user for the Photo
-     * @param string The uploader's username
-     */
-    public function set_User($user)
-    {
-        $this->user = $user;
-    }
-
-
-    /**
-     * Retrieves the uploader user
-     * @return string The uploader's username
-     */
-    public function get_User()
-    {
-        return $this->user;
-    }
-
-
+    
     /**
      * Sets a string/array of category/ies for the Photo
      * @param string or array $cat The string/array of category/ies to set for the photo
