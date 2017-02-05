@@ -21,7 +21,7 @@ class F_User_Standard extends F_User
      */
     public static function insert(\Entity\E_User_Standard $user)
     {
-        $query = 'INSERT INTO users SET '
+        $query = 'INSERT INTO `users` SET '
                 .'`username`=?, '
                 .'`password`=?, '
                 .'`email`=?, '

@@ -65,27 +65,27 @@ class TF_User extends TFun
         $eSTD = $this->e_userSTD;
 
         //INSERT:--------------------------------------------
-//        parent::ogg2arr($eSTD, $this->parent_path);
-//        echo(nl2br("\r\n"));
-//        \Foundation\F_User_Standard::insert($eSTD);
+        parent::ogg2arr($eSTD, $this->parent_path);
+        echo(nl2br("\r\n"));
+        var_dump(\Foundation\F_User_Standard::insert($eSTD));
 
         //GET:-----------------------------------------------
-        echo("Funzione get() - Risultati: ".nl2br("\r\n").nl2br("\r\n"));
-        $values = array(
-            "password" => "A PASS 2",
-            "email" => "STD2@mail.com");
-//        $getby_STD = \Foundation\F_User::get($values, TRUE, "username", "ASC");
-        $orderby = "username";
-        $getby_STD = \Foundation\F_User::get($values, TRUE, $orderby, "DESC");
+//        echo("Funzione get() - Risultati: ".nl2br("\r\n").nl2br("\r\n"));
+//        $values = array(
+//            "password" => "A PASS 2",
+//            "email" => "STD2@mail.com");
+////        $getby_STD = \Foundation\F_User::get($values, TRUE, "username", "ASC");
+//        $orderby = "username";
+//        $getby_STD = \Foundation\F_User::get($values, TRUE, $orderby, "DESC");
 
 
 //        $getby_STD = \Foundation\F_User::get("provaDB");
 
 
 
-        echo(nl2br("\r\n").nl2br("\r\n")."Sono il VAR_DUMP: ");
-        print_r($getby_STD);
-        echo($this->separate);
+//        echo(nl2br("\r\n").nl2br("\r\n")."Sono il VAR_DUMP: ");
+//        print_r($getby_STD);
+//        echo($this->separate);
 
 
 //        parent::ogg2arr($this->e_userPRO, $this->parent_path);
@@ -124,8 +124,8 @@ class TF_User extends TFun
 
         $newSTD = array(
 //            "username" => "provaDB", //Non serve mettere tutti i campi.
-            "password" => "nuova v3",
-            "email" => "trying@get.boh",
+            "password" => "returnID",
+            "email" => "last@insert.id",
             "role" => rand(0, \Utilities\Roles::ADMIN),
             "up_Count" => rand(0, 30),
             "last_Upload" => rand(0, 50000));

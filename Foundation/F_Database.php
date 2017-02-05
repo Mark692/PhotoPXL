@@ -14,8 +14,10 @@ use \PDO,
 /**
  * This class enables basic DB operations
  */
+
 class F_Database
 {
+
 
     /**
      * Tries to connect to the DB
@@ -30,9 +32,7 @@ class F_Database
         {
             global $config;
             $connection = new PDO(
-                    'mysql:host='.$config['mysql_host'].'; dbname='.$config['mysql_database'],
-                    $config['mysql_user'],
-                    $config['mysql_password']);
+                    'mysql:host='.$config['mysql_host'].'; dbname='.$config['mysql_database'], $config['mysql_user'], $config['mysql_password']);
 
             //Sostituzione di PDO::ERRMOD_SILENT
             //$connessione->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMOD_SILENT) //Decommenta in Produzione
@@ -51,6 +51,7 @@ class F_Database
      *
      * @param string $query The query used to save a record on the DB
      * @param array $toBind The array of values to bind at the query
+     * @return string The last inserted (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
     protected static function insert($query, $toBind)
     {
@@ -59,7 +60,9 @@ class F_Database
         $pdo_stmt = self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
 
+        $last_id = $pdo->lastInsertId();
         $pdo = NULL; //Closes DB connection
+        return $last_id;
     }
 
 
@@ -69,11 +72,11 @@ class F_Database
      * @param array $toSearch The associative array with the values to search for
      * @param string $DB_table The DB table to search in
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @param string $orderBy The table column chosen to order the results
+     * @param string $orderBy_column The table column chosen to order the results
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
      * @return array The associative array with all the records that matched the query
      */
-    protected static function get($toSearch, $DB_table, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
+    protected static function get($toSearch, $DB_table, $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
     {
         $where = '';
         foreach ($toSearch as $key => $v)
@@ -85,18 +88,22 @@ class F_Database
         $query = 'SELECT * '
                 .'FROM `'.$DB_table.'` '
                 .'WHERE '.$where;
-        if($orderBy!=='' && ($orderStyle==="ASC" || $orderStyle==="DESC"))
+        if ($orderBy_column !== '')
         {
-            $query .= ' ORDER BY '.$orderBy.' '.$orderStyle;
+            $query .= ' ORDER BY `'.$orderBy_column.'`';
+            if ($orderStyle==="DESC")
+            {
+                $query .= ' '.$orderStyle;
+            }
         }
-        
+
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
         $pdo_stmt = self::bind_params($pdo_stmt, $toSearch);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
-        if($fetchAll===TRUE)
+        if ($fetchAll === TRUE)
         {
             return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC); //Returns a multidimensional array. Different keys mean different records
         }
@@ -110,37 +117,38 @@ class F_Database
      * Also it binds parameters to the query
      *
      * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by($q, FALSE).
+     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by($q)
      * @param string $_table The DB table into execute the query
      * @param string $_primaryKey The $_table's primary key
+     * @return string The last updated (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
     protected function update($new_Details, $old_Details, $_table, $_primaryKey)
     {
         $set = ''; //String to use for the SET
         $toBind = []; //Array to pass at the self::set() function to Bind the correct parameters
-        foreach($new_Details as $key => $new_value)
+        foreach ($new_Details as $key => $new_value)
         {
-            if($new_value !== $old_Details[$key])
+            if ($new_value !== $old_Details[$key])
             {
                 $set .= '`'.$key.'`=?,';
                 array_push($toBind, $new_value);
             }
         }
-        if($set!=='') //$set==='' only if NO changes were made. In this case no update will be done.
+        if ($set !== '') //$set==='' only if NO changes were made. In this case no update will be done.
         {
             $set = substr($set, 0, -1); //Removes the trailing char: ","
-            $where = $old_Details['username'];
+            $primaryKey_value = $old_Details[$_primaryKey]; //This will return the value of the Primary Key whatever class inherits this $update()
             $query = "UPDATE `$_table` "
-                   . "SET $set "
-                   . "WHERE `$_primaryKey`='$where'";
+                    ."SET $set "
+                    ."WHERE `$_primaryKey`='$primaryKey_value'";
 
-            self::insert($query, $toBind);
+            return self::insert($query, $toBind);
         }
     }
 
 
     /**
-        * Binds an array of parameters to the query using Question Marks
+     * Binds an array of parameters to the query using Question Marks
      *
      * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
      * @param array $toBind The array of parameters to bind
@@ -148,31 +156,12 @@ class F_Database
      */
     private static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
-        $i=1; //Needed to specify which placeholder to bind
-        foreach($toBind as $k => $v)
+        $i = 1; //Needed to specify which placeholder to bind
+        foreach ($toBind as $k => $v)
         {
             //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
             $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
             $i++;
-        }
-        return $pdo_stmt;
-    }
-
-
-    /**
-     * Binds an array of parameters to the query using PlaceHolders
-     *
-     * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
-     * @param array $toBind The array of parameters to bind
-     * @return \PDOStatement The object to execute()
-     */
-    private static function bind_params_PH(\PDOStatement $pdo_stmt, $toBind)
-    {
-        foreach($toBind as $k => $v)
-        {
-            $placeholder = ":$k";
-            //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
-            $pdo_stmt->bindParam($placeholder, $toBind[$k]); //Correctly binds parameters
         }
         return $pdo_stmt;
     }

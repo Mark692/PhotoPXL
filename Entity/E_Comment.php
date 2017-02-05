@@ -21,14 +21,28 @@ class E_Comment
 
     /**
      *
-     * @param type $id The comment's ID
-     * @param type $text The text of the comment
-     * @param type $user The commenting user's username
-     * @param type $photo The commented photo
+     * @param int $id The comment's ID
+     * @param string $text The text of the comment
+     * @param string $user The commenting user's username
+     * @param string $photo The commented photo
      */
-    public function __construct($id, $text, $user, $photo)
+//    public function __construct($id, $text, $user, $photo)
+//    {
+//        $this->set_ID($id);
+//        $this->set_Text($text);
+//        $this->set_User($user);
+//        $this->set_Photo($photo);
+//    }
+
+    
+
+    /**
+     * @param string $text The text of the comment
+     * @param string $user The commenting user's username
+     * @param string $photo The commented photo
+     */
+    public function __construct($text, $user, $photo)
     {
-        $this->set_ID($id);
         $this->set_Text($text);
         $this->set_User($user);
         $this->set_Photo($photo);
@@ -39,7 +53,7 @@ class E_Comment
      * Sets an ID for the comment
      * @param int $id The comment's ID
      */
-    private function set_ID($id)
+    public function set_ID($id)
     {
         $this->id = $id;
     }

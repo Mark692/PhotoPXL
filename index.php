@@ -17,28 +17,30 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
-$provaFOUND = new \Prove\TF_User();
-$provaFOUND->insert_and_get();
+//---Prova per TF_Comment---\\
+//
+//$testCommento = new \Prove\TF_Comment();
+//$testCommento->insert();
+
+
+
+//---Prova per TF_User---\\
+//
+//$provaFOUND = new \Prove\TF_User();
+//$provaFOUND->insert_and_get();
 //$provaFOUND->update();
 //$user = new \Entity\E_User_PRO("username casuale", "pass cass", "mail@we.iti");
 //var_dump($user);
 
 
-
-
-
-
-
-
-
-
-
-//---Prova per E_Photo
+//---Prova per E_Photo---\\
+//
 //$p_tryme = new \Prove\TE_Photo();
 //$p_tryme->T_pconstr();
 
 
-//---Prova per E_User()
+//---Prova per E_User()---\\
+//
 //$e_tryme = new \Prove\TE_User();
 //$e_tryme->T_public_protected_private();
 //$e_tryme->T_uconstr(); //Stampa gli utenti STD, PRO, MOD, Admin

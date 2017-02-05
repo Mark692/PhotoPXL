@@ -41,9 +41,9 @@ class F_User extends \Foundation\F_Database
      */
     public function update($new_user, $old_user)
     {
-        $_table = "users";
+        $DB_table = "users";
         $_primaryKey = "username";
-        parent::update($new_user, $old_user, $_table, $_primaryKey);
+        parent::update($new_user, $old_user, $DB_table, $_primaryKey);
     }
 
 
