@@ -8,7 +8,7 @@
 
 namespace Foundation;
 
-class F_Album extends Foundation\F_Database
+class F_Album extends \Foundation\F_Database
 {
 
     /**
