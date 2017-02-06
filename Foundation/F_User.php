@@ -21,7 +21,7 @@ class F_User extends \Foundation\F_Database
     /**
      * Retrives all the users that match the query
      *
-     * @param array $value The value to search with the query
+     * @param array $value The values to search with the query
      * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy The table column chosen to order the results
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
@@ -44,29 +44,6 @@ class F_User extends \Foundation\F_Database
     {
         $DB_table = "users";
         parent::update($new_user, $old_user, $DB_table, $where_column);
-        self::changed_username_updates($new_user["username"], $old_user["username"]);
-    }
-
-
-    /**
-     * This function updates the user's username in photo, album and comment tables
-     * if it's been changed
-     *
-     * @param string $new_username The new user's username
-     * @param string $old_username The old user's username
-     */
-    private static function changed_username_updates($new_username, $old_username)
-    {
-        if($new_username !== $old_username)
-        {
-            $DB_column = "user";
-            $new = array($DB_column => $new_username);
-            $old = array($DB_column => $old_username);
-
-            \Foundation\F_Photo::update($new, $old, $DB_column);
-            \Foundation\F_Album::update($new, $old, $DB_column);
-            \Foundation\F_Comment::update($new, $old, $DB_column);
-        }
     }
 
 

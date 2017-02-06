@@ -122,7 +122,7 @@ class F_Database
      * @param string $where_column The $_table's column used as reference by the WHERE clause
      * @return string The last updated (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
-    protected function update($new_Details, $old_Details, $_table, $where_column)
+    protected static function update($new_Details, $old_Details, $_table, $where_column)
     {
         $set = ''; //String to use for the SET
         $toBind = []; //Array to pass at the self::set() function to Bind the correct parameters

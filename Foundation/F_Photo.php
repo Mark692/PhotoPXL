@@ -8,7 +8,7 @@
 
 namespace Foundation;
 
-class F_Photo extends Foundation\F_Database
+class F_Photo extends \Foundation\F_Database
 {
 
     /**
@@ -39,6 +39,19 @@ class F_Photo extends Foundation\F_Database
 
 
     /**
+     * Rethrives photos matching the query
+     *
+     * @param array $toSearch The values to search with the query
+     * @return array The photos matching the query
+     */
+    public static function get($toSearch, $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
+    {
+        $DB_table = "photo";
+        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column, $orderStyle);
+    }
+
+
+    /**
      * Rethrives the photos of a user by passing its username.
      *
      * @param string $username The user's username selected to get the photos from
@@ -50,7 +63,7 @@ class F_Photo extends Foundation\F_Database
         $DB_table = "photo";
         $fetchAll = TRUE;
         $orderBy_column = "upload_date";
-        parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
+        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
     }
 
 

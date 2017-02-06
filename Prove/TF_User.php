@@ -70,13 +70,12 @@ class TF_User extends TFun
         var_dump(\Foundation\F_User_Standard::insert($eSTD));
 
         //GET:-----------------------------------------------
-//        echo("Funzione get() - Risultati: ".nl2br("\r\n").nl2br("\r\n"));
-//        $values = array(
-//            "password" => "A PASS 2",
-//            "email" => "STD2@mail.com");
-////        $getby_STD = \Foundation\F_User::get($values, TRUE, "username", "ASC");
-//        $orderby = "username";
-//        $getby_STD = \Foundation\F_User::get($values, TRUE, $orderby, "DESC");
+        echo("Funzione get() - Risultati: ".nl2br("\r\n").nl2br("\r\n"));
+        $values = array(
+            "password" => "A PASS 2",
+            "email" => "STD2@mail.com");
+        $orderby = "username";
+        var_dump(\Foundation\F_User::get($values, TRUE, $orderby, "DESC"));
 
 
 //        $getby_STD = \Foundation\F_User::get("provaDB");
@@ -116,20 +115,24 @@ class TF_User extends TFun
 
     public function update()
     {
+        echo($this->separate."Test update():");
         $values = array("username" => "provaDB");
         $getby_STD = \Foundation\F_User::get($values);
-        echo("Oggetto preso da DB:".nl2br("\r\n"));
+        echo(nl2br("\r\n")."Oggetto preso da DB:".nl2br("\r\n"));
         print_r($getby_STD);
         echo(nl2br("\r\n").nl2br("\r\n"));
 
         $newSTD = array(
 //            "username" => "provaDB", //Non serve mettere tutti i campi.
-            "password" => "returnID",
-            "email" => "last@insert.id",
+            "password" => parent::rnd_str(5)."_rnd",
+            "email" => parent::rnd_str(5)."@rnd.id",
             "role" => rand(0, \Utilities\Roles::ADMIN),
             "up_Count" => rand(0, 30),
             "last_Upload" => rand(0, 50000));
 
         \Foundation\F_User::update($newSTD, $getby_STD);
+        $getby_STD = \Foundation\F_User::get($values);
+        echo(nl2br("\r\n")."Oggetto aggiornato:".nl2br("\r\n"));
+        print_r($getby_STD);
     }
 }

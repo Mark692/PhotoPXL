@@ -24,7 +24,7 @@ class F_Comment extends F_Database
         $query = 'INSERT INTO `comment` SET '
                 .'`text`=?, '
                 .'`user`=?, '
-                .'`photo_id`=?';
+                .'`photo`=?';
 
         $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
             $comment->get_Text(),
@@ -52,20 +52,4 @@ class F_Comment extends F_Database
         $orderBy_column = "id"; //Orders by the autoincremental ID: from the oldest to the newest
         parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

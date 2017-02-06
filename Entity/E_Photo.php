@@ -74,7 +74,7 @@ class E_Photo
      *
      * @param bool $is_reserved The new Photo privacy
      */
-    public function set_Reserved(bool $is_reserved)
+    public function set_Reserved($is_reserved)
     {
         $this->is_reserved = $is_reserved;
     }
@@ -207,7 +207,7 @@ class E_Photo
         $this->likes = $this->likes -1;
     }
 
-    
+
     /**
      * Sets a string/array of category/ies for the Photo
      * @param string or array $cat The string/array of category/ies to set for the photo
