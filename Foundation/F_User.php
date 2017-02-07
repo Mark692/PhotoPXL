@@ -17,6 +17,28 @@ namespace Foundation;
 class F_User extends \Foundation\F_Database
 {
 
+    /**
+     * Inserts the user into "users" DB table
+     *
+     * @param \Entity\E_User_* $e_user The user to insert into the DB
+     */
+    protected static function insert($e_user)
+    {
+        $query = 'INSERT INTO `users` SET '
+                .'`username`=?, '
+                .'`password`=?, '
+                .'`email`=?, '
+                .'`role`=?';
+
+        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            $e_user->get_Username(),
+            $e_user->get_Password(),
+            $e_user->get_Email(),
+            $e_user->get_Role());
+
+        parent::insert($query, $toBind);
+    }
+
 
     /**
      * Retrives all the users that match the query

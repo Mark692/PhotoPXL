@@ -13,37 +13,5 @@ namespace Foundation;
  */
 class F_User_PRO extends F_User
 {
-
-    /**
-     * Inserts the user into "users" DB table
-     *
-     * @param \Entity\E_User_PRO $user The user to insert into the DB
-     */
-    public static function insert(\Entity\E_User_PRO $user)
-    {
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $user->get_Username(),
-            $user->get_Password(),
-            $user->get_Email(),
-            $user->get_Role());
-
-        self::query_insert($toBind);
-    }
-
-
-    /**
-     * Generates the query INSERT and passes the array value to insert() to bind them
-     *
-     * @param array $toBind The user details to save in the DB
-     */
-    protected static function query_insert($toBind)
-    {
-        $query = 'INSERT INTO `users` SET '
-                .'`username`=?, '
-                .'`password`=?, '
-                .'`email`=?, '
-                .'`role`=?';
-
-        parent::insert($query, $toBind);
-    }
+    
 }
