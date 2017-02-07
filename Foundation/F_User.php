@@ -24,17 +24,30 @@ class F_User extends \Foundation\F_Database
      */
     protected static function insert($e_user)
     {
+        //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
                 .'`username`=?, '
                 .'`password`=?, '
                 .'`email`=?, '
                 .'`role`=?';
 
+        $role = $e_user->get_Role();
         $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
             $e_user->get_Username(),
             $e_user->get_Password(),
             $e_user->get_Email(),
-            $e_user->get_Role());
+            $role);
+
+        //STANDARD user setup
+        if($role=== \Utilities\Roles::STANDARD)
+        {
+            $query .= ', '
+                .'`last_Upload`=?, '
+                .'`up_Count`=?';
+
+        array_push($toBind, $e_user->get_Last_Upload());
+        array_push($toBind, $e_user->get_up_Count());
+        }
 
         parent::insert($query, $toBind);
     }

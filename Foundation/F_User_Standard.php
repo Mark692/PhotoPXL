@@ -14,32 +14,5 @@ namespace Foundation;
 class F_User_Standard extends F_User
 {
 
-    /**
-     * Inserts the user into "users" DB table
-     *
-     * @param \Entity\E_User_Standard $user The user to insert into the DB
-     */
-    public static function insert(\Entity\E_User_Standard $user)
-    {
-        $query = 'INSERT INTO `users` SET '
-                .'`username`=?, '
-                .'`password`=?, '
-                .'`email`=?, '
-                .'`role`=?, '
-                .'`last_Upload`=?, '
-                .'`up_Count`=?';
-
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $user->get_Username(),
-            $user->get_Password(),
-            $user->get_Email(),
-            $user->get_Role(),
-            $user->get_Last_Upload(),
-            $user->get_up_Count());
-
-        parent::insert($query, $toBind);
-    }
-
-
 
 }
