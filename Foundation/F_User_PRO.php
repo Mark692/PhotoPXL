@@ -32,7 +32,7 @@ class F_User_PRO extends F_User
 
 
     /**
-     * Generates the query INSERT and passes the array value to set() to bind them
+     * Generates the query INSERT and passes the array value to insert() to bind them
      *
      * @param array $toBind The user details to save in the DB
      */

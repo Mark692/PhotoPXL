@@ -76,7 +76,7 @@ class E_Album
      */
     public function title_isValid($title)
     {
-        $allowed = array('-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
+        $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
         {
             return TRUE;

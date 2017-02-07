@@ -107,7 +107,7 @@ class E_Photo
      */
     public function title_isValid($title)
     {
-        $allowed = array('-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
+        $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
         {
             return TRUE;

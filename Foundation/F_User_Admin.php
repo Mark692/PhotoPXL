@@ -29,5 +29,23 @@ class F_User_Admin extends F_User_MOD
 
         parent::query_insert($toBind);
     }
+
+
+    /**
+     * Changes an \Entity\E_User_*'s role
+     *
+     * @param \Entity\E_User_* object $e_user The Entity user to whom change the role
+     * @param int $new_role The new user role
+     */
+    public static function change_role($e_user, $new_role)
+    {
+        $user_details = array(
+            "username" => $e_user->get_Username(),
+            "role"     => $e_user->get_Role()
+            );
+
+        $new_user = array("role" => $new_role);
+        parent::update($new_user, $user_details);
+    }
 }
 

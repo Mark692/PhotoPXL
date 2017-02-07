@@ -31,7 +31,7 @@ class E_User
      * @param string $password This user's password
      * @param string $email This user's email
      */
-    public function __construct($username, $password, $email)
+    protected function __construct($username, $password, $email)
     {
         $this->set_Username($username);
         $this->set_Password($password);

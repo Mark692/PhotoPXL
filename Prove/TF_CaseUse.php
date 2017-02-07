@@ -47,12 +47,13 @@ class TF_CaseUse extends TFun
 
     public function caso_d_uso()
     {
-        //$this->aggiungi_utente();
-        $this->aggiungi_foto();
+        $this->prova_utente();
+        $this->prova_foto();
+//        $this->prova_BLOB();
     }
 
 
-    public function aggiungi_utente()
+    public function prova_utente()
     {
         //---Creazione Utente Standard casuale---\\
         echo("Creato utente: ".nl2br("\r\n"));
@@ -71,7 +72,7 @@ class TF_CaseUse extends TFun
     }
 
 
-    public function aggiungi_foto()
+    public function prova_foto()
     {
         //---Creazione Foto casuale---\\
         $this->e_photo = new \Entity\E_Photo("Un titolo", "Una descrizione...", FALSE, PAESAGGI);
@@ -95,6 +96,18 @@ class TF_CaseUse extends TFun
         echo($this->separate);
     }
 
+
+    public function prova_BLOB()
+    {
+        $foto = \Foundation\F_Photo::get_PROVA();
+        echo("Ciao, sono l'echo: $foto".nl2br("\r\n").nl2br("\r\n"));
+
+        echo("Io sono il print_r: ");
+        print_r($foto);
+
+        echo(nl2br("\r\n").nl2br("\r\n")."Io sono il VAR_DUMP: ");
+        var_dump($foto);
+    }
 
 
 

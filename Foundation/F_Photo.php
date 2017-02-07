@@ -53,6 +53,7 @@ class F_Photo extends \Foundation\F_Database
 
     /**
      * Rethrives the photos of a user by passing its username.
+     * This is a faster way (than the self::get()) to search all the photos bound to the same $username
      *
      * @param string $username The user's username selected to get the photos from
      * @return array The user's photos
@@ -60,11 +61,18 @@ class F_Photo extends \Foundation\F_Database
     public static function get_from_user($username)
     {
         $toSearch = array("user" => $username);
-        $DB_table = "photo";
         $fetchAll = TRUE;
         $orderBy_column = "upload_date";
-        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
+        return self::get($toSearch, $fetchAll, $orderBy_column);
     }
+
+
+//    public static function get_PROVA()
+//    {
+//        $toSearch = array("id" => 8); //Prende la foto con ID 8
+//        $DB_table = "photo_blob";
+//        return parent::get($toSearch, $DB_table);
+//    }
 
 
     //CREA FUNZIONI PER:

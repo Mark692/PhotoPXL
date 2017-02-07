@@ -18,7 +18,7 @@ class E_User_PRO extends E_User
 {
     /**
      * Instantiates a PRO User
-     * 
+     *
      * @param string $username This user's username
      * @param string $password This user's password
      * @param string $email This user's email
@@ -39,11 +39,11 @@ class E_User_PRO extends E_User
      * Reserved (TRUE):  only certain users will be able to see the photo
      * Public  (FALSE): ALL users will be able to see the photo
      *
-     * @param ??? $photo The photo object to set the privacy
+     * @param ??? $photo_ID The photo object to set the privacy
      * @param bool $privacy The privacy setting for the photo
      */
-    public function set_privacy(\Entity\E_Photo $photo, bool $privacy)
+    public function set_privacy($photo_ID, $privacy)
     {
-        $photo->set_privacy($privacy);
+        $photo_ID->set_privacy($privacy);
     }
 }

@@ -32,22 +32,21 @@ class E_User_Admin extends E_User_MOD
 
 
     /**
-     * CONTROLLA QUESTA FUNZIONE!!! BISOGNA AGGIUNGERE
-     * - CONTROLLI SULL'UTENTE
-     * - CONTROLLI SULL'OGGETTO PASSATO
-     * - CONTROLLI IN CASO SI CERCHI DI CAMBIARE IL "PROPRIO" RUOLO DI ADMIN
-     *
      * Change another user's role.
      * Cannot change his own role in order to avoid issues related to "No User Admin" in charge
-     * @param string $username The user to whom the Admin has to change the role
-     * @param int $new_Role The new role for the user
+     *
+     * @param \Entity\E_User_* object $user An Entity user to whom change its role
+     * @param \Utilities\Roles $new_Role The new role for the user
+     * @return \Entity\E_User_* The same object user but with a different role
      */
-    public function change_Role($username, $new_Role)
+    public function change_Role($user, \Utilities\Roles $new_Role)
     {
-        if($username !== $this->get_Username())
+        $username = $user->get_Username();
+        if($username !== $this->get_Username()) //If the user IS NOT this Admin (they'll have different usernames...)
         {
-            $username->set_Role($new_Role);
+            $user->set_Role($new_Role);
         }
+        return $user;
     }
 }
 
