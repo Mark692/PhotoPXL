@@ -8,6 +8,8 @@
 
 namespace Control;
 
+use Exceptions\InvalidInput;
+
 class C_Registrazione
 {
 
@@ -46,21 +48,22 @@ class C_Registrazione
         {
             if(\Entity\E_User::username_isValid($username) === FALSE)
             {
-                throw new Exception(0);
+                throw new Exceptions\InvalidInput(0);
             }
         }
-        catch (Exception $ex)
+        catch (Exceptions\InvalidInput $ex)
         {
             echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
         }
+
         try
         {
             if(\Entity\E_User::email_isValid($email) === FALSE)
             {
-                throw new Exception(1);
+                throw new Exceptions\InvalidInput(1);
             }
         }
-        catch (Exceptions $ex)
+        catch (Exceptions\InvalidInput $ex)
         {
             echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
         }
