@@ -81,23 +81,6 @@ class C_Login
     }
 
 
-//----SISTEMA QUESTA FUNZIONE!!!!----\\
-    public function CreaUtente()
-    {
-        $view = new \View\V_Registazione();
-        $dati = $view->get_Dati();
-
-        $username = $dati['username'];
-        $password = $dati['password'];
-        $email = $dati['email'];
-
-        $e_user = new \Entity\E_User_Standard($username, $password, $email);
-        \Foundation\F_User::insert($e_user);
-
-        //RITORNA IL TEMPLATE
-    }
-
-
     /**
      * Logs out the user
      */
