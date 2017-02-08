@@ -14,7 +14,7 @@ class V_Registazione extends View
      */
     private $_layout = '';
 
-    
+
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
@@ -22,7 +22,7 @@ class V_Registazione extends View
      */
     public function get_Dati_registazione()
     {
-        $chiavi_registrazione = array ('username', 'password', 'email');
+        $chiavi_registrazione = array ('username', 'nonce', 'email');
         $dati_reg = array ();
         foreach ($chiavi_registrazione as $k => $dato)
         {
@@ -35,11 +35,12 @@ class V_Registazione extends View
     /**
      * Grazie a questa funzione all'interno della variabile $dati_log vengono
      * registrati tutti i dati inviati tramite POST dal modulo di login
+     *
      * @return array
      */
     public function get_Dati_login()
     {
-        $chiavi_registrazione = array ('username', 'password');
+        $chiavi_registrazione = array ('username', 'nonce');
         $dati_log = array ();
         foreach ($chiavi_registrazione as $k => $dato)
         {
