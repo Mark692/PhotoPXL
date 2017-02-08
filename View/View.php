@@ -13,7 +13,7 @@ require('lib/smarty/smarty.class.php');
 class View extends Smarty
 {
     /**
-     * 
+     *
      * Costruttore della classe
      */
     public function __construct()
@@ -25,23 +25,6 @@ class View extends Smarty
         $this->config_dir = $config['smarty']['config_dir'];      //conoscere la posizione di alcune
         $this->cache_dir = $config['smarty']['cache_dir'];        //cartelle usate dal programma
         $this->caching = false;
-    }
-
-
-    /**
-     * Il metodo assegna ai link l'url, del sito (differenziando http da https)
-     * @global mixed $config
-     */
-    public function impostaUrl()
-    {
-
-        global $config;
-        if (file_exists('includes/config.inc.php'))
-        {
-
-            $this->assign('url', $config['url']['http']);
-            $this->assign('urls', $config['url']['https']);
-        }
     }
 
 
@@ -64,9 +47,10 @@ class View extends Smarty
     public function getController()
     {
         if (isset($_REQUEST['controller']))
+        {
             return $_REQUEST['controller'];
-        else
-            return false;
+        }
+        return FALSE;
     }
 
 
