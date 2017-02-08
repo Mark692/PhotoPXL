@@ -50,7 +50,7 @@ class View extends Smarty
         {
             return $_REQUEST['controller'];
         }
-        return FALSE;
+//        return FALSE;
     }
 
 
@@ -76,7 +76,6 @@ class View extends Smarty
     public function set_Dati($dati)
     {
         $this->assign('username', $dati['username']);
-        $this->assign('password', $dati['password']);
         $this->assign('email', $dati['email']);
     }
 

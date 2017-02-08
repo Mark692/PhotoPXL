@@ -13,8 +13,8 @@ class C_Login
     public function check_user_pass()
     {
         //Da view() ottieni il risultato della generate() fatta via client
-        $dati = new \View\V_Registazione();
-        $array_dati = $dati->get_Dati_login(); //ottieni il risultato della generate()
+        $dati = new \View\V_Login();
+        $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
 
         $arr_values = array("username" => $array_dati["username"]);
         $array_user = \Foundation\F_User::get($arr_values);
@@ -84,7 +84,7 @@ class C_Login
     public function CreaUtente()
     {
         $view = new \View\V_Registazione();
-        $dati = $view->get_Dati_registazione();
+        $dati = $view->get_Dati();
 
         $username = $dati['username'];
         $password = $dati['password'];
