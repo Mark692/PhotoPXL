@@ -13,7 +13,6 @@ require('lib/smarty/smarty.class.php');
 class View extends Smarty
 {
     /**
-     *
      * Costruttore della classe
      */
     public function __construct()
