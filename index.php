@@ -17,20 +17,16 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
-$test_casoD_uso = new \Prove\TF_CaseUse();
-$test_casoD_uso->caso_d_uso();
-
-
-
-
+//$test_casoD_uso = new \Prove\TF_CaseUse();
+//$test_casoD_uso->caso_d_uso();
 
 
 
 
 //---Prova per TF_Comment---\\
 //
-//$testCommento = new \Prove\TF_Comment();
-//$testCommento->insert();
+$testCommento = new \Prove\TF_Comment();
+$testCommento->insert();
 
 
 

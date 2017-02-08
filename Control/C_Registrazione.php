@@ -8,6 +8,7 @@ class C_Login_Processor
     /**
      * PSEUDO CODICE!!!
      * Controlla se l'utente $input_username ha inserito la password corretta
+     *
      * @param string $input_username The user username
      * @param array $nonce_pass The nonce array generated client side
      */

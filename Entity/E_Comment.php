@@ -25,7 +25,7 @@ class E_Comment
      *
      * @param string $text The text of the comment
      * @param string $user_ID The commenting user's username
-     * @param string $photo_ID The commented photo's ID
+     * @param int $photo_ID The commented photo's ID
      */
     public function __construct($text, $user_ID, $photo_ID)
     {

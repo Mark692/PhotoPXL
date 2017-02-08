@@ -41,6 +41,7 @@ class E_Album
 
     /**
      * Sets the ID for the album. It is the Database ID, so it should be used in __construct() only
+     *
      * @param int $ID The album ID. Rethrived from the Database.
      */
     public function set_ID($ID)
@@ -51,6 +52,7 @@ class E_Album
 
     /**
      * Returns the ID of this album
+     *
      * @return int The Database ID of the album
      */
     public function get_ID()
@@ -61,11 +63,15 @@ class E_Album
 
     /**
      * Sets a new title for the Album
+     *
      * @param string $new_title The album title
      */
     public function set_Title($new_title)
     {
-        $this->title = $new_title;
+        if($this->title_isValid($new_title))
+        {
+            $this->title = $new_title;
+        }
     }
 
 
@@ -74,7 +80,7 @@ class E_Album
      * @param string $title The title input
      * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
      */
-    public function title_isValid($title)
+    private function title_isValid($title)
     {
         $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -87,6 +93,7 @@ class E_Album
 
     /**
      * Retrieves the title of the Album
+     *
      * @return string The album title
      */
     public function get_Title()
@@ -97,6 +104,7 @@ class E_Album
 
     /**
      * Sets a new description for the Album
+     *
      * @param string $new_description Sets a new description for this album
      */
     public function set_Description($new_description)
@@ -107,6 +115,7 @@ class E_Album
 
     /**
      * Retrieves the description of the Album
+     *
      * @return string This album's description
      */
     public function get_Description()
@@ -117,6 +126,7 @@ class E_Album
 
     /**
      * Sets a string/array of category/ies for the Album
+     *
      * @param string or array $cat The string/array of category/ies to set for the album
      */
     public function set_Categories($cat)
@@ -127,6 +137,7 @@ class E_Album
 
     /**
      * Sets a string/array of category/ies for the Album
+     *
      * @param string or array $to_add The string/array of category/ies to add at the current array
      */
     public function add_Cat($to_add)
@@ -143,6 +154,7 @@ class E_Album
 
     /**
      * Retrives the categories array for this album
+     *
      * @return array The list of categories for the Album
      */
     public function get_Categories()
@@ -153,6 +165,7 @@ class E_Album
 
     /**
      * Removes the string/array of category/ies from $this->categories if present
+     *
      * @param string or array $to_del The category/ies to remove from the current array
      */
     public function remove_Cat($to_del)
@@ -171,6 +184,7 @@ class E_Album
 
     /**
      * Sets a creation date for the Album
+     *
      * @param int $date The timestamp of the Album's creation
      */
     private function set_Creation_Date($date='')
@@ -188,6 +202,7 @@ class E_Album
 
     /**
      * Retrieves the Timestamp of album's creation date
+     * 
      * @return int The timestamp of the Album's creation
      */
     public function get_Creation_Date()

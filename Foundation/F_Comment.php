@@ -11,7 +11,7 @@ namespace Foundation;
 /**
  * This class enables to save and load comments
  */
-class F_Comment extends \F_Database
+class F_Comment extends \Foundation\F_Database
 {
 
     /**

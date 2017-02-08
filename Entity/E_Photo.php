@@ -49,6 +49,7 @@ class E_Photo
 
     /**
      * Sets the ID for the photo. It is the Database ID, so it should be used in __construct() only
+     *
      * @param string $ID The photo ID. Rethrived from the Database.
      */
     public function set_ID($ID)
@@ -59,6 +60,7 @@ class E_Photo
 
     /**
      * Returns the ID of this photo
+     *
      * @return string The Database ID of the photo
      */
     public function get_ID()
@@ -76,12 +78,16 @@ class E_Photo
      */
     public function set_Reserved($is_reserved)
     {
-        $this->is_reserved = $is_reserved;
+        if(is_bool($is_reserved))
+        {
+            $this->is_reserved = $is_reserved;
+        }
     }
 
 
     /**
      * Retrieves the visibility of the Photo
+     *
      * @return bool Retrieves the visibility of the Photo
      */
     public function get_Reserved()
@@ -92,20 +98,25 @@ class E_Photo
 
     /**
      * Sets a new title for the photo
+     *
      * @param string $new_title The photo title
      */
     public function set_Title($new_title)
     {
-        $this->title = $new_title;
+        if($this->title_isValid($new_title))
+        {
+            $this->title = $new_title;
+        }
     }
 
 
     /**
      * Checks whether the title is a valid entry
+     *
      * @param string $title The photo title input
      * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
      */
-    public function title_isValid($title)
+    private function title_isValid($title)
     {
         $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -118,6 +129,7 @@ class E_Photo
 
     /**
      * Retrieves the title of the Photo
+     *
      * @return string The photo's title
      */
     public function get_Title()
@@ -128,6 +140,7 @@ class E_Photo
 
     /**
      * Sets a new description for the Photo
+     *
      * @param string The description for the photo
      */
     public function set_Description($new_description)
@@ -138,6 +151,7 @@ class E_Photo
 
     /**
      * Retrieves the description of the Photo
+     *
      * @return string This photo's description
      */
     public function get_Description()
@@ -148,6 +162,7 @@ class E_Photo
 
     /**
      * Sets the date in Timestamp format of the Photo's upload
+     *
      * @param int The timestamp of uploading
      */
     public function set_Upload_Date($up_date = '')
@@ -162,6 +177,7 @@ class E_Photo
 
     /**
      * Retrieves the timestamp of this Photo's upload
+     *
      * @return int The timestamp of this Photo's upload
      */
     public function get_Upload_Date()
@@ -172,6 +188,7 @@ class E_Photo
 
     /**
      * Sets the likes the Photo received
+     *
      * @param int $number The number of likes  the Photo received
      */
     public function set_Likes($number)

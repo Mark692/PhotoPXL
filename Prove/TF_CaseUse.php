@@ -82,7 +82,7 @@ class TF_CaseUse extends TFun
 
         //---Inserimento foto nel DB---\\
         echo("Inserimento nel DB...".nl2br("\r\n"));
-        $uploader = "STD_dTtvp21"; //$this->e_userSTD->get_Username();
+        $uploader = $this->e_userSTD->get_Username();
         \Foundation\F_Photo::insert($this->e_photo, $uploader);
         echo("Insert fatta!");
         $id = $this->e_photo->get_ID();

@@ -30,7 +30,6 @@ class E_User_PRO extends E_User
     }
 
 
-
     /**
      * Sets the Photo privacy as
      * Reserved (TRUE):  only certain users will be able to see the photo
@@ -46,7 +45,4 @@ class E_User_PRO extends E_User
             $photo_ID->set_privacy($privacy);
         }
     }
-
-
-
 }
