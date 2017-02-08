@@ -4,7 +4,6 @@ namespace Control;
 
 class C_Login_Processor
 {
-
     /**
      * PSEUDO CODICE!!!
      * Controlla se l'utente $input_username ha inserito la password corretta
@@ -29,7 +28,7 @@ class C_Login_Processor
         $db_user = new \Foundation\F_User(); //Istanzia un oggetto Foundation
         $e_user = $db_user->get_BP($input_username); //Prendi l'utente dal DB
         $user_pass = $e_user->get_Password(); //Prendi la pass dell'utente
-        if(\Utilities\U_Nonce::pass_isValid($user_pass, $nonce_pass))
+        if (\Utilities\U_Nonce::pass_isValid($user_pass, $nonce_pass))
         {
             //Verifica OK. Logga l'utente
         }
@@ -39,30 +38,32 @@ class C_Login_Processor
         }
     }
 
- public function CreaUtente(){
+
+    public function CreaUtente()
+    {
         $view = new \View\View();
-        $e_user = new \Entity\E_User();
-        $db_user = new \Foundation\F_User();
         $dati = $view->get_Dati();
-        $user -> set_username($dati['username']);
-        $user-> set_password($dati['password']);
-        $user -> set_email($dati['email']);
-        $user -> set_Role();//non me ricordo quali so i numeri per lo standard
+
+        $username = $dati['username'];
+        $password = $dati['password'];
+        $email = $dati['email'];
+
+        $e_user = new \Entity\E_User_Standard($username, $password, $email);
+        \Foundation\F_User::insert($e_user);
+
         $view->impostaUrl();
-        $VHome->display('');//da definire il tpl
+        $VHome->display(''); //da definire il tpl
     }
-
-
-
-
 
 
     /**
      * Effettua il logout
      */
-    public static function logout() {
+    public static function logout()
+    {
         session_unset();
         session_destroy();
     }
+
 
 }
