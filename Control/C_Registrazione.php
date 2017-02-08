@@ -32,13 +32,7 @@ class C_Registrazione
         //RITORNA IL TEMPLATE ALLA REGISTRAZIONE
     }
 
-
-
-
-
-
-
-
+    
     /**
      * Checks whether the user has input valid credentials
      *
