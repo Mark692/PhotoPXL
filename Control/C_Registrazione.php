@@ -44,26 +44,23 @@ class C_Registrazione
     {
         try
         {
-            if(\Entity\E_User::username_isValid($username))
-            {
-                try
-                {
-                    if(\Entity\E_User::email_isValid($email) === FALSE)
-                    {
-                        throw new Exception(1);
-                    }
-                }
-                catch (Exceptions $ex)
-                {
-                    echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
-                }
-            }
-            else
+            if(\Entity\E_User::username_isValid($username) === FALSE)
             {
                 throw new Exception(0);
             }
         }
         catch (Exception $ex)
+        {
+            echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
+        }
+        try
+        {
+            if(\Entity\E_User::email_isValid($email) === FALSE)
+            {
+                throw new Exception(1);
+            }
+        }
+        catch (Exceptions $ex)
         {
             echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
         }

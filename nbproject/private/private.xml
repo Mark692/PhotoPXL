@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Exceptions/InvalidInput.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Utilities/config.inc.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Control/C_Registrazione.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/View/V_Registrazione.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User.php</file>
+        </group>
     </open-files>
 </project-private>
