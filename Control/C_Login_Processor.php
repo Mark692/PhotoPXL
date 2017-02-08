@@ -83,8 +83,8 @@ class C_Login_Processor
 
     public function CreaUtente()
     {
-        $view = new \View\View();
-        $dati = $view->get_Dati();
+        $view = new \View\V_Registazione();
+        $dati = $view->get_Dati_registazione();
 
         $username = $dati['username'];
         $password = $dati['password'];
@@ -93,13 +93,12 @@ class C_Login_Processor
         $e_user = new \Entity\E_User_Standard($username, $password, $email);
         \Foundation\F_User::insert($e_user);
 
-        $view->impostaUrl();
-        $VHome->display(''); //da definire il tpl
+        //RITORNA IL TEMPLATE
     }
 
 
     /**
-     * Effettua il logout
+     * Logs out the user
      */
     public static function logout()
     {

@@ -20,9 +20,9 @@ class View extends Smarty
         global $config;
         $this->Smarty();    //Non è un costruttore
         $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
-        $this->compile_dir = $config['smarty']['compile_dir'];    //serve all'oggetto Smarty per
-        $this->config_dir = $config['smarty']['config_dir'];      //conoscere la posizione di alcune
-        $this->cache_dir = $config['smarty']['cache_dir'];        //cartelle usate dal programma
+        $this->compile_dir  = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
+        $this->config_dir   = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
+        $this->cache_dir    = $config['smarty']['cache_dir'];     //cartelle usate dal programma
         $this->caching = false;
     }
 
