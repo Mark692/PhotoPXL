@@ -30,20 +30,23 @@ class E_User_PRO extends E_User
     }
 
 
+
     /**
-     * CONTROLLA QUESTA FUNZIONE!!! BISOGNA AGGIUNGERE
-     * - CONTROLLI SULLA FOTO
-     * - CONTROLLI SULL'OGGETTO PASSATO
-     *
      * Sets the Photo privacy as
      * Reserved (TRUE):  only certain users will be able to see the photo
      * Public  (FALSE): ALL users will be able to see the photo
      *
-     * @param ??? $photo_ID The photo object to set the privacy
+     * @param \Entity\E_Photo $photo_ID The photo object to set the privacy
      * @param bool $privacy The privacy setting for the photo
      */
-    public function set_privacy($photo_ID, $privacy)
+    public function set_Reserved(\Entity\E_Photo $photo_ID, $privacy)
     {
-        $photo_ID->set_privacy($privacy);
+        if(is_bool($privacy))
+        {
+            $photo_ID->set_privacy($privacy);
+        }
     }
+
+
+
 }

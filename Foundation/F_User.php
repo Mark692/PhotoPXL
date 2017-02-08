@@ -39,7 +39,7 @@ class F_User extends \Foundation\F_Database
             $role);
 
         //STANDARD user setup
-        if($role=== \Utilities\Roles::STANDARD)
+        if($role === \Utilities\Roles::STANDARD)
         {
             $query .= ', '
                 .'`last_Upload`=?, '
@@ -56,15 +56,15 @@ class F_User extends \Foundation\F_Database
     /**
      * Retrives all the users that match the query
      *
-     * @param array $value The values to search with the query
+     * @param array $arr_values The values to search with the query
      * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy The table column chosen to order the results
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
      */
-    public static function get($value, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
+    public static function get($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
         $DB_table = "users";
-        return parent::get($value, $DB_table, $fetchAll, $orderBy, $orderStyle);
+        return parent::get($arr_values, $DB_table, $fetchAll, $orderBy, $orderStyle);
     }
 
 

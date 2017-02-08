@@ -166,4 +166,15 @@ class E_User
     {
         return $this->role;
     }
+
+
+    public function to_Array(\Entity\E_User $e_user)
+    {
+        return $user_details = array(
+            "username" => $e_user->get_Username(),
+            "password" => $e_user->get_Password(),
+            "email" => $e_user->get_Email(),
+            "role" => $e_user->get_Role()
+        );
+    }
 }

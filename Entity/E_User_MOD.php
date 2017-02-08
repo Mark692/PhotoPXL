@@ -31,17 +31,23 @@ class E_User_MOD extends E_User_PRO
 
 
     /**
-     * CONTROLLA QUESTA FUNZIONE!!! BISOGNA AGGIUNGERE
-     * - CONTROLLI SULL'UTENTE
-     * - CONTROLLI SULL'OGGETTO PASSATO
-     * - CONTROLLI IN CASO SI CERCHI DI BANNARE UN ADMIN
+     * Ban an user IF it's not an ADMIN/MOD
      *
-     * Ban an user IF it's not an ADMIN
-     * @param string $obj_user The user to ban
+     * @param \Entity\E_User_* $e_user The user to ban
+     * @return \Entity\E_User_* The same object user but with role BANNED
      */
-    public function ban_user($obj_user)
+    public function ban($e_user)
     {
-        $obj_user->set_Role(BANNED);
+        $username = $e_user->get_Username();
+        if($username !== $this->get_Username()) //If the user IS NOT this MOD (they'll have different usernames...)
+        {
+            $role = $e_user->get_Role();
+            if($role !== \Utilities\Roles::ADMIN) //If the user IS NOT an ADMIN
+            {
+                $e_user->set_Role(\Utilities\Roles::BANNED);
+            }
+        }
+        return $e_user;
     }
 
 
