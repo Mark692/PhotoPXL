@@ -6,7 +6,7 @@ class C_Login
 {
 
     /**
-     * Controlla se l'utente $input_username ha inserito la password corretta
+     * Controlla se l'utente $input_username ha inserito la password corretta.
      *
      * @return tpl A template for the result
      */
