@@ -12,6 +12,7 @@ require('lib/smarty/smarty.class.php');
 
 class View extends Smarty
 {
+
     /**
      * Costruttore della classe
      */
@@ -51,6 +52,34 @@ class View extends Smarty
         }
         return FALSE;
     }
+
+
+    /**
+     * Ritorna il contenuto del template che si vuole visualizzare
+     * Questa funzione va sovrascritta nelle classi figlie impostando $nome_template
+     *
+     * @return tpl content
+     */
+    public function processa_Template($nome_template)
+    {
+        $contenuto = $this->fetch($nome_template.'.tpl');
+        return $contenuto;
+    }
+
+
+    /**
+     * Assegna a smarty i dati della registrazione passati come parametro
+     *
+     * @param array $dati
+     * @param int $data
+     */
+    public function set_Dati($dati)
+    {
+        $this->assign('username', $dati['username']);
+        $this->assign('password', $dati['password']);
+        $this->assign('email', $dati['email']);
+    }
+
 
 
 }
