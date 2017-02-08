@@ -2,7 +2,7 @@
 
 namespace Control;
 
-class C_Login_Processor
+class C_Login
 {
 
     /**
