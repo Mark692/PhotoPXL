@@ -6,20 +6,26 @@ class C_Login_Processor
 {
 
     /**
+     * Controlla se l'utente $input_username ha inserito la password corretta
      *
-     * @param type $input_username
-     * @param type $input_password The HASHED user password
+     * @return tpl A template for the result
      */
-    public function validate()
+    public function check_user_pass()
     {
         //Da view() ottieni il risultato della generate() fatta via client
         $dati = new \View\V_Registazione();
-        //$array_dati = $dati->get_Dati_login(); //ottieni il risultato della generate()
+        $array_dati = $dati->get_Dati_login(); //ottieni il risultato della generate()
 
-        if($this->pass_isValid($input_password, $array_dati))
+        $arr_values = array("username" => $array_dati["username"]);
+        $array_user = \Foundation\F_User::get($arr_values);
+        $DB_pass = $array_user["password"];
+
+        if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
         {
-
+            //login OK!
+            return TRUE; //TEMPLATE?
         }
+        return FALSE; //TEMPLATE?
     }
 
 
@@ -75,42 +81,6 @@ class C_Login_Processor
     }
 
 
-
-    /**
-     * PSEUDO CODICE!!!
-     * Controlla se l'utente $input_username ha inserito la password corretta
-     *
-     * @param string $input_username The user username
-     * @param array $nonce_pass The nonce array generated client side
-     */
-    public function check_user_pass($input_username, $nonce_pass)
-    {
-        //PSEUDO CODICE!!! - IMPLEMENTA DECENTEMENTE STA ROBBA
-
-        /*
-         * Nota per generare il $nonce_pass:
-         * C'è bisogno che l'utente utilizzi la funzione
-         * \Utilities\U_Nonce::generate($input_password, $salt_length)
-         * per generare l'array $nonce_pass.
-         * Una volta ottenuto tale array, bisogna passarlo come parametro a
-         * questa funzione per controllare la correttezza dell'input e quindi
-         * verificare o meno il login.
-         */
-
-        $db_user = new \Foundation\F_User(); //Istanzia un oggetto Foundation
-        $e_user = $db_user->get_BP($input_username); //Prendi l'utente dal DB
-        $user_pass = $e_user->get_Password(); //Prendi la pass dell'utente
-        if (\Utilities\U_Nonce::pass_isValid($user_pass, $nonce_pass))
-        {
-            //Verifica OK. Logga l'utente
-        }
-        else
-        {
-            //Verifica FALLITA. Notifica l'utente di aver sbagliato username O password
-        }
-    }
-
-
     public function CreaUtente()
     {
         $view = new \View\View();
@@ -136,6 +106,4 @@ class C_Login_Processor
         session_unset();
         session_destroy();
     }
-
-
 }
