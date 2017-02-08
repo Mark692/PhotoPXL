@@ -10,7 +10,7 @@ namespace View;
 
 require('lib/smarty/smarty.class.php');
 
-class View extends Smarty
+class V_Basic extends Smarty
 {
 
     /**
@@ -25,6 +25,23 @@ class View extends Smarty
         $this->config_dir   = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
         $this->cache_dir    = $config['smarty']['cache_dir'];     //cartelle usate dal programma
         $this->caching = false;
+    }
+
+
+    /**
+     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
+     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
+     *
+     * @return array
+     */
+    public function get_Dati($keys)
+    {
+        $dettagli = array ();
+        foreach ($keys as $k => $dato)
+        {
+            $dettagli[$k] = $_REQUEST[$k];
+        }
+        return $dettagli;
     }
 
 

@@ -7,7 +7,7 @@
 
 namespace View;
 
-class V_Registazione extends \View
+class V_Registazione extends \View\V_Basic
 {
 
     /**
@@ -19,12 +19,7 @@ class V_Registazione extends \View
     public function get_Dati()
     {
         $keys = array ('username', 'password', 'email');
-        $dettagli = array ();
-        foreach ($keys as $k => $dato)
-        {
-            $dettagli[$k] = $_REQUEST[$k];
-        }
-        return $dettagli;
+        return parent::get_Dati($keys);
     }
 
 }

@@ -8,18 +8,18 @@
 
 namespace View;
 
-class V_Login extends \View\V_Basic
+class V_Upload extends \View\V_Basic
 {
 
     /**
-     * Grazie a questa funzione all'interno della variabile $dati_log vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di login
+     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
+     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
      *
      * @return array
      */
     public function get_Dati()
     {
-        $keys = array ('username', 'nonce');
+        $keys = array ('image', 'title', 'description', 'is_reserved', 'categories');
         return parent::get_Dati($keys);
     }
 }
