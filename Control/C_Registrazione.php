@@ -39,7 +39,18 @@ class C_Login_Processor
         }
     }
 
-
+ public function CreaUtente(){
+        $view = new \View\View();
+        $e_user = new \Entity\E_User();
+        $db_user = new \Foundation\F_User();
+        $dati = $view->get_Dati();
+        $user -> set_username($dati['username']);
+        $user-> set_password($dati['password']);
+        $user -> set_email($dati['email']);
+        $user -> set_Role();//non me ricordo quali so i numeri per lo standard
+        $view->impostaUrl();
+        $VHome->display('');//da definire il tpl
+    }
 
 
 
