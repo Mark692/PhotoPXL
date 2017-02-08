@@ -32,7 +32,7 @@ class C_Registrazione
         //RITORNA IL TEMPLATE ALLA REGISTRAZIONE
     }
 
-    
+
     /**
      * Checks whether the user has input valid credentials
      *
@@ -42,13 +42,30 @@ class C_Registrazione
      */
     private function details_areValid($username, $email)
     {
-        if(\Entity\E_User::username_isValid($username))
+        try
         {
-            if(\Entity\E_User::email_isValid($email))
+            if(\Entity\E_User::username_isValid($username))
             {
-                return TRUE;
+                try
+                {
+                    if(\Entity\E_User::email_isValid($email) === FALSE)
+                    {
+                        throw new Exception(1);
+                    }
+                }
+                catch (Exceptions $ex)
+                {
+                    echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
+                }
+            }
+            else
+            {
+                throw new Exception(0);
             }
         }
-        return FALSE;
+        catch (Exception $ex)
+        {
+            echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
+        }
     }
 }
