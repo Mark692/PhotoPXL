@@ -13,8 +13,10 @@ class V_Registazione extends View
      * @var string $_layout
      */
     private $_layout = '';
+
+    
     /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono 
+     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
      * @return array
      */
@@ -28,8 +30,10 @@ class V_Registazione extends View
         }
         return $dati_reg;
     }
- /**
-     * Grazie a questa funzione all'interno della variabile $dati_log vengono 
+
+
+    /**
+     * Grazie a questa funzione all'interno della variabile $dati_log vengono
      * registrati tutti i dati inviati tramite POST dal modulo di login
      * @return array
      */
@@ -44,6 +48,7 @@ class V_Registazione extends View
         return $dati_log;
     }
 
+
     /**
      * imposta il layout
      *
@@ -56,7 +61,7 @@ class V_Registazione extends View
 
 
     /**
-     * Ritorna il contenuto del template che si vuole visualizzare 
+     * Ritorna il contenuto del template che si vuole visualizzare
      * @return string
      */
     public function processa_Template()
