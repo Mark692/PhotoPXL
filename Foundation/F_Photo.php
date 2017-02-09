@@ -79,19 +79,56 @@ class F_Photo extends \Foundation\F_Database
     }
 
 
-//    public static function get_PROVA()
-//    {
-//        $toSearch = array("id" => 8); //Prende la foto con ID 8
-//        $DB_table = "photo_blob";
-//        return parent::get($toSearch, $DB_table);
-//    }
+
+
+//____________________________________________________________________________\\
+//____________________________________________________________________________\\
+   //----CONTROLLA LE FUNZIONI DI F_Album PER LE CATEGORIE E----\\
+  //----SE VANNO BENE, COPIALE QUI CAMBIANDO IL NOME DELLA TABELLA!!!----\\
+ //
+//get_By_Categories\\
+//update_Categories\\
+//set_Categories\\
+//remove_Categories\\
+//____________________________________________________________________________\\
+//____________________________________________________________________________\\
+
+
+    /**
+     * Deletes a photo from the DB
+     *
+     * @param int $photo_ID The photo ID to delete from the DB
+     */
+    public static function delete($photo_ID)
+    {
+        $query = "DELETE FROM `photo` "
+                ."WHERE (`id`=?) ";
+
+        $toBind = array("id" => $photo_ID);
+        parent::execute_query($query, $toBind);
+    }
+
+
+    public static function delete_ALL_fromAlbum($album_ID)
+    {
+        $query = "DELETE FROM `photo` "
+                ."WHERE `id` in ("
+                    ."SELECT `photo` "
+                    ."FROM `photo_album` "
+                    ."WHERE `album`=?"
+                    .")";
+
+        $toBind = array("id" => $album_ID);
+        parent::execute_query($query, $toBind);
+    }
+
+
+
+
 
 
     //CREA FUNZIONI PER:
-    //get_from_Album() - dalla foto-album
-    //get_byCategory() - dalla cat-foto
     //remove_photo() - ricorda la tabella di collegamento foto-album
     //update_photo()
     //move_to() - cambia in foto-album
-    //update_categories - nella tabella cat-foto
 }

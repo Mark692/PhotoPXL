@@ -180,7 +180,7 @@ class F_Album extends \Foundation\F_Database
     public static function delete($album_ID)
     {
         $query = "DELETE FROM `album` "
-                ."WHERE (`album`=?) ";
+                ."WHERE (`id`=?) ";
 
         $toBind = array("id" => $album_ID);
         parent::execute_query($query, $toBind);
