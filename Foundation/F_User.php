@@ -21,7 +21,7 @@ class F_User extends \Foundation\F_Database
      * @param \Entity\E_User_* $e_user The user to insert into the DB
      * @param int $role The user's role. Implemented in each child class
      */
-    protected static function insert($e_user, $role)
+    protected static function insert($e_user)
     {
         //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
@@ -30,6 +30,7 @@ class F_User extends \Foundation\F_Database
                 .'`email`=?, '
                 .'`role`=?';
 
+        $role = $e_user->get_Role();
         $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
             $e_user->get_Username(),
             $e_user->get_Password(),

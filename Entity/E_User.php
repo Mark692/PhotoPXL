@@ -182,19 +182,32 @@ class E_User
     }
 
 
-    //FUNZIONE NON USATA. A CHE SERVE?
-    //FUNZIONE NON USATA. A CHE SERVE?
-    //FUNZIONE NON USATA. A CHE SERVE?
-    public function to_Array(\Entity\E_User $e_user)
+    /**
+     * This function helps converting an user into an array to ease those functions in
+     * Foundation that require an array and not an E_User
+     * 
+     * @param \Entity\E_User_* $e_user An user to convert into an array
+     * @return array An array made of user details to be used in Foundation functions
+     */
+    public function to_Array($e_user)
     {
-        return $user_details = array(
+        $role = $e_user->get_Role();
+        $user_details = array(
             "username" => $e_user->get_Username(),
             "password" => $e_user->get_Password(),
             "email" => $e_user->get_Email(),
-            "role" => $e_user->get_Role()
-        );
+            $role
+            );
+
+        if($role === \Utilities\Roles::STANDARD)
+        {
+            $to_merge = array(
+                "last_Upload" => $e_user->get_Last_Upload(),
+                "up_Count" => $e_user->get_up_Count()
+                );
+            $user_details = array_merge($user_details, $to_merge);
+        }
+
+        return $user_details;
     }
-    //FUNZIONE NON USATA. A CHE SERVE?
-    //FUNZIONE NON USATA. A CHE SERVE?
-    //FUNZIONE NON USATA. A CHE SERVE?
 }
