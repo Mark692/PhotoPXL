@@ -17,7 +17,7 @@ class F_Photo extends \Foundation\F_Database
      * @param \Entity\E_Photo $photo The photo to save
      * @param string $uploader The uploader's username
      */
-    public static function insert(\Entity\E_Photo $photo, $uploader)
+    public static function execute_query(\Entity\E_Photo $photo, $uploader)
     {
         $query = 'INSERT INTO `photo` SET '
                 .'`title`=?, '
@@ -33,7 +33,7 @@ class F_Photo extends \Foundation\F_Database
             $photo->get_Reserved(),
             $uploader);
 
-        $photo_ID = parent::insert($query, $toBind); //Inserts the photo and gets its ID.
+        $photo_ID = parent::execute_query($query, $toBind); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
     }
 

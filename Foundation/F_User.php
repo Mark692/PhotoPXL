@@ -21,7 +21,7 @@ class F_User extends \Foundation\F_Database
      * @param \Entity\E_User_* $e_user The user to insert into the DB
      * @param int $role The user's role. Implemented in each child class
      */
-    public static function insert($e_user)
+    public static function execute_query($e_user)
     {
         //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
@@ -48,7 +48,7 @@ class F_User extends \Foundation\F_Database
         array_push($toBind, $e_user->get_up_Count());
         }
 
-        parent::insert($query, $toBind);
+        parent::execute_query($query, $toBind);
     }
 
 

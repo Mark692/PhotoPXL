@@ -19,7 +19,7 @@ class F_User_PRO extends F_User
      *
      * @param \Entity\F_User_PRO $e_user The user to insert into the DB
      */
-    public static function insert(\Entity\F_User_PRO $e_user)
+    public static function execute_query(\Entity\F_User_PRO $e_user)
     {
         parent::insert($e_user);
     }

@@ -53,7 +53,7 @@ class F_Database
      * @param array $toBind The array of values to bind at the query
      * @return string The last inserted (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
-    protected static function insert($query, $toBind)
+    protected static function execute_query($query, $toBind)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -142,7 +142,7 @@ class F_Database
                     ."SET $set "
                     ."WHERE `$where_column`='$where_value'";
 
-            return self::insert($query, $toBind);
+            return self::execute_query($query, $toBind);
         }
     }
 
