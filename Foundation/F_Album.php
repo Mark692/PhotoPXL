@@ -48,19 +48,40 @@ class F_Album extends \Foundation\F_Database
         $DB_table = "album";
         $fetchAll = TRUE;
         $orderBy_column = "creation_date";
-        parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
+        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
     }
 
 
+    /**
+     * Rethrives all the album with the selected category
+     *
+     * @param enum $cat The single category to search
+     */
+    public static function get_By_Category(\Utilities\Roles $cat)
+    {
+        $toSearch = array("category" => $cat);
+        $DB_table = "cat_album";
+        $fetchAll = TRUE;
+        return parent::get($toSearch, $DB_table, $fetchAll);
+    }
+
+
+    /**
+     * Sets the album categories
+     *
+     * @param string/array $cat The category/ies chosen for the album
+     * @param int $album_ID The album's ID to whom set the categories
+     */
     public static function set_Categories($cat, $album_ID)
     {
-        $query = "INSERT INTO `cat_album` (album, category) VALUES ";
+        $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
         foreach ((array) $cat as $value)
         {
-            $query .= "($album_ID, ?),";
+            $query .= "('$album_ID', ?),";
         }
         $query = substr($query, 0, -1); //Trims the last ","
         parent::insert($query, $cat);
     }
+
 
 }
