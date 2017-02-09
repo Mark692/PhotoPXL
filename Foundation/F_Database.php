@@ -88,7 +88,7 @@ class F_Database
         $query = 'SELECT * '
                 .'FROM `'.$DB_table.'` '
                 .'WHERE '.$where;
-        if ($orderBy_column !== '')
+        if ($fetchAll===TRUE && $orderBy_column!=='' )
         {
             $query .= ' ORDER BY `'.$orderBy_column.'`';
             if ($orderStyle==="DESC")

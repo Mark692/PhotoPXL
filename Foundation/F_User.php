@@ -21,7 +21,7 @@ class F_User extends \Foundation\F_Database
      * @param \Entity\E_User_* $e_user The user to insert into the DB
      * @param int $role The user's role. Implemented in each child class
      */
-    public static function execute_query($e_user)
+    public static function insert($e_user)
     {
         //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
@@ -83,34 +83,6 @@ class F_User extends \Foundation\F_Database
 
     //----AGGIUNTE DA E_User_Basic----\\
     //----CONTROLLA BENE OGNI FUNZIONE E IMPLEMENTALE----\\
-
-    /**
-     * Creates a new Album. The creation date will be set to the current time()
-     * automatically
-     *
-     * @param string $title The album title
-     * @param string $description The album description
-     * @param array or string $categories The album categories
-     * @return \Entity\E_Album The $album just created
-     */
-    public function create_Album($title, $description, $categories)
-    {
-        //$album = new \Entity\E_Album($title, $description, $categories);
-        //return $album;
-    }
-
-
-    public function get_Albums()
-    {
-
-    }
-
-
-    public function remove_Album($Album_ID)
-    {
-
-    }
-
 
     /**
      * Creates a new Photo. With the following parameters:

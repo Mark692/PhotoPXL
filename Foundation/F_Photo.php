@@ -17,7 +17,7 @@ class F_Photo extends \Foundation\F_Database
      * @param \Entity\E_Photo $photo The photo to save
      * @param string $uploader The uploader's username
      */
-    public static function execute_query(\Entity\E_Photo $photo, $uploader)
+    public static function insert(\Entity\E_Photo $photo, $uploader)
     {
         $query = 'INSERT INTO `photo` SET '
                 .'`title`=?, '
@@ -39,31 +39,43 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Rethrives photos matching the query
-     *
-     * @param array $toSearch The values to search with the query
-     * @return array The photos matching the query
-     */
-    public static function get($toSearch, $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
-    {
-        $DB_table = "photo";
-        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column, $orderStyle);
-    }
-
-
-    /**
-     * Rethrives the photos of a user by passing its username.
-     * This is a faster way (than the self::get()) to search all the photos bound to the same $username
+     * Rethrives all the photos of a user by passing its username
      *
      * @param string $username The user's username selected to get the photos from
      * @return array The user's photos
      */
-    public static function get_from_user($username)
+    public static function get_By_User($username)
     {
         $toSearch = array("user" => $username);
         $fetchAll = TRUE;
         $orderBy_column = "upload_date";
         return self::get($toSearch, $fetchAll, $orderBy_column);
+    }
+
+
+    /**
+     * Rethrives the photo corresponding to the ID selected
+     *
+     * @param int $id The photo's ID
+     * @return array The selected photo
+     */
+    public static function get_By_ID($id)
+    {
+        $toSearch = array("id" => $id);
+        return self::get($toSearch);
+    }
+
+
+    /**
+     * Rethrives photos matching the query
+     *
+     * @param array $toSearch The values to search with the query
+     * @return array The photos matching the query
+     */
+    private static function get($toSearch, $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
+    {
+        $DB_table = "photo";
+        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column, $orderStyle);
     }
 
 

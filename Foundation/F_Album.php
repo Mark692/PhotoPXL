@@ -17,7 +17,7 @@ class F_Album extends \Foundation\F_Database
      * @param \Entity\E_Album $album The album to save
      * @param string $owner The $owner's username
      */
-    public static function execute_query(\Entity\E_Album $album, $owner)
+    public static function insert(\Entity\E_Album $album, $owner)
     {
         $query = 'INSERT INTO `album` SET '
                 .'`title`=?, '
@@ -33,6 +33,20 @@ class F_Album extends \Foundation\F_Database
 
         $album_ID = parent::execute_query($query, $toBind); //Inserts the album and gets its ID.
         $album->set_ID($album_ID);
+    }
+
+
+    /**
+     * Updates the album details
+     *
+     * @param array $new_Details An ARRAY containing new details got from "View"
+     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by_*($q)
+     * @param int $album_ID The album's ID
+     */
+    public static function update($new_Details, $old_Details, $album_ID)
+    {
+        $DB_table = "album";
+        parent::update($new_Details, $old_Details, $DB_table, $album_ID);
     }
 
 
@@ -91,7 +105,7 @@ class F_Album extends \Foundation\F_Database
      */
     public static function update_Categories($new_cats, $old_cats, $album_ID)
     {
-        $to_add = array_diff((array) $new_cats, (array) $old_cats);
+        $to_add    = array_diff((array) $new_cats, (array) $old_cats);
         $to_remove = array_diff((array) $old_cats, (array) $new_cats);
 
         if(count($to_add)>=1 && count($to_remove)>=1)
@@ -154,6 +168,22 @@ class F_Album extends \Foundation\F_Database
             $query .= "(`category`=?) OR ";
         }
         return $query = substr($query, 0, -5).")"; //Trims the last " OR " and closes the paranthesys
+    }
+
+
+    /**
+     * Deletes an album from the DB. Its photos will be kept with no album association
+     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum
+     *
+     * @param int $album_ID The album ID to delete from the DB
+     */
+    public static function delete($album_ID)
+    {
+        $query = "DELETE FROM `album` "
+                ."WHERE (`album`=?) ";
+
+        $toBind = array("id" => $album_ID);
+        parent::execute_query($query, $toBind);
     }
 
 }
