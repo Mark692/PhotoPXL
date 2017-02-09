@@ -28,6 +28,12 @@ class C_Registrazione
         }
         catch (\Exceptions\InvalidInput $ex)
         {
+            //Primo catch: gestire username non validi
+            echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE
+        }
+        catch (\Exceptions\InvalidInput $ex)
+        {
+            //Secondo catch: gestire email non valide
             echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE
         }
         //RITORNA IL TEMPLATE ALLA REGISTRAZIONE

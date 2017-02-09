@@ -17,7 +17,7 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
-
+//
 $try = new Prove\TC_Registrazione();
 $try->save_User();
 
@@ -73,6 +73,7 @@ $try->save_User();
 //$e_tryme->T_SetGet();
 //$e_tryme->T_Roles();
 //$e_tryme->T_Data();
+//$e_tryme->user_to_array();
 
 
 //---Prova per U_Nonce()

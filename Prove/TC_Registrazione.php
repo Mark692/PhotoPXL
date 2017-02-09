@@ -14,7 +14,7 @@ class TC_Registrazione extends \Prove\TFun
 
     public function save_User()
     {
-        $username = parent::rnd_str(10)."£";
+        $username = parent::rnd_str(10)."o";
         $password = parent::rnd_str(10);
         $email = parent::rnd_str(10);
 

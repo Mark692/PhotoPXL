@@ -185,7 +185,7 @@ class E_User
     /**
      * This function helps converting an user into an array to ease those functions in
      * Foundation that require an array and not an E_User
-     * 
+     *
      * @param \Entity\E_User_* $e_user An user to convert into an array
      * @return array An array made of user details to be used in Foundation functions
      */
@@ -205,7 +205,7 @@ class E_User
                 "last_Upload" => $e_user->get_Last_Upload(),
                 "up_Count" => $e_user->get_up_Count()
                 );
-            $user_details = array_merge($user_details, $to_merge);
+            $user_details = array_merge($user_details, $to_merge); //"Pushes" the array $to_merge at the end of $user_details
         }
 
         return $user_details;

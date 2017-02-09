@@ -188,4 +188,10 @@ class TE_User extends \Prove\TFun
             echo("__________________________________________________________________".nl2br("\r\n").nl2br("\r\n"));
         }
     }
+
+
+    public function user_to_array()
+    {
+        print_r($this->e_userSTD->to_Array($this->e_userSTD));
+    }
 }
