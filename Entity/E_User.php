@@ -45,7 +45,14 @@ class E_User
      */
     public function set_Username($new_username)
     {
-        $this->username = $new_username;
+        if($this->username_isValid($new_username))
+        {
+            $this->username = $new_username;
+        }
+        else
+        {
+            throw new \Exceptions\InvalidInput(0, $new_username);
+        }
     }
 
 
@@ -66,7 +73,7 @@ class E_User
      * @param string $username The username input
      * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
      */
-    public static function username_isValid($username)
+    private static function username_isValid($username)
     {
         $allowed = array('-', '_', '.'); //Allows -_. inside a Username
         if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -118,7 +125,14 @@ class E_User
      */
     public function set_Email($new_email)
     {
-        $this->email = $new_email;
+        if($this->email_isValid($new_email))
+        {
+            $this->email = $new_email;
+        }
+        else
+        {
+            throw new \Exceptions\InvalidInput(1, $new_email);
+        }
     }
 
 
@@ -128,7 +142,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    public static function email_isValid($email)
+    private static function email_isValid($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -168,6 +182,9 @@ class E_User
     }
 
 
+    //FUNZIONE NON USATA. A CHE SERVE?
+    //FUNZIONE NON USATA. A CHE SERVE?
+    //FUNZIONE NON USATA. A CHE SERVE?
     public function to_Array(\Entity\E_User $e_user)
     {
         return $user_details = array(
@@ -177,4 +194,7 @@ class E_User
             "role" => $e_user->get_Role()
         );
     }
+    //FUNZIONE NON USATA. A CHE SERVE?
+    //FUNZIONE NON USATA. A CHE SERVE?
+    //FUNZIONE NON USATA. A CHE SERVE?
 }

@@ -8,7 +8,7 @@
 
 namespace Control;
 
-use Exceptions\InvalidInput;
+use \Exceptions\InvalidInput;
 
 class C_Registrazione
 {
