@@ -93,8 +93,6 @@ class F_Album extends \Foundation\F_Database
     {
         $to_add = array_diff((array) $new_cats, (array) $old_cats);
         $to_remove = array_diff((array) $old_cats, (array) $new_cats);
-        $query_ADD='';
-        $query_DEL='';
 
         if(count($to_add)>=1 && count($to_remove)>=1)
         {
@@ -103,15 +101,15 @@ class F_Album extends \Foundation\F_Database
             $query = $query_ADD.", ".$query_DEL;
             $toBind = array_merge($to_add, $to_remove);
         }
-        elseif(count($to_add)<1 && count($to_remove)>=1)
-        {
-            $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
-            $toBind = $to_remove;
-        }
         elseif(count($to_add)>=1 && count($to_remove)<1)
         {
             $query = self::set_Categories($to_add, $album_ID); // =$query_ADD;
             $toBind = $to_add;
+        }
+        elseif(count($to_add)<1 && count($to_remove)>=1)
+        {
+            $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
+            $toBind = $to_remove;
         }
         else
         {
@@ -128,7 +126,7 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */
-    public static function set_Categories($cat, $album_ID)
+    private static function set_Categories($cat, $album_ID)
     {
         $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
         foreach ((array) $cat as $value)
@@ -146,7 +144,7 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album to modify and remove categories from
      * @return string The query used to remove categories from the album
      */
-    public static function remove_Categories($cats, $album_ID)
+    private static function remove_Categories($cats, $album_ID)
     {
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
