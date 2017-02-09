@@ -11,7 +11,7 @@ namespace Prove;
 /**
  * Questa classe testa Foundation\F_User
  */
-class TF_User extends TFun
+class TF_User extends \Prove\TFun
 {
     private $username;
     private $password;

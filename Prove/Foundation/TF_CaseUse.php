@@ -8,7 +8,7 @@
 
 namespace Prove;
 
-class TF_CaseUse extends TFun
+class TF_CaseUse extends \Prove\TFun
 {
     private $username;
     private $password;

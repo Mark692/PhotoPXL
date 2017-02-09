@@ -8,8 +8,7 @@
 
 namespace Prove;
 
-use \PDO,
-    \PDOException; //Both needed to avoid errors with the Autoloader
+use \PDO; //Needed to avoid errors with the Autoloader
 
 class T_Foundation
 {

@@ -8,7 +8,7 @@
 
 namespace Prove;
 
-class TF_Comment extends TFun
+class TF_Comment extends \Prove\TFun
 {
 
     public function insert()

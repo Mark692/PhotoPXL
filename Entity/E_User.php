@@ -73,7 +73,7 @@ class E_User
      * @param string $username The username input
      * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
      */
-    private static function username_isValid($username)
+    private function username_isValid($username)
     {
         $allowed = array('-', '_', '.'); //Allows -_. inside a Username
         if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -142,7 +142,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    private static function email_isValid($email)
+    private function email_isValid($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
