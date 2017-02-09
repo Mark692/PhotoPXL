@@ -7,7 +7,6 @@
  */
 
 namespace Exceptions;
-//use \Exception;
 
 /**
  * Thrown when invalid input is received at the E_User object
@@ -28,6 +27,7 @@ class InvalidInput extends \Exception
 
             default: $message = "ATTENZIONE! Parametro non valido: $exc";
         }
+
         parent::__construct($message, NULL, NULL);
     }
 

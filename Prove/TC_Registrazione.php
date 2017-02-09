@@ -21,11 +21,13 @@ class TC_Registrazione extends \Prove\TFun
         try
         {
             $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
-            \Foundation\F_User::insert($e_userSTD);
+            echo("Oggetto creato con successo! Eccolo: ");
+            var_dump($e_userSTD);
+            echo(nl2br("\r\n"));
         }
-        catch (Exceptions\InvalidInput $ex)
+        catch (\Exceptions\InvalidInput $ex)
         {
-            echo($ex); //LANCIA TEMPLATE PER GESTIRE ERRORE
+            echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE
         }
         //RITORNA IL TEMPLATE ALLA REGISTRAZIONE
     }

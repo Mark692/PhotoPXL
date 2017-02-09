@@ -17,6 +17,26 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
+
+$try = new Prove\TC_Registrazione();
+$try->save_User();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //$test_casoD_uso = new \Prove\TF_CaseUse();
 //$test_casoD_uso->caso_d_uso();
 
@@ -25,14 +45,14 @@ global $config;
 
 //---Prova per TF_Comment---\\
 //
-$testCommento = new \Prove\TF_Comment();
-$testCommento->insert();
+//$testCommento = new \Prove\TF_Comment();
+//$testCommento->insert();
 
 
 
 //---Prova per TF_User---\\
 //
-//$provaFOUND = new \Prove\TF_User();
+//$provaFOUND = new \Prove\TF_User;
 //$provaFOUND->insert_and_get();
 //$provaFOUND->update();
 //$user = new \Entity\E_User_PRO("username casuale", "pass cass", "mail@we.iti");
