@@ -12,7 +12,7 @@ class F_Album extends \Foundation\F_Database
 {
 
     /**
-     * Saves an album in the DB
+     * Creates an album in the DB
      *
      * @param \Entity\E_Album $album The album to save
      * @param string $owner The $owner's username
@@ -28,8 +28,7 @@ class F_Album extends \Foundation\F_Database
         $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
             $album->get_Title(),
             $album->get_Description(),
-            $album->get_Upload_Date(),
-            $album->get_Reserved(),
+            $album->get_Creation_Date(),
             $owner);
 
         $album_ID = parent::insert($query, $toBind); //Inserts the album and gets its ID.
@@ -43,7 +42,7 @@ class F_Album extends \Foundation\F_Database
      * @param string $username The user's username selected to get the albums from
      * @return array The user's albums
      */
-    public static function get_from_user($username)
+    public static function get_From_User($username)
     {
         $toSearch = array("user" => $username);
         $DB_table = "album";
@@ -52,5 +51,16 @@ class F_Album extends \Foundation\F_Database
         parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
     }
 
+
+    public static function set_Categories($cat, $album_ID)
+    {
+        $query = "INSERT INTO `cat_album` (album, category) VALUES ";
+        foreach ((array) $cat as $value)
+        {
+            $query .= "($album_ID, ?),";
+        }
+        $query = substr($query, 0, -1); //Trims the last ","
+        parent::insert($query, $cat);
+    }
 
 }
