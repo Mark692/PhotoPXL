@@ -21,7 +21,7 @@ class F_User extends \Foundation\F_Database
      * @param \Entity\E_User_* $e_user The user to insert into the DB
      * @param int $role The user's role. Implemented in each child class
      */
-    protected static function insert($e_user)
+    public static function insert($e_user)
     {
         //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
