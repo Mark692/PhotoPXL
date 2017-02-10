@@ -29,10 +29,11 @@ class UCookie
      */
     public function check_Cookie()
     {
-        if (isset($_COOKIE['cookieCheck']))
-            return true;
-        else
-            return false;
+        if(isset($_COOKIE['cookieCheck']))
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 
