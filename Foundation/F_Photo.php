@@ -111,7 +111,7 @@ class F_Photo extends \Foundation\F_Database
 
     /**
      * Deletes all photos whithin an album
-     * 
+     *
      * @param int $album_ID The album from which we want to delete photos
      */
     public static function delete_ALL_fromAlbum($album_ID)
@@ -133,7 +133,6 @@ class F_Photo extends \Foundation\F_Database
 
 
     //CREA FUNZIONI PER:
-    //remove_photo() - ricorda la tabella di collegamento foto-album
     //update_photo()
     //move_to() - cambia in foto-album
 }
