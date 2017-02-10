@@ -84,38 +84,7 @@ class F_User extends \Foundation\F_Database
     //----AGGIUNTE DA E_User_Basic----\\
     //----CONTROLLA BENE OGNI FUNZIONE E IMPLEMENTALE----\\
 
-    /**
-     * Creates a new Photo. With the following parameters:
-     * Like number = 0
-     * Creation Date = time()
-     *
-     * @param string $title The photo title
-     * @param string $description The photo description
-     * @param bool $is_reserved Whether the photo is reserved or public
-     * @param array or string $categories The categories for the photo
-     * @return \Entity\E_Photo The $photo just created
-     */
-    public function upload_photo($title, $description, $is_reserved, $categories)
-    {
 
-        //passaggio dei parametri a foundation che ritorna l'id della foto appena creata
-        // $id from foundation
-//        $photo = new \Entity\E_Photo($id, $title, $description, $is_reserved, $categories);
-//        return $photo;
-    }
-
-
-    public function remove_Photo($photo_ID)
-    {
-        //call foundation
-    }
-
-
-    public function move_Photo($photo_ID, $target_Album)
-    {
-        $photo_ID->set_album($target_Album);
-        // call foundation
-    }
 
 
     /**
