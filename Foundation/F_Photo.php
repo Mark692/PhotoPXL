@@ -36,8 +36,10 @@ class F_Photo extends \Foundation\F_Database
             $photo->get_Description(),
             $photo->get_Upload_Date(),
             $photo->get_Reserved(),
-            $uploader);
-        $toBind = array_merge($toBind, $photo_details);
+            $uploader,  //Adds the user
+            $photo_details["photo_blob"],
+            $photo_details["size"],
+            $photo_details["type"]);
 
         $photo_ID = parent::execute_query($query, $toBind); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
