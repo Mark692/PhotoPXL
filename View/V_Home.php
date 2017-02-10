@@ -10,7 +10,10 @@ namespace View;
 
 class V_Upload extends \View\V_Basic
 {
-public function impostaPaginaGuest() {
-      
+    public function impostaPaginaGuest()
+    {
+
     }
+
+
 }
