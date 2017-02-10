@@ -57,7 +57,7 @@ class F_Photo extends \Foundation\F_Database
         $toSearch = array("user" => $username);
         $DB_table = "photo";
         $fetchAll = TRUE;
-        return self::get($toSearch, $DB_table, $fetchAll);
+        return parent::get($toSearch, $DB_table, $fetchAll);
     }
 
 
@@ -71,7 +71,33 @@ class F_Photo extends \Foundation\F_Database
     {
         $toSearch = array("id" => $id);
         $DB_table = "photo";
-        return self::get($toSearch, $DB_table);
+        return parent::get($toSearch, $DB_table);
+    }
+
+
+    /**
+     *
+     * @param type $album_ID
+     * @return type
+     */
+    public static function get_By_Album($album_ID)
+    {
+        $query = "SELECT * "
+                ."FROM `photo` "
+                ."WHERE `id` in ("
+                    ."SELECT `photo` "
+                    ."FROM `cat_photo` "
+                    .'WHERE `album`=?'
+                    .")";
+        $toBind = array($album_ID);
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -229,7 +255,6 @@ class F_Photo extends \Foundation\F_Database
         $DB_table = "photo";
         $primary_Key = "id";
         parent::update($new_photo, $old_photo, $DB_table, $primary_Key);
-
     }
 
 
