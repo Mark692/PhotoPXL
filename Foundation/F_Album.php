@@ -104,7 +104,7 @@ class F_Album extends \Foundation\F_Database
      * @param enum or array $new_cats The new category/ies chosen for the album
      * @param enum or array $old_cats The category/ies to remove from the album
      * @param int $album_ID The album's ID to whom set/remove the categories
-     * @throws \Exceptions\InvalidAlbumInfo In case there are no categories to add neither to remove
+     * @throws \Exceptions\invalid_Query In case there are no categories to add neither to remove
      */
     public static function update_Categories($new_cats, $old_cats, $album_ID)
     {

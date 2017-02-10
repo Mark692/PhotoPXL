@@ -144,6 +144,10 @@ class F_Database
 
             return self::execute_query($query, $toBind);
         }
+        else
+        {
+            throw new \Exceptions\invalid_Query(0, "Nessun valore da aggiornare");
+        }
     }
 
 
@@ -156,13 +160,17 @@ class F_Database
      */
     private static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
-        $i = 1; //Needed to specify which placeholder to bind
-        foreach ($toBind as $k => $v)
+        if(count($toBind)>0)
         {
-            //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
-            $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
-            $i++;
+            $i = 1; //Needed to specify which placeholder to bind
+            foreach ($toBind as $k => $v)
+            {
+                //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
+                $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
+                $i++;
+            }
+            return $pdo_stmt;
         }
-        return $pdo_stmt;
+        throw new \Exceptions\invalid_Query(1, "Nessun valore trovato per soddisfare la richiesta");
     }
 }

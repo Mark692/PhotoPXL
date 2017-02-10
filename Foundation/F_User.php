@@ -19,7 +19,6 @@ class F_User extends \Foundation\F_Database
      * Inserts the user into "users" DB table
      *
      * @param \Entity\E_User_* $e_user The user to insert into the DB
-     * @param int $role The user's role. Implemented in each child class
      */
     public static function insert($e_user)
     {
@@ -31,6 +30,7 @@ class F_User extends \Foundation\F_Database
                 .'`role`=?';
 
         $role = $e_user->get_Role();
+
         $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
             $e_user->get_Username(),
             $e_user->get_Password(),
@@ -95,12 +95,7 @@ class F_User extends \Foundation\F_Database
         parent::update($new_user, $old_user, $DB_table, $where_column);
     }
 
-
-    //----AGGIUNTE DA E_User_Basic----\\
-    //----CONTROLLA BENE OGNI FUNZIONE E IMPLEMENTALE----\\
-
-
-
+    
     /**
      * Adds a like to the photo
      *

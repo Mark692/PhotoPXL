@@ -11,19 +11,19 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class InvalidAlbumInfo extends \Exception
+class invalid_Query extends \Exception
 {
     public function __construct($code, $exc) {
         switch ($code) {
             case 0:
-                $message = "Qualcosa è andato storto mentre si cercava di aggiornare le categorie dell'album!";
+                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione 0: $exc";
                 break;
 
             case 1:
-                $message = "";
+                $message = "Attenzione! C'è stato un errore nella richiesta: $exc";
                 break;
 
-            default: $message = "ATTENZIONE! Parametro non valido: $exc";
+            default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }
 
         parent::__construct($message, NULL, NULL);
