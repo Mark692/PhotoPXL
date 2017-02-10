@@ -31,15 +31,16 @@ class V_Basic extends Smarty
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
+     * @param string or array $keys Description chiavi usate per cercare
      * @return array
      */
     public function get_Dati($keys)
     {
+        $total = array_merge($_REQUEST, $_FILES);
         $dettagli = array ();
-        foreach ($keys as $k => $dato)
+        foreach ((array) $keys as $k => $dato)
         {
-            $dettagli[$k] = $_REQUEST[$k];
+            $dettagli[$k] = $total[$k];
         }
         return $dettagli;
     }
@@ -95,7 +96,5 @@ class V_Basic extends Smarty
         $this->assign('username', $dati['username']);
         $this->assign('email', $dati['email']);
     }
-
-
 
 }
