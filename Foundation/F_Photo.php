@@ -74,15 +74,7 @@ class F_Photo extends \Foundation\F_Database
         return self::get($toSearch, $DB_table);
     }
 
-
-
-//____________________________________________________________________________\\
-//____________________________________________________________________________\\
-   //----CONTROLLA LE FUNZIONI DI F_Album PER LE CATEGORIE E----\\
-  //----SE VANNO BENE, COPIALE QUI CAMBIANDO IL NOME DELLA TABELLA!!!----\\
- //
-
-
+    
     /**
      * Rethrives all the photos with the selected categories
      *
@@ -146,11 +138,7 @@ class F_Photo extends \Foundation\F_Database
             $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
         }
-
-        //----ELSE----\\
- //----NO CHANGES WERE MADE----\\
-//----MAY THROW AN EXCEPTION----\\
-   //----OR LEAVE IT EMPTY----\\
+//-----ELSE NO CHANGES WERE MADE MAY THROW AN EXCEPTION OR LEAVE IT EMPTY-----\\
 //        else
 //        {
 //            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
@@ -195,8 +183,6 @@ class F_Photo extends \Foundation\F_Database
         }
         return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
     }
-//____________________________________________________________________________\\
-//____________________________________________________________________________\\
 
 
     /**
