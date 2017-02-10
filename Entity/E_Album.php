@@ -87,7 +87,7 @@ class E_Album
         {
             return TRUE;
         }
-        return FALSE;
+        throw new \Exceptions\invalid_Text(2, $title);
     }
 
 
@@ -202,7 +202,7 @@ class E_Album
 
     /**
      * Retrieves the Timestamp of album's creation date
-     * 
+     *
      * @return int The timestamp of the Album's creation
      */
     public function get_Creation_Date()

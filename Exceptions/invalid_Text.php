@@ -11,17 +11,24 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class InvalidInput extends \Exception
+class invalid_Text extends \Exception
 {
-    public function __construct($code, $exc) {
-        switch ($code) {
+    public function __construct($code, $exc)
+    {
+        switch ($code)
+        {
             case 0:
-                $message = "ATTENZIONE! L'username inserito ($exc) comprende caratteri non permessi.";
+                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: -_.";
                 break;
 
             case 1:
-                $message = "ATTENZIONE! L'email inserita ($exc) comprende caratteri non permessi.";
+                $message ="L'email inserita non è valida. Immessa: $exc";
                 break;
+
+            case 2:
+                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: '-_.!? e lo spazio";
+                break;
+
 
             //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
 
@@ -30,5 +37,6 @@ class InvalidInput extends \Exception
 
         parent::__construct($message, NULL, NULL);
     }
+
 
 }

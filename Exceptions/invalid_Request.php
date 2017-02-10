@@ -11,17 +11,24 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class invalid_Query extends \Exception
+class invalid_Request extends \Exception
 {
-    public function __construct($code, $exc) {
-        switch ($code) {
+    public function __construct($code, $exc)
+    {
+        switch ($code)
+        {
             case 0:
-                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione 0: $exc";
+                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione in: $exc";
                 break;
 
             case 1:
                 $message = "Attenzione! C'è stato un errore nella richiesta: $exc";
                 break;
+
+            case 2:
+                $message = "Attenzione! Non sono state apportate modifiche. Dati ricevuti: $exc";
+                break;
+
 
             default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }
@@ -29,6 +36,5 @@ class invalid_Query extends \Exception
         parent::__construct($message, NULL, NULL);
     }
 
+
 }
-
-

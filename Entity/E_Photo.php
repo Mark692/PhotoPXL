@@ -123,7 +123,7 @@ class E_Photo
         {
             return TRUE;
         }
-        return FALSE;
+        throw new \Exceptions\invalid_Text(2, $title);
     }
 
 

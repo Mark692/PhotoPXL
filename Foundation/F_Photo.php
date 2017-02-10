@@ -140,7 +140,7 @@ class F_Photo extends \Foundation\F_Database
      * @param enum or array $new_cats The new category/ies chosen for the album
      * @param enum or array $old_cats The category/ies to remove from the album
      * @param int $album_ID The album's ID to whom set/remove the categories
-     * @throws \Exceptions\invalid_Query In case there are no categories to add neither to remove
+     * @throws \Exceptions\invalid_Request In case there are no categories to add neither to remove
      */
     public static function update_Categories($new_cats, $old_cats, $album_ID)
     {
@@ -164,11 +164,10 @@ class F_Photo extends \Foundation\F_Database
             $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
         }
-//-----ELSE NO CHANGES WERE MADE MAY THROW AN EXCEPTION OR LEAVE IT EMPTY-----\\
-//        else
-//        {
-//            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
-//        }
+        else
+        {
+            throw new \Exceptions\invalid_Request(2, array_merge($new_cats, $old_cats));
+        }
         parent::execute_query($query, $toBind);
     }
 
