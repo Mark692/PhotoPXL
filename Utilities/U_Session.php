@@ -61,10 +61,11 @@ class USession
      */
     function get_val($chiave)
     {
-        if (isset($_SESSION[$chiave]))
+        if(isset($_SESSION[$chiave]))
+        {
             return $_SESSION[$chiave];
-        else
-            return false;
+        }
+        return FALSE;
     }
 
 
