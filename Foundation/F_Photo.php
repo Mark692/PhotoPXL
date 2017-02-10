@@ -127,6 +127,30 @@ class F_Photo extends \Foundation\F_Database
         parent::execute_query($query, $toBind);
     }
 
+    /**
+     * Updates a record from the "photo" table
+     *
+     * @param array $new_photo The ARRAY containing the new photo details got from "View"
+     * @param array $old_photo The ARRAY containing the old photo details
+     */
+    public static function update_details($new_photo, $old_photo)
+    {
+        $DB_table = "photo";
+        $primary_Key = "id";
+        parent::update($new_photo, $old_photo, $DB_table, $primary_Key);
+
+    }
+
+
+    public static function move_to($album_ID, $photo_ID)
+    {
+        $query = "UPDATE `photo_album` "
+                    ."SET `album`=? "
+                    ."WHERE `photo`=?";
+
+        $toBind = array($album_ID, $photo_ID);
+        parent::execute_query($query, $toBind);
+    }
 
 
 
@@ -134,5 +158,4 @@ class F_Photo extends \Foundation\F_Database
 
     //CREA FUNZIONI PER:
     //update_photo()
-    //move_to() - cambia in foto-album
 }
