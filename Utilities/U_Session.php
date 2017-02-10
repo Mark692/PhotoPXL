@@ -29,14 +29,29 @@ class USession
         unset($_SESSION[$chiave]);
     }
 
-/**
+
+    /**
+     * Distrugge la sessione ed elimina il cookie per il controllo della sessione
+     */
+    function unset_session()
+    {
+        $cookie = USingleton::getInstance('UCookie');
+        $cookie->eliminaCookie('sessione');
+        session_destroy();
+        $cookie->eliminaCookie("PHPSESSID");
+    }
+
+
+    /**
      * Dati chiave e valore, crea un indice nell'array $_SESSION
      * @param mixed $chiave
      * @param mixed $valore
      */
-    function set_Val($chiave,$valore) {
-        $_SESSION[$chiave]=$valore;
+    function set_Val($chiave, $valore)
+    {
+        $_SESSION[$chiave] = $valore;
     }
+
 
     /**
      * Data al chiave, legge il valore corrispondente e lo ritorna, oppure ritorna false
