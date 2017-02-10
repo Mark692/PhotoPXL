@@ -36,7 +36,7 @@ class F_Photo extends \Foundation\F_Database
             $photo->get_Description(),
             $photo->get_Upload_Date(),
             $photo->get_Reserved(),
-            $uploader,  //Adds the user
+            $uploader,
             $photo_details["photo_blob"],
             $photo_details["size"],
             $photo_details["type"]);

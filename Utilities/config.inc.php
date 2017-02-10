@@ -29,8 +29,6 @@ define("NATURA_MORTA", 7);
 define("SPORT", 8);
 
 
-//----USERS----\\
-
 
 //----Limits
 define("UPLOAD_STD_LIMIT", 10);
