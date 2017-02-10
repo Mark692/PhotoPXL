@@ -67,4 +67,18 @@ class F_Comment extends \Foundation\F_Database
         $orderBy = "id";
         return parent::get($toSearch, $DB_table, $fetchAll, $orderBy);
     }
+
+
+    /**
+     * Deletes a comment
+     *
+     * @param int $comment_ID The ID of the comment to remove
+     */
+    public static function remove($comment_ID)
+    {
+        $query = "DELETE FROM `comment` "
+                ."WHERE (`id`=?) ";
+        $toBind = array($comment_ID);
+        parent::execute_query($query, $toBind);
+    }
 }
