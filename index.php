@@ -18,7 +18,9 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 global $config;
 
 $test = new \Prove\TF_Album();
-$test->T_set_get_Cat();
+//$test->T_set_get_Cat();
+$test->Test_GetByCats();
+//$test->Test_update();
 
 
 

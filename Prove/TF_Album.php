@@ -23,21 +23,24 @@ class TF_Album extends TFun
     }
 
 
+    public function Test_GetByCats()
+    {
+        $separate = nl2br("\r\n")."----------------------------------------------".nl2br("\r\n").nl2br("\r\n");
+
+        echo(nl2br("\r\n").self::get_By_Categories(parent::rnd_array(), 1));
+        echo($separate);
+    }
 
 
+    public function Test_update()
+    {
+//        $new = array(2, 4, 6, 7, 8);
+//        $old = array(2, 4, 6, 7, 8);
 
-
-
-
-
-
-
-
-
-
-
-
-
+        $new = [];
+        $old = [];
+        return self::update_Categories($new, $old, 1);
+    }
 
 
     /**
@@ -58,21 +61,25 @@ class TF_Album extends TFun
 
             echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$v); //||\\
         }
-        $where = substr($where, 0, -5); //Removes the " OR " at the end of the string
+        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
 
-        $query = 'SELECT * '
-                .'FROM `cat_album` '
-                .'WHERE '.$where;
+        $query = "SELECT * "
+                ."FROM `album` "
+                ."WHERE `id` in ("
+                    ."SELECT `album` "
+                    ."FROM `cat_album` "
+                    .'WHERE '.$where
+                    .")";
 
         echo(nl2br("\r\n")."La query completa è: ".$query); //||\\
 
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+//        $pdo = parent::connettiti();
+//        $pdo_stmt = $pdo->prepare($query);
+//        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
+//        $pdo_stmt->execute();
+//
+//        $pdo = NULL; //Closes DB connection
+//        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -110,7 +117,7 @@ class TF_Album extends TFun
         {
             $query_ADD = self::set_Categories($to_add, $album_ID);
             $query_DEL = self::remove_Categories($to_remove, $album_ID);
-            $query = $query_ADD.", ".$query_DEL;
+            $query = $query_ADD."; ".$query_DEL;
             $toBind = array_merge($to_add, $to_remove);
 
 
@@ -151,7 +158,7 @@ class TF_Album extends TFun
 //            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
             echo(nl2br("\r\n")."TUTTO HA FALLITO. VIENE LANCIATA L'ECCEZIONE!!"); //||\\
         }
-        parent::execute_query($query, $toBind);
+//        parent::execute_query($query, $toBind);
     }
 
 
@@ -166,18 +173,13 @@ class TF_Album extends TFun
 
     PUBLIC function set_Categories($cat, $album_ID) //||\\
     {
-        echo(nl2br("\r\n")."TEST SET: "); //||\\
-        echo(nl2br("\r\n")."Array cat: "); //||\\
-        print_r($cat); //||\\
-
-
         $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
+
         foreach ((array) $cat as $value)
         {
             $query .= "('$album_ID', ?),";
-
-            echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$value); //||\\
         }
+
         return $query = substr($query, 0, -1); //Trims the last ","
     }
 
@@ -193,26 +195,15 @@ class TF_Album extends TFun
 
     PUBLIC function remove_Categories($cats, $album_ID) //||\\
     {
-        echo(nl2br("\r\n")."TEST REMOVE: "); //||\\
-
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";
 
-        echo(nl2br("\r\n").'Query: '.$query); //||\\
-        echo(nl2br("\r\n")."Array cat: "); //||\\
-        print_r($cats); //||\\
-
-
         foreach ((array) $cats as $value)
         {
             $query .= "(`category`=?) OR ";
-
-            echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$value); //||\\
         }
 
-        echo(nl2br("\r\n")); //||\\
-
-        return substr($query, 0, -5)."))"; //Trims the last " OR " and closes the paranthesys
+        return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
     }
 }

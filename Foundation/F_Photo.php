@@ -81,10 +81,120 @@ class F_Photo extends \Foundation\F_Database
    //----CONTROLLA LE FUNZIONI DI F_Album PER LE CATEGORIE E----\\
   //----SE VANNO BENE, COPIALE QUI CAMBIANDO IL NOME DELLA TABELLA!!!----\\
  //
-//get_By_Categories\\
-//update_Categories\\
-//set_Categories\\
-//remove_Categories\\
+
+
+    /**
+     * Rethrives all the photos with the selected categories
+     *
+     * @param enum or array $cats The category/ies to search
+     */
+    public static function get_By_Categories($cats)
+    {
+        $where = '';
+        foreach ((array) $cats as $v)
+        {
+            $where .= '(`category`=?) OR ';
+        }
+        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
+
+        $query = "SELECT * "
+                ."FROM `photo` "
+                ."WHERE `id` in ("
+                    ."SELECT `photo` "
+                    ."FROM `cat_photo` "
+                    .'WHERE '.$where
+                    .")";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * Updates the categories of an album. This function both add new categories
+     * and remove old categories (if selected) from the album
+     *
+     * @param enum or array $new_cats The new category/ies chosen for the album
+     * @param enum or array $old_cats The category/ies to remove from the album
+     * @param int $album_ID The album's ID to whom set/remove the categories
+     * @throws \Exceptions\InvalidAlbumInfo In case there are no categories to add neither to remove
+     */
+    public static function update_Categories($new_cats, $old_cats, $album_ID)
+    {
+        $to_add    = array_diff((array) $new_cats, (array) $old_cats);
+        $to_remove = array_diff((array) $old_cats, (array) $new_cats);
+
+        if(count($to_add)>=1 && count($to_remove)>=1)
+        {
+            $query_ADD = self::set_Categories($to_add, $album_ID);
+            $query_DEL = self::remove_Categories($to_remove, $album_ID);
+            $query = $query_ADD."; ".$query_DEL;
+            $toBind = array_merge($to_add, $to_remove);
+        }
+        elseif(count($to_add)>=1 && count($to_remove)<1)
+        {
+            $query = self::set_Categories($to_add, $album_ID); // =$query_ADD;
+            $toBind = $to_add;
+        }
+        elseif(count($to_add)<1 && count($to_remove)>=1)
+        {
+            $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
+            $toBind = $to_remove;
+        }
+
+        //----ELSE----\\
+ //----NO CHANGES WERE MADE----\\
+//----MAY THROW AN EXCEPTION----\\
+   //----OR LEAVE IT EMPTY----\\
+//        else
+//        {
+//            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
+//        }
+        parent::execute_query($query, $toBind);
+    }
+
+
+    /**
+     * Sets the album categories. To be used on album creation
+     *
+     * @param string/array $cat The category/ies chosen for the album
+     * @param int $album_ID The album's ID to whom set the categories
+     * @return string The query used to add categories to the album
+     */
+    private static function set_Categories($cat, $album_ID)
+    {
+        $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
+        foreach ((array) $cat as $value)
+        {
+            $query .= "('$album_ID', ?),";
+        }
+        return $query = substr($query, 0, -1); //Trims the last ","
+    }
+
+
+    /**
+     * Removes the selected categories from the album
+     *
+     * @param enum or array $cats The category/ies to remove from the album selected
+     * @param int $album_ID The album to modify and remove categories from
+     * @return string The query used to remove categories from the album
+     */
+    private static function remove_Categories($cats, $album_ID)
+    {
+        $query = "DELETE FROM `cat_album` "
+                ."WHERE (`album`=$album_ID) "
+                ."AND (";
+        foreach ((array) $cats as $value)
+        {
+            $query .= "(`category`=?) OR ";
+        }
+        return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
+    }
 //____________________________________________________________________________\\
 //____________________________________________________________________________\\
 

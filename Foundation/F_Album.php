@@ -78,11 +78,15 @@ class F_Album extends \Foundation\F_Database
         {
             $where .= '(`category`=?) OR ';
         }
-        $where = substr($where, 0, -5); //Removes the " OR " at the end of the string
+        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
 
-        $query = 'SELECT * '
-                .'FROM `cat_album` '
-                .'WHERE '.$where;
+        $query = "SELECT * "
+                ."FROM `album` "
+                ."WHERE `id` in ("
+                    ."SELECT `album` "
+                    ."FROM `cat_album` "
+                    .'WHERE '.$where
+                    .")";
 
         $pdo = parent::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -112,7 +116,7 @@ class F_Album extends \Foundation\F_Database
         {
             $query_ADD = self::set_Categories($to_add, $album_ID);
             $query_DEL = self::remove_Categories($to_remove, $album_ID);
-            $query = $query_ADD.", ".$query_DEL;
+            $query = $query_ADD."; ".$query_DEL;
             $toBind = array_merge($to_add, $to_remove);
         }
         elseif(count($to_add)>=1 && count($to_remove)<1)
@@ -125,10 +129,13 @@ class F_Album extends \Foundation\F_Database
             $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
         }
-        else
-        {
-            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
-        }
+
+        //----ELSE NO CHANGES WERE MADE----\\
+//----MAY THROW AN EXCEPTION OR LEAVE IT EMPTY----\\
+//        else
+//        {
+//            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
+//        }
         parent::execute_query($query, $toBind);
     }
 
@@ -167,7 +174,7 @@ class F_Album extends \Foundation\F_Database
         {
             $query .= "(`category`=?) OR ";
         }
-        return $query = substr($query, 0, -5).")"; //Trims the last " OR " and closes the paranthesys
+        return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
     }
 
 

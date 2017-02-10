@@ -34,3 +34,5 @@ define("SPORT", 8);
 
 //----Limits
 define("UPLOAD_STD_LIMIT", 10);
+define("VIEW_PHOTO_PER_ROW", 4);
+define("VIEW_PHOTO_PER_ALBUM", 16);
