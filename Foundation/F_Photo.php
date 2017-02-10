@@ -74,7 +74,7 @@ class F_Photo extends \Foundation\F_Database
         return self::get($toSearch, $DB_table);
     }
 
-    
+
     /**
      * Rethrives all the photos with the selected categories
      *
