@@ -42,9 +42,13 @@ class V_Upload extends \View\V_Basic
     {
         $this->assign('content', $this->mainContent);
     }
-public function set_Bar($tipo){
+
+
+    public function set_Bar($tipo)
+    {
         $cont = $this->fetch('Topbar_'.$tipo.'.tpl');
         $this->assign('TopBar_', $cont);
     }
+
 
 }
