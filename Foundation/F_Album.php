@@ -61,8 +61,7 @@ class F_Album extends \Foundation\F_Database
         $toSearch = array("user" => $username);
         $DB_table = "album";
         $fetchAll = TRUE;
-        $orderBy_column = "creation_date";
-        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
+        return parent::get($toSearch, $DB_table, $fetchAll);
     }
 
 

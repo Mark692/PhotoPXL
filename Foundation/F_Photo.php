@@ -93,7 +93,7 @@ class F_Photo extends \Foundation\F_Database
 
         $pdo = parent::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
+        $pdo_stmt = parent::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection

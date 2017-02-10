@@ -44,12 +44,27 @@ class F_Comment extends \Foundation\F_Database
      * @param int $photo_ID The photo's ID selected to get the comments from
      * @return array The comments made for the photo
      */
-    public static function get_from($photo_ID)
+    public static function get_By_Photo($photo_ID)
     {
         $toSearch = array("photo_ID" => $photo_ID);
         $DB_table = "comment";
         $fetchAll = TRUE;
-        $orderBy_column = "id"; //Orders by the autoincremental ID: from the oldest to the newest
-        parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
+        $orderBy = "id";
+        parent::get($toSearch, $DB_table, $fetchAll, $orderBy);
+    }
+
+
+    /**
+     * Retrieves all the comments that match the query
+     *
+     * @param array $toSearch The parameters to search in the "comment" table
+     * @return array The list of all comments that match the query
+     */
+    public static function get($toSearch)
+    {
+        $DB_table = "comment";
+        $fetchAll = TRUE;
+        $orderBy = "id";
+        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy);
     }
 }

@@ -53,12 +53,27 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrives all the users that match the query
+     * Retrieves the user with the given $username
+     * @param string $username The user's username to search
+     * @return array The user details
+     */
+    public static function get_By_Username($username)
+    {
+        $toSearch = array("username" => $username);
+        $DB_table = "users";
+        return parent::get($toSearch, $DB_table);
+    }
+
+
+
+    /**
+     * Retrieves all the users that match the query
      *
      * @param array $arr_values The values to search with the query
      * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy The table column chosen to order the results
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
+     * @return array All the users that match the query
      */
     public static function get($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
@@ -100,11 +115,6 @@ class F_User extends \Foundation\F_Database
     public function remove_like_from($photo_id)
     {
        // foundation delete from like where $this->id, $photo_id
-    }
-
-    public function add_comment($photo_id, $text)
-    {
-        // foundation insert comments values (photoid, text, $this->id)
     }
 
 
