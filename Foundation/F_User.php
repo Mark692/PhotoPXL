@@ -101,26 +101,58 @@ class F_User extends \Foundation\F_Database
 
 
 
-
     /**
      * Adds a like to the photo
-     * @param \Entity\E_Photo $photo_id The liked photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @param string $username The user's username
      */
-    public function add_like($photo_id)
+    public static function add_Like_to($photo_ID, $username)
     {
-        // foundation insert like values ($this->id, $photo_id)
+        $query = 'INSERT INTO `likes` SET '
+                .'`user`=?, '
+                .'`photo`=?';
+        $toBind = array($username, $photo_ID);
+        parent::execute_query($query, $toBind);
     }
 
 
-    public function remove_like_from($photo_id)
+    /**
+     * Retrieves the number of likes from the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return int The number of likes of the selected photo
+     */
+    public static function get_Total_Likes($photo_ID)
     {
-       // foundation delete from like where $this->id, $photo_id
+        $query = "SELECT COUNT(user) "
+                ."FROM likes "
+                ."WHERE photo=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $photo_ID);
+        $total_likes = $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $total_likes;
     }
 
 
-    public function remove_comment($comment_id)
+    /**
+     * Removes the user's like from the selected photo
+     *
+     * @param string $username The user that wants to remove the like
+     * @param int $photo_ID The target photo's ID
+     */
+    public static function remove_Like($username, $photo_ID)
     {
-        // foundation delete from comments where comment_id
+        $query = "DELETE FROM `likes` "
+                ."WHERE (`username`=?) AND (`photo`=?)";
+
+        $toBind = array($username, $photo_ID);
+        parent::execute_query($query, $toBind);
     }
+
 
 }
