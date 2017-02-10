@@ -6,64 +6,38 @@
  * and open the template in the editor.
  */
 
-namespace Foundation;
-
-class F_Album extends \Foundation\F_Database
+namespace Prove;
+//
+//class TF_Album extends \Foundation\F_Database
+class TF_Album extends TFun
 {
 
-    /**
-     * Creates an album in the DB
-     *
-     * @param \Entity\E_Album $album The album to save
-     * @param string $owner The $owner's username
-     */
-    public static function insert(\Entity\E_Album $album, $owner)
+    public function T_set_get_Cat()
     {
-        $query = 'INSERT INTO `album` SET '
-                .'`title`=?, '
-                .'`description`=?, '
-                .'`creation_date`=?, '
-                .'`user`=?';
+        $separate = nl2br("\r\n")."----------------------------------------------".nl2br("\r\n").nl2br("\r\n");
 
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $album->get_Title(),
-            $album->get_Description(),
-            $album->get_Creation_Date(),
-            $owner);
-
-        $album_ID = parent::execute_query($query, $toBind); //Inserts the album and gets its ID.
-        $album->set_ID($album_ID);
+        echo(nl2br("\r\n")."Query set: ".self::set_Categories(parent::rnd_array(), 1));
+        echo($separate);
+        echo(nl2br("\r\n")."Query remove: ".self::remove_Categories(parent::rnd_array(), 1));
+        echo($separate);
     }
 
 
-    /**
-     * Updates the album details
-     *
-     * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by_*($q)
-     * @param int $album_ID The album's ID
-     */
-    public static function update($new_Details, $old_Details, $album_ID)
-    {
-        $DB_table = "album";
-        parent::update($new_Details, $old_Details, $DB_table, $album_ID);
-    }
 
 
-    /**
-     * Rethrives the albums of a user by passing its username.
-     *
-     * @param string $username The user's username selected to get the albums from
-     * @return array The user's albums
-     */
-    public static function get_By_User($username)
-    {
-        $toSearch = array("user" => $username);
-        $DB_table = "album";
-        $fetchAll = TRUE;
-        $orderBy_column = "creation_date";
-        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy_column);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -71,18 +45,26 @@ class F_Album extends \Foundation\F_Database
      *
      * @param enum or array $cats The category/ies to search
      */
-    public static function get_By_Categories($cats)
+    public function get_By_Categories($cats)
     {
+        echo(nl2br("\r\n").nl2br("\r\n")."TEST get_By_Categories".nl2br("\r\n").nl2br("\r\n")); //||\\
+        echo("Categorie scelte: "); //||\\
+        print_r($cats); //||\\
+
         $where = '';
         foreach ((array) $cats as $v)
         {
             $where .= '(`category`=?) OR ';
+
+            echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$v); //||\\
         }
         $where = substr($where, 0, -5); //Removes the " OR " at the end of the string
 
         $query = 'SELECT * '
                 .'FROM `cat_album` '
                 .'WHERE '.$where;
+
+        echo(nl2br("\r\n")."La query completa è: ".$query); //||\\
 
         $pdo = parent::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -103,10 +85,26 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album's ID to whom set/remove the categories
      * @throws \Exceptions\InvalidAlbumInfo In case there are no categories to add neither to remove
      */
-    public static function update_Categories($new_cats, $old_cats, $album_ID)
+    public function update_Categories($new_cats, $old_cats, $album_ID)
     {
+        echo(nl2br("\r\n")."TEST UPDATE: "); //||\\
+
+
         $to_add    = array_diff((array) $new_cats, (array) $old_cats);
         $to_remove = array_diff((array) $old_cats, (array) $new_cats);
+
+
+        echo(nl2br("\r\n")."NUOVE categorie: "); //||\\
+        print_r($new_cats); //||\\
+        echo(nl2br("\r\n")."VECCHIE categorie: "); //||\\
+        print_r($old_cats); //||\\
+        echo(nl2br("\r\n")."TO ADD: "); //||\\
+        print_r($to_add); //||\\
+        echo(nl2br("\r\n")."TO REMOVE: "); //||\\
+        print_r($to_remove); //||\\
+        echo(nl2br("\r\n")."Count di TO_ADD    = ".count($to_add)); //||\\
+        echo(nl2br("\r\n")."Count di TO_REMOVE = ".count($to_remove)); //||\\
+
 
         if(count($to_add)>=1 && count($to_remove)>=1)
         {
@@ -114,20 +112,44 @@ class F_Album extends \Foundation\F_Database
             $query_DEL = self::remove_Categories($to_remove, $album_ID);
             $query = $query_ADD.", ".$query_DEL;
             $toBind = array_merge($to_add, $to_remove);
+
+
+            echo(nl2br("\r\n")."Primo if: entrambi i count sono >= 1"); //||\\
+            echo(nl2br("\r\n")."Query ADD: ".$query_ADD); //||\\
+            echo(nl2br("\r\n")."Query DEL: ".$query_DEL); //||\\
+            echo(nl2br("\r\n")."Query Completa: ".$query); //||\\
+            echo(nl2br("\r\n")."Array toBind: "); //||\\
+            print_r($toBind); //||\\
+
         }
         elseif(count($to_add)>=1 && count($to_remove)<1)
         {
             $query = self::set_Categories($to_add, $album_ID); // =$query_ADD;
             $toBind = $to_add;
+
+
+            echo(nl2br("\r\n")."Secondo if: ADD>=1, REMOVE<1"); //||\\
+            echo(nl2br("\r\n")."Query Completa: ".$query); //||\\
+            echo(nl2br("\r\n")."Array toBind: "); //||\\
+            print_r($toBind); //||\\
+
         }
         elseif(count($to_add)<1 && count($to_remove)>=1)
         {
             $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
+
+
+            echo(nl2br("\r\n")."Terzo if: ADD<1, REMOVE>=1"); //||\\
+            echo(nl2br("\r\n")."Query Completa: ".$query); //||\\
+            echo(nl2br("\r\n")."Array toBind: "); //||\\
+            print_r($toBind); //||\\
+
         }
         else
         {
-            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
+//            throw new \Exceptions\InvalidAlbumInfo(0, array_merge($new_cats, $old_cats));
+            echo(nl2br("\r\n")."TUTTO HA FALLITO. VIENE LANCIATA L'ECCEZIONE!!"); //||\\
         }
         parent::execute_query($query, $toBind);
     }
@@ -140,12 +162,21 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */
-    private static function set_Categories($cat, $album_ID)
+//    private static function set_Categories($cat, $album_ID)
+
+    PUBLIC function set_Categories($cat, $album_ID) //||\\
     {
+        echo(nl2br("\r\n")."TEST SET: "); //||\\
+        echo(nl2br("\r\n")."Array cat: "); //||\\
+        print_r($cat); //||\\
+
+
         $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
         foreach ((array) $cat as $value)
         {
             $query .= "('$album_ID', ?),";
+
+            echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$value); //||\\
         }
         return $query = substr($query, 0, -1); //Trims the last ","
     }
@@ -158,32 +189,30 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album to modify and remove categories from
      * @return string The query used to remove categories from the album
      */
-    private static function remove_Categories($cats, $album_ID)
+    //private static function remove_Categories($cats, $album_ID)
+
+    PUBLIC function remove_Categories($cats, $album_ID) //||\\
     {
+        echo(nl2br("\r\n")."TEST REMOVE: "); //||\\
+
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";
+
+        echo(nl2br("\r\n").'Query: '.$query); //||\\
+        echo(nl2br("\r\n")."Array cat: "); //||\\
+        print_r($cats); //||\\
+
+
         foreach ((array) $cats as $value)
         {
             $query .= "(`category`=?) OR ";
+
+            echo(nl2br("\r\n").'Valore dell\'array $cats attuale: '.$value); //||\\
         }
-        return $query = substr($query, 0, -5).")"; //Trims the last " OR " and closes the paranthesys
+
+        echo(nl2br("\r\n")); //||\\
+
+        return substr($query, 0, -5)."))"; //Trims the last " OR " and closes the paranthesys
     }
-
-
-    /**
-     * Deletes an album from the DB. Its photos will be kept with no album association
-     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum
-     *
-     * @param int $album_ID The album ID to delete from the DB
-     */
-    public static function delete($album_ID)
-    {
-        $query = "DELETE FROM `album` "
-                ."WHERE (`id`=?) ";
-
-        $toBind = array("id" => $album_ID);
-        parent::execute_query($query, $toBind);
-    }
-
 }

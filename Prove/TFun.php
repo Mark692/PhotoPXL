@@ -17,10 +17,11 @@ class TFun
      * Stampa a video classi e funzioni che necessitano di ulteriore implementazione
      * @param bool $show_2131 TRUE mostra i file con codice 2131, FALSE li nasconde
      */
-    public function __construct($show_2131='')
+//    public function __construct($show_2131='')
+    public function __construct()
     {
         $this->separate = nl2br("\r\n")."----------------------------------------------".nl2br("\r\n").nl2br("\r\n");
-
+        $show_2131=''; //ELIMINALO E RIPRISTINA IL VECCHIO COSTRUTTORE
         if($show_2131===2131)
         {
 
@@ -106,12 +107,24 @@ class TFun
     }
 
 
-    protected static function arr_2format($array)
+    protected function arr_2format($array)
     {
         foreach((array) $array as $chiave => $valore)
         {
             echo($chiave." => ".$valore.nl2br("\r\n"));
         }
+    }
+
+
+
+    protected function rnd_array($max_chars='')
+    {
+        return $rnd_array = array(
+            rand(0, 8),
+            rand(0, 8),
+            rand(0, 8),
+            rand(0, 8),
+            rand(0, 8));
     }
 
 

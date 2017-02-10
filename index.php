@@ -17,9 +17,8 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
-//
-$try = new Prove\TC_Registrazione();
-$try->save_User();
+$test = new \Prove\TF_Album();
+$test->T_set_get_Cat();
 
 
 
@@ -34,6 +33,8 @@ $try->save_User();
 
 
 
+//$try = new Prove\TC_Registrazione();
+//$try->save_User();
 
 
 
