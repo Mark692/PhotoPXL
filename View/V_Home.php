@@ -8,19 +8,17 @@
 
 namespace View;
 
-class V_Upload extends \View\V_Basic
+class V_Home extends \View\V_Basic
 {
-    public function impostaPaginaGuest()
-    {
-        
-    }
-
+    
+    private $mainContent;
+    
 
     /**
      * 
-     * Mostra il tamplete di home_dafault
+     * Mostra il tamplete della Home di default 
      */
-    public function set_home_default()
+    public function set_home()
     {
         $this->display('home_default.tpl');
     }
@@ -43,11 +41,13 @@ class V_Upload extends \View\V_Basic
         $this->assign('content', $this->mainContent);
     }
 
-
+    /**
+     * 
+     */
     public function set_Bar($tipo)
     {
         $cont = $this->fetch('Topbar_'.$tipo.'.tpl');
-        $this->assign('TopBar_', $cont);
+        $this->assign('TopBar', $cont);
     }
 
 

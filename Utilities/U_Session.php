@@ -6,7 +6,9 @@
  * and open the template in the editor.
  */
 
-class USession
+namespace Utilities;
+
+class U_Session
 {
     /**
      * Il metodo, crea la sessione. Imposta la frequenza di passaggio del garbage collector

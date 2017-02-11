@@ -6,7 +6,9 @@
  * and open the template in the editor.
  */
 
-class UCookie
+namespace Utilities;
+
+class U_Cookie
 {
     public function __construct()
     {
