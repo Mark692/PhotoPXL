@@ -22,11 +22,11 @@ class invalid_Photo extends \Exception
                 break;
 
             case 1:
-                $message ="L'email inserita non è valida. Immessa: $exc";
+                $message ="Impossibile creare miniatura. Percorso non valido: $exc";
                 break;
 
             case 2:
-                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: '-_.!? e lo spazio";
+                $message ="";
                 break;
 
 

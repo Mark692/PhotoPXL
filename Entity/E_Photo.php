@@ -324,7 +324,8 @@ class E_Photo
 
     /**
      *
-     * @param string $path
+     * @param type $path
+     * @throws \Exceptions\invalid_Photo
      */
     public function set_Fullsize($path)
     {
@@ -344,6 +345,10 @@ class E_Photo
 
     public function set_Thumbnail($path)
     {
+        if(realpath($path)===FALSE)
+        {
+            throw new \Exceptions\invalid_Photo(1, $path);
+        }
         $imagick = new \Imagick(realpath($path));
         $width = THUMBNAIL_WIDTH;
         $height = THUMBNAIL_HEIGHT;
