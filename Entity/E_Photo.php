@@ -16,11 +16,17 @@ class E_Photo
     private $ID;
     private $title;
     private $description;
+
     private $is_reserved;
     private $upload_date;
     private $categories = []; //Categorie della foto
     private $likes;
     private $comments = [];
+
+    private $fullsize;
+    private $thumbnail;
+    private $size;
+    private $type;
 
 
     /**
@@ -268,24 +274,44 @@ class E_Photo
     }
 
 
+    /**
+     * Sets a list of comments for this photo
+     *
+     * @param array $comments The list of comments for this photo
+     */
     public function set_Comments($comments)
     {
         $this->comments = $comments;
     }
 
 
-    public function add_Comment($comment)
-    {
-        array_push($this->comments, $comment);
-    }
-
-
+    /**
+     * Retrieves the list of comments made for this photo
+     *
+     * @return array The list of comments for this photo
+     */
     public function get_Comments()
     {
         return $this->comments;
     }
 
 
+    /**
+     * Adds a comment at the current photo
+     *
+     * @param string $comment The comment to add
+     */
+    public function add_Comment($comment)
+    {
+        array_push($this->comments, $comment);
+    }
+
+
+    /**
+     * Removes a comment if exists
+     *
+     * @param int $comment_ID The comment's ID to remove
+     */
     public function remove_Comment($comment_ID)
     {
         if(in_array($comment_ID, $this->comments))
@@ -293,5 +319,68 @@ class E_Photo
             unset($this->comments[$comment_ID]);
         }
         $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
+    }
+
+
+    /**
+     *
+     * @param string $path
+     */
+    public function set_Fullsize($path)
+    {
+        $this->fullsize = realpath($path);
+        if($this->fullsize===FALSE)
+        {
+            throw new \Exceptions\invalid_Photo(0, $path);
+        }
+    }
+
+
+    public function get_Fullsize()
+    {
+        return $this->fullsize;
+    }
+
+
+    public function set_Thumbnail($path)
+    {
+        $imagick = new \Imagick(realpath($path));
+        $width = THUMBNAIL_WIDTH;
+        $height = THUMBNAIL_HEIGHT;
+        $best_Fit = TRUE;
+        $fill = TRUE;
+        $imagick->thumbnailImage($width, $height, $best_Fit, $fill);
+
+        $this->thumbnail = $path;
+    }
+
+
+    public function get_Thumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+
+    public function set_Size($size)
+    {
+        $this->size = $size;
+    }
+
+
+    public function get_Size()
+    {
+        return $this->size;
+    }
+
+
+    public function set_Type($type)
+    {
+        $this->type = $type;
+    }
+
+
+    public function get_Type()
+    {
+        return $this->type;
     }
 }

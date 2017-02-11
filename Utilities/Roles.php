@@ -15,7 +15,6 @@ namespace Utilities;
  */
 abstract class Roles
 {
-    
     const BANNED = 0;
     const STANDARD = 1;
     const PRO = 2;

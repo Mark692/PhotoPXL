@@ -30,5 +30,13 @@ define("SPORT", 8);
 
 
 
-//----Limits
+//----Standard User Limits----\\
 define("UPLOAD_STD_LIMIT", 10);
+
+
+//----Photo's Details----\\
+define("PHOTOS_PER_ROW", 4);
+define("PHOTOS_PER_PAGE", 16);
+
+define("THUMBNAIL_WIDTH", 100); //Larghezza
+define("THUMBNAIL_HEIGHT", 100); //Altezza
