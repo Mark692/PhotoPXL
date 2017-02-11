@@ -189,17 +189,18 @@ class E_Photo
     /**
      * Sets the likes the Photo received
      *
-     * @param int $number The number of likes  the Photo received
+     * @param array $user_list The list of users that liked the Photo
      */
-    public function set_Likes($number)
+    public function set_Likes($user_list)
     {
-        $this->likes = $number;
+        $this->likes = $user_list;
     }
 
 
     /**
-     * Retrieves the likes the Photo received
-     * @return int The likes the Photo received
+     * Retrieves the list of users that liked the Photo
+     *
+     * @return array The list of users that liked the Photo
      */
     public function get_Likes()
     {
@@ -208,26 +209,47 @@ class E_Photo
 
 
     /**
-     * Adds a like to the current Photo
+     * Returns the total of likes received
+     *
+     * @return int The number of likes received
      */
-    public function add_Like()
+    public function get_Total_Likes()
     {
-        $this->likes = $this->likes +1;
+        return count($this->likes);
+    }
+
+
+    /**
+     * Adds a like to the current Photo
+     *
+     * @param string $username The user's username that likes the photo
+     */
+    public function add_Like($username)
+    {
+        array_push($this->likes, $username);
     }
 
 
     /**
      * Removes a like from the current Photo
+     *
+     * @param string $username The user that wants to remove the like from this photo
      */
-    public function remove_Like()
+    public function remove_Like($username)
     {
-        $this->likes = $this->likes -1;
+        $user_key = array_search($username, $this->likes);
+            if ($user_key !== FALSE) //Exists in the "likes" array
+            {
+                unset($this->categories[$user_key]);
+            }
+        $this->likes = array_values($this->likes); //Ordinates the array without any gaps in between the keys
     }
 
 
     /**
-     * Sets a string/array of category/ies for the Photo
-     * @param string or array $cat The string/array of category/ies to set for the photo
+     * Sets an array of categories for the Photo
+     *
+     * @param array $cat The array of categories to set for the photo
      */
     public function set_Categories($cat)
     {
@@ -236,63 +258,20 @@ class E_Photo
 
 
     /**
-     * Adds the string/array of category/ies to $this->categories, if not already present
-     * @param string or array $to_add The string/array of category/ies to add at the current categories
-     */
-    public function add_Cat($to_add)
-    {
-        foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
-        {
-            if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
-            {
-                array_push($this->categories, $val);
-            }
-        }
-    }
-
-
-    /**
      * Retrives the categories array
+     *
      * @return array The array of this photo's categories
      */
-    public function get_Cat()
+    public function get_Categories()
     {
         return $this->categories;
     }
 
 
-    /**
-     * Removes the string/array of category/ies from $this->categories if present
-     * @param string or array $to_del
-     */
-    public function remove_Cat($to_del)
+    public function set_Comments($comments)
     {
-        foreach((array) $to_del as $val)
-        {
-            $cat_key = array_search($val, $this->categories); //Key of the value $to_del
-            if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
-            {
-                unset($this->categories[$cat_key]);
-            }
-        }
-        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
+        $this->comments = $comments;
     }
-
-
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
-//AGGIUNGI LE FUNZIONI PER I COMMENTI!!!!
 
 
     public function add_Comment($comment)
@@ -315,42 +294,4 @@ class E_Photo
         }
         $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
     }
-
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-    //SPOSTA QUESTE IN CONTROL? FOUNDATION? ENTRAMBE?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

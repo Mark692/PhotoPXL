@@ -30,7 +30,7 @@ class E_Album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album
      */
-    public function __construct($title, $desc, $categories, $creation_date='')
+    public function __construct($title, $desc, $categories=[], $creation_date='')
     {
         $this->set_Title($title);
         $this->set_Description($desc);
@@ -78,6 +78,7 @@ class E_Album
     /**
      * Checks whether the title is a valid entry
      * @param string $title The title input
+     * @throws \Exceptions\invalid_Text Whether the title contains invalid chars
      * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
      */
     private function title_isValid($title)
@@ -125,30 +126,13 @@ class E_Album
 
 
     /**
-     * Sets a string/array of category/ies for the Album
+     * Sets an array of categories for the Album
      *
-     * @param string or array $cat The string/array of category/ies to set for the album
+     * @param array $cat The array of categories to set for the album
      */
-    public function set_Categories($cat)
+    public function set_Categories($cat=[])
     {
         $this->categories = $cat;
-    }
-
-
-    /**
-     * Sets a string/array of category/ies for the Album
-     *
-     * @param string or array $to_add The string/array of category/ies to add at the current array
-     */
-    public function add_Cat($to_add)
-    {
-        foreach((array) $to_add as $val) //In case $to_add is a string it would be casted to array
-        {
-            if ($val != '' && !in_array($val, $this->categories)) //If ($to_add IS NOT in $this->categories)
-            {
-                array_push($this->categories, $val);
-            }
-        }
     }
 
 
@@ -159,26 +143,7 @@ class E_Album
      */
     public function get_Categories()
     {
-        return (array) $this->categories;
-    }
-
-
-    /**
-     * Removes the string/array of category/ies from $this->categories if present
-     *
-     * @param string or array $to_del The category/ies to remove from the current array
-     */
-    public function remove_Cat($to_del)
-    {
-        foreach((array) $to_del as $val)
-        {
-            $cat_key = array_search($val, $this->categories); //Key of the value $val (that is $to_del)
-            if ($val != '' && $cat_key !== FALSE) //If ($to_del IS in $this->categories)
-            {
-                unset($this->categories[$cat_key]);
-            }
-        }
-        $this->categories = array_values($this->categories); //Ordinates the array without any gaps in between the keys
+        return $this->categories;
     }
 
 
@@ -209,6 +174,4 @@ class E_Album
     {
         return $this->creation_date;
     }
-
-
 }

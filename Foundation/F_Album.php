@@ -33,6 +33,13 @@ class F_Album extends \Foundation\F_Database
 
         $album_ID = parent::execute_query($query, $toBind); //Inserts the album and gets its ID.
         $album->set_ID($album_ID);
+
+        $cats_toSet = $album->get_Categories();
+        $query_addCats = self::set_Categories($cats_toSet, $album_ID);
+        if($query_addCats!=='')
+        {
+            parent::execute_query($query_addCats, $cats_toSet);
+        }
     }
 
 
@@ -139,18 +146,22 @@ class F_Album extends \Foundation\F_Database
     /**
      * Sets the album categories. To be used on album creation
      *
-     * @param string/array $cat The category/ies chosen for the album
+     * @param enum or array $cat The category/ies chosen for the album
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */
-    private static function set_Categories($cat, $album_ID)
+    private static function set_Categories($cats, $album_ID)
     {
+        if((array) $cats === [])
+        {
+            return '';
+        }
         $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
-        foreach ((array) $cat as $value)
+        foreach ((array) $cats as $value)
         {
             $query .= "('$album_ID', ?),";
         }
-        return $query = substr($query, 0, -1); //Trims the last ","
+        return substr($query, 0, -1); //Trims the last ","
     }
 
 
@@ -163,6 +174,10 @@ class F_Album extends \Foundation\F_Database
      */
     private static function remove_Categories($cats, $album_ID)
     {
+        if((array) $cats == [])
+        {
+            return '';
+        }
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";

@@ -27,7 +27,8 @@ class F_Photo extends \Foundation\F_Database
                 .'`upload_date`=?, '
                 .'`is_reserved`=?, '
                 .'`user`=?, '
-                .'`photo_blob`=?, '
+                .'`fullsize`=?, '
+                .'`thumbnail`=?, '
                 .'`size`=?, '
                 .'`type`=?';
 
@@ -38,6 +39,7 @@ class F_Photo extends \Foundation\F_Database
             $photo->get_Reserved(),
             $uploader,
             $photo_details["photo_blob"],
+            $photo_details["thumbnail"],
             $photo_details["size"],
             $photo_details["type"]);
 
