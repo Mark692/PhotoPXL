@@ -10,8 +10,6 @@ namespace Control;
 
 class C_Registrazione
 {
-
-
     public function save_user()
     {
         $view = new \View\V_Registazione();
@@ -38,5 +36,6 @@ class C_Registrazione
         }
         //RITORNA IL TEMPLATE ALLA REGISTRAZIONE
     }
+
 
 }
