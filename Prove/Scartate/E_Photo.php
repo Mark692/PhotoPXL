@@ -10,119 +10,42 @@ namespace Prove\Scartate;
 
 class ScartataE_Photo
 {
-    private $fullsize;
-    private $thumbnail;
-    private $size;
-    private $type;
 
-    
     /**
-     * Sets the fullsize image from the path given as parameter
+     * Returns the total of likes received
      *
-     * @param string $path The path to the photo
-     * @throws \Exceptions\photo_details Whether the path to the photo is incorrect
+     * @return int The number of likes received
      */
-    public function set_Fullsize($path)
+    public function get_Total_Likes()
     {
-        if(realpath($path)===FALSE)
-        {
-            throw new \Exceptions\photo_details(0, $path);
-        }
-        $this->fullsize = realpath($path);
+        return count($this->total_likes);
     }
 
 
     /**
-     * Returns the fullsize photo
+     * Adds a like to the current Photo
      *
-     * @return image The fullsize photo
+     * @param string $username The user's username that likes the photo
      */
-    public function get_Fullsize()
+    public function add_Like($username)
     {
-        return $this->fullsize;
+        array_push($this->total_likes, $username);
     }
 
 
     /**
-     * Creates and sets a thumbnail image
+     * Removes a like from the current Photo
      *
-     * @param string $path The path to the photo
-     * @throws \Exceptions\photo_details Whether the path is incorrect
+     * @param string $username The user that wants to remove the like from this photo
      */
-    public function set_Thumbnail($path)
+    public function remove_Like($username)
     {
-        if(realpath($path)===FALSE)
-        {
-            throw new \Exceptions\photo_details(1, $path);
-        }
-        $imagick = new \Imagick(realpath($path));
-        $width = THUMBNAIL_WIDTH;
-        $height = THUMBNAIL_HEIGHT;
-        $best_Fit = TRUE;
-        $fill = TRUE;
-        $imagick->thumbnailImage($width, $height, $best_Fit, $fill);
-
-        $this->thumbnail = $path;
-    }
-
-
-    /**
-     * Retrieves the thumbnail created for the photo
-     *
-     * @return image The thumbnail of the photo
-     */
-    public function get_Thumbnail()
-    {
-        return $this->thumbnail;
-    }
-
-
-    /**
-     * Sets the size of the photo
-     *
-     * @param int $size The size of the photo
-     * @throws \Exceptions\photo_details Whether the size is over the maximum allowed
-     */
-    public function set_Size($size)
-    {
-        if($size>MAX_SIZE)
-        {
-            throw new \Exceptions\photo_details(2, $size);
-        }
-        $this->size = $size;
-    }
-
-
-    /**
-     * Retrieves the size of the photo
-     *
-     * @return int The size of the photo
-     */
-    public function get_Size()
-    {
-        return $this->size;
-    }
-
-
-    /**
-     * Sets the type of the photo
-     *
-     * @param string $type The type of the photo
-     */
-    public function set_Type($type)
-    {
-        $this->type = $type;
-    }
-
-
-    /**
-     * Retrieves the type of the photo. To be used to show the correct HTML Header
-     *
-     * @return string The type of the photo
-     */
-    public function get_Type()
-    {
-        return $this->type;
+        $user_key = array_search($username, $this->total_likes);
+            if ($user_key !== FALSE) //Exists in the "likes" array
+            {
+                unset($this->categories[$user_key]);
+            }
+        $this->total_likes = array_values($this->total_likes); //Ordinates the array without any gaps in between the keys
     }
 
 }
