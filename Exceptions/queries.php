@@ -11,28 +11,26 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class invalid_Photo extends \Exception
+class queries extends \Exception
 {
     public function __construct($code, $exc)
     {
         switch ($code)
         {
             case 0:
-                $message ="Percorso immagine non valido: $exc";
+                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione in: $exc";
                 break;
 
             case 1:
-                $message ="Impossibile creare miniatura. Percorso non valido: $exc";
+                $message = "Attenzione! C'è stato un errore nella richiesta: $exc";
                 break;
 
             case 2:
-                $message ="";
+                $message = "Attenzione! Non sono state apportate modifiche. Dati ricevuti: $exc";
                 break;
 
 
-            //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
-
-            default: $message = "ATTENZIONE! Parametro non valido: $exc";
+            default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }
 
         parent::__construct($message, NULL, NULL);

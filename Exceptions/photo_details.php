@@ -11,26 +11,28 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class invalid_Request extends \Exception
+class photo_details extends \Exception
 {
     public function __construct($code, $exc)
     {
         switch ($code)
         {
             case 0:
-                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione in: $exc";
+                $message ="Percorso immagine non valido: $exc";
                 break;
 
             case 1:
-                $message = "Attenzione! C'è stato un errore nella richiesta: $exc";
+                $message ="Impossibile creare miniatura. Percorso non valido: $exc";
                 break;
 
             case 2:
-                $message = "Attenzione! Non sono state apportate modifiche. Dati ricevuti: $exc";
+                $message ="Dimensione immagine troppo grande: $exc. Dimensione massima permessa: ".MAX_SIZE;
                 break;
 
 
-            default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
+            //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
+
+            default: $message = "ATTENZIONE! Parametro non valido: $exc";
         }
 
         parent::__construct($message, NULL, NULL);

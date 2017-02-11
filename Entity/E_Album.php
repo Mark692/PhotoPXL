@@ -78,7 +78,7 @@ class E_Album
     /**
      * Checks whether the title is a valid entry
      * @param string $title The title input
-     * @throws \Exceptions\invalid_Text Whether the title contains invalid chars
+     * @throws \Exceptions\input_texts Whether the title contains invalid chars
      * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
      */
     private function title_isValid($title)
@@ -88,7 +88,7 @@ class E_Album
         {
             return TRUE;
         }
-        throw new \Exceptions\invalid_Text(2, $title);
+        throw new \Exceptions\input_texts(2, $title);
     }
 
 
@@ -154,7 +154,7 @@ class E_Album
      */
     private function set_Creation_Date($date='')
     {
-        if ($date==='' || $date<0)
+        if ($date==='' || $date<=0)
         {
             $this->creation_date = time();
         }

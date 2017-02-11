@@ -40,3 +40,5 @@ define("PHOTOS_PER_PAGE", 16);
 
 define("THUMBNAIL_WIDTH", 100); //Larghezza
 define("THUMBNAIL_HEIGHT", 100); //Altezza
+define("MAX_SIZE", 16777215); //MEDIUMBLOB max size allowed
+define("MAX_SIZE_THUMB", 65535); //BLOB max size allowed

@@ -129,7 +129,7 @@ class E_Photo
         {
             return TRUE;
         }
-        throw new \Exceptions\invalid_Text(2, $title);
+        throw new \Exceptions\input_texts(2, $title);
     }
 
 
@@ -323,31 +323,43 @@ class E_Photo
 
 
     /**
+     * Sets the fullsize image from the path given as parameter
      *
-     * @param type $path
-     * @throws \Exceptions\invalid_Photo
+     * @param string $path The path to the photo
+     * @throws \Exceptions\photo_details Whether the path to the photo is incorrect
      */
     public function set_Fullsize($path)
     {
-        $this->fullsize = realpath($path);
-        if($this->fullsize===FALSE)
+        if(realpath($path)===FALSE)
         {
-            throw new \Exceptions\invalid_Photo(0, $path);
+            throw new \Exceptions\photo_details(0, $path);
         }
+        $this->fullsize = realpath($path);
     }
 
 
+    /**
+     * Returns the fullsize photo
+     *
+     * @return image The fullsize photo
+     */
     public function get_Fullsize()
     {
         return $this->fullsize;
     }
 
 
+    /**
+     * Creates and sets a thumbnail image
+     *
+     * @param string $path The path to the photo
+     * @throws \Exceptions\photo_details Whether the path is incorrect
+     */
     public function set_Thumbnail($path)
     {
         if(realpath($path)===FALSE)
         {
-            throw new \Exceptions\invalid_Photo(1, $path);
+            throw new \Exceptions\photo_details(1, $path);
         }
         $imagick = new \Imagick(realpath($path));
         $width = THUMBNAIL_WIDTH;
@@ -360,30 +372,60 @@ class E_Photo
     }
 
 
+    /**
+     * Retrieves the thumbnail created for the photo
+     *
+     * @return image The thumbnail of the photo
+     */
     public function get_Thumbnail()
     {
         return $this->thumbnail;
     }
 
 
+    /**
+     * Sets the size of the photo
+     *
+     * @param int $size The size of the photo
+     * @throws \Exceptions\photo_details Whether the size is over the maximum allowed
+     */
     public function set_Size($size)
     {
+        if($size>MAX_SIZE)
+        {
+            throw new \Exceptions\photo_details(2, $size);
+        }
         $this->size = $size;
     }
 
 
+    /**
+     * Retrieves the size of the photo
+     *
+     * @return int The size of the photo
+     */
     public function get_Size()
     {
         return $this->size;
     }
 
 
+    /**
+     * Sets the type of the photo
+     *
+     * @param string $type The type of the photo
+     */
     public function set_Type($type)
     {
         $this->type = $type;
     }
 
 
+    /**
+     * Retrieves the type of the photo. To be used to show the correct HTML Header
+     *
+     * @return string The type of the photo
+     */
     public function get_Type()
     {
         return $this->type;

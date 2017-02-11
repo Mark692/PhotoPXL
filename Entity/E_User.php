@@ -45,14 +45,11 @@ class E_User
      */
     public function set_Username($new_username)
     {
-        if($this->username_isValid($new_username))
-        {
-            $this->username = $new_username;
-        }
-        else
+        if($this->username_isValid($new_username)===FALSE)
         {
             throw new \Exceptions\InvalidInput(0, $new_username);
         }
+        $this->username = $new_username;
     }
 
 
@@ -125,14 +122,11 @@ class E_User
      */
     public function set_Email($new_email)
     {
-        if($this->email_isValid($new_email))
-        {
-            $this->email = $new_email;
-        }
-        else
+        if($this->email_isValid($new_email)===FALSE)
         {
             throw new \Exceptions\InvalidInput(1, $new_email);
         }
+        $this->email = $new_email;
     }
 
 

@@ -11,7 +11,7 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class invalid_Text extends \Exception
+class input_texts extends \Exception
 {
     public function __construct($code, $exc)
     {

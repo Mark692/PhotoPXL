@@ -146,7 +146,7 @@ class F_Database
         }
         else
         {
-            throw new \Exceptions\invalid_Request(0, "Nessun valore da aggiornare");
+            throw new \Exceptions\queries(0, "Nessun valore da aggiornare");
         }
     }
 
@@ -171,6 +171,6 @@ class F_Database
             }
             return $pdo_stmt;
         }
-        throw new \Exceptions\invalid_Request(1, "Nessun valore trovato per soddisfare la richiesta");
+        throw new \Exceptions\queries(1, "Nessun valore trovato per soddisfare la richiesta");
     }
 }

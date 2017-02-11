@@ -42,10 +42,11 @@ class E_User_Admin extends E_User_MOD
     public function change_Role($user, \Utilities\Roles $new_Role)
     {
         $username = $user->get_Username();
-        if($username !== $this->get_Username()) //If the user IS NOT this Admin (they'll have different usernames...)
+        if($username === $this->get_Username()) //If the user IS NOT this Admin (they'll have different usernames...)
         {
-            $user->set_Role($new_Role);
+            throw new \Exceptions\roles(4);
         }
+        $user->set_Role($new_Role);
         return $user;
     }
 }

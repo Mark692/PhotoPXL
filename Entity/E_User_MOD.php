@@ -42,10 +42,11 @@ class E_User_MOD extends E_User_PRO
         if($username !== $this->get_Username()) //If the user IS NOT this MOD (they'll have different usernames...)
         {
             $role = $e_user->get_Role();
-            if($role !== \Utilities\Roles::ADMIN) //If the user IS NOT an ADMIN
+            if($role === \Utilities\Roles::ADMIN) //If the user IS NOT an ADMIN
             {
-                $e_user->set_Role(\Utilities\Roles::BANNED);
+                throw new \Exceptions\roles(3);
             }
+            $e_user->set_Role(\Utilities\Roles::BANNED);
         }
         return $e_user;
     }
