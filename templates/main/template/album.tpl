@@ -13,8 +13,8 @@
 			</table>
 			</td>
 		<td class="colonna dati album" width="900px">
-			<p><label for="Title" class="top">Titolo:</label< /br> {$dati_album.title}</label></p>
-			<p><label for="Title" class="top">Descrizione</label< /br> {$dati_album.description}</label></p>
+			<p><label for="Title" class="top">Titolo:< /br> {$dati_album.title}</label></p>
+			<p><label for="Title" class="top">Descrizione< /br> {$dati_album.description}</label></p>
 			//altre cose
 		</td>
 	</tr>
