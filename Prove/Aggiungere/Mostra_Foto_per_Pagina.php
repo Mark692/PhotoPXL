@@ -14,7 +14,7 @@ class Mostra_Foto_per_Pagina
      * Restituisce il numero di pagine totali e le foto da visualizzare
      *
      * @param array $array_PhotoDB L'array di foto proveniente dal DB
-     * @param int $numero_pagina Pagina dalla quale partire per mosrare le foto
+     * @param int $numero_pagina Pagina dalla quale partire per mostrare le foto
      * @return array L'array con numero di pagine totali e le foto da mostrare per la pagina scelta
      */
     public function display_photos($array_PhotoDB, $numero_pagina=1)

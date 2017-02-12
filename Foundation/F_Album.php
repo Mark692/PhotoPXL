@@ -8,6 +8,8 @@
 
 namespace Foundation;
 
+use PDO; //It IS used.
+
 class F_Album extends \Foundation\F_Database
 {
 
@@ -38,7 +40,15 @@ class F_Album extends \Foundation\F_Database
         $query_addCats = self::set_Categories($cats_toSet, $album_ID);
         if($query_addCats!=='')
         {
-            parent::execute_query($query_addCats, $cats_toSet);
+            try
+            {
+                parent::execute_query($query_addCats, $cats_toSet);
+            }
+            catch (\PDOException $exc)
+            {
+                throw new \Exceptions\queries(3, $exc); //In case of duplicate entry (very unlikely)
+            }
+
         }
     }
 
@@ -46,14 +56,38 @@ class F_Album extends \Foundation\F_Database
     /**
      * Updates the album details
      *
-     * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by_*($q)
+     * @param \Entity\E_Album $to_Update The new Album object to save
      * @param int $album_ID The album's ID
      */
-    public static function update($new_Details, $old_Details, $album_ID)
+    public static function update(\Entity\E_Album $to_Update)
     {
+        $array_toUpdate = array(
+            "id" => $to_Update->get_ID(),
+            "title" => $to_Update->get_Title(),
+            "description" => $to_Update->get_Description(),
+            "creation_date" => $to_Update->get_Creation_Date()
+                );
         $DB_table = "album";
-        parent::update($new_Details, $old_Details, $DB_table, $album_ID);
+        $primary_key = "id";
+        $album_ID = $to_Update->get_ID();
+        parent::update($array_toUpdate, $DB_table, $primary_key, $album_ID);
+
+        $cats = $to_Update->get_Categories();
+        self::update_Categories($cats, $album_ID);
+    }
+
+
+    /**
+     * Rethrives the albums of a user by passing the album's ID.
+     *
+     * @param int $ID The user's username selected to get the albums from
+     * @return array The album searched
+     */
+    public static function get_By_ID($ID)
+    {
+        $toSearch = array("id" => $ID);
+        $DB_table = "album";
+        return parent::get($toSearch, $DB_table);
     }
 
 
@@ -75,12 +109,12 @@ class F_Album extends \Foundation\F_Database
     /**
      * Rethrives all the album with the selected categories
      *
-     * @param enum or array $cats The category/ies to search
+     * @param array $cats The category/ies to search
      */
     public static function get_By_Categories($cats)
     {
         $where = '';
-        foreach ((array) $cats as $v)
+        for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
@@ -108,15 +142,21 @@ class F_Album extends \Foundation\F_Database
      * Updates the categories of an album. This function both add new categories
      * and remove old categories (if selected) from the album
      *
-     * @param enum or array $new_cats The new category/ies chosen for the album
-     * @param enum or array $old_cats The category/ies to remove from the album
+     * @param array $new_cats The new category/ies chosen for the album
      * @param int $album_ID The album's ID to whom set/remove the categories
      * @throws \Exceptions\queries In case there are no categories to add neither to remove
      */
-    public static function update_Categories($new_cats, $old_cats, $album_ID)
+    private static function update_Categories($new_cats, $album_ID)
     {
-        $to_add    = array_diff((array) $new_cats, (array) $old_cats);
-        $to_remove = array_diff((array) $old_cats, (array) $new_cats);
+        $old = self::get_Categories($album_ID); //$old will be an associative array
+        $old_cats=[];
+        foreach($old as $v)
+        {
+            array_push($old_cats, $v); //Keep only the values
+        }
+
+        $to_add    = array_diff($new_cats, $old_cats);
+        $to_remove = array_diff($old_cats, $new_cats);
 
         if(count($to_add)>=1 && count($to_remove)>=1)
         {
@@ -157,11 +197,27 @@ class F_Album extends \Foundation\F_Database
             return '';
         }
         $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
-        foreach ((array) $cats as $value)
+        for($i=0; $i<count($cats); $i++)
         {
             $query .= "('$album_ID', ?),";
         }
         return substr($query, 0, -1); //Trims the last ","
+    }
+
+
+    private static function get_Categories($album_ID)
+    {
+        $query = "SELECT `category` "
+                ."FROM `cat_album` "
+                ."WHERE `album`=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $album_ID);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -181,7 +237,7 @@ class F_Album extends \Foundation\F_Database
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";
-        foreach ((array) $cats as $value)
+        for($i=0; $i<count($cats); $i++)
         {
             $query .= "(`category`=?) OR ";
         }

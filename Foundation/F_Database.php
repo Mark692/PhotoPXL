@@ -35,7 +35,7 @@ class F_Database
                     'mysql:host='.$config['mysql_host'].'; dbname='.$config['mysql_database'], $config['mysql_user'], $config['mysql_password']);
 
             //Sostituzione di PDO::ERRMOD_SILENT
-            //$connessione->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMOD_SILENT) //Decommenta in Produzione
+//            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT); //Decommenta in Produzione
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
             return $connection;
         }
@@ -117,37 +117,24 @@ class F_Database
      * Also it binds parameters to the query
      *
      * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param array $old_Details An ARRAY containing old details. This must be the DB record got from the get_by($q)
      * @param string $_table The DB table into execute the query
-     * @param string $where_column The $_table's column used as reference by the WHERE clause
-     * @return string The last updated (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
+     * @param string $primary_key The $_table's column used as reference by the WHERE clause
+     * @param mixed $obj_ID The username/ID of the object to update
      */
-    protected static function update($new_Details, $old_Details, $_table, $where_column)
+    protected static function update($new_Details, $_table, $primary_key, $obj_ID)
     {
         $set = ''; //String to use for the SET
-        $toBind = []; //Array to pass at the self::set() function to Bind the correct parameters
         foreach ($new_Details as $key => $new_value)
         {
-            if ($new_value !== $old_Details[$key])
-            {
-                $set .= '`'.$key.'`=?,';
-                array_push($toBind, $new_value);
-            }
+            $set .= '`'.$key.'`=?,';
         }
-        if ($set !== '') //$set==='' only if NO changes were made. In this case no update will be done.
-        {
-            $set = substr($set, 0, -1); //Removes the trailing char: ","
-            $where_value = $old_Details[$where_column]; //This will return the value of the column
-            $query = "UPDATE `$_table` "
-                    ."SET $set "
-                    ."WHERE `$where_column`='$where_value'";
+        $set = substr($set, 0, -1); //Removes the trailing char: ","
+        $query = "UPDATE `$_table` "
+                ."SET $set "
+                ."WHERE `$primary_key`='$obj_ID'";
 
-            return self::execute_query($query, $toBind);
-        }
-        else
-        {
-            throw new \Exceptions\queries(0, "Nessun valore da aggiornare");
-        }
+        echo($query);
+        self::execute_query($query, $new_Details);
     }
 
 
@@ -158,7 +145,7 @@ class F_Database
      * @param array $toBind The array of parameters to bind
      * @return \PDOStatement The object to execute()
      */
-    private static function bind_params(\PDOStatement $pdo_stmt, $toBind)
+    public static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
         if(count($toBind)>0)
         {
