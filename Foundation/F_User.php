@@ -64,6 +64,7 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("username" => $username);
         $user_details = parent::get($where, $from);
+        $user = self::instantiate_EUser($user_details);
 
         //User profile pic from "profile_pic" DB table
         $select = "photo";
@@ -71,10 +72,16 @@ class F_User extends \Foundation\F_Database
         $where = array("user" => $username);
         $pro_pic = parent::get($where, $from, $select);
 
-        return array_push($user_details, $pro_pic);
+        return array($user, $pro_pic[0]);
     }
 
 
+    /**
+     * Instantiates an \Entity\E_User_* user according to its role
+     *
+     * @param array $details The user details fetched from a query
+     * @return \Entity\E_User_* The right user according to its role
+     */
     public static function instantiate_EUser($details)
     {
         $username = $details["username"];
@@ -93,11 +100,9 @@ class F_User extends \Foundation\F_Database
                 $user = new \Entity\E_User_PRO($username, $password, $email);
                 break;
 
-
             case \Utilities\Roles::MOD:
                 $user = new \Entity\E_User_MOD($username, $password, $email);
                 break;
-
 
             case \Utilities\Roles::ADMIN:
                 $user = new \Entity\E_User_ADMIN($username, $password, $email);
@@ -155,10 +160,6 @@ class F_User extends \Foundation\F_Database
 
         parent::update($update, $set, $where);
     }
-
-
-    //FUNZIONI PER
-    //UP COUNT E LAST UPLAOD
 
 
     /**
