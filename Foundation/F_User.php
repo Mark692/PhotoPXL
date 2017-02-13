@@ -75,6 +75,38 @@ class F_User extends \Foundation\F_Database
     }
 
 
+    public static function instantiate_EUser($details)
+    {
+        $username = $details["username"];
+        $password = $details["password"];
+        $email = $details["email"];
+        $up_Count = $details["up_Count"];
+        $last_up = $details["last_Up"];
+
+        switch ($details["role"])
+        {
+            case \Utilities\Roles::STANDARD:
+                $user = new \Entity\E_User_Standard($username, $password, $email, $up_Count, $last_up);
+                break;
+
+            case \Utilities\Roles::PRO:
+                $user = new \Entity\E_User_PRO($username, $password, $email);
+                break;
+
+
+            case \Utilities\Roles::MOD:
+                $user = new \Entity\E_User_MOD($username, $password, $email);
+                break;
+
+
+            case \Utilities\Roles::ADMIN:
+                $user = new \Entity\E_User_ADMIN($username, $password, $email);
+                break;
+        }
+        return $user;
+    }
+
+
     /**
      * Returns a list of all users with the given role
      *

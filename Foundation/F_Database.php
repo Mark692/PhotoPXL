@@ -71,7 +71,7 @@ class F_Database
      *
      * @param array $where_toSearch The associative array with the values to search for
      * @param string $from The DB table to search in
-     * @param string $select The string containing a selection of columns to retrieve with the query
+     * @param array $select An array containing a selection of columns to retrieve with the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy_column The table column chosen to order the results
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
@@ -79,6 +79,17 @@ class F_Database
      */
     protected static function get($where_toSearch, $from, $select='*', $fetchAll=FALSE, $orderBy_column='', $order_DESC=FALSE)
     {
+        $select_columns = $select;
+        if($select!=='*')
+        {
+            $select_columns = '';
+            for($i=0; $i<count($select); $i++)
+            {
+                $select_columns .= '`'.$select[$i].'`, ';
+            }
+            $select_columns = substr($select_columns, 0, -2); //Removes the ", " at the end of the string
+        }
+
         $where = '';
         foreach ($where_toSearch as $key => $v) //Need the key only here!
         {
@@ -86,7 +97,7 @@ class F_Database
         }
         $where = substr($where, 0, -5); //Removes the " AND " at the end of the string
 
-        $query = 'SELECT `'.$select.'` '
+        $query = 'SELECT '.$select_columns.' '
                 .'FROM `'.$from.'` '
                 .'WHERE '.$where;
         if ($fetchAll===TRUE && $orderBy_column!=='' )
