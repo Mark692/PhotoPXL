@@ -53,6 +53,7 @@ class F_User extends \Foundation\F_Database
 
     /**
      * Retrieves the user with the given $username
+     * 
      * @param string $username The user's username to search
      * @return array The user details
      */
@@ -107,6 +108,11 @@ class F_User extends \Foundation\F_Database
             $username = $old_Username;  //...instead of the new (changed) username
         }
         parent::update($array_toUpdate, $DB_table, $primary_key, $username);
+
+
+        //AGGIUNGI UPDATE PROFILE PIC
+
+
     }
 
 
