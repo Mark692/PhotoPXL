@@ -22,9 +22,9 @@ class C_Profilo
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_By_Username($username);
-        $array_Photo_Db = \Foundation\F_Photo::get_By_User($username);
+        $array_thumbnail = \Foundation\F_Photo::get_By_User($username);
 
-        $ultime_foto = $QUALCOSA_DA_SISTEMARE1->display_foto($array_Photo_Db);
+        $ultime_foto = $QUALCOSA_DA_SISTEMARE1->display_foto($array_thumbnail["thumbnail"]);
 
         //recupero foto profilo
         $V_Profilo->assign('utente', $user_datails);
@@ -41,9 +41,7 @@ class C_Profilo
     public function modifica()
     {
         $V_Profilo = new \View\V_Profilo;
-        $Session = new \Utilities\U_Session;
-        $username = $Session->get_val('username');
-        $user_datails = \Foundation\F_User::get_By_Username($username);
+        $user_details = $V_Profilo->get_Dati('username', 'email');
         $V_Profilo->assign('utente', $user_datails);
         //recupero foto profilo
         $V_Profilo->assign('foto_profilo', $userdatails['photo']);
@@ -67,7 +65,7 @@ class C_Profilo
         $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        \Foundation\F_User::update_details($new_details, $username);
+        \Foundation\F_User::update_details($new_details, $old_Username);
         //ritornerà un tpl di avvenuto successo
     }
 
@@ -83,10 +81,13 @@ class C_Profilo
         {
             case 'riepilogo':
                 return $this->riepilogo_dati();
+                break;
             case 'Modifica':
                 return $this->modifica();
+                break;
             case 'salva':
                 return $this->update();
+                break;
         }
     }
 

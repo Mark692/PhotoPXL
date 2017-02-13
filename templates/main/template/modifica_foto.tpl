@@ -3,7 +3,7 @@
             <td class="colonna1" width="900px" align="center">
                 <h3 class="title">Foto da modificare:</h3><br/>
                    <div class="foto">
-                        <img src={$dati_foto.images}></p>
+                        <img src={$dati_foto.id}></p>
                    </div>
 
                 <form method="post" action="index.php">

@@ -10,6 +10,23 @@ namespace Control;
 
 class C_Photo
 {
+    public function display_photo()
+    {
+
+        $V_foto = new \View\V_Foto;
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
+        $id = $V_foto->get_Dati('id');
+        $foto_details = \Foundation\F_Photo::get_By_ID($id);
+        $V_foto->assign('foto_datails', $foto_details);
+        $V_foto->assign('username', $username);
+        return $V_foto->display('mostra_foto.tpl');
+    }
+
+
+    /**
+     * upload di foto
+     */
     public function Upload_foto()
     {
         $session = new \Utilities\U_Session;
@@ -20,16 +37,22 @@ class C_Photo
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
-        $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         $this->controllaFoto();
-        $photo_details=array(
-                'type' => $_FILES['foto_Utente']['type'],
-                'size' => $_FILES['foto_Utente']['size'],
-                'immagine' => file_get_contents($_FILES['foto_utente']['tmp_name']));
-        //$immagine = addslashes ($immagine);
-        \Foundation\F_Photo::insert($foto, $photo_details, $username);
+        $type = $_FILES['foto_Utente']['type'];
+        $size = $_FILES['foto_Utente']['size'];
+        $photo_blob = addslashes(file_get_contents($_FILES['foto_utente']['tmp_name']));
+        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type); //controlla se va bene qunado si rifa il pull
+        \Foundation\F_Photo::insert($photo_details, $photo, $username);
+        //ritorna un template successo
     }
 
+
+    /**
+     * metto i try e cath in entity Photo_blob
+     * controlla se il file inviato tramite form è adatto
+     * @return boolean
+     */
     public function controllaFoto()
     {
         //fare con eccezioni al posto dei return false e true
@@ -37,8 +60,7 @@ class C_Photo
         {
             return FALSE;
         }
-        elseif($_FILES['foto_Utente']['type'] !== 'image/jpeg' 
-            && $_FILES['foto_Utente']['type'] !== 'image/png')
+        elseif($_FILES['foto_Utente']['type'] !== 'image/jpeg' && $_FILES['foto_Utente']['type'] !== 'image/png')
         {
             return FALSE;
         }
@@ -47,6 +69,57 @@ class C_Photo
             return FALSE;
         }
         return TRUE;
+    }
+
+
+    /**
+     * ritorna il tpl per la modifica dei dati della foto
+     */
+    public function modifica()
+    {
+        $V_Foto = new \View\V_Foto;
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
+        $foto_details = $V_Profilo->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
+        $V_foto->assign('dati_foto', $user_datails);
+        $V_Foto->assign('utente', $username);
+        return $V_Profilo->display('modifica_foto.tpl');
+    }
+
+
+    /**
+     * update dei dati dati dell'utente
+     */
+    public function update()
+    {
+        $V_Foto = new \View\V_Foto;
+        $dati_foto = $V_Foto->get_Dati();
+        $title = $dati_foto['title'];
+        $desc = $dati_foto['desc'];
+        $is_Reserved = $dati_foto['is_Reserved'];
+        $cat = $dati_foto['cat'];
+        $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+    }
+
+
+    public function smista()
+    {
+        $V_Photo = new \View\V_Profilo();
+        switch ($V_Photo->getTask())
+        {
+            case 'display':
+                return $this->display_photo();
+                break;
+            case 'upload':
+                $this->Upload_foto();
+                break;
+            case 'modifica':
+                return $this->modifica();
+                break;
+            case 'update':
+                return $this->update();
+                break;
+        }
     }
 
 
