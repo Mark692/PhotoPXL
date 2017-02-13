@@ -50,7 +50,7 @@ class F_Comment extends \Foundation\F_Database
         $DB_table = "comment";
         $fetchAll = TRUE;
         $orderBy = "id";
-        parent::get($toSearch, $DB_table, $fetchAll, $orderBy);
+        parent::get_All($toSearch, $DB_table, $fetchAll, $orderBy);
     }
 
 
@@ -60,12 +60,12 @@ class F_Comment extends \Foundation\F_Database
      * @param array $toSearch The parameters to search in the "comment" table
      * @return array The list of all comments that match the query
      */
-    public static function get($toSearch)
+    public static function get_All($toSearch)
     {
         $DB_table = "comment";
         $fetchAll = TRUE;
         $orderBy = "id";
-        return parent::get($toSearch, $DB_table, $fetchAll, $orderBy);
+        return parent::get_All($toSearch, $DB_table, $fetchAll, $orderBy);
     }
 
 

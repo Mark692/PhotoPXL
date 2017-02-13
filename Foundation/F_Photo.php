@@ -94,7 +94,7 @@ class F_Photo extends \Foundation\F_Database
         $where = array("user" => $username);
         $fetchAll = TRUE;
         $orderBy = $username;
-        return parent::get($where, $from, $select, $fetchAll, $orderBy, $order_DESC);
+        return parent::get_All($where, $from, $select, $fetchAll, $orderBy, $order_DESC);
     }
 
 
@@ -108,10 +108,10 @@ class F_Photo extends \Foundation\F_Database
     {
         $toSearch = array("id" => $id);
         $DB_table = "photo";
-        $photo = parent::get($toSearch, $DB_table);
+        $photo = parent::get_All($toSearch, $DB_table);
         $categories = self::get_Categories($id);
 
-        return array_merge($photo, $categories);
+//        return array_merge($photo, $categories);
     }
 
 

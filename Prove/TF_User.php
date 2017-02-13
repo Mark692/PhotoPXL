@@ -75,7 +75,7 @@ class TF_User extends \Prove\TFun
             "password" => "A PASS 2",
             "email" => "STD2@mail.com");
         $orderby = "username";
-        var_dump(\Foundation\F_User::get($values, TRUE, $orderby, "DESC"));
+        var_dump(\Foundation\F_User::get_All($values, TRUE, $orderby, "DESC"));
 
 
 //        $getby_STD = \Foundation\F_User::get("provaDB");
@@ -117,7 +117,7 @@ class TF_User extends \Prove\TFun
     {
         echo($this->separate."Test update():");
         $values = array("username" => "provaDB");
-        $getby_STD = \Foundation\F_User::get($values);
+        $getby_STD = \Foundation\F_User::get_All($values);
         echo(nl2br("\r\n")."Oggetto preso da DB:".nl2br("\r\n"));
         print_r($getby_STD);
         echo(nl2br("\r\n").nl2br("\r\n"));
@@ -131,7 +131,7 @@ class TF_User extends \Prove\TFun
             "last_Upload" => rand(0, 50000));
 
         \Foundation\F_User::update($newSTD, $getby_STD);
-        $getby_STD = \Foundation\F_User::get($values);
+        $getby_STD = \Foundation\F_User::get_All($values);
         echo(nl2br("\r\n")."Oggetto aggiornato:".nl2br("\r\n"));
         print_r($getby_STD);
     }

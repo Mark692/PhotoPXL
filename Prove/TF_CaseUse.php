@@ -67,7 +67,7 @@ class TF_CaseUse extends \Prove\TFun
         //---Fetch dell'utente dal DB---\\
         $username = $this->e_userSTD->get_Username();
         $search_values = array("username" => $username);
-        print_r(\Foundation\F_User::get($search_values));
+        print_r(\Foundation\F_User::get_All($search_values));
         echo($this->separate);
     }
 
@@ -92,7 +92,7 @@ class TF_CaseUse extends \Prove\TFun
         //---Fetch della foto dal DB---\\
         echo("Ricerca via id".nl2br("\r\n"));
         $search_values = array("id" => $id);
-        print_r(\Foundation\F_Photo::get($search_values));
+        print_r(\Foundation\F_Photo::get_All($search_values));
         echo($this->separate);
     }
 

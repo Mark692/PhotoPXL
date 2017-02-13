@@ -67,17 +67,29 @@ class F_Database
 
 
     /**
-     * Rethrives all the records that match the query
      *
-     * @param array $where_toSearch The associative array with the values to search for
-     * @param string $from The DB table to search in
-     * @param array $select An array containing a selection of columns to retrieve with the query
+     * @param type $query
+     * @param type $toBind
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @param string $orderBy_column The table column chosen to order the results
-     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
-     * @return array The associative array with all the records that matched the query
+     * @return type
      */
-    protected static function get($where_toSearch, $from, $select='*', $fetchAll=FALSE, $orderBy_column='', $order_DESC=FALSE)
+    private static function get_Result($query, $toBind, $fetchAll=FALSE)
+    {
+        $pdo = self::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt = self::bind_params($pdo_stmt, $toBind); //Need the values here!
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        if ($fetchAll===TRUE)
+        {
+            return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC); //Returns a multidimensional array. Different keys mean different records
+        }
+        return $pdo_stmt->fetch(PDO::FETCH_ASSOC); //Returns an array with a single record
+    }
+
+
+    public static function basic_Query($select, $from, $where)
     {
         $select_columns = $select;
         if($select!=='*')
@@ -90,17 +102,47 @@ class F_Database
             $select_columns = substr($select_columns, 0, -2); //Removes the ", " at the end of the string
         }
 
-        $where = '';
-        foreach ($where_toSearch as $key => $v) //Need the key only here!
+        $where_clause = '';
+        foreach($where as $key => $v) //Need the key only here!
         {
-            $where .= '`'.$key.'`=? AND ';
+            $where_clause .= '`'.$key.'`=? AND ';
         }
-        $where = substr($where, 0, -5); //Removes the " AND " at the end of the string
+        $where_clause = substr($where_clause, 0, -5); //Removes the " AND " at the end of the string
 
-        $query = 'SELECT '.$select_columns.' '
-                .'FROM `'.$from.'` '
-                .'WHERE '.$where;
-        if ($fetchAll===TRUE && $orderBy_column!=='' )
+        return $query = 'SELECT '.$select_columns.' '
+                       .'FROM `'.$from.'` '
+                       .'WHERE '.$where_clause;
+    }
+
+
+    public static function get_One($select, $from, $where)
+    {
+        $query = self::basic_Query($select, $from, $where);
+        return self::get_Result($query, $where);
+    }
+
+
+    /**
+     * Rethrives all the records that match the query
+     *
+     * @param array $select An array containing a selection of columns to retrieve with the query
+     * @param string $from The DB table to search in
+     * @param array $where The associative array with the values to search for
+     * @param string $orderBy_column The table column chosen to order the results
+     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
+     * @return array The associative array with all the records that matched the query
+     */
+    protected static function get_All($select, $from, $where, $limit=0, $offset=0, $orderBy_column='', $order_DESC=FALSE)
+    {
+        $query = self::basic_Query($select, $from, $where);
+
+        if($limit!==0)
+        {
+            $query .= ' LIMIT '.$limit
+                     .' OFFSET '.$offset;
+        }
+
+        if ($orderBy_column!=='' )
         {
             $query .= ' ORDER BY `'.$orderBy_column.'`';
             if ($order_DESC===TRUE)
@@ -108,18 +150,8 @@ class F_Database
                 $query .= ' DESC';
             }
         }
-
-        $pdo = self::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $where_toSearch); //Need the values here!
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        if ($fetchAll === TRUE)
-        {
-            return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC); //Returns a multidimensional array. Different keys mean different records
-        }
-        return $pdo_stmt->fetch(PDO::FETCH_ASSOC); //Returns an array with a single record
+        $fetchAll = TRUE;
+        return self::get_Result($query, $where, $fetchAll);
     }
 
 

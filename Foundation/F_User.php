@@ -60,17 +60,17 @@ class F_User extends \Foundation\F_Database
     public static function get_By_Username($username)
     {
         //User details from "users" DB table
-        //SELECT * is implicitly defined
+        $select = "*";
         $from = "users";
         $where = array("username" => $username);
-        $user_details = parent::get($where, $from);
+        $user_details = parent::get_One($select, $from, $where);
         $user = self::instantiate_EUser($user_details);
 
         //User profile pic from "profile_pic" DB table
         $select = "photo";
         $from = "profile_pic";
         $where = array("user" => $username);
-        $pro_pic = parent::get($where, $from, $select);
+        $pro_pic = parent::get_One($select, $from, $where);
 
         return array($user, $pro_pic[0]);
     }
@@ -83,7 +83,7 @@ class F_User extends \Foundation\F_Database
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array All the users (usernames only) with the specified role
      */
-    public static function get_By_Role($role, $order_DESC=FALSE)
+    public static function get_By_Role($role, $limit=0, $offset=0, $orderBy_column='', $order_DESC=FALSE)
     {
         $select = "username";
         $from = "users";
@@ -91,7 +91,7 @@ class F_User extends \Foundation\F_Database
         $fetchAll = TRUE;
         $orderBy_column = "username";
 
-        return $array_user = parent::get($where, $from, $select, $fetchAll, $orderBy_column, $order_DESC);
+        return $array_user = parent::get_All( $select, $from, $where,  $limit, $offset, $orderBy_column, $order_DESC);
     }
 
 

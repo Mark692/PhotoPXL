@@ -17,7 +17,7 @@ class C_Login
         $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
 
         $arr_values = array("username" => $array_dati["username"]);
-        $array_user = \Foundation\F_User::get($arr_values);
+        $array_user = \Foundation\F_User::get_All($arr_values);
         $DB_pass = $array_user["password"];
 
         if($this->pass_isValid($DB_pass, $array_dati["nonce"]))

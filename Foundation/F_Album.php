@@ -106,7 +106,7 @@ class F_Album extends \Foundation\F_Database
         $toSearch = array("user" => $username);
         $DB_table = "album";
         $fetchAll = TRUE;
-        $details = parent::get($toSearch, $DB_table, $fetchAll);
+        $details = parent::get_All($toSearch, $DB_table, $fetchAll);
 
         $query = "SELECT `thumbnail` "
                 . "FROM `album_cover` "

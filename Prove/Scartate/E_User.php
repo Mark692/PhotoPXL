@@ -19,9 +19,9 @@ class ScartataF_User extends \Foundation\F_Database
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
      * @return array All the users that match the query
      */
-    public static function get($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
+    public static function get_All($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
     {
         $DB_table = "users";
-        return parent::get($arr_values, $DB_table, $fetchAll, $orderBy, $orderStyle);
+        return parent::get_All($arr_values, $DB_table, $fetchAll, $orderBy, $orderStyle);
     }
 }
