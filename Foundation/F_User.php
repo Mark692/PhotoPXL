@@ -44,24 +44,27 @@ class F_User extends \Foundation\F_Database
                 .'`last_Upload`=?, '
                 .'`up_Count`=?';
 
-        array_push($toBind, $e_user->get_Last_Upload());
-        array_push($toBind, $e_user->get_up_Count());
+            array_push($toBind, $e_user->get_Last_Upload());
+            array_push($toBind, $e_user->get_up_Count());
         }
-
         parent::execute_query($query, $toBind);
     }
 
 
     /**
      * Retrieves the user with the given $username
+     * 
      * @param string $username The user's username to search
      * @return array The user details
      */
     public static function get_By_Username($username)
     {
+        //SELECT username, email, ecc... LA PASS SERVE PER LE UPDATE
+        //e SELECT photo FROM profile_pic WHERE user = $username
         $toSearch = array("username" => $username);
         $DB_table = "users";
-        return parent::get($toSearch, $DB_table);
+        $user_details = parent::get($toSearch, $DB_table);
+        //Ritorna
     }
 
 
@@ -85,17 +88,38 @@ class F_User extends \Foundation\F_Database
     /**
      * Updates a record from the "users" table
      *
-     * @param array $new_user The ARRAY containing the new user details got from "View"
-     * @param array $old_user The ARRAY containing the old user details. The array "old user" is the DB record got from the get_by()
+     * @param \Entity\E_User $to_Update The user with new details
+     * @param string $old_Username The username saved in the DB. To be specified in case the user changed username
      * @param string $where_column The column to refer to make changes in the table
      */
-    public static function update($new_user, $old_user, $where_column="username")
+    public static function update_details(\Entity\E_User $to_Update, $old_Username='')
     {
+        $username = $to_Update->get_Username();
+        $array_toUpdate = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            "username" => $username,
+            "password" => $to_Update->get_Password(),
+            "email" => $to_Update->get_Email(),
+            "role" => $to_Update->get_Role());
+
         $DB_table = "users";
-        parent::update($new_user, $old_user, $DB_table, $where_column);
+        $primary_key = "username";
+        if($old_Username!=='')          //The "update()" will search for the previous saved username...
+        {
+            $username = $old_Username;  //...instead of the new (changed) username
+        }
+        parent::update($array_toUpdate, $DB_table, $primary_key, $username);
+
+
+        //AGGIUNGI UPDATE PROFILE PIC
+
+
     }
 
-    
+
+    //FUNZIONI PER
+    //UP COUNT E LAST UPLAOD
+
+
     /**
      * Adds a like to the photo
      *

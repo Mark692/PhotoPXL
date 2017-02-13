@@ -60,7 +60,7 @@ class TFun
      * @param int $tot_caratteri
      * @return string
      */
-    protected function rnd_str($tot_caratteri)
+    protected function rnd_str($tot_caratteri=10)
     {
         $char_ammessi = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; //62 caratteri totali
         $max_chars = strlen($char_ammessi) - 1; //=61
@@ -117,14 +117,14 @@ class TFun
 
 
 
-    protected function rnd_array($max_chars='')
+    protected function rnd_array()
     {
-        return $rnd_array = array(
-            rand(0, 8),
-            rand(0, 8),
-            rand(0, 8),
-            rand(0, 8),
-            rand(0, 8));
+        $rnd_array=[];
+        for($i=1; $i<=rand(3, 7); $i++)
+        {
+            array_push($rnd_array, rand(1, 8));
+        }
+        return $rnd_array;
     }
 
 

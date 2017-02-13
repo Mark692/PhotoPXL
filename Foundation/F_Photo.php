@@ -45,6 +45,39 @@ class F_Photo extends \Foundation\F_Database
 
         $photo_ID = parent::execute_query($query, $toBind); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
+
+        $cats = $photo->get_Categories();
+        $query_addCats = self::add_Cats($cats, $photo_ID);
+        if($query_addCats!=='')
+        {
+            parent::execute_query($query_addCats, $cats);
+        }
+    }
+
+
+    /**
+     * Updates a record from the "photo" table
+     *
+     * @param \Entity\E_Photo $to_Update The photo to update
+     */
+    public static function update(\Entity\E_Photo $to_Update)
+    {
+        $id = $to_Update->get_ID();
+
+        $array_toUpdate = array(
+            "id" => $id,
+            "title" => $to_Update->get_Title(),
+            "description" => $to_Update->get_Description(),
+            "creation_date" => $to_Update->get_Upload_Date(),
+            "is_reserved" => $to_Update->get_Reserved()
+                );
+
+        $DB_table = "photo";
+        $primary_Key = "id";
+        parent::update($array_toUpdate, $DB_table, $primary_Key, $id);
+
+        $cats = $to_Update->get_Categories();
+        self::update_Categories($cats, $id);
     }
 
 
@@ -56,10 +89,17 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function get_By_User($username)
     {
-        $toSearch = array("user" => $username);
-        $DB_table = "photo";
-        $fetchAll = TRUE;
-        return parent::get($toSearch, $DB_table, $fetchAll);
+        $query = "SELECT `id`, `thumbnail` "
+                ."FROM `photo` "
+                ."WHERE `user`=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $username);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -73,29 +113,32 @@ class F_Photo extends \Foundation\F_Database
     {
         $toSearch = array("id" => $id);
         $DB_table = "photo";
-        return parent::get($toSearch, $DB_table);
+        $photo = parent::get($toSearch, $DB_table);
+        $categories = self::get_Categories($id);
+
+        return array_merge($photo, $categories);
     }
 
 
     /**
+     * Retrieves the thumbnails of all photos belonging to a specific album
      *
-     * @param type $album_ID
-     * @return type
+     * @param int $album_ID
+     * @return array An array with photo thumbnails
      */
     public static function get_By_Album($album_ID)
     {
-        $query = "SELECT * "
+        $query = "SELECT `id`, `thumbnail` "
                 ."FROM `photo` "
                 ."WHERE `id` in ("
                     ."SELECT `photo` "
                     ."FROM `cat_photo` "
                     .'WHERE `album`=?'
                     .")";
-        $toBind = array($album_ID);
 
         $pdo = parent::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = parent::bind_params($pdo_stmt, $toBind);
+        $pdo_stmt->bindParam(1, $album_ID);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
@@ -106,18 +149,18 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Rethrives all the photos with the selected categories
      *
-     * @param enum or array $cats The category/ies to search
+     * @param array $cats The category/ies to search
      */
     public static function get_By_Categories($cats)
     {
         $where = '';
-        foreach ((array) $cats as $v)
+        for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
         $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
 
-        $query = "SELECT * "
+        $query = "SELECT `id`, `thumbnail` "
                 ."FROM `photo` "
                 ."WHERE `id` in ("
                     ."SELECT `photo` "
@@ -136,34 +179,38 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Updates the categories of an album. This function both add new categories
+     * Updates the categories of a photo. This function both add new categories
      * and remove old categories (if selected) from the album
      *
-     * @param enum or array $new_cats The new category/ies chosen for the album
-     * @param enum or array $old_cats The category/ies to remove from the album
-     * @param int $album_ID The album's ID to whom set/remove the categories
+     * @param array $new_cats The new categories chosen for the photo
+     * @param int $photo_ID The photo's ID to whom set/remove the categories
      * @throws \Exceptions\queries In case there are no categories to add neither to remove
      */
-    public static function update_Categories($new_cats, $old_cats, $album_ID)
+    private static function update_Categories($new_cats, $photo_ID)
     {
-        $to_add    = array_diff((array) $new_cats, (array) $old_cats);
-        $to_remove = array_diff((array) $old_cats, (array) $new_cats);
+        $old = self::get_Categories($photo_ID); //$old will be an associative array
+        $old_cats=[];
+        foreach($old as $v)
+        {
+            array_push($old_cats, $v); //Keep only the values
+        }
+        $to_add    = array_diff($new_cats, $old_cats);
+        $to_remove = array_diff($old_cats, $new_cats);
 
-        if(count($to_add)>=1 && count($to_remove)>=1)
+        $query_ADD = self::add_Cats($to_add, $photo_ID);
+        $query_DEL = self::remove_Cats($to_remove, $photo_ID);
+        $query = $query_ADD.$query_DEL;
+
+        if($query_ADD!=='')
         {
-            $query_ADD = self::set_Categories($to_add, $album_ID);
-            $query_DEL = self::remove_Categories($to_remove, $album_ID);
-            $query = $query_ADD."; ".$query_DEL;
-            $toBind = array_merge($to_add, $to_remove);
-        }
-        elseif(count($to_add)>=1 && count($to_remove)<1)
-        {
-            $query = self::set_Categories($to_add, $album_ID); // =$query_ADD;
             $toBind = $to_add;
+            if($query_DEL!=='')
+            {
+                array_push($toBind, $to_remove);
+            }
         }
-        elseif(count($to_add)<1 && count($to_remove)>=1)
+        elseif($query_DEL!=='')
         {
-            $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
         }
         else
@@ -175,20 +222,46 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Sets the album categories. To be used on album creation
+     * Sets the photo categories
      *
-     * @param string/array $cat The category/ies chosen for the album
-     * @param int $album_ID The album's ID to whom set the categories
-     * @return string The query used to add categories to the album
+     * @param array $cats The categories chosen for the album
+     * @param int $photo_ID The photo's ID to whom set the categories
+     * @return string The query used to add categories to the photo
      */
-    private static function set_Categories($cat, $album_ID)
+    private static function add_Cats($cats, $photo_ID)
     {
-        $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
-        foreach ((array) $cat as $value)
+        if($cats === [])
         {
-            $query .= "('$album_ID', ?),";
+            return '';
         }
-        return $query = substr($query, 0, -1); //Trims the last ","
+        $query = "INSERT INTO `cat_photo` (`photo`, `category`) VALUES ";
+        for($i=0; $i<count($cats); $i++)
+        {
+            $query .= "('$photo_ID', ?),";
+        }
+        return substr($query, 0, -1).";"; //Trims the last "," and places a ";"
+    }
+
+
+    /**
+     * Retrieves the photo's categories
+     *
+     * @param int $photo_ID The photo ID to look for categories
+     * @return array The photo's categories
+     */
+    private static function get_Categories($photo_ID)
+    {
+        $query = "SELECT `category` "
+                ."FROM `cat_photo` "
+                ."WHERE `photo`=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $photo_ID);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -199,8 +272,12 @@ class F_Photo extends \Foundation\F_Database
      * @param int $album_ID The album to modify and remove categories from
      * @return string The query used to remove categories from the album
      */
-    private static function remove_Categories($cats, $album_ID)
+    private static function remove_Cats($cats, $album_ID)
     {
+        if($cats === [])
+        {
+            return '';
+        }
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";
@@ -243,19 +320,6 @@ class F_Photo extends \Foundation\F_Database
 
         $toBind = array("id" => $album_ID);
         parent::execute_query($query, $toBind);
-    }
-
-    /**
-     * Updates a record from the "photo" table
-     *
-     * @param array $new_photo The ARRAY containing the new photo details got from "View"
-     * @param array $old_photo The ARRAY containing the old photo details
-     */
-    public static function update_Details($new_photo, $old_photo)
-    {
-        $DB_table = "photo";
-        $primary_Key = "id";
-        parent::update($new_photo, $old_photo, $DB_table, $primary_Key);
     }
 
 

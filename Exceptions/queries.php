@@ -11,14 +11,14 @@ namespace Exceptions;
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class queries extends \Exception
+class queries extends \PDOException
 {
     public function __construct($code, $exc)
     {
         switch ($code)
         {
             case 0:
-                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione in: $exc";
+                $message = "Attenzione! La richiesta non è andata a buon fine. Eccezione: $exc";
                 break;
 
             case 1:
@@ -29,11 +29,15 @@ class queries extends \Exception
                 $message = "Attenzione! Non sono state apportate modifiche. Dati ricevuti: $exc";
                 break;
 
+            case 3:
+                $message = "Attenzione: trovata 'duplicate entry'!";
+                break;
+
 
             default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }
 
-        parent::__construct($message, NULL, NULL);
+        parent::__construct($message);
     }
 
 
