@@ -37,18 +37,10 @@ class F_Album extends \Foundation\F_Database
         $album->set_ID($album_ID);
 
         $cats_toSet = $album->get_Categories();
-        $query_addCats = self::set_Categories($cats_toSet, $album_ID);
+        $query_addCats = self::add_Cats($cats_toSet, $album_ID);
         if($query_addCats!=='')
         {
-            try
-            {
-                parent::execute_query($query_addCats, $cats_toSet);
-            }
-            catch (\PDOException $exc)
-            {
-                throw new \Exceptions\queries(3, $exc); //In case of duplicate entry (very unlikely)
-            }
-
+            parent::execute_query($query_addCats, $cats_toSet);
         }
     }
 
@@ -57,19 +49,18 @@ class F_Album extends \Foundation\F_Database
      * Updates the album details
      *
      * @param \Entity\E_Album $to_Update The new Album object to save
-     * @param int $album_ID The album's ID
      */
     public static function update(\Entity\E_Album $to_Update)
     {
+        $album_ID = $to_Update->get_ID();
         $array_toUpdate = array(
-            "id" => $to_Update->get_ID(),
+            "id" => $album_ID,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
             "creation_date" => $to_Update->get_Creation_Date()
                 );
         $DB_table = "album";
         $primary_key = "id";
-        $album_ID = $to_Update->get_ID();
         parent::update($array_toUpdate, $DB_table, $primary_key, $album_ID);
 
         $cats = $to_Update->get_Categories();
@@ -85,9 +76,22 @@ class F_Album extends \Foundation\F_Database
      */
     public static function get_By_ID($ID)
     {
-        $toSearch = array("id" => $ID);
-        $DB_table = "album";
-        return parent::get($toSearch, $DB_table);
+        $query1 = "SELECT * "
+                 ."FROM `album` "
+                 ."WHERE `id`=?;";
+
+        $query2 = "SELECT `thumbnail` "
+                . "FROM `album_cover` "
+                . "WHERE `id`=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $ID);
+        $pdo_stmt->bindParam(2, $ID);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -102,7 +106,29 @@ class F_Album extends \Foundation\F_Database
         $toSearch = array("user" => $username);
         $DB_table = "album";
         $fetchAll = TRUE;
-        return parent::get($toSearch, $DB_table, $fetchAll);
+        $details = parent::get($toSearch, $DB_table, $fetchAll);
+
+        $query = "SELECT `thumbnail` "
+                . "FROM `album_cover` "
+                . "WHERE `id`=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $details["id"]);
+        $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        $cover = $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        //NON VA BENE.
+        //FINISCILA E CONTROLLA TUTTE LE ALTRE
+        //CONTROLLA I "return ARRAY MERGE" PERCHè SONO SBAGLIATI AL 90%
+        //USA UN FOREACH PER ASSOCIARE I DATI DI UNA QUERY AI DATI DI UN'ALTRA
+        //(foreach as $v {push(arr1[id], arr2[id]})
+
+
+
+
     }
 
 
@@ -154,25 +180,23 @@ class F_Album extends \Foundation\F_Database
         {
             array_push($old_cats, $v); //Keep only the values
         }
-
         $to_add    = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
 
-        if(count($to_add)>=1 && count($to_remove)>=1)
+        $query_ADD = self::add_Cats($to_add, $album_ID);
+        $query_DEL = self::remove_Cats($to_remove, $album_ID);
+        $query = $query_ADD.$query_DEL;
+
+        if($query_ADD!=='')
         {
-            $query_ADD = self::set_Categories($to_add, $album_ID);
-            $query_DEL = self::remove_Categories($to_remove, $album_ID);
-            $query = $query_ADD."; ".$query_DEL;
-            $toBind = array_merge($to_add, $to_remove);
-        }
-        elseif(count($to_add)>=1 && count($to_remove)<1)
-        {
-            $query = self::set_Categories($to_add, $album_ID); // =$query_ADD;
             $toBind = $to_add;
+            if($query_DEL!=='')
+            {
+                array_push($toBind, $to_remove);
+            }
         }
-        elseif(count($to_add)<1 && count($to_remove)>=1)
+        elseif($query_DEL!=='')
         {
-            $query = self::remove_Categories($to_remove, $album_ID); // =$query_DEL
             $toBind = $to_remove;
         }
         else
@@ -190,9 +214,9 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */
-    private static function set_Categories($cats, $album_ID)
+    private static function add_Cats($cats, $album_ID)
     {
-        if((array) $cats === [])
+        if($cats === [])
         {
             return '';
         }
@@ -201,10 +225,16 @@ class F_Album extends \Foundation\F_Database
         {
             $query .= "('$album_ID', ?),";
         }
-        return substr($query, 0, -1); //Trims the last ","
+        return substr($query, 0, -1).";"; //Trims the last "," and places a ";"
     }
 
 
+    /**
+     * Retrieves the album's categories
+     *
+     * @param int $album_ID The album ID to look for categories
+     * @return array The album's categories
+     */
     private static function get_Categories($album_ID)
     {
         $query = "SELECT `category` "
@@ -228,9 +258,9 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album to modify and remove categories from
      * @return string The query used to remove categories from the album
      */
-    private static function remove_Categories($cats, $album_ID)
+    private static function remove_Cats($cats, $album_ID)
     {
-        if((array) $cats == [])
+        if($cats === [])
         {
             return '';
         }

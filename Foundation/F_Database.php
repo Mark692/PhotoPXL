@@ -71,21 +71,22 @@ class F_Database
      *
      * @param array $toSearch The associative array with the values to search for
      * @param string $DB_table The DB table to search in
+     * @param string $select The string containing a selection of columns to retrieve with the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy_column The table column chosen to order the results
      * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
      * @return array The associative array with all the records that matched the query
      */
-    protected static function get($toSearch, $DB_table, $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
+    protected static function get($toSearch, $DB_table, $select='*', $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
     {
         $where = '';
-        foreach ($toSearch as $key => $v)
+        foreach ($toSearch as $key => $v) //Need the key only here!
         {
             $where .= '`'.$key.'`=? AND ';
         }
         $where = substr($where, 0, -5); //Removes the " AND " at the end of the string
 
-        $query = 'SELECT * '
+        $query = 'SELECT '.$select.' '
                 .'FROM `'.$DB_table.'` '
                 .'WHERE '.$where;
         if ($fetchAll===TRUE && $orderBy_column!=='' )
@@ -99,7 +100,7 @@ class F_Database
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $toSearch);
+        $pdo_stmt = self::bind_params($pdo_stmt, $toSearch); //Need the values here!
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
