@@ -10,6 +10,19 @@ namespace Utilities;
 
 global $config;
 
+//----Smarty Directories----\\
+$config['smarty']['template_dir'] =
+'/home/cicerone/public_html/webprog/bookstore/templates/main/template/';
+$config['smarty']['compile_dir'] =
+'/home/cicerone/public_html/webprog/bookstore/templates/main/templates_c/';
+$config['smarty']['config_dir'] =
+'/home/cicerone/public_html/webprog/bookstore/templates/main/configs/';
+$config['smarty']['cache_dir'] =
+'/home/cicerone/public_html/webprog/bookstore/templates/main/cache/';
+
+
+
+
 //----Database Connection Parameters----\\
 $config['mysql_host']     = 'localhost';
 $config['mysql_database'] = 'photopxl';
