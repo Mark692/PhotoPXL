@@ -67,7 +67,7 @@ class C_Profilo
         $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        \Foundation\F_User::update_details($new_details, $username);
+        \Foundation\F_User::update_details($new_details, $old_Username);
         //ritornerà un tpl di avvenuto successo
     }
 
