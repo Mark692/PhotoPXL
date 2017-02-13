@@ -43,14 +43,10 @@ class C_Profilo
         $V_Profilo = new \View\V_Profilo;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-
         $user_datails = \Foundation\F_User::get_By_Username($username);
         $V_Profilo->assign('utente', $user_datails);
-        $V_Profilo->assign('foto_profilo', $userdatails['photo']);
-
-        $F_user = new \Foundation\F_User;
-        $user_datails = $F_user->get_By_Username($username);
         //recupero foto profilo
+        $V_Profilo->assign('foto_profilo', $userdatails['photo']);
         $V_Profilo->assign('utente', $user_datails);
         $V_Profilo->assign('foto_profilo', $fotoprofilo);
 
@@ -64,14 +60,34 @@ class C_Profilo
     public function update()
     {
         $V_Profilo = new \View\V_Profilo;
-        $Session = new \Utilities\U_Session;
-        $username = $Session->get_val('username');
         $dati = $V_Profilo->get_Dati();
         $new_username = $dati['username'];
         $new_password = $dati['password'];
         $new_email = $dati['email'];
         $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
         \Foundation\F_User::update_details($new_details, $username);
+        //ritornerà un tpl di avvenuto successo
+    }
+
+
+    /**
+     * smista in base al task alle varie function 
+     * @return tpl
+     */
+    public function smista()
+    {
+        $V_Profilo = new \View\V_Profilo();
+        switch ($V_Profilo->getTask())
+        {
+            case 'riepilogo':
+                return $this->riepilogo_dati();
+            case 'Modifica':
+                return $this->modifica();
+            case 'salva':
+                return $this->update();
+        }
     }
 
 
