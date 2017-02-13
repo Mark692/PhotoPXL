@@ -16,12 +16,16 @@
 		<td class="colonna dati album" width="900px">
 			<img src={$immagine_profilo}></td>
 			<p><label for="Title" class="top">Username:</label< /br> {$utente.username}</label></p>
-			<p><label for="Title" class="top">email:</label< /br> {$utente.email}</label></p>
-			p><label for="Title" class="top">Ruolo:</label< /br> {$utente.role}</label></p>
+                        <p><label for="Title" class="top">email:</label< /br> {$utente.email}</label></p>
+                        <p><label for="Title" class="top">Ruolo:</label< /br> {$utente.role}</label></p>
 			
-			
-				<div class="pulsante"
+            <form>	
+                <div class="pulsante">
+                                     
                       <p><input type="hidden" name="controller" value="profilo" />
+                         <input type="hidden"  name="username" value="{$utente.username}">
+                         <input type="hidden" name="email" value"{$utente.email}">
+                         <input type="hidden" name="role" value"{$utente.role}">
                          <input type="hidden" name="task" value="modifica" />
                          <input type="submit" name="Modifica" class="button" value="Modifica Profilo"/></p>
                 </div>

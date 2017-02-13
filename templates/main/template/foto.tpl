@@ -5,7 +5,7 @@
 <div class="foto">
                 <p><label for="Title" class="top">Titolo:</label><br /></p>
                 <p><input type="text" name="title" id="title" class="field" value="{$dati_foto.title}"/></p> </br>
-                <p><img src={$dati_foto.images}></p>
+                <p><img src={$dati_foto.fullsize}></p>
                 <p><label for="like" class="top">like:{$numero_di_like}><br /></p>
                 <p><label for="date" class="top">Data di pubblicazione:{$upload_date}><br /></p>
                 <p><label for="date" class="top">Album di appartenenza:{$name_album}><br /></p>

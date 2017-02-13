@@ -8,7 +8,7 @@
 
 namespace View;
 
-class V_Upload extends \View\V_Basic
+class V_Foto extends \View\V_Basic
 {
 
     /**
