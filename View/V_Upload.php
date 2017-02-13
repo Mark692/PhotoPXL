@@ -19,7 +19,7 @@ class V_Upload extends \View\V_Basic
      */
     public function get_Dati()
     {
-        $keys = array ('image', 'title', 'description', 'is_reserved', 'categories');
+        $keys = array ('image', 'title', 'desc', 'is_reserved', 'cat');
         return parent::get_Dati($keys);
     }
 }

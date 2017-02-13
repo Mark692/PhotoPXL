@@ -3,19 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Album.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Exceptions/queries.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_Photo.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Database.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Photo.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Control/C_Profilo.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Control/C_Home.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Entity/E_Photo.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Utilities/config.inc.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Control/C_Registrazione.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/View/V_Registrazione.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/View/V_Profilo.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Control/C_Photo.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/View/V_Upload.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/Entity/E_User.php</file>
+            <file>file:/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/View/V_Basic.php</file>
         </group>
-    </open-files>
-</project-private>
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
     </open-files>
 </project-private>
