@@ -52,36 +52,45 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the user with the given $username
-     * 
+     * Retrieves the user details matching the given $username
+     *
      * @param string $username The user's username to search
-     * @return array The user details
+     * @return array The user details and its profile pic
      */
     public static function get_By_Username($username)
     {
-        //SELECT username, email, ecc... LA PASS SERVE PER LE UPDATE
-        //e SELECT photo FROM profile_pic WHERE user = $username
-        $toSearch = array("username" => $username);
-        $DB_table = "users";
-        $user_details = parent::get($toSearch, $DB_table);
-        //Ritorna
+        //User details from "users" DB table
+        //SELECT * is implicitly defined
+        $from = "users";
+        $where = array("username" => $username);
+        $user_details = parent::get($where, $from);
+
+        //User profile pic from "profile_pic" DB table
+        $select = "photo";
+        $from = "profile_pic";
+        $where = array("user" => $username);
+        $pro_pic = parent::get($where, $from, $select);
+
+        return array_push($user_details, $pro_pic);
     }
 
 
-
     /**
-     * Retrieves all the users that match the query
+     * Returns a list of all users with the given role
      *
-     * @param array $arr_values The values to search with the query
-     * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
-     * @param string $orderBy The table column chosen to order the results
-     * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
-     * @return array All the users that match the query
+     * @param enum $role The role to search the users for
+     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
+     * @return array The array with all the usernames matching the role chosen
      */
-    public static function get($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
+    public static function get_By_Role($role, $order_DESC=FALSE)
     {
-        $DB_table = "users";
-        return parent::get($arr_values, $DB_table, $fetchAll, $orderBy, $orderStyle);
+        $select = "username";
+        $from = "users";
+        $where = array("role" => $role);
+        $fetchAll = TRUE;
+        $orderBy_column = "username";
+
+        return parent::get($where, $from, $select, $fetchAll, $orderBy_column, $order_DESC);
     }
 
 
@@ -89,30 +98,30 @@ class F_User extends \Foundation\F_Database
      * Updates a record from the "users" table
      *
      * @param \Entity\E_User $to_Update The user with new details
-     * @param string $old_Username The username saved in the DB. To be specified in case the user changed username
-     * @param string $where_column The column to refer to make changes in the table
+     * @param string $old_Username The DB username record to refer to
+     * @param int $profile_Pic_ID The ID of the new profile pic
      */
-    public static function update_details(\Entity\E_User $to_Update, $old_Username='')
+    public static function update_Profile(\Entity\E_User $to_Update, $old_Username, $profile_Pic_ID)
     {
-        $username = $to_Update->get_Username();
-        $array_toUpdate = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            "username" => $username,
+        //Updating: Profile Details
+        $update = "users";
+        $new_username = $to_Update->get_Username();
+        $set = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            "username" => $new_username,
             "password" => $to_Update->get_Password(),
             "email" => $to_Update->get_Email(),
-            "role" => $to_Update->get_Role());
+            "role" => $to_Update->get_Role()
+                );
+        $where = array("username" => $old_Username);
 
-        $DB_table = "users";
-        $primary_key = "username";
-        if($old_Username!=='')          //The "update()" will search for the previous saved username...
-        {
-            $username = $old_Username;  //...instead of the new (changed) username
-        }
-        parent::update($array_toUpdate, $DB_table, $primary_key, $username);
+        parent::update($update, $set, $where);
 
+        //Updating: Profile Pic
+        $update = "profile_pic";
+        $set = array("photo" => $profile_Pic_ID);
+        $where = array("user" => $new_username);
 
-        //AGGIUNGI UPDATE PROFILE PIC
-
-
+        parent::update($update, $set, $where);
     }
 
 

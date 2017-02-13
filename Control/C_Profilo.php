@@ -71,7 +71,7 @@ class C_Profilo
         $new_password = $dati['password'];
         $new_email = $dati['email'];
         $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
-        \Foundation\F_User::update_details($new_details, $username);
+        \Foundation\F_User::update_Profile($new_details, $username);
     }
 
 
