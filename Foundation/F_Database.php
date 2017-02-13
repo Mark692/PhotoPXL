@@ -135,7 +135,9 @@ class F_Database
     protected static function update($update, $set_newDetails, $where)
     {
         $set = ''; //String to use for the SET
-        foreach ($set_newDetails as $key => $new_value)
+//        foreach(array_keys($set_newDetails) as $new_value) //LO STESSO DI SOTTO MA CON UN ARRAY_KEYS
+//        { }
+        foreach($set_newDetails as $key => $new_value)
         {
             $set .= '`'.$key.'`=?,';
         }

@@ -55,7 +55,7 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user details matching the given $username
      *
      * @param string $username The user's username to search
-     * @return array The user details and its profile pic
+     * @return \Entity\E_User_* The entity user according to the role chosen
      */
     public static function get_By_Username($username)
     {
@@ -77,12 +77,31 @@ class F_User extends \Foundation\F_Database
 
 
     /**
+     * Returns a list of all users with the given role
+     *
+     * @param enum $role The role to search the users for
+     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
+     * @return array All the users (usernames only) with the specified role
+     */
+    public static function get_By_Role($role, $order_DESC=FALSE)
+    {
+        $select = "username";
+        $from = "users";
+        $where = array("role" => $role);
+        $fetchAll = TRUE;
+        $orderBy_column = "username";
+
+        return $array_user = parent::get($where, $from, $select, $fetchAll, $orderBy_column, $order_DESC);
+    }
+
+
+    /**
      * Instantiates an \Entity\E_User_* user according to its role
      *
      * @param array $details The user details fetched from a query
      * @return \Entity\E_User_* The right user according to its role
      */
-    public static function instantiate_EUser($details)
+    private static function instantiate_EUser($details)
     {
         $username = $details["username"];
         $password = $details["password"];
@@ -109,25 +128,6 @@ class F_User extends \Foundation\F_Database
                 break;
         }
         return $user;
-    }
-
-
-    /**
-     * Returns a list of all users with the given role
-     *
-     * @param enum $role The role to search the users for
-     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
-     * @return array The array with all the usernames matching the role chosen
-     */
-    public static function get_By_Role($role, $order_DESC=FALSE)
-    {
-        $select = "username";
-        $from = "users";
-        $where = array("role" => $role);
-        $fetchAll = TRUE;
-        $orderBy_column = "username";
-
-        return parent::get($where, $from, $select, $fetchAll, $orderBy_column, $order_DESC);
     }
 
 
@@ -175,28 +175,6 @@ class F_User extends \Foundation\F_Database
                 .'`photo`=?';
         $toBind = array($username, $photo_ID);
         parent::execute_query($query, $toBind);
-    }
-
-
-    /**
-     * Retrieves the number of likes from the selected photo
-     *
-     * @param int $photo_ID The photo's ID
-     * @return int The number of likes of the selected photo
-     */
-    public static function get_Total_Likes($photo_ID)
-    {
-        $query = "SELECT COUNT(user) "
-                ."FROM likes "
-                ."WHERE photo=?";
-
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $photo_ID);
-        $total_likes = $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $total_likes;
     }
 
 
