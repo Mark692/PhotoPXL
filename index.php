@@ -17,17 +17,39 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 //------------------------------PROVE------------------------------//
 global $config;
 
-$test = new \Prove\TF_Album();
+
+$avvia = new \View\V_Basic();
+$avvia->processa_Template('home_ospite');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//$test = new \Prove\TF_Album();
 //$test->T_insert();
 //$test->T_update();
 //$test->T_getUser();
 //$test->T_getCats();
-print_R(\Foundation\F_Album::get_Categories(1));
-
-
-
-
-
+//print_R(\Foundation\F_Album::get_Categories(1));
 
 
 //$try = new Prove\TC_Registrazione();
