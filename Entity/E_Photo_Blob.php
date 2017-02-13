@@ -6,14 +6,34 @@
  * and open the template in the editor.
  */
 
-namespace Prove\Aggiungere;
+namespace Entity;
 
-class Fullsize_Thumbnail
+/**
+ * Handles basic functions to generate a thumbnail of a photo and checks whether
+ * the image is a valid image to be uploaded
+ */
+class E_Photo_Blob
 {
     private $fullsize;
     private $thumbnail;
     private $size;
     private $type;
+
+
+    /**
+     * Instantiates a photo blob object
+     *
+     * @param string $path The path to the photo uploaded
+     * @param int $size The photo size
+     * @param string $type The photo type
+     */
+    public function __construct($path, $size, $type)
+    {
+        $this->set_Fullsize($path);
+        $this->set_Thumbnail($path);
+        $this->set_Size($size);
+        $this->set_Type($type);
+    }
 
 
     /**

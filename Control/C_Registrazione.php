@@ -24,7 +24,7 @@ class C_Registrazione
             $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
             \Foundation\F_User::insert($e_userSTD);
         }
-        catch (\Exceptions\InvalidInput $ex)
+        catch (\Exceptions\input_texts $ex)
         {
             //Primo catch: gestire username non validi
             echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE

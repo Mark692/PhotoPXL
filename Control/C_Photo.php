@@ -41,9 +41,8 @@ class C_Photo
         $this->controllaFoto();
         $type = $_FILES['foto_Utente']['type'];
         $size = $_FILES['foto_Utente']['size'];
-        $photo_blob = file_get_contents($_FILES['foto_utente']['tmp_name']);
-        $photo_blob = addslashes ($photo_blob);
-        $photo = new \Entity\E_Photo_Blob($photo_blob,$type,$size); //controlla se va bene qunado si rifa il pull
+        $photo_blob = addslashes(file_get_contents($_FILES['foto_utente']['tmp_name']));
+        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type); //controlla se va bene qunado si rifa il pull
         \Foundation\F_Photo::insert($photo_details, $photo, $username);
         //ritorna un template successo
     }
@@ -100,6 +99,27 @@ class C_Photo
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+    }
+
+
+    public function smista()
+    {
+        $V_Photo = new \View\V_Profilo();
+        switch ($V_Photo->getTask())
+        {
+            case 'display':
+                return $this->display_photo();
+                break;
+            case 'upload':
+                $this->Upload_foto();
+                break;
+            case 'modifica':
+                return $this->modifica();
+                break;
+            case 'update':
+                return $this->update();
+                break;
+        }
     }
 
 

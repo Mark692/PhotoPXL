@@ -41,7 +41,7 @@ class C_Profilo
     public function modifica()
     {
         $V_Profilo = new \View\V_Profilo;
-        $user_details= $V_Profilo->get_Dati('username','email');
+        $user_details = $V_Profilo->get_Dati('username', 'email');
         $V_Profilo->assign('utente', $user_datails);
         //recupero foto profilo
         $V_Profilo->assign('foto_profilo', $userdatails['photo']);
@@ -81,10 +81,13 @@ class C_Profilo
         {
             case 'riepilogo':
                 return $this->riepilogo_dati();
+                break;
             case 'Modifica':
                 return $this->modifica();
+                break;
             case 'salva':
                 return $this->update();
+                break;
         }
     }
 

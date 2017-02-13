@@ -64,7 +64,7 @@ class F_Photo extends \Foundation\F_Database
     {
         $id = $to_Update->get_ID();
 
-        $array_toUpdate = array(
+        $set = array(
             "id" => $id,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
@@ -72,9 +72,9 @@ class F_Photo extends \Foundation\F_Database
             "is_reserved" => $to_Update->get_Reserved()
                 );
 
-        $DB_table = "photo";
-        $primary_Key = "id";
-        parent::update($array_toUpdate, $DB_table, $primary_Key, $id);
+        $update = "photo";
+        $where = array("id" => $id);
+        parent::update($update, $set, $where);
 
         $cats = $to_Update->get_Categories();
         self::update_Categories($cats, $id);
@@ -82,24 +82,19 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Rethrives all the photos of a user by passing its username
+     * Rethrives all the IDs and thumbnails of a user photos by passing its username
      *
      * @param string $username The user's username selected to get the photos from
      * @return array The user's photos
      */
-    public static function get_By_User($username)
+    public static function get_By_User($username, $order_DESC=FALSE)
     {
-        $query = "SELECT `id`, `thumbnail` "
-                ."FROM `photo` "
-                ."WHERE `user`=?";
-
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $username);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $select = array("id", "thumbnail");
+        $from = "photo";
+        $where = array("user" => $username);
+        $fetchAll = TRUE;
+        $orderBy = $username;
+        return parent::get($where, $from, $select, $fetchAll, $orderBy, $order_DESC);
     }
 
 
@@ -121,7 +116,7 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the thumbnails of all photos belonging to a specific album
+     * Retrieves the IDs and thumbnails of all photos belonging to a specific album
      *
      * @param int $album_ID
      * @return array An array with photo thumbnails
@@ -286,6 +281,28 @@ class F_Photo extends \Foundation\F_Database
             $query .= "(`category`=?) OR ";
         }
         return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
+    }
+
+
+    /**
+     * Retrieves the number of likes from the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return int The number of likes of the selected photo
+     */
+    public static function get_Total_Likes($photo_ID)
+    {
+        $query = "SELECT COUNT(user) "
+                ."FROM likes "
+                ."WHERE photo=?";
+
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        $pdo_stmt->bindParam(1, $photo_ID);
+        $total_likes = $pdo_stmt->execute();
+
+        $pdo = NULL; //Closes DB connection
+        return $total_likes;
     }
 
 

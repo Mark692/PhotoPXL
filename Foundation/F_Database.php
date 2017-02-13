@@ -69,38 +69,49 @@ class F_Database
     /**
      * Rethrives all the records that match the query
      *
-     * @param array $toSearch The associative array with the values to search for
-     * @param string $DB_table The DB table to search in
-     * @param string $select The string containing a selection of columns to retrieve with the query
+     * @param array $where_toSearch The associative array with the values to search for
+     * @param string $from The DB table to search in
+     * @param array $select An array containing a selection of columns to retrieve with the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @param string $orderBy_column The table column chosen to order the results
-     * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
+     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array The associative array with all the records that matched the query
      */
-    protected static function get($toSearch, $DB_table, $select='*', $fetchAll=FALSE, $orderBy_column='', $orderStyle="ASC")
+    protected static function get($where_toSearch, $from, $select='*', $fetchAll=FALSE, $orderBy_column='', $order_DESC=FALSE)
     {
+        $select_columns = $select;
+        if($select!=='*')
+        {
+            $select_columns = '';
+            for($i=0; $i<count($select); $i++)
+            {
+                $select_columns .= '`'.$select[$i].'`, ';
+            }
+            $select_columns = substr($select_columns, 0, -2); //Removes the ", " at the end of the string
+        }
+
         $where = '';
-        foreach ($toSearch as $key => $v) //Need the key only here!
+        foreach ($where_toSearch as $key => $v) //Need the key only here!
         {
             $where .= '`'.$key.'`=? AND ';
         }
         $where = substr($where, 0, -5); //Removes the " AND " at the end of the string
 
-        $query = 'SELECT '.$select.' '
-                .'FROM `'.$DB_table.'` '
+        $query = 'SELECT '.$select_columns.' '
+                .'FROM `'.$from.'` '
                 .'WHERE '.$where;
         if ($fetchAll===TRUE && $orderBy_column!=='' )
         {
             $query .= ' ORDER BY `'.$orderBy_column.'`';
-            if ($orderStyle==="DESC")
+            if ($order_DESC===TRUE)
             {
-                $query .= ' '.$orderStyle;
+                $query .= ' DESC';
             }
         }
 
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $toSearch); //Need the values here!
+        $pdo_stmt = self::bind_params($pdo_stmt, $where_toSearch); //Need the values here!
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
@@ -117,25 +128,25 @@ class F_Database
      * classes which will define the attributes $_table and $_primaryKey.
      * Also it binds parameters to the query
      *
-     * @param array $new_Details An ARRAY containing new details got from "View"
-     * @param string $_table The DB table into execute the query
-     * @param string $primary_key The $_table's column used as reference by the WHERE clause
-     * @param mixed $obj_ID The username/ID of the object to update
+     * @param string $update The DB table into execute the query
+     * @param array $set_newDetails An ARRAY containing new details got from "View"
+     * @param array $where The array with information about the column and its value to search for the update
      */
-    protected static function update($new_Details, $_table, $primary_key, $obj_ID)
+    protected static function update($update, $set_newDetails, $where)
     {
         $set = ''; //String to use for the SET
-        foreach ($new_Details as $key => $new_value)
+//        foreach(array_keys($set_newDetails) as $new_value) //LO STESSO DI SOTTO MA CON UN ARRAY_KEYS
+//        { }
+        foreach($set_newDetails as $key => $new_value)
         {
             $set .= '`'.$key.'`=?,';
         }
         $set = substr($set, 0, -1); //Removes the trailing char: ","
-        $query = "UPDATE `$_table` "
+        $query = "UPDATE `$update` "
                 ."SET $set "
-                ."WHERE `$primary_key`='$obj_ID'";
+                ."WHERE `$where[0]`='$where[1]'";
 
-        echo($query);
-        self::execute_query($query, $new_Details);
+        self::execute_query($query, $set_newDetails);
     }
 
 
