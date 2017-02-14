@@ -19,7 +19,7 @@ global $config;
 
 
 $avvia = new \View\V_Basic();
-$avvia->processa_Template('home_ospite');
+$avvia->display('prova');
 
 
 

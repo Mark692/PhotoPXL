@@ -12,13 +12,13 @@ global $config;
 
 //----Smarty Directories----\\
 $config['smarty']['template_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/template/';
+'C:/xampp/htdocs/PhotoPXL/templates/main/template/';
 $config['smarty']['compile_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/templates_c/';
+'C:/xampp/htdocs/PhotoPXL/templates/main/template_c/';
 $config['smarty']['config_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/configs/';
+'C:/xampp/htdocs/PhotoPXL/templates/main/configs/';
 $config['smarty']['cache_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/cache/';
+'C:/xampp/htdocs/PhotoPXL/templates/main/cache/';
 
 
 

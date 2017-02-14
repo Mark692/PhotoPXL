@@ -73,7 +73,7 @@ class F_Database
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @return type
      */
-    public static function get_Result($query, $toBind, $fetchAll=FALSE)
+    public static function fetch_Result($query, $toBind, $fetchAll=FALSE)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -89,6 +89,14 @@ class F_Database
     }
 
 
+    /**
+     * Returns a basic query from the given parameters
+     *
+     * @param array $select The columns to select. Use a string "*" to select all
+     * @param string $from The DB table to search in
+     * @param array $where The associative array with the values to search for
+     * @return string The complete query
+     */
     public static function basic_Query($select, $from, $where)
     {
         $select_columns = $select;
@@ -115,19 +123,29 @@ class F_Database
     }
 
 
+    /**
+     * Returns an array with a single record, matching the query
+     *
+     * @param array $select The columns to select. Use a string "*" to select all
+     * @param string $from The DB table to search in
+     * @param array $where The associative array with the values to search for
+     * @return array The record matching the query
+     */
     public static function get_One($select, $from, $where)
     {
         $query = self::basic_Query($select, $from, $where);
-        return self::get_Result($query, $where);
+        return self::fetch_Result($query, $where);
     }
 
 
     /**
      * Rethrives all the records that match the query
      *
-     * @param array $select An array containing a selection of columns to retrieve with the query
+     * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in
      * @param array $where The associative array with the values to search for
+     * @param int $limit Limits the results to fetch with the query
+     * @param int $offset Sets how many records skip before fetching the results
      * @param string $orderBy_column The table column chosen to order the results
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array The associative array with all the records that matched the query
@@ -151,7 +169,7 @@ class F_Database
             }
         }
         $fetchAll = TRUE;
-        return self::get_Result($query, $where, $fetchAll);
+        return self::fetch_Result($query, $where, $fetchAll);
     }
 
 
@@ -187,6 +205,13 @@ class F_Database
     }
 
 
+    /**
+     * Returns the total number of rows matching the query
+     *
+     * @param string $count The column to count the affected rows from
+     * @param string $from The DB table to execute the query in
+     * @param array $where The parameters to respect 
+     */
     protected static function count_Results($count, $from, $where)
     {
         foreach($where as $key => $v)
@@ -198,7 +223,7 @@ class F_Database
                 .'FROM '.$from.' '
                 .'WHERE '.$where_clause;
 
-        self::get_Result($query, $where);
+        self::fetch_Result($query, $where);
     }
 
 
