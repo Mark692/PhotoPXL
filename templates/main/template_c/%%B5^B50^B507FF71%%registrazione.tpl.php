@@ -1,18 +1,11 @@
+<?php /* Smarty version 2.6.30, created on 2017-02-14 12:11:52
+         compiled from registrazione.tpl */ ?>
 <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
     <tr class="contenuto">
         <td class="colonna1" width="900px" align="center">
             <div class="ultime foto">
                 <p>Foto del momento<br/></p>
-                        {*<table class="tabella" width="900px" align="center" cellpadding="5" cellspacing="0">
-                                    {for $iter=1 to $MAX_RIGHE}
-                                            <tr class="riga foto">
-                                            {for $iter=1 to $MAX_COLONNE}
-                                                    <td class="colonna foto"><img src={$dati_foto.images[]}></td>
-                                            {/for}
-                                            </tr>
-                                    {/for}
-                        </table>*}
-                <p><label for="descrizione" class="top">descrizione del sito</label><br />
+                                        <p><label for="descrizione" class="top">descrizione del sito</label><br />
             </div>
         </td>
         <td class="colonna" width="900px" align="center">

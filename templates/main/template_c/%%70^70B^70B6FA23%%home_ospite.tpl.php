@@ -1,3 +1,5 @@
+<?php /* Smarty version 2.6.26, created on 2017-02-14 11:03:25
+         compiled from home_ospite.tpl */ ?>
 <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
     <tr class="contenuto">
         <td class="colonna1" width="900px" align="center">

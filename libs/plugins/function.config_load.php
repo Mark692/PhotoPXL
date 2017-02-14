@@ -95,8 +95,8 @@ function smarty_function_config_load($params, &$smarty)
                 return;
             }
             $smarty->_conf_obj->set_file_contents($_file, $_params['source_content']);
-            $_config_vars = array_merge($smarty->_conf_obj->get_All($_file),
-                    $smarty->_conf_obj->get_All($_file, $_section));
+            $_config_vars = array_merge($smarty->_conf_obj->get($_file),
+                    $smarty->_conf_obj->get($_file, $_section));
             if(function_exists('var_export')) {
                 $_output = '<?php $_config_vars = ' . var_export($_config_vars, true) . '; ?>';
             } else {

@@ -28,10 +28,21 @@ class Mostra_Foto_per_Pagina
         {
             array_push($mostra, $array_PhotoDB[$i]);
         }
+        
         return $mostra;
 
         //L'elemento $mostra[0] è il numero di pagine totali.
         //Gli elementi $mostra[1] fino al $mostra[count($mostra)-1] sono le foto da visualizzare
+    }
+    /**
+     * serve per dividere un array in un numero fissato di righe
+     * @param array $mostra è l'array dal db di foto
+     * @param int $limit_perRiga 
+     * @return array
+     */
+    public function mostra_per_righe($mostra, $limit_perRiga=PHOTOS_PER_ROW){
+        return array_chunk($mostra, $limit_perRiga);
+        
     }
 
 }
