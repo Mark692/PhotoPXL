@@ -19,23 +19,25 @@ global $config;
 
 
 $avvia = new \View\V_Basic();
-//$array_foto = [];
-//for($i=1; $i<=16; $i++)
-//{
-//    array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
-//    
-//}
+$array_foto = [];
+for($i=1; $i<=16; $i++)
+{
+    array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
+    
+}
 
 
-$foto="templates/main/template/img/NoPhoto.jpg";
-$array_dati=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
-    "is_reserved"=>"TRUE","categories"=>"STREET"];
-$array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
-$avvia->assign('array_categories',$array_categories);
-$avvia->assign('foto',$foto);
-//$avvia->assign('ultime_foto',array_chunk($array_foto, PHOTOS_PER_ROW));
-$avvia->assign('dati_foto',$array_dati);
-$avvia->display('modifica_foto.tpl');
+$foto="templates/main/template/img/images.jpg";
+//$array_dati=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
+//    "is_reserved"=>"TRUE","categories"=>"STREET"];
+//$array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
+//$avvia->assign('array_categories',$array_categories);
+$array_dati=["username" => "cazzofritto", "password" => "tuozio",
+"email"=>"cazzo@inculo.it","role"=>"Standard"];
+$avvia->assign('immagine_profilo',$foto);
+$avvia->assign('ultime_foto',array_chunk($array_foto, PHOTOS_PER_ROW));
+$avvia->assign('utente',$array_dati);
+$avvia->display('profilo.tpl');
 
 
 
