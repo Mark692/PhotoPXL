@@ -12,13 +12,13 @@ global $config;
 
 //----Smarty Directories----\\
 $config['smarty']['template_dir'] =
-'/home/cicerone/public_html/webprog/bookstore/templates/main/template/';
+'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/template/';
 $config['smarty']['compile_dir'] =
-'/home/cicerone/public_html/webprog/bookstore/templates/main/templates_c/';
+'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/templates_c/';
 $config['smarty']['config_dir'] =
-'/home/cicerone/public_html/webprog/bookstore/templates/main/configs/';
+'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/configs/';
 $config['smarty']['cache_dir'] =
-'/home/cicerone/public_html/webprog/bookstore/templates/main/cache/';
+'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/cache/';
 
 
 

@@ -23,12 +23,11 @@ class C_Profilo
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_By_Username($username);
         $array_thumbnail = \Foundation\F_Photo::get_By_User($username);
-
+        $id=$array_thumbnail["id"];
         $ultime_foto = $QUALCOSA_DA_SISTEMARE1->display_foto($array_thumbnail["thumbnail"]);
-
         //recupero foto profilo
         $V_Profilo->assign('utente', $user_datails);
-        $V_Profilo->assign('foto_profilo', $fotoprofilo);
+        $V_Profilo->assign('id', $id);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
         $V_Profilo->assign('array_ultime_foto', $ultime_foto);
         return $V_Profilo->display('profilo_riepilogo.tpl');

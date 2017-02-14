@@ -10,7 +10,7 @@ namespace View;
 
 require('lib/smarty/smarty.class.php');
 
-class V_Basic extends Smarty
+class V_Basic extends \Smarty
 {
 
     /**
