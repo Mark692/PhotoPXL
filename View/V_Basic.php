@@ -8,7 +8,9 @@
 
 namespace View;
 
-require('lib/smarty/smarty.class.php');
+
+
+require('libs/Smarty.class.php');
 
 class V_Basic extends \Smarty
 {
@@ -18,6 +20,7 @@ class V_Basic extends \Smarty
      */
     public function __construct()
     {
+        //$this->smarty();
         global $config;
         $this->Smarty();
         $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni

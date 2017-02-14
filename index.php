@@ -20,6 +20,33 @@ global $config;
 
 $avvia = new \View\V_Basic();
 $avvia->display('prova');
+$array_foto = [];
+for($i=1; $i<=16; $i++)
+{
+    array_push($array_foto, $i);
+
+}
+
+echo("array_foto: ".nl2br("\r\n"));
+print_r($array_foto);
+
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+
+$a=array_chunk($array_foto, 6);
+echo("array_chunk: ".nl2br("\r\n"));
+print_r($a[2]);
+
+
+
+
+
+$avvia->assign('abba',array_chunk($array_foto, PHOTOS_PER_ROW));
+
+$avvia->display('prova.tpl');
 
 
 
