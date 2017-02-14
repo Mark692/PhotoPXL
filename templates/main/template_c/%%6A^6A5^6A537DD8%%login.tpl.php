@@ -1,18 +1,25 @@
+<?php /* Smarty version 2.6.30, created on 2017-02-14 15:16:09
+         compiled from login.tpl */ ?>
 <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
     <tr class="contenuto">
         <td class="colonna1" width="900px" align="center">
             <fieldset>
             <div class="foto">
                 <table>
-                    {foreach from=$ultime_foto item=array1}
+                    <?php $_from = $this->_tpl_vars['ultime_foto']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['array1']):
+?>
                         <tr>
-                            {foreach from=$array1 item=valore}
+                            <?php $_from = $this->_tpl_vars['array1']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['valore']):
+?>
                                 <td>
-                            <img src={$valore} width="100" height="100" >  
+                            <img src=<?php echo $this->_tpl_vars['valore']; ?>
+ width="100" height="100" >  
                                 </td>
-                            {/foreach}
+                            <?php endforeach; endif; unset($_from); ?>
                         </tr>
-                    {/foreach}
+                    <?php endforeach; endif; unset($_from); ?>
                 </table> 
                 <p><label for="descrizione" class="top">descrizione del sito</label></p>
             </div>
@@ -36,4 +43,3 @@
         </td>
     </tr>
 </table>
-
