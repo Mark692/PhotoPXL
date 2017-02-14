@@ -39,10 +39,9 @@ class V_Basic extends \Smarty
     public function get_Dati($keys)
     {
         $total = array_merge($_REQUEST, $_FILES);
-        $dettagli = array ();
-        foreach ((array) $keys as $k => $dato)
+        foreach ($keys as $dato)
         {
-            $dettagli[$k] = $total[$k];
+            $dettagli[$dato] = $total[$dato];
         }
         return $dettagli;
     }
