@@ -9,17 +9,17 @@
 namespace Foundation;
 
 /**
- * Sets basic info for Standard users
+ * Sets basic info for PRO users
  */
-class F_User_Standard extends F_User
+class F_User_PRO extends F_User
 {
 
     /**
      * Inserts the user into "users" DB table
      *
-     * @param \Entity\F_User_Standard $e_user The user to insert into the DB
+     * @param \Entity\F_User_PRO $e_user The user to insert into the DB
      */
-    public static function execute_query(\Entity\F_User_Standard $e_user)
+    public static function insert(\Entity\F_User_PRO $e_user)
     {
         parent::insert($e_user);
     }

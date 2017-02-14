@@ -9,18 +9,19 @@
 namespace Foundation;
 
 /**
- * Sets basic info for Admin users
+ * Sets basic info for MOD users
  */
-class F_User_Admin extends F_User_MOD
+class F_User_MOD extends F_User_PRO
 {
 
     /**
      * Inserts the user into "users" DB table
      *
-     * @param \Entity\F_User_Admin $e_user The user to insert into the DB
+     * @param \Entity\F_User_MOD $e_user The user to insert into the DB
      */
-    public static function execute_query(\Entity\F_User_Admin $e_user)
+    public static function insert(\Entity\F_User_MOD $e_user)
     {
         parent::insert($e_user);
     }
 }
+

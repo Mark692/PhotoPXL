@@ -20,33 +20,21 @@ class F_User extends \Foundation\F_Database
      *
      * @param \Entity\E_User_* $e_user The user to insert into the DB
      */
-    public static function insert($e_user)
+    protected static function insert($e_user)
     {
-        //PRO, MOD, Admin user setup
         $query = 'INSERT INTO `users` SET '
                 .'`username`=?, '
                 .'`password`=?, '
                 .'`email`=?, '
                 .'`role`=?';
 
-        $role = $e_user->get_Role();
-
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
+        $toBind = array(
             $e_user->get_Username(),
             $e_user->get_Password(),
             $e_user->get_Email(),
-            $role);
+            $e_user->get_Role()
+                );
 
-        //STANDARD user setup
-        if($role === \Utilities\Roles::STANDARD)
-        {
-            $query .= ', '
-                .'`last_Upload`=?, '
-                .'`up_Count`=?';
-
-            array_push($toBind, $e_user->get_Last_Upload());
-            array_push($toBind, $e_user->get_up_Count());
-        }
         parent::execute_query($query, $toBind);
     }
 

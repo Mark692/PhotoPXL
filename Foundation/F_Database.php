@@ -67,17 +67,18 @@ class F_Database
 
 
     /**
+     * Fetches the result/s of the query
      *
-     * @param type $query
-     * @param type $toBind
+     * @param string $query The query to execute
+     * @param array $toBind The values to bind to the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @return type
+     * @return array
      */
     public static function fetch_Result($query, $toBind, $fetchAll=FALSE)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $toBind); //Need the values here!
+        $pdo_stmt = self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
@@ -111,7 +112,7 @@ class F_Database
         }
 
         $where_clause = '';
-        foreach($where as $key => $v) //Need the key only here!
+        foreach($where as $key => $v)
         {
             $where_clause .= '`'.$key.'`=? AND ';
         }
@@ -210,7 +211,7 @@ class F_Database
      *
      * @param string $count The column to count the affected rows from
      * @param string $from The DB table to execute the query in
-     * @param array $where The parameters to respect 
+     * @param array $where The parameters to respect
      */
     protected static function count_Results($count, $from, $where)
     {
