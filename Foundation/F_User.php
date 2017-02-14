@@ -45,7 +45,7 @@ class F_User extends \Foundation\F_Database
      * @param string $username The user's username to search
      * @return \Entity\E_User_* The entity user according to the role chosen
      */
-    public static function get_By_Username($username)
+    public static function get_UserDetails($username)
     {
         //User details from "users" DB table
         $select = "*";
@@ -53,33 +53,19 @@ class F_User extends \Foundation\F_Database
         $where = array("username" => $username);
         $user_details = parent::get_One($select, $from, $where);
         $user = self::instantiate_EUser($user_details);
+        $pic = self::get_ProfilePic($username);
 
-        //User profile pic from "profile_pic" DB table
-        $select = "photo";
-        $from = "profile_pic";
-        $where = array("user" => $username);
-        $pro_pic = parent::get_One($select, $from, $where);
-
-        return array($user, $pro_pic[0]);
+        return array($user, $pic);
     }
 
 
-    /**
-     * Returns a list of all users with the given role
-     *
-     * @param enum $role The role to search the users for
-     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
-     * @return array All the users (usernames only) with the specified role
-     */
-    public static function get_By_Role($role, $limit=0, $offset=0, $orderBy_column='', $order_DESC=FALSE)
+    private static function get_ProfilePic($username)
     {
-        $select = "username";
-        $from = "users";
-        $where = array("role" => $role);
-        $fetchAll = TRUE;
-        $orderBy_column = "username";
-
-        return $array_user = parent::get_All( $select, $from, $where,  $limit, $offset, $orderBy_column, $order_DESC);
+        $select = "photo";
+        $from = "profile_pic";
+        $where = array("user" => $username);
+        $array_pic = parent::get_One($select, $from, $where);
+        return $array_pic[0];
     }
 
 
@@ -96,26 +82,40 @@ class F_User extends \Foundation\F_Database
         $email = $details["email"];
         $up_Count = $details["up_Count"];
         $last_up = $details["last_Up"];
-
         switch ($details["role"])
         {
             case \Utilities\Roles::STANDARD:
                 $user = new \Entity\E_User_Standard($username, $password, $email, $up_Count, $last_up);
                 break;
-
             case \Utilities\Roles::PRO:
                 $user = new \Entity\E_User_PRO($username, $password, $email);
                 break;
-
             case \Utilities\Roles::MOD:
                 $user = new \Entity\E_User_MOD($username, $password, $email);
                 break;
-
             case \Utilities\Roles::ADMIN:
                 $user = new \Entity\E_User_ADMIN($username, $password, $email);
                 break;
         }
         return $user;
+    }
+
+
+    /**
+     * Returns a list of all users with the given role
+     *
+     * @param enum $role The role to search the users for
+     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
+     * @return array All the users (usernames only) with the specified role
+     */
+    public static function get_By_Role($role, $limit=0, $offset=0, $orderBy_column='', $order_DESC=FALSE)
+    {
+        $select = array("username");
+        $from = "users";
+        $where = array("role" => $role);
+        $orderBy_column = "username";
+
+        return $array_user = parent::get_All($select, $from, $where,  $limit, $offset, $orderBy_column, $order_DESC);
     }
 
 

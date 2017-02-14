@@ -39,4 +39,6 @@ class F_User_Standard extends F_User
 
         parent::execute_query($query, $toBind);
     }
+
+
 }

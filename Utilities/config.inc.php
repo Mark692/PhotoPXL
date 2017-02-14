@@ -35,10 +35,10 @@ $config['mysql_password'] = 'FRIGO A LEGNA';
 define("PAESAGGI", 1);
 define("RITRATTI", 2);
 define("FAUNA", 3);
-define("BIANCO_NERO", 4);
+define("BIANCONERO", 4);
 define("ASTRONOMIA", 5);
 define("STREET", 6);
-define("NATURA_MORTA", 7);
+define("NATURAMORTA", 7);
 define("SPORT", 8);
 
 
