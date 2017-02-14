@@ -37,7 +37,7 @@ class F_User_Standard extends F_User
             $e_user->get_Last_Upload(),
             $e_user->get_up_Count());
 
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 

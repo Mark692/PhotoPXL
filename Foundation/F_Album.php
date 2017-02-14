@@ -33,14 +33,14 @@ class F_Album extends \Foundation\F_Database
             $album->get_Creation_Date(),
             $owner);
 
-        $album_ID = parent::execute_query($query, $toBind); //Inserts the album and gets its ID.
+        $album_ID = parent::execute_Query($query, $toBind); //Inserts the album and gets its ID.
         $album->set_ID($album_ID);
 
         $cats_toSet = $album->get_Categories();
         $query_addCats = self::add_Cats($cats_toSet, $album_ID);
         if($query_addCats!=='')
         {
-            parent::execute_query($query_addCats, $cats_toSet);
+            parent::execute_Query($query_addCats, $cats_toSet);
         }
     }
 
@@ -203,7 +203,7 @@ class F_Album extends \Foundation\F_Database
         {
             throw new \Exceptions\queries(2, array_merge($new_cats, $old_cats));
         }
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -287,7 +287,7 @@ class F_Album extends \Foundation\F_Database
                 ."WHERE (`id`=?) ";
 
         $toBind = array("id" => $album_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 }

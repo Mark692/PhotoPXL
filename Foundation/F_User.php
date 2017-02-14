@@ -18,24 +18,22 @@ class F_User extends \Foundation\F_Database
     /**
      * Inserts the user into "users" DB table
      *
-     * @param \Entity\E_User_* $e_user The user to insert into the DB
+     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
      */
-    protected static function insert($e_user)
+    public static function insert(\Entity\E_User_Standard $STD_user)
     {
-        $query = 'INSERT INTO `users` SET '
-                .'`username`=?, '
-                .'`password`=?, '
-                .'`email`=?, '
-                .'`role`=?';
+        $insertInto = "users";
 
-        $toBind = array(
-            $e_user->get_Username(),
-            $e_user->get_Password(),
-            $e_user->get_Email(),
-            $e_user->get_Role()
+        $set = array(
+            "username" => $STD_user->get_Username(),
+            "password" => $STD_user->get_Password(),
+            "email" => $STD_user->get_Email(),
+            "role" => $STD_user->get_Role(),
+            "last_Upload" => $STD_user->get_Last_Upload(),
+            "up_Count" => $STD_user->get_up_Count()
                 );
 
-        parent::execute_query($query, $toBind);
+        parent::insert_Query($insertInto, $set);
     }
 
 
@@ -162,7 +160,7 @@ class F_User extends \Foundation\F_Database
                 .'`user`=?, '
                 .'`photo`=?';
         $toBind = array($username, $photo_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -178,7 +176,7 @@ class F_User extends \Foundation\F_Database
                 ."WHERE (`username`=?) AND (`photo`=?)";
 
         $toBind = array($username, $photo_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 

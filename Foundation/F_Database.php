@@ -53,7 +53,7 @@ class F_Database
      * @param array $toBind The array of values to bind at the query
      * @return string The last inserted (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
      */
-    protected static function execute_query($query, $toBind)
+    protected static function execute_Query($query, $toBind)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -63,6 +63,29 @@ class F_Database
         $last_id = $pdo->lastInsertId();
         $pdo = NULL; //Closes DB connection
         return $last_id;
+    }
+
+
+    /**
+     * Inserts a new record into the DB. Retrieves the last inserted ID
+     *
+     * @param string $insertInto The table to put the record in
+     * @param array $set The values to insert
+     * @return int The last inserted ID
+     */
+    protected static function insert_Query($insertInto, $set)
+    {
+        $set_values='';
+        foreach($set as $key => $v)
+        {
+            $set_values .= '`'.$key.'`=?, ';
+        }
+        $set_values = substr($set_values, 0, -2);
+
+        $query = 'INSERT INTO `'.$insertInto.'` '
+                .'SET '.$set_values;
+
+        return self::execute_Query($query, $set);
     }
 
 
@@ -202,7 +225,7 @@ class F_Database
                 ."SET $set_values "
                 ."WHERE $where_clause";
 
-        self::execute_query($query, array_merge($set, $where));
+        self::execute_Query($query, array_merge($set, $where));
     }
 
 

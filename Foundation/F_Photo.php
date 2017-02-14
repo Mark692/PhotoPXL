@@ -44,7 +44,7 @@ class F_Photo extends \Foundation\F_Database
             $photo_details->get_Size(),
             $photo_details->get_Type());
 
-        $photo_ID = parent::execute_query($query, $toBind); //Inserts the photo and gets its ID.
+        $photo_ID = parent::execute_Query($query, $toBind); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
 
         //Finally inserts categories
@@ -52,7 +52,7 @@ class F_Photo extends \Foundation\F_Database
         if($cats!==[])
         {
             $query_addCats = self::query_addCats($cats, $photo_ID);
-            parent::execute_query($query_addCats, $cats);
+            parent::execute_Query($query_addCats, $cats);
         }
     }
 
@@ -214,7 +214,7 @@ class F_Photo extends \Foundation\F_Database
         {
             throw new \Exceptions\queries(2, array_merge($new_cats, $old_cats));
         }
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -305,7 +305,7 @@ class F_Photo extends \Foundation\F_Database
                 ."WHERE (`id`=?) ";
 
         $toBind = array("id" => $photo_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -324,7 +324,7 @@ class F_Photo extends \Foundation\F_Database
                     .")";
 
         $toBind = array("id" => $album_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 

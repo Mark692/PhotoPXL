@@ -8,6 +8,8 @@
 
 namespace Entity;
 
+use \Imagick;
+
 /**
  * Handles basic functions to generate a thumbnail of a photo and checks whether
  * the image is a valid image to be uploaded
@@ -75,7 +77,7 @@ class E_Photo_Blob
         {
             throw new \Exceptions\photo_details(1, $path);
         }
-        $imagick = new \Imagick(realpath($path));
+        $imagick = new Imagick(realpath($path));
         $width = THUMBNAIL_WIDTH;
         $height = THUMBNAIL_HEIGHT;
         $best_Fit = TRUE;

@@ -3,7 +3,17 @@
         <td class="colonna1" width="900px" align="center">
             <div class="foto">
                 <p>Foto da mostrare<br/>
-                            
+                 <table>
+                    {foreach from=$ultime_foto item=array1}
+                        <tr>
+                            {foreach from=$array1 item=valore}
+                                <td>
+                            {$valore}  
+                                </td>
+                            {/foreach}
+                        </tr>
+                    {/foreach}
+                </table>            
             </div>
             <div class="descrizione">
                 <p><label for="descrizione" class="top">descrizione del sito</label><br />

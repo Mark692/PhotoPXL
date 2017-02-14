@@ -19,7 +19,7 @@ class F_Comment extends \Foundation\F_Database
      *
      * @param \Entity\E_Comment $comment The comment to save
      */
-    public static function execute_query(\Entity\E_Comment $comment)
+    public static function execute_Query(\Entity\E_Comment $comment)
     {
         $query = 'INSERT INTO `comment` SET '
                 .'`text`=?, '
@@ -31,7 +31,7 @@ class F_Comment extends \Foundation\F_Database
             $comment->get_User(),
             $comment->get_PhotoID());
 
-        $comment_ID = parent::execute_query($query, $toBind); //Inserts the comments and gets its ID.
+        $comment_ID = parent::execute_Query($query, $toBind); //Inserts the comments and gets its ID.
         $comment->set_ID($comment_ID);
     }
 
@@ -79,6 +79,6 @@ class F_Comment extends \Foundation\F_Database
         $query = "DELETE FROM `comment` "
                 ."WHERE (`id`=?) ";
         $toBind = array($comment_ID);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 }

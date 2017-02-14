@@ -33,7 +33,7 @@ class ScartataF_Photo extends \Foundation\F_Database
             $photo->get_Reserved(),
             $uploader);
 
-        $photo_ID = parent::execute_query($query, $toBind); //Inserts the photo and gets its ID.
+        $photo_ID = parent::execute_Query($query, $toBind); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
     }
 
@@ -53,7 +53,7 @@ class ScartataF_Photo extends \Foundation\F_Database
                 .'`type`=?';
 
         $toBind = array_merge($photo_ID, $photo_details);
-        parent::execute_query($query, $toBind);
+        parent::execute_Query($query, $toBind);
     }
 
 }
