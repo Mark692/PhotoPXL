@@ -22,37 +22,28 @@ class F_Photo extends \Foundation\F_Database
     public static function insert(\Entity\E_Photo $photo, \Entity\E_Photo_Blob $photo_details, $uploader)
     {
         //Insert all photo details but the categories
-        $query = 'INSERT INTO `photo` SET '
-                .'`title`=?, '
-                .'`description`=?, '
-                .'`upload_date`=?, '
-                .'`is_reserved`=?, '
-                .'`user`=?, '
-                .'`fullsize`=?, '
-                .'`thumbnail`=?, '
-                .'`size`=?, '
-                .'`type`=?';
+        $insertInto = "photo";
 
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $photo->get_Title(),
-            $photo->get_Description(),
-            $photo->get_Upload_Date(),
-            $photo->get_Reserved(),
-            $uploader,
-            $photo_details->get_Fullsize(),
-            $photo_details->get_Thumbnail(),
-            $photo_details->get_Size(),
-            $photo_details->get_Type());
+        $set = array( //Array to pass at the parent::set() function to Bind the correct parameters
+            "title" => $photo->get_Title(),
+            "description" => $photo->get_Description(),
+            "upload_date" => $photo->get_Upload_Date(),
+            "is_reserved" => $photo->get_Reserved(),
+            "user" => $uploader,
+            "fullsize" => $photo_details->get_Fullsize(),
+            "thumbnail" => $photo_details->get_Thumbnail(),
+            "size" => $photo_details->get_Size(),
+            "type" => $photo_details->get_Type());
 
-        $photo_ID = parent::execute_Query($query, $toBind); //Inserts the photo and gets its ID.
+        $photo_ID = parent::insert_Query($insertInto, $set); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
 
         //Finally inserts categories
         $cats = $photo->get_Categories();
         if($cats!==[])
         {
-            $query_addCats = self::query_addCats($cats, $photo_ID);
-            parent::execute_Query($query_addCats, $cats);
+            $query = self::query_addCats($cats, $photo_ID);
+            parent::execute_Query($query, $cats);
         }
     }
 
@@ -65,7 +56,6 @@ class F_Photo extends \Foundation\F_Database
     public static function update(\Entity\E_Photo $to_Update)
     {
         $id = $to_Update->get_ID();
-
         $update = "photo";
         $set = array(
             "id" => $id,
@@ -104,16 +94,23 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
-     * @return array The selected photo
+     * @return array The selected photo and its categories
      */
     public static function get_By_ID($id)
     {
-        $toSearch = array("id" => $id);
-        $DB_table = "photo";
-        $photo = parent::get_All($toSearch, $DB_table);
-        $categories = self::get_Categories($id);
+        $select = "*";
+        $from = "photo";
+        $where = array("id" => $id);
+        $photo = parent::get_One($select, $from, $where);
+        $array_categories = self::get_Categories($id);
 
-//        return array_merge($photo, $categories);
+        $cats = [];
+        foreach($array_categories as $k => $v)
+        {
+            array_push($cats, $array_categories[$k][$v]);
+        }
+
+        return array_merge($photo, $cats);
     }
 
 
@@ -123,15 +120,27 @@ class F_Photo extends \Foundation\F_Database
      * @param int $album_ID
      * @return array An array with photo thumbnails
      */
-    public static function get_By_Album($album_ID)
+    public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
     {
-        $query = "SELECT `id`, `thumbnail` "
-                ."FROM `photo` "
-                ."WHERE `id` in ("
-                    ."SELECT `photo` "
-                    ."FROM `cat_photo` "
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+        $orderBy = $album_ID;
+
+        $query = 'SELECT `id`, `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` in ('
+                    .'SELECT `photo` '
+                    .'FROM `cat_photo` '
                     .'WHERE `album`=?'
-                    .")";
+                    .')'
+                .' LIMIT '.$limit
+                .' OFFSET '.$offset
+                .' ORDER BY `'.$orderBy.'`';
+
+        if ($order_DESC===TRUE)
+        {
+            $query .= ' DESC';
+        }
 
         $pdo = parent::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -248,7 +257,7 @@ class F_Photo extends \Foundation\F_Database
      */
     private static function get_Categories($photo_ID)
     {
-        $select = arary("category");
+        $select = array("category");
         $from = "cat_photo";
         $where = array("photo" => $photo_ID);
         return parent::get_All($select, $from, $where);

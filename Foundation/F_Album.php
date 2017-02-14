@@ -8,7 +8,7 @@
 
 namespace Foundation;
 
-use PDO; //It IS used.
+use PDO;
 
 class F_Album extends \Foundation\F_Database
 {

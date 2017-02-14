@@ -41,7 +41,7 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user details matching the given $username
      *
      * @param string $username The user's username to search
-     * @return \Entity\E_User_* The entity user according to the role chosen
+     * @return array The array cointaining the user searched for and its profile pic
      */
     public static function get_UserDetails($username)
     {
@@ -57,6 +57,12 @@ class F_User extends \Foundation\F_Database
     }
 
 
+    /**
+     * Retrieves the user's profile pic
+     *
+     * @param string $username The user owner of the profile pic to search
+     * @return image The profile pic, thumbnail style
+     */
     private static function get_ProfilePic($username)
     {
         $select = "photo";
@@ -156,11 +162,14 @@ class F_User extends \Foundation\F_Database
      */
     public static function add_Like_to($photo_ID, $username)
     {
-        $query = 'INSERT INTO `likes` SET '
-                .'`user`=?, '
-                .'`photo`=?';
-        $toBind = array($username, $photo_ID);
-        parent::execute_Query($query, $toBind);
+        $insertInto = "likes";
+
+        $set = array(
+            "user" => $username,
+            "photo" => $photo_ID
+                );
+
+        parent::insert_Query($insertInto, $set);
     }
 
 
