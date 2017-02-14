@@ -73,7 +73,7 @@ class F_Database
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @return type
      */
-    private static function get_Result($query, $toBind, $fetchAll=FALSE)
+    public static function get_Result($query, $toBind, $fetchAll=FALSE)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -161,24 +161,44 @@ class F_Database
      * Also it binds parameters to the query
      *
      * @param string $update The DB table into execute the query
-     * @param array $set_newDetails An ARRAY containing new details got from "View"
+     * @param array $set An ARRAY containing new details got from "View"
      * @param array $where The array with information about the column and its value to search for the update
      */
-    protected static function update($update, $set_newDetails, $where)
+    protected static function update($update, $set, $where)
     {
-        $set = ''; //String to use for the SET
-//        foreach(array_keys($set_newDetails) as $new_value) //LO STESSO DI SOTTO MA CON UN ARRAY_KEYS
-//        { }
-        foreach($set_newDetails as $key => $new_value)
+        $set_values = ''; //String to use for the SET
+        foreach($set as $key => $new_value)
         {
-            $set .= '`'.$key.'`=?,';
+            $set_values .= '`'.$key.'`=?,';
         }
-        $set = substr($set, 0, -1); //Removes the trailing char: ","
-        $query = "UPDATE `$update` "
-                ."SET $set "
-                ."WHERE `$where[0]`='$where[1]'";
 
-        self::execute_query($query, $set_newDetails);
+        $where_clause = '';
+        foreach($where as $key => $v)
+        {
+            $where_clause .= '`'.$key.'`=? AND ';
+        }
+        $set_values = substr($set_values, 0, -1); //Removes the trailing char: ","
+        $where_clause = substr($set_values, 0, -5);
+        $query = "UPDATE `$update` "
+                ."SET $set_values "
+                ."WHERE $where_clause";
+
+        self::execute_query($query, array_merge($set, $where));
+    }
+
+
+    protected static function count_Results($count, $from, $where)
+    {
+        foreach($where as $key => $v)
+        {
+            $where_clause .= '`'.$key.'`=? AND ';
+        }
+        $where_clause = substr($where_clause, 0, -5);
+        $query = 'SELECT COUNT('.$count.') '
+                .'FROM '.$from.' '
+                .'WHERE '.$where_clause;
+
+        self::get_Result($query, $where);
     }
 
 
