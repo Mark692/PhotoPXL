@@ -21,17 +21,15 @@ class F_Comment extends \Foundation\F_Database
      */
     public static function execute_Query(\Entity\E_Comment $comment)
     {
-        $query = 'INSERT INTO `comment` SET '
-                .'`text`=?, '
-                .'`user`=?, '
-                .'`photo`=?';
+        $insertInto = "comment";
 
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $comment->get_Text(),
-            $comment->get_User(),
-            $comment->get_PhotoID());
-
-        $comment_ID = parent::execute_Query($query, $toBind); //Inserts the comments and gets its ID.
+        $set = array(
+            "text" => $comment->get_Text(),
+            "user" => $comment->get_User(),
+            "photo" => $comment->get_PhotoID()
+                );
+          
+        $comment_ID = parent::insert_Query($insertInto, $set); //Inserts the comments and gets its ID.
         $comment->set_ID($comment_ID);
     }
 
