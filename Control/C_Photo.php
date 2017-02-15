@@ -224,7 +224,7 @@ class C_Photo
         switch ($V_Photo->getTask())
         {
             case 'modulo_upload';
-                return $this->Upload_foto();
+                return $this->modulo_upload();
                 break;
             case 'display':
                 return $this->display_photo();
