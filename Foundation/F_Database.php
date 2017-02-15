@@ -178,12 +178,6 @@ class F_Database
     {
         $query = self::basic_Query($select, $from, $where);
 
-        if($limit!==0)
-        {
-            $query .= ' LIMIT '.$limit
-                     .' OFFSET '.$offset;
-        }
-
         if ($orderBy_column!=='' )
         {
             $query .= ' ORDER BY `'.$orderBy_column.'`';
@@ -191,6 +185,12 @@ class F_Database
             {
                 $query .= ' DESC';
             }
+        }
+
+        if($limit!==0)
+        {
+            $query .= ' LIMIT '.$limit
+                     .' OFFSET '.$offset;
         }
         $fetchAll = TRUE;
         return self::fetch_Result($query, $where, $fetchAll);
@@ -226,29 +226,6 @@ class F_Database
                 ."WHERE $where_clause";
 
         self::execute_Query($query, array_merge($set, $where));
-    }
-
-
-    /**
-     * Returns the total number of rows matching the query
-     *
-     * @param string $count The column to count the affected rows from
-     * @param string $from The DB table to execute the query in
-     * @param array $where The parameters to respect
-     * @return array The number records affected by the query
-     */
-    protected static function count_Results($count, $from, $where)
-    {
-        foreach($where as $key => $v)
-        {
-            $where_clause .= '`'.$key.'`=? AND ';
-        }
-        $where_clause = substr($where_clause, 0, -5);
-        $query = 'SELECT COUNT('.$count.') '
-                .'FROM '.$from.' '
-                .'WHERE '.$where_clause;
-
-        return self::fetch_Result($query, $where);
     }
 
 

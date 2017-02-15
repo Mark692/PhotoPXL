@@ -8,7 +8,7 @@
 
 namespace Prove\Scartate;
 
-class ScartataF_Database
+class F_Database
 {
 
 
@@ -78,6 +78,28 @@ class ScartataF_Database
         }
     }
 
+
+    /**
+     * Returns the total number of rows matching the query
+     *
+     * @param string $count The column to count the affected rows from
+     * @param string $from The DB table to execute the query in
+     * @param array $where The parameters to respect
+     * @return array The number records affected by the query
+     */
+    protected static function count_Results($count, $from, $where)
+    {
+        foreach($where as $key => $v)
+        {
+            $where_clause .= '`'.$key.'`=? AND ';
+        }
+        $where_clause = substr($where_clause, 0, -5);
+        $query = 'SELECT COUNT('.$count.') '
+                .'FROM '.$from.' '
+                .'WHERE '.$where_clause;
+
+        return self::fetch_Result($query, $where);
+    }
 
 
   //----Scartata perchè non strettamente utile----\\

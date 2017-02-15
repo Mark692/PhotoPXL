@@ -8,10 +8,6 @@
 
 namespace Foundation;
 
-/**
- * This class contains basic functions to be inherited and overridden by
- * child classes
- */
 class F_User extends \Foundation\F_Database
 {
 
@@ -50,7 +46,6 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("username" => $username);
         $user_details = parent::get_One($select, $from, $where);
-        $user = self::instantiate_EUser($user_details);
         $pic = self::get_ProfilePic($username);
 
         return array($user, $pic);
@@ -70,38 +65,6 @@ class F_User extends \Foundation\F_Database
         $where = array("user" => $username);
         $array_pic = parent::get_One($select, $from, $where);
         return $array_pic[0];
-    }
-
-
-    /**
-     * Instantiates an \Entity\E_User_* user according to its role
-     *
-     * @param array $details The user details fetched from a query
-     * @return \Entity\E_User_* The right user according to its role
-     */
-    private static function instantiate_EUser($details)
-    {
-        $username = $details["username"];
-        $password = $details["password"];
-        $email = $details["email"];
-        $up_Count = $details["up_Count"];
-        $last_up = $details["last_Up"];
-        switch ($details["role"])
-        {
-            case \Utilities\Roles::STANDARD:
-                $user = new \Entity\E_User_Standard($username, $password, $email, $up_Count, $last_up);
-                break;
-            case \Utilities\Roles::PRO:
-                $user = new \Entity\E_User_PRO($username, $password, $email);
-                break;
-            case \Utilities\Roles::MOD:
-                $user = new \Entity\E_User_MOD($username, $password, $email);
-                break;
-            case \Utilities\Roles::ADMIN:
-                $user = new \Entity\E_User_ADMIN($username, $password, $email);
-                break;
-        }
-        return $user;
     }
 
 
