@@ -9,33 +9,79 @@
 namespace Control;
 
 class C_Photo
-{   
+{
+    /**
+     * ritorna il tpl per upload dei file
+     * @return tpl
+     */
     public function modulo_upload()
     {
         $V_Foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $V_Foto->assign('utente', $username);
-        $user=\Foundation\F_User::get_By_Username($username);
-        if($user['role']==1){
-        return $V_Foto->display('upload_standard.tpl');
+        $array_user = \Foundation\F_User::get_UserDetails($username);
+        $e_user = $array_user[0];
+        $rolo = $e_user->get_Role();
+        if($role == \Utilities\Roles::STANDARD)
+        {
+            return $V_Foto->display('upload_standard.tpl');
         }
-        else {
-        return $V_Foto->display('upload.tpl');
+        elseif($role > \Utilities\Roles::STANDARD)
+        {
+            return $V_Foto->display('upload.tpl');
+        }
+        else
+        {
+            $Session->unset_session();
         }
     }
-    
+
+
+    /**
+     * ritorna il tpl per visualizzare una foto dopo aver cliccato su una thumbnail
+     * @return tpl
+     */
     public function display_photo()
     {
-
         $V_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
+        $V_foto->assign('username', $username);
         $id = $V_foto->get_Dati('id');
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $V_foto->assign('foto_datails', $foto_details);
-        $V_foto->assign('username', $username);
-        return $V_foto->display('mostra_foto.tpl');
+        $like = \Foundation\F_Photo::get_Total_Likes($id);
+        $total_like = count($like);
+        if(in_array($username, $like))
+        {
+            $V_foto->assign('attiva', $attiva = TRUE);
+        }
+        else
+        {
+            $V_foto->assign('attiva', $attiva = FALSE);
+        }
+        $V_foto->assign('total_like', $total_like);
+        $array_user = \Foundation\F_User::get_UserDetails($username);
+        $e_user = $array_user[0];
+        $role = $e_user->get_Role();
+        if($foto_details['username'] != $username)
+        {
+            if($role >= \Utilities\Roles::MOD)
+            {
+                return $V_foto->display('foto_altri_user_mod.tpl');
+            }
+            elseif($role == \Utilities\Roles::BANNED)
+            {
+                $Session->unset_session();
+            }
+            $V_foto->display('foto_altri_user.tpl');
+        }
+        elseif($role == \Utilities\Roles::BANNED)
+        {
+            $Session->unset_session();
+        }
+        $V_foto->display('foto_user.tpl');
     }
 
 
@@ -98,6 +144,7 @@ class C_Photo
         }
     }
 
+
     /**
      * ritorna il tpl per la modifica dei dati della foto
      */
@@ -106,15 +153,15 @@ class C_Photo
         $V_Foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $foto_details = $V_Profilo->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
-        $V_foto->assign('dati_foto', $user_datails);
+        $foto_details = $V_Foto->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
+        $V_Foto->assign('dati_foto', $foto_details);
         $V_Foto->assign('utente', $username);
-        return $V_Profilo->display('modifica_foto.tpl');
+        return $V_Foto->display('modifica_foto.tpl');
     }
 
 
     /**
-     * update dei dati dati dell'utente
+     * update dei dati dell'utente
      */
     public function update()
     {
@@ -125,6 +172,7 @@ class C_Photo
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        \Foundation\F_Photo::update($foto);
     }
 
 
@@ -133,6 +181,9 @@ class C_Photo
         $V_Photo = new \View\V_Profilo();
         switch ($V_Photo->getTask())
         {
+            case 'modulo_upload';
+                return $this->Upload_foto();
+                break;
             case 'display':
                 return $this->display_photo();
                 break;
