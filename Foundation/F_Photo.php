@@ -239,7 +239,8 @@ class F_Photo extends \Foundation\F_Database
         {
             return '';
         }
-        $query = "INSERT INTO `cat_photo` (`photo`, `category`) VALUES ";
+        $query = "INSERT INTO `cat_photo` (`photo`, `category`) "
+                ."VALUES ";
         for($i=0; $i<count($cats); $i++)
         {
             $query .= "('$photo_ID', ?),";
@@ -288,17 +289,17 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the number of likes from the selected photo
+     * Retrieves the list of all uses that liked the selected photo
      *
      * @param int $photo_ID The photo's ID
-     * @return int The number of likes of the selected photo
+     * @return array The users that liked the selected photo
      */
     public static function get_Total_Likes($photo_ID)
     {
-        $count = "user";
+        $select = array("user");
         $from = "likes";
         $where = array("photo" => $photo_ID);
-        return parent::count_Results($count, $from, $where);
+        return parent::get_All($select, $from, $where);
     }
 
 
@@ -312,14 +313,18 @@ class F_Photo extends \Foundation\F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT `photo`, '
-                .'COUNT(*) as totalike '
-                .'FROM `likes` '
-                .'GROUP BY `photo` '
-                .'ORDER BY totalike '
-                .'DESC '
-                .'LIMIT '.$limit
-                .'OFFSET '.$offset;
+        $query = 'SELECT `id`, `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` in '
+                .'('
+                    .'SELECT `photo` '
+                    .'FROM `likes` '
+                    .'GROUP BY `photo` '
+                    .'ORDER BY COUNT(*) '
+                .') '
+                .'ORDER BY `id` '
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset.' ';
 
         $toBind = [];
         return parent::execute_Query($query, $toBind);
