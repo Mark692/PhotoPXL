@@ -235,6 +235,7 @@ class F_Database
      * @param string $count The column to count the affected rows from
      * @param string $from The DB table to execute the query in
      * @param array $where The parameters to respect
+     * @return array The number records affected by the query
      */
     protected static function count_Results($count, $from, $where)
     {
@@ -247,7 +248,7 @@ class F_Database
                 .'FROM '.$from.' '
                 .'WHERE '.$where_clause;
 
-        self::fetch_Result($query, $where);
+        return self::fetch_Result($query, $where);
     }
 
 
@@ -271,6 +272,5 @@ class F_Database
             }
             return $pdo_stmt;
         }
-        throw new \Exceptions\queries(1, "Nessun valore trovato per soddisfare la richiesta");
     }
 }

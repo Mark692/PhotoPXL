@@ -98,19 +98,19 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function get_By_ID($id)
     {
-        $select = "*";
+        //Select ALL but ID, Thumbnail and Size
+        $select = array("title", "description", "is_reserved", "upload_date", "user", "fullsize", "type");
         $from = "photo";
         $where = array("id" => $id);
         $photo = parent::get_One($select, $from, $where);
+
+        //Retrieves the categories
         $array_categories = self::get_Categories($id);
 
-        $cats = [];
-        foreach($array_categories as $k => $v)
-        {
-            array_push($cats, $array_categories[$k][$v]);
-        }
+        //Retrieves the number of likes
+        $user_likes = self::get_TotalLikes($id);
 
-        return array_merge($photo, $cats);
+        return array_merge($photo, $array_categories, $user_likes);
     }
 
 
@@ -239,7 +239,8 @@ class F_Photo extends \Foundation\F_Database
         {
             return '';
         }
-        $query = "INSERT INTO `cat_photo` (`photo`, `category`) VALUES ";
+        $query = "INSERT INTO `cat_photo` (`photo`, `category`) "
+                ."VALUES ";
         for($i=0; $i<count($cats); $i++)
         {
             $query .= "('$photo_ID', ?),";
@@ -288,27 +289,46 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the number of likes from the selected photo
+     * Retrieves the list of all uses that liked the selected photo
      *
      * @param int $photo_ID The photo's ID
-     * @return int The number of likes of the selected photo
+     * @return array The users that liked the selected photo
      */
-    public static function get_Total_Likes($photo_ID)
+    public static function get_TotalLikes($photo_ID)
     {
-        $count = "user";
+        $select = array("user");
         $from = "likes";
         $where = array("photo" => $photo_ID);
-        parent::count_Results($count, $from, $where);
+        return parent::get_All($select, $from, $where);
     }
 
 
+    /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     */
     public static function get_MostLiked($page_toView=1)
     {
-        $query = 'SELECT COUNT(name) '
-                .'FROM emp1 '
-                .'GROUP BY name '
-                .'ORDER BY COUNT(name) DESC '
-                .'LIMIT 1';
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT `id`, `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` in '
+                .'('
+                    .'SELECT `photo` '
+                    .'FROM `likes` '
+                    .'GROUP BY `photo` '
+                    .'ORDER BY COUNT(*) '
+                .') '
+                .'ORDER BY `id` '
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset.' ';
+
+        $toBind = [];
+        return parent::execute_Query($query, $toBind);
     }
 
 

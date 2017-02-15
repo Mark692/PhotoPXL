@@ -163,7 +163,6 @@ class F_User extends \Foundation\F_Database
     public static function add_Like_to($photo_ID, $username)
     {
         $insertInto = "likes";
-
         $set = array(
             "user" => $username,
             "photo" => $photo_ID

@@ -21,7 +21,6 @@ class E_Photo
     private $upload_date;
     private $categories = []; //Categorie della foto
     private $total_likes;
-    private $total_comments;
 
 
     /**

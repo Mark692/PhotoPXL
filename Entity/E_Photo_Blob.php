@@ -23,7 +23,7 @@ class E_Photo_Blob
 
 
     /**
-     * Instantiates a photo blob object
+     * Generates a photo blob object
      *
      * @param string $path The path to the photo uploaded
      * @param int $size The photo size
