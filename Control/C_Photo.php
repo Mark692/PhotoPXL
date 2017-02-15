@@ -22,7 +22,7 @@ class C_Photo
         $V_Foto->assign('utente', $username);
         $array_user = \Foundation\F_User::get_UserDetails($username);
         $e_user = $array_user[0];
-        $ruolo = $e_user->get_Role();
+        $rolo = $e_user->get_Role();
         if($role == \Utilities\Roles::STANDARD)
         {
             return $V_Foto->display('upload_standard.tpl');
@@ -51,9 +51,20 @@ class C_Photo
         $id = $V_foto->get_Dati('id');
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $V_foto->assign('foto_datails', $foto_details);
+        $like = \Foundation\F_Photo::get_Total_Likes($id);
+        $total_like = count($like);
+        if(in_array($username, $like))
+        {
+            $V_foto->assign('attiva', $attiva = TRUE);
+        }
+        else
+        {
+            $V_foto->assign('attiva', $attiva = FALSE);
+        }
+        $V_foto->assign('total_like', $total_like);
         $array_user = \Foundation\F_User::get_UserDetails($username);
         $e_user = $array_user[0];
-        $ruolo = $e_user->get_Role();
+        $role = $e_user->get_Role();
         if($foto_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
@@ -142,15 +153,15 @@ class C_Photo
         $V_Foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $foto_details = $V_Profilo->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
-        $V_foto->assign('dati_foto', $user_datails);
+        $foto_details = $V_Foto->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
+        $V_Foto->assign('dati_foto', $foto_details);
         $V_Foto->assign('utente', $username);
-        return $V_Profilo->display('modifica_foto.tpl');
+        return $V_Foto->display('modifica_foto.tpl');
     }
 
 
     /**
-     * update dei dati dati dell'utente
+     * update dei dati dell'utente
      */
     public function update()
     {
@@ -161,6 +172,7 @@ class C_Photo
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        \Foundation\F_Photo::update($foto);
     }
 
 
