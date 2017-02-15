@@ -82,12 +82,12 @@ class C_Profilo
             }
         
             \Foundation\F_User::update_details($new_details, $old_Username);
+             //ritornerà un tpl di avvenuto successo
+
     }
         
      
-        //ritornerà un tpl di avvenuto successo
-    }
-
+       
 
     /**
      * smista in base al task alle varie function 
