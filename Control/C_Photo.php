@@ -9,33 +9,68 @@
 namespace Control;
 
 class C_Photo
-{   
+{
+    /**
+     * ritorna il tpl per upload dei file
+     * @return tpl
+     */
     public function modulo_upload()
     {
         $V_Foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $V_Foto->assign('utente', $username);
-        $user=\Foundation\F_User::get_By_Username($username);
-        if($user['role']==1){
-        return $V_Foto->display('upload_standard.tpl');
+        $array_user = \Foundation\F_User::get_UserDetails($username);
+        $e_user = $array_user[0];
+        $ruolo = $e_user->get_Role();
+        if($role == \Utilities\Roles::STANDARD)
+        {
+            return $V_Foto->display('upload_standard.tpl');
         }
-        else {
-        return $V_Foto->display('upload.tpl');
+        elseif($role > \Utilities\Roles::STANDARD)
+        {
+            return $V_Foto->display('upload.tpl');
+        }
+        else
+        {
+            $Session->unset_session();
         }
     }
-    
+
+
+    /**
+     * ritorna il tpl per visualizzare una foto dopo aver cliccato su una thumbnail
+     * @return tpl
+     */
     public function display_photo()
     {
-
         $V_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
+        $V_foto->assign('username', $username);
         $id = $V_foto->get_Dati('id');
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $V_foto->assign('foto_datails', $foto_details);
-        $V_foto->assign('username', $username);
-        return $V_foto->display('mostra_foto.tpl');
+        $array_user = \Foundation\F_User::get_UserDetails($username);
+        $e_user = $array_user[0];
+        $ruolo = $e_user->get_Role();
+        if($foto_details['username'] != $username)
+        {
+            if($role >= \Utilities\Roles::MOD)
+            {
+                return $V_foto->display('foto_altri_user_mod.tpl');
+            }
+            elseif($role == \Utilities\Roles::BANNED)
+            {
+                $Session->unset_session();
+            }
+            $V_foto->display('foto_altri_user.tpl');
+        }
+        elseif($role == \Utilities\Roles::BANNED)
+        {
+            $Session->unset_session();
+        }
+        $V_foto->display('foto_user.tpl');
     }
 
 
@@ -98,6 +133,7 @@ class C_Photo
         }
     }
 
+
     /**
      * ritorna il tpl per la modifica dei dati della foto
      */
@@ -133,6 +169,9 @@ class C_Photo
         $V_Photo = new \View\V_Profilo();
         switch ($V_Photo->getTask())
         {
+            case 'modulo_upload';
+                return $this->Upload_foto();
+                break;
             case 'display':
                 return $this->display_photo();
                 break;
