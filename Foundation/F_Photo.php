@@ -118,13 +118,14 @@ class F_Photo extends \Foundation\F_Database
      * Retrieves the IDs and thumbnails of all photos belonging to a specific album
      *
      * @param int $album_ID
-     * @return array An array with photo thumbnails
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with photo IDs and thumbnails
      */
     public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
-        $orderBy = $album_ID;
 
         $query = 'SELECT `id`, `thumbnail` '
                 .'FROM `photo` '
@@ -135,20 +136,15 @@ class F_Photo extends \Foundation\F_Database
                     .')'
                 .' LIMIT '.$limit
                 .' OFFSET '.$offset
-                .' ORDER BY `'.$orderBy.'`';
+                .' ORDER BY `id`';
 
         if ($order_DESC===TRUE)
         {
             $query .= ' DESC';
         }
-
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $album_ID);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $fetchAll = TRUE;
+        $toBind = array($album_ID);
+        return parent::fetch_Result($query, $toBind, $fetchAll);
     }
 
 
@@ -156,8 +152,10 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives all the photos with the selected categories
      *
      * @param array $cats The category/ies to search
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats)
+    public static function get_By_Categories($cats, $page_toView=1)
     {
         $where = '';
         for($i=0; $i<count($cats); $i++)
@@ -165,22 +163,23 @@ class F_Photo extends \Foundation\F_Database
             $where .= '(`category`=?) OR ';
         }
         $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = "SELECT `id`, `thumbnail` "
-                ."FROM `photo` "
-                ."WHERE `id` in ("
-                    ."SELECT `photo` "
-                    ."FROM `cat_photo` "
+        $query = 'SELECT `id`, `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` in ('
+                    .'SELECT `photo` '
+                    .'FROM `cat_photo` '
                     .'WHERE '.$where
-                    .")";
+                    .') '
+                .' LIMIT '.$limit
+                .' OFFSET '.$offset
+                .' ORDER BY `id`';
 
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $fetchAll = TRUE;
+        $toBind = array($cats);
+        return parent::fetch_Result($query, $toBind, $fetchAll);
     }
 
 
@@ -250,6 +249,30 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
+     * Removes the selected categories from the album
+     *
+     * @param enum or array $cats The category/ies to remove from the album selected
+     * @param int $album_ID The album to modify and remove categories from
+     * @return string The query used to remove categories from the album
+     */
+    private static function query_removeCats($cats, $album_ID)
+    {
+        if($cats === [])
+        {
+            return '';
+        }
+        $query = "DELETE FROM `cat_album` "
+                ."WHERE (`album`=$album_ID) "
+                ."AND (";
+        foreach ((array) $cats as $value)
+        {
+            $query .= "(`category`=?) OR ";
+        }
+        return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
+    }
+
+
+    /**
      * Retrieves the photo's categories
      *
      * @param int $photo_ID The photo ID to look for categories
@@ -279,27 +302,13 @@ class F_Photo extends \Foundation\F_Database
     }
 
 
-    /**
-     * Removes the selected categories from the album
-     *
-     * @param enum or array $cats The category/ies to remove from the album selected
-     * @param int $album_ID The album to modify and remove categories from
-     * @return string The query used to remove categories from the album
-     */
-    private static function query_removeCats($cats, $album_ID)
+    public static function get_MostLiked($page_toView=1)
     {
-        if($cats === [])
-        {
-            return '';
-        }
-        $query = "DELETE FROM `cat_album` "
-                ."WHERE (`album`=$album_ID) "
-                ."AND (";
-        foreach ((array) $cats as $value)
-        {
-            $query .= "(`category`=?) OR ";
-        }
-        return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
+        $query = 'SELECT COUNT(name) '
+                .'FROM emp1 '
+                .'GROUP BY name '
+                .'ORDER BY COUNT(name) DESC '
+                .'LIMIT 1';
     }
 
 
