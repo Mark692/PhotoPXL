@@ -35,20 +35,27 @@ class C_Login
      */
     public function check_user_pass()
     {
-        //Da view() ottieni il risultato della generate() fatta via client
+//Da view() ottieni il risultato della generate() fatta via client
         $dati = new \View\V_Login();
         $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
 
-        $arr_values = array ("username" => $array_dati["username"]);
-        $array_user = \Foundation\F_User::get_All($arr_values);
-        $DB_pass = $array_user["password"];
-
-        if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
+        $array_user = \Foundation\F_User::get_UserDetails($array_dati['username']);
+        if(count($array_user) !== 0)
         {
-            //login OK!
-            return TRUE; //TEMPLATE?
+            if ($array_user['role']!= \Utilities\Roles::BANNED){
+            $DB_pass = $array_user["password"];
+            if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
+            {
+                $session=new \Utilities\U_Session();
+                $session->set_Valore('username', $array_user['username']);
+                $session->set_Valore('role', $array_user['role']);
+                return TRUE; //TEMPLATE?
+            }
+            return FALSE; //password sbagliata
+            }
+            return FALSE; //utente bannato
         }
-        return FALSE; //TEMPLATE?
+        return FALSE;//usernamesbagliato
     }
 
 

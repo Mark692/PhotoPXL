@@ -50,18 +50,13 @@ class C_Photo
         $V_foto->assign('username', $username);
         $id = $V_foto->get_Dati('id');
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
-        $V_foto->assign('foto_datails', $foto_details);
-        $like = \Foundation\F_Photo::get_Total_Likes($id);
-        $total_like = count($like);
-        if(in_array($username, $like))
-        {
-            $V_foto->assign('attiva', $attiva = TRUE);
-        }
-        else
-        {
-            $V_foto->assign('attiva', $attiva = FALSE);
-        }
-        $V_foto->assign('total_like', $total_like);
+        $photo = $foto_details[0];
+        $categories = $foto_details[1];
+        $user_like = $foto_details[2];
+        $V_foto->assign('foto_deteils', $photo);
+        $V_foto->assign('categories', $categories);
+        $this->assegna_tasto($user_like, $V_foto, $username);
+        $this->ridimensiona($fullsize, $V_foto);
         $array_user = \Foundation\F_User::get_UserDetails($username);
         $e_user = $array_user[0];
         $role = $e_user->get_Role();
@@ -82,6 +77,53 @@ class C_Photo
             $Session->unset_session();
         }
         $V_foto->display('foto_user.tpl');
+    }
+
+
+    /**
+     * ridimensiona la foto per la visualizzazione
+     * @param type $fullsize foto
+     * @return array che contiene le nuove dimensioni
+     */
+    private function ridimensiona($fullsize, $V_foto)
+    {
+        $size = getimagesize($fullsize);
+        $width = $size['width'];
+        $height = $size['height'];
+        if($width > $height)
+        {
+            $ratio = floor(FULL_WIDTH / $width);
+            $width_new = $ratio * $width;
+            $height_new = $ratio * $height;
+            $V_foto->assign('width', $width_new);
+            $V_foto->assign('height', $height_new);
+        }
+        $ratio = floor(FULL_WIDTH / $height);
+        $width_new = $ratio * $width;
+        $height_new = $ratio * $height;
+        $V_foto->assign('width', $width_new);
+        $V_foto->assign('height', $height_new);
+    }
+
+
+    /**
+     * serve per impostare il tasto like e il numero di like di una foto
+     * @param array $user_like contiene gli user che hanno messo il like alla foto
+     * @param \View\V_Foto $V_foto
+     * @param stirng $username
+     */
+    private function assegna_tasto($user_like, $V_foto, $username)
+    {
+        $total_like = count($user_like);
+        $V_foto->assign('total_like', $total_like);
+        if(in_array($username, $user_like))
+        {
+            $V_foto->assign('attiva', $attiva = TRUE);
+        }
+        else
+        {
+            $V_foto->assign('attiva', $attiva = FALSE);
+        }
     }
 
 

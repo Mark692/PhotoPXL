@@ -19,7 +19,7 @@ class C_Home
         $U_Session = new \Utilities\U_Session();
         $U_Cookie = new \Utilities\U_Cookie();
         $role = $U_Session->get_val('role');
-        if($role != '0')
+        if($role != \Utilities\Roles::BANNED)
         {
             $contenuto = $this->smista();
             $this->set_menu();
