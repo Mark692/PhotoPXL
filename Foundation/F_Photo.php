@@ -298,17 +298,31 @@ class F_Photo extends \Foundation\F_Database
         $count = "user";
         $from = "likes";
         $where = array("photo" => $photo_ID);
-        parent::count_Results($count, $from, $where);
+        return parent::count_Results($count, $from, $where);
     }
 
 
+    /**
+     * Retrieves the most liked photos in DESCending style
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array
+     */
     public static function get_MostLiked($page_toView=1)
     {
-        $query = 'SELECT COUNT(name) '
-                .'FROM emp1 '
-                .'GROUP BY name '
-                .'ORDER BY COUNT(name) DESC '
-                .'LIMIT 1';
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT `photo`, '
+                .'COUNT(*) as totalike '
+                .'FROM `likes` '
+                .'GROUP BY `photo` '
+                .'ORDER BY totalike '
+                .'DESC '
+                .'LIMIT '.$limit
+                .'OFFSET '.$offset;
+
+        $toBind = [];
+        return parent::execute_Query($query, $toBind);
     }
 
 
