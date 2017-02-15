@@ -3,17 +3,17 @@
         <td class="colonna1" width="900px" align="center">
             <div class="foto">
                 <p>Foto da mostrare<br/>
-                 <table>
-                    {foreach from=$ultime_foto item=array1}
-                        <tr>
-                            {foreach from=$array1 item=valore}
-                                <td>
-                            {$valore}  
-                                </td>
+                 <table class="colonna foto" cellpadding="5" cellspacing="2">
+                            {foreach from=$thumbnail_utente item=array1}
+                                <tr>
+                                {foreach from=$array1 item=valore}
+                                    <td>
+                                <img src={$valore} width="100" height="100" > 
+                                    </td>
+                                {/foreach}
+                                </tr>
                             {/foreach}
-                        </tr>
-                    {/foreach}
-                </table>            
+                </table>           
             </div>
             <div class="descrizione">
                 <p><label for="descrizione" class="top">descrizione del sito</label><br />
@@ -22,7 +22,7 @@
         <td class="colonna login" width="900px" align="center">
             <div class="modulo">
                 <h1 class="title">Registrazione</h1>
-                <form method="post" action="index.php">
+                <form method="post" action="prova.php">
                       <p><label for="username" class="top">Nome utente:</label><br />
                           <input type="text" name="username" id="username" tabindex="15" class="field" value="" /></p>
                       <p><label for="password" class="top">Password:</label><br />

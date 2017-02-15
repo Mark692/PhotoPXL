@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2017-02-14 16:14:25
+<?php /* Smarty version 2.6.30, created on 2017-02-14 16:33:17
          compiled from profilo.tpl */ ?>
 <div class="table">
     <table class="tabella"  align="center" border="3" cellpadding="5" cellspacing="0">
@@ -31,7 +31,7 @@
                         <p><label for="Title" class="top">Ruolo:</label< /br> <?php echo $this->_tpl_vars['utente']['role']; ?>
 </label></p>
 			
-                        <form method="post" action="templates/main/template/modifica_profilo.tpl">
+                        <form method="post" action="index.php">
                             <div class="pulsante">   
                             <p><input type="hidden" name="controller" value="profilo" />
                          <input type="hidden"  name="username" value="<?php echo $this->_tpl_vars['utente']['username']; ?>
