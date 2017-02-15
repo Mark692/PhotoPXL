@@ -4,6 +4,29 @@ namespace Control;
 
 class C_Login
 {
+    /**
+     * 
+     * ritorna il tpl relativo al login
+     * @return tpl
+     */
+    public function modulo_login()
+    {
+        $view = new \View\V_Login();
+        return $view->display('login.tpl');
+    }
+
+
+    /**
+     * 
+     * ritorna il tpl relativo al home ospite
+     * @return tpl
+     */
+    public function modulo()
+    {
+        $view = new \View\V_Login();
+        return $view->display('home_ospite.tpl');
+    }
+
 
     /**
      * Controlla se l'utente $input_username ha inserito la password corretta.
@@ -16,7 +39,7 @@ class C_Login
         $dati = new \View\V_Login();
         $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
 
-        $arr_values = array("username" => $array_dati["username"]);
+        $arr_values = array ("username" => $array_dati["username"]);
         $array_user = \Foundation\F_User::get_All($arr_values);
         $DB_pass = $array_user["password"];
 
@@ -43,7 +66,7 @@ class C_Login
      */
     public static function generate($login_pass, $salt_length = 15)
     {
-        if($salt_length<15) //If the length is less than 15
+        if($salt_length < 15) //If the length is less than 15
         {
             $salt_length = 15; //Sets to 15
         }
@@ -56,7 +79,7 @@ class C_Login
         }
         $hashed_loginPass = \Entity\E_User::hash_of($login_pass); //Generates the hash of the password
         $hash = hash('sha512', $salt.$hashed_loginPass);
-        return $nonce = array($salt, $hash);
+        return $nonce = array ($salt, $hash);
     }
 
 
@@ -73,7 +96,7 @@ class C_Login
         $generated_nonceHash = $nonce[1];
 
         $DB_nonceHash = hash('sha512', $salt.$db_pass);
-        if ($DB_nonceHash !== $generated_nonceHash)
+        if($DB_nonceHash !== $generated_nonceHash)
         {
             return FALSE;
         }
@@ -89,4 +112,6 @@ class C_Login
         session_unset();
         session_destroy();
     }
+
+
 }

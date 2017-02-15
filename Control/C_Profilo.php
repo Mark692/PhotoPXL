@@ -61,10 +61,30 @@ class C_Profilo
         $new_username = $dati['username'];
         $new_password = $dati['password'];
         $new_email = $dati['email'];
-        $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        \Foundation\F_User::update_details($new_details, $old_Username);
+        try
+        {
+            $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
+        }
+        catch (\Exceptions\input_texts $ex)
+            {
+            //Primo catch: gestire username non validi
+            $view->assign('messaggio',$ex->getMessage());
+            $this->modulo_registrazione();
+            }
+        catch (\Exceptions\InvalidInput $ex)
+            {
+            //Primo catch: gestire username non validi
+            $view->assign('messaggio',$ex->getMessage());
+            $this->modulo_registrazione();
+            
+            }
+        
+            \Foundation\F_User::update_details($new_details, $old_Username);
+    }
+        
+     
         //ritornerà un tpl di avvenuto successo
     }
 

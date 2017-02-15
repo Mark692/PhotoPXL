@@ -10,6 +10,33 @@ namespace Control;
 
 class C_Registrazione
 {
+    /**
+     * 
+     * ritorna il tpl relativo alla registrazine
+     * @return tpl
+     */
+    public function modulo_registrazione()
+    {
+        $view = new \View\V_Login();
+        return $view->display('registrazione.tpl');
+    }
+
+
+    /**
+     * 
+     * ritorna il tpl relativo al home ospite
+     * @return tpl
+     */
+    public function modulo()
+    {
+        $view = new \View\V_Login();
+        return $view->display('home_ospite.tpl');
+    }
+
+
+    /**
+     * funzione per salvare un utente che si registra
+     */
     public function save_user()
     {
         $view = new \View\V_Registazione();
@@ -22,20 +49,22 @@ class C_Registrazione
         try
         {
             $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
-            \Foundation\F_User::insert($e_userSTD);
         }
         catch (\Exceptions\input_texts $ex)
-        {
+            {
             //Primo catch: gestire username non validi
-            echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE
-        }
+            $view->assign('messaggio',$ex->getMessage());
+            $this->modulo_registrazione();
+            }
         catch (\Exceptions\InvalidInput $ex)
-        {
-            //Secondo catch: gestire email non valide
-            echo($ex->getMessage()); //LANCIA TEMPLATE PER GESTIRE ERRORE
-        }
-        //RITORNA IL TEMPLATE ALLA REGISTRAZIONE
+            {
+            //Primo catch: gestire username non validi
+            $view->assign('messaggio',$ex->getMessage());
+            $this->modulo_registrazione();
+            
+            }
+        
+            \Foundation\F_User::insert($e_userSTD);
     }
-
 
 }

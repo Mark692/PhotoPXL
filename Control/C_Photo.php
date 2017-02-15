@@ -9,7 +9,22 @@
 namespace Control;
 
 class C_Photo
-{
+{   
+    public function modulo_upload()
+    {
+        $V_Foto = new \View\V_Foto;
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
+        $V_Foto->assign('utente', $username);
+        $user=\Foundation\F_User::get_By_Username($username);
+        if($user['role']==1){
+        return $V_Foto->display('upload_standard.tpl');
+        }
+        else {
+        return $V_Foto->display('upload.tpl');
+        }
+    }
+    
     public function display_photo()
     {
 
@@ -37,40 +52,51 @@ class C_Photo
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
-        $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
-        $this->controllaFoto();
-        $type = $_FILES['foto_Utente']['type'];
-        $size = $_FILES['foto_Utente']['size'];
-        $photo_blob = addslashes(file_get_contents($_FILES['foto_utente']['tmp_name']));
-        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type); //controlla se va bene qunado si rifa il pull
-        \Foundation\F_Photo::insert($photo_details, $photo, $username);
-        //ritorna un template successo
+        try
+        {
+            $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        }
+        catch (\Exceptions\input_texts $ex)
+        {
+            //Primo catch: gestire username non validi
+            $view->assign('messaggio', $ex->getMessage());
+            $this->modulo_upload();
+        }
+        $type = $dati_foto['type'];
+        $size = $dati_foto['size'];
+        $photo_blob = addslashes(file_get_contents($dati_foto['tmp_name']));
+        if($dati_foto['error'] == 0)
+        {
+            try
+            {
+                $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type);
+            }
+            catch (\Exceptions\photo_details $ex)
+            {
+                //Primo catch: gestire username non validi
+                $view->assign('messaggio', $ex->getMessage());
+                $this->modulo_upload();
+            }
+            catch (\Exceptions\photo_details $ex)
+            {
+                //Primo catch: gestire username non validi
+                $view->assign('messaggio', $ex->getMessage());
+                $this->modulo_upload();
+            }
+            catch (\Exceptions\photo_details $ex)
+            {
+                //Primo catch: gestire username non validi
+                $view->assign('messaggio', $ex->getMessage());
+                $this->modulo_upload();
+            }
+            \Foundation\F_Photo::insert($photo_details, $photo, $username);
+        }
+        else
+        {
+            $view->assign('messaggio', 'Errone nel caricamento della foto. Riprova!');
+            $this->modulo_upload();
+        }
     }
-
-
-    /**
-     * metto i try e cath in entity Photo_blob
-     * controlla se il file inviato tramite form è adatto
-     * @return boolean
-     */
-    public function controllaFoto()
-    {
-        //fare con eccezioni al posto dei return false e true
-        if($_FILES['foto_Utente']['error'] !== 0)
-        {
-            return FALSE;
-        }
-        elseif($_FILES['foto_Utente']['type'] !== 'image/jpeg' && $_FILES['foto_Utente']['type'] !== 'image/png')
-        {
-            return FALSE;
-        }
-        elseif($_FILES["foto_Utente"]['size'] > MAX_SIZE)
-        {
-            return FALSE;
-        }
-        return TRUE;
-    }
-
 
     /**
      * ritorna il tpl per la modifica dei dati della foto
