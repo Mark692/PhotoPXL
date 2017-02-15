@@ -16,20 +16,19 @@ class C_Photo
      */
     public function modulo_upload()
     {
-        $V_Foto = new \View\V_Foto;
+        $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $V_Foto->assign('utente', $username);
-        $array_user = \Foundation\F_User::get_UserDetails($username);
-        $e_user = $array_user[0];
-        $rolo = $e_user->get_Role();
+        $role=$Session->get_val('role');
+        $v_foto->assign('utente', $username);
+        $v_foto->assign('role', $role);
         if($role == \Utilities\Roles::STANDARD)
         {
-            return $V_Foto->display('upload_standard.tpl');
+            return $v_foto->display('upload_standard.tpl');
         }
         elseif($role > \Utilities\Roles::STANDARD)
         {
-            return $V_Foto->display('upload.tpl');
+            return $v_foto->display('upload.tpl');
         }
         else
         {
@@ -44,39 +43,39 @@ class C_Photo
      */
     public function display_photo()
     {
-        $V_foto = new \View\V_Foto;
+        $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $V_foto->assign('username', $username);
-        $id = $V_foto->get_Dati('id');
+        $role=$Session->get_val('role');
+        $v_foto->assign('username', $username);
+        $v_foto->assign('role', $role);
+        $id = $v_foto->get_Dati('id');
+        $Session->set_Valore('id', $id);
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $photo = $foto_details[0];
         $categories = $foto_details[1];
         $user_like = $foto_details[2];
-        $V_foto->assign('foto_deteils', $photo);
-        $V_foto->assign('categories', $categories);
-        $this->assegna_tasto($user_like, $V_foto, $username);
-        $this->ridimensiona($fullsize, $V_foto);
-        $array_user = \Foundation\F_User::get_UserDetails($username);
-        $e_user = $array_user[0];
-        $role = $e_user->get_Role();
+        $v_foto->assign('foto_deteils', $photo);
+        $v_foto->assign('categories', $categories);
+        $this->assegna_tasto($user_like, $v_foto, $username);
+        $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
             {
-                return $V_foto->display('foto_altri_user_mod.tpl');
+                return $v_foto->display('foto_altri_user_mod.tpl');
             }
             elseif($role == \Utilities\Roles::BANNED)
             {
                 $Session->unset_session();
             }
-            $V_foto->display('foto_altri_user.tpl');
+            $v_foto->display('foto_altri_user.tpl');
         }
         elseif($role == \Utilities\Roles::BANNED)
         {
             $Session->unset_session();
         }
-        $V_foto->display('foto_user.tpl');
+        $v_foto->display('foto_user.tpl');
     }
 
 
@@ -109,20 +108,20 @@ class C_Photo
     /**
      * serve per impostare il tasto like e il numero di like di una foto
      * @param array $user_like contiene gli user che hanno messo il like alla foto
-     * @param \View\V_Foto $V_foto
+     * @param \View\V_Foto $v_foto
      * @param stirng $username
      */
-    private function assegna_tasto($user_like, $V_foto, $username)
+    private function assegna_tasto($user_like, $v_foto, $username)
     {
         $total_like = count($user_like);
-        $V_foto->assign('total_like', $total_like);
+        $v_foto->assign('total_like', $total_like);
         if(in_array($username, $user_like))
         {
-            $V_foto->assign('attiva', $attiva = TRUE);
+            $v_foto->assign('attiva', $attiva = TRUE);
         }
         else
         {
-            $V_foto->assign('attiva', $attiva = FALSE);
+            $v_foto->assign('attiva', $attiva = FALSE);
         }
     }
 
@@ -134,7 +133,7 @@ class C_Photo
     {
         $session = new \Utilities\U_Session;
         $username = $session->get_val('username');
-        $v_Upload = new \View\V_Upload;
+        $v_foto = new \View\V_Foto();
         $dati_foto = $v_Upload->get_Dati();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
@@ -192,28 +191,33 @@ class C_Photo
      */
     public function modifica()
     {
-        $V_Foto = new \View\V_Foto;
+        $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $foto_details = $V_Foto->get_Dati('filesize', 'title', 'description', 'is_reserved', 'categories');
-        $V_Foto->assign('dati_foto', $foto_details);
-        $V_Foto->assign('utente', $username);
-        return $V_Foto->display('modifica_foto.tpl');
+        $role=$Session->get_val('role');
+        $id=  $v_foto->get;
+        $foto= \Foundation\F_Photo::get_By_ID($id);
+        $v_foto->assign('username', $username);
+        $v_foto->assign('role', $role);
+        $v_foto->assign('dati_foto', $foto);
+        return $v_foto->display('modifica_foto.tpl');
     }
 
 
     /**
-     * update dei dati dell'utente
+     * update dei dati della foto 
      */
     public function update()
     {
         $V_Foto = new \View\V_Foto;
+        
         $dati_foto = $V_Foto->get_Dati();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        $foto->set_ID($ID);
         \Foundation\F_Photo::update($foto);
     }
 
