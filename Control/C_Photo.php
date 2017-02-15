@@ -51,7 +51,7 @@ class C_Photo
         $id = $V_foto->get_Dati('id');
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $V_foto->assign('foto_datails', $foto_details);
-        $like = \Foundation\F_Photo::get_Total_Likes($id);
+        $like = \Foundation\F_Photo::get_TotalLikes($id);
         $total_like = count($like);
         if(in_array($username, $like))
         {

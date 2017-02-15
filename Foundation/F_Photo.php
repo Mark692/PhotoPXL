@@ -98,19 +98,19 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function get_By_ID($id)
     {
-        $select = "*";
+        //Select ALL but ID, Thumbnail and Size
+        $select = array("title", "description", "is_reserved", "upload_date", "user", "fullsize", "type");
         $from = "photo";
         $where = array("id" => $id);
         $photo = parent::get_One($select, $from, $where);
+
+        //Retrieves the categories
         $array_categories = self::get_Categories($id);
 
-        $cats = [];
-        foreach($array_categories as $k => $v)
-        {
-            array_push($cats, $array_categories[$k][$v]);
-        }
+        //Retrieves the number of likes
+        $user_likes = self::get_TotalLikes($id);
 
-        return array_merge($photo, $cats);
+        return array_merge($photo, $array_categories, $user_likes);
     }
 
 
@@ -294,7 +294,7 @@ class F_Photo extends \Foundation\F_Database
      * @param int $photo_ID The photo's ID
      * @return array The users that liked the selected photo
      */
-    public static function get_Total_Likes($photo_ID)
+    public static function get_TotalLikes($photo_ID)
     {
         $select = array("user");
         $from = "likes";
@@ -305,8 +305,9 @@ class F_Photo extends \Foundation\F_Database
 
     /**
      * Retrieves the most liked photos in DESCending style
+     *
      * @param int $page_toView The page selected as offset to fetch the photos
-     * @return array
+     * @return array An array with the IDs and Thumbnails of the most liked photos
      */
     public static function get_MostLiked($page_toView=1)
     {
