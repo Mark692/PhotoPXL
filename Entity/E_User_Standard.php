@@ -49,17 +49,6 @@ class E_User_Standard extends E_User
     }
 
 
-//___________-------------ToBeImplemented in Foundation-------------___________\\
-    /**
-     * Enables this user to became a PRO User
-     */
-    public function become_PRO()
-    {
-        parent::set_Role(Roles::PRO);
-    }
-//___________-------------ToBeImplemented in Foundation-------------___________\\
-
-
     /**
      * Sets the last upload date
      * @param int $date The timestamp of this user's last upload
