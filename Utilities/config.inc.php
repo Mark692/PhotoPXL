@@ -51,7 +51,10 @@ define("UPLOAD_STD_LIMIT", 10);
 define("PHOTOS_PER_ROW", 4);
 define("PHOTOS_PER_PAGE", 16);
 
-define("THUMBNAIL_WIDTH", 100); //Larghezza
-define("THUMBNAIL_HEIGHT", 100); //Altezza
 define("MAX_SIZE_FULL", 16777215); //MEDIUMBLOB max size allowed
 define("MAX_SIZE_THUMB", 65535); //BLOB max size allowed
+
+define("THUMBNAIL_WIDTH", 100); //Larghezza
+define("THUMBNAIL_HEIGHT", 100); //Altezza
+define("FULL_WIDTH",1600);//LUNGHEZZA
+define("FULL_HEIGHT",1600);//ALTEZZA

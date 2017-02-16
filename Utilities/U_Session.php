@@ -49,7 +49,7 @@ class U_Session
      * @param mixed $chiave
      * @param mixed $valore
      */
-    function set_Val($chiave, $valore)
+    function set_Valore($chiave, $valore)
     {
         $_SESSION[$chiave] = $valore;
     }

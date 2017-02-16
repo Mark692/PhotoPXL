@@ -21,9 +21,9 @@
               <p><label for="Description" class="top">Descrizione</label><br />
               <p><label for="Description" class="top"><{$dati_foto.description}</label></p>
               <p><label for="is_reserved" class="top">Riservata</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.is_reserved}</label></p>   
-              <p><label for="Categories" class="top">Categoria</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.categories}</label></p>
+              <p><label for="is_reserved" class="top"><{$dati_foto.is_reserved}</label></p>   
+              <p><label for="categories" class="top">Categoria</label><br />
+              <p><label for="categories" class="top"><{$dati_foto.categories}</label></p>
               <form method="post" action="deve andare alla pagina di modifca">
                     <p><input type="hidden" name="controller" value="modifica_foto da definire" />
                     <p><input type="hidden" name="task" value="modifca" />
