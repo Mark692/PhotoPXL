@@ -30,7 +30,7 @@ class C_Profilo
         $V_Profilo->assign('id', $id);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
         $V_Profilo->assign('array_ultime_foto', $ultime_foto);
-        return $V_Profilo->display('profilo_riepilogo.tpl');
+        return $V_Profilo->fetch('profilo_riepilogo.tpl');
     }
 
 
@@ -41,15 +41,14 @@ class C_Profilo
     {
         $V_Profilo = new \View\V_Profilo;
         $user_details = $V_Profilo->get_Dati('username', 'email');
-        $V_Profilo->assign('utente', $user_datails);
+        $V_Profilo->assign('utente', $user_details);
         //recupero foto profilo
-        $V_Profilo->assign('foto_profilo', $userdatails['photo']);
-        $V_Profilo->assign('utente', $user_datails);
+        $V_Profilo->assign('foto_profilo', $user_details['photo']);
+        $V_Profilo->assign('utente', $user_details);
         $V_Profilo->assign('foto_profilo', $fotoprofilo);
 
-        return $V_Profilo->display('modifica profilo.tpl');
+        return $V_Profilo->fetch('modifica profilo.tpl');
     }
-
 
     /**
      * update dei dati dati dell'utente
@@ -82,7 +81,7 @@ class C_Profilo
             }
         
             \Foundation\F_User::update_details($new_details, $old_Username);
-             //ritornerà un tpl di avvenuto successo
+            $this->riepilogo_dati();
 
     }
         
@@ -104,7 +103,7 @@ class C_Profilo
             case 'Modifica':
                 return $this->modifica();
                 break;
-            case 'salva':
+            case 'update':
                 return $this->update();
                 break;
         }

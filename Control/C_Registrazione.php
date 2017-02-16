@@ -18,9 +18,10 @@ class C_Registrazione
      */
     public function modulo_registrazione()
     {
-    $V_Login = new \View\V_Login;
+        $V_Login = new \View\V_Login;
         return $V_Login->fetch('registrazione.tpl');
     }
+
 
     /**
      * funzione per salvare un utente che si registra
@@ -40,14 +41,14 @@ class C_Registrazione
             {
                 $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
             }
-            catch(\Exceptions\input_texts $ex)
+            catch (\Exceptions\input_texts $ex)
             {
                 //Primo catch: gestire username non validi
                 $view->assign('messaggio', $ex->getMessage());
                 $this->modulo_registrazione();
             }
         }
-        catch(\Exceptions\InvalidInput $ex)
+        catch (\Exceptions\InvalidInput $ex)
         {
             //Primo catch: gestire username non validi
             $view->assign('messaggio', $ex->getMessage());
@@ -55,8 +56,23 @@ class C_Registrazione
         }
 
         \Foundation\F_User::insert($e_userSTD);
+        //torna al modulo home_default per non loggati
     }
-    
+
+
+    public function smista()
+    {
+        $V_Home = new \View\V_Home();
+        Switch ($V_Home->getTask())
+        {
+            case 'registrazione':
+                $this->modulo_registrazione();
+                break;
+            case 'salva':
+                $this->save_user();
+                break;
+        }
+    }
 
 
 }

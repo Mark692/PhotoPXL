@@ -24,11 +24,11 @@ class C_Photo
         $v_foto->assign('role', $role);
         if($role == \Utilities\Roles::STANDARD)
         {
-            return $v_foto->display('upload_standard.tpl');
+            return $v_foto->fetch('upload_standard.tpl');
         }
         elseif($role > \Utilities\Roles::STANDARD)
         {
-            return $v_foto->display('upload.tpl');
+            return $v_foto->fetch('upload.tpl');
         }
         else
         {
@@ -49,8 +49,7 @@ class C_Photo
         $role=$Session->get_val('role');
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
-        $id = $v_foto->get_Dati('id');
-        $Session->set_Valore('id', $id);
+        $id = $v_foto->getID();
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $photo = $foto_details[0];
         $categories = $foto_details[1];
@@ -63,19 +62,19 @@ class C_Photo
         {
             if($role >= \Utilities\Roles::MOD)
             {
-                return $v_foto->display('foto_altri_user_mod.tpl');
+                return $v_foto->fetch('foto_altri_user_mod.tpl');
             }
             elseif($role == \Utilities\Roles::BANNED)
             {
                 $Session->unset_session();
             }
-            $v_foto->display('foto_altri_user.tpl');
+            $v_foto->fetch('foto_altri_user.tpl');
         }
         elseif($role == \Utilities\Roles::BANNED)
         {
             $Session->unset_session();
         }
-        $v_foto->display('foto_user.tpl');
+        $v_foto->fetch('foto_user.tpl');
     }
 
 
@@ -127,14 +126,14 @@ class C_Photo
 
 
     /**
-     * upload di foto
+     * upload di una foto
      */
     public function Upload_foto()
     {
         $session = new \Utilities\U_Session;
         $username = $session->get_val('username');
         $v_foto = new \View\V_Foto();
-        $dati_foto = $v_Upload->get_Dati();
+        $dati_foto = $v_foto->get_Dati();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
@@ -145,8 +144,8 @@ class C_Photo
         }
         catch (\Exceptions\input_texts $ex)
         {
-            //Primo catch: gestire username non validi
-            $view->assign('messaggio', $ex->getMessage());
+            //Catch per il titolo
+            $v_foto->assign('messaggio', $ex->getMessage());
             $this->modulo_upload();
         }
         $type = $dati_foto['type'];
@@ -161,26 +160,27 @@ class C_Photo
             catch (\Exceptions\photo_details $ex)
             {
                 //Primo catch: gestire username non validi
-                $view->assign('messaggio', $ex->getMessage());
+                $v_foto->assign('messaggio', $ex->getMessage());
                 $this->modulo_upload();
             }
             catch (\Exceptions\photo_details $ex)
             {
                 //Primo catch: gestire username non validi
-                $view->assign('messaggio', $ex->getMessage());
+                $v_foto->assign('messaggio', $ex->getMessage());
                 $this->modulo_upload();
             }
             catch (\Exceptions\photo_details $ex)
             {
                 //Primo catch: gestire username non validi
-                $view->assign('messaggio', $ex->getMessage());
+                $v_foto->assign('messaggio', $ex->getMessage());
                 $this->modulo_upload();
             }
             \Foundation\F_Photo::insert($photo_details, $photo, $username);
+            
         }
         else
         {
-            $view->assign('messaggio', 'Errone nel caricamento della foto. Riprova!');
+            $v_foto->assign('messaggio', 'Errone nel caricamento della foto. Riprova!');
             $this->modulo_upload();
         }
     }
@@ -195,12 +195,12 @@ class C_Photo
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $role=$Session->get_val('role');
-        $id=  $v_foto->get;
+        $id=  $v_foto->getID();
         $foto= \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
         $v_foto->assign('dati_foto', $foto);
-        return $v_foto->display('modifica_foto.tpl');
+        return $v_foto->fetch('modifica_foto.tpl');
     }
 
 
@@ -212,13 +212,15 @@ class C_Photo
         $V_Foto = new \View\V_Foto;
         
         $dati_foto = $V_Foto->get_Dati();
+        $id=$V_Foto->getID();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
-        $foto->set_ID($ID);
+        $foto->set_ID($id);
         \Foundation\F_Photo::update($foto);
+        $this->display_photo();
     }
 
 
