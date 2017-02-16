@@ -45,7 +45,7 @@ class F_User extends \Foundation\F_Database
         $select = "*";
         $from = "users";
         $where = array("username" => $username);
-        $user_details = parent::get_One($select, $from, $where);
+        $user = parent::get_One($select, $from, $where);
         $pic = self::get_ProfilePic($username);
 
         return array($user, $pic);
@@ -93,9 +93,8 @@ class F_User extends \Foundation\F_Database
      * @param string $old_Username The DB username record to refer to
      * @param int $profile_Pic_ID The ID of the new profile pic
      */
-    public static function update_Profile(\Entity\E_User $to_Update, $old_Username, $profile_Pic_ID)
+    public static function update_Profile(\Entity\E_User $to_Update, $old_Username)
     {
-        //Updating: Profile Details
         $update = "users";
         $new_username = $to_Update->get_Username();
         $set = array( //Array to pass at the parent::set() function to Bind the correct parameters
@@ -107,11 +106,20 @@ class F_User extends \Foundation\F_Database
         $where = array("username" => $old_Username);
 
         parent::update($update, $set, $where);
+    }
 
-        //Updating: Profile Pic
+
+    /**
+     * Updates the user's profile pic
+     *
+     * @param string $username The user's username
+     * @param int $profile_Pic_ID The ID of the new profile pic
+     */
+    public static function update_ProfilePic($username, $profile_Pic_ID)
+    {
         $update = "profile_pic";
         $set = array("photo" => $profile_Pic_ID);
-        $where = array("user" => $new_username);
+        $where = array("user" => $username);
 
         parent::update($update, $set, $where);
     }

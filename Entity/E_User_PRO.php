@@ -28,21 +28,4 @@ class E_User_PRO extends E_User
         parent::__construct($username, $password, $email);
         parent::set_Role(Roles::PRO);
     }
-
-
-    /**
-     * Sets the Photo privacy as
-     * Reserved (TRUE):  only certain users will be able to see the photo
-     * Public  (FALSE): ALL users will be able to see the photo
-     *
-     * @param \Entity\E_Photo $photo_ID The photo object to set the privacy
-     * @param bool $privacy The privacy setting for the photo
-     */
-    public function set_Reserved(\Entity\E_Photo $photo_ID, $privacy)
-    {
-        if(is_bool($privacy))
-        {
-            $photo_ID->set_privacy($privacy);
-        }
-    }
 }

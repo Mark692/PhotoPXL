@@ -80,44 +80,46 @@ $C_Home->Set_home();
 
 
 //---Prova per TF_Comment---\\
-//
-//$testCommento = new \Prove\TF_Comment();
-//$testCommento->insert();
 
-
-
-//---Prova per TF_User---\\
-//
-//$provaFOUND = new \Prove\TF_User;
-//$provaFOUND->insert_and_get();
-//$provaFOUND->update();
-//$user = new \Entity\E_User_PRO("username casuale", "pass cass", "mail@we.iti");
-//var_dump($user);
-
-
-//---Prova per E_Photo---\\
-//
-//$p_tryme = new \Prove\TE_Photo();
-//$p_tryme->T_pconstr();
-
-
-//---Prova per E_User()---\\
-//
-//$e_tryme = new \Prove\TE_User();
-//$e_tryme->T_public_protected_private();
-//$e_tryme->T_uconstr(); //Stampa gli utenti STD, PRO, MOD, Admin
-//$e_tryme->T_SetGet();
-//$e_tryme->T_Roles();
-//$e_tryme->T_Data();
-//$e_tryme->user_to_array();
-
-
-//---Prova per U_Nonce()
-//$n_tryme = new \Prove\TU_Nonce();
-//$n_tryme->T_check();
+$test = new \Prove\TE_User();
+$test->try_it();
 
 
 echo(nl2br("\r\n"));
+
+
+
+
+//$avvia = new \View\V_Basic();
+//$avvia->display('prova');
+//$array_foto = [];
+//for($i=1; $i<=16; $i++)
+//{
+//    array_push($array_foto, $i);
+//
+//}
+//
+//echo("array_foto: ".nl2br("\r\n"));
+//print_r($array_foto);
+//
+//echo(nl2br("\r\n"));
+//echo(nl2br("\r\n"));
+//echo(nl2br("\r\n"));
+//echo(nl2br("\r\n"));
+//echo(nl2br("\r\n"));
+//
+//$a=array_chunk($array_foto, 6);
+//echo("array_chunk: ".nl2br("\r\n"));
+//print_r($a[2]);
+//
+//
+//
+//
+//
+//$avvia->assign('abba',array_chunk($array_foto, PHOTOS_PER_ROW));
+//
+//$avvia->display('prova.tpl');
+
 
 
 

@@ -48,9 +48,10 @@ class C_Registrazione
                 $this->modulo_registrazione();
             }
         }
+        catch(\Exceptions\input_texts $ex)
         catch (\Exceptions\InvalidInput $ex)
         {
-            //Primo catch: gestire username non validi
+            //Secondo catch: gestire email non valide
             $view->assign('messaggio', $ex->getMessage());
             $this->modulo_registrazione();
         }
