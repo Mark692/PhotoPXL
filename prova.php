@@ -25,13 +25,14 @@ for($i=1; $i<=16; $i++)
     array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
     
 }
-//$array_dati=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
-//    "is_reserved"=>"TRUE","categories"=>"STREET"];
-//$array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
-//$avvia->assign('array_categories',$array_categories);
-//$array_dati=["username" => "cazzofritto", "password" => "tuozio",
-//"email"=>"cazzo@inculo.it","role"=>"Standard"];
-//$avvia->assign('immagine_profilo',$foto);
+$array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
+$array_album=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
+    "is_reserved"=>"TRUE","categories"=>$array_categories];
+
+$avvia->assign('array_album',$array_album);
+$array_dati=["username" => "cazzofritto", "password" => "tuozio",
+"email"=>"cazzo@inculo.it","role"=>"Standard"];
+$avvia->assign('immagine_profilo',$foto);
 $avvia->assign('ultime_foto',array_chunk($array_foto, PHOTOS_PER_ROW));
 $avvia->assign('utente',$array_dati);
-$avvia->display('profilo.tpl');
+$avvia->display('album.tpl');

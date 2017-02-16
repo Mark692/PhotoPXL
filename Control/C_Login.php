@@ -11,20 +11,8 @@ class C_Login
      */
     public function modulo_login()
     {
-        $view = new \View\V_Login();
-        return $view->display('login.tpl');
-    }
-
-
-    /**
-     * 
-     * ritorna il tpl relativo al home ospite
-     * @return tpl
-     */
-    public function modulo()
-    {
-        $view = new \View\V_Login();
-        return $view->display('home_ospite.tpl');
+        $V_Login = new \View\V_Login;
+        return $V_Login->fetch('login.tpl');
     }
 
 
@@ -42,20 +30,21 @@ class C_Login
         $array_user = \Foundation\F_User::get_UserDetails($array_dati['username']);
         if(count($array_user) !== 0)
         {
-            if ($array_user['role']!= \Utilities\Roles::BANNED){
-            $DB_pass = $array_user["password"];
-            if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
+            if($array_user['role'] != \Utilities\Roles::BANNED)
             {
-                $session=new \Utilities\U_Session();
-                $session->set_Valore('username', $array_user['username']);
-                $session->set_Valore('role', $array_user['role']);
-                return TRUE; //TEMPLATE?
-            }
-            return FALSE; //password sbagliata
+                $DB_pass = $array_user["password"];
+                if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
+                {
+                    $session = new \Utilities\U_Session();
+                    $session->set_Valore('username', $array_user['username']);
+                    $session->set_Valore('role', $array_user['role']);
+                    return TRUE; //TEMPLATE?
+                }
+                return FALSE; //password sbagliata
             }
             return FALSE; //utente bannato
         }
-        return FALSE;//usernamesbagliato
+        return FALSE; //usernamesbagliato
     }
 
 

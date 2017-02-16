@@ -22,7 +22,7 @@ class V_Basic extends \Smarty
     {
         //$this->smarty();
         global $config;
-        $this->Smarty();
+        //$this->Smarty();
         $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
         $this->compile_dir  = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
         $this->config_dir   = $config['smarty']['config_dir'];    //conoscere la posizione di alcune

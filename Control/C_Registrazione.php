@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -17,22 +18,9 @@ class C_Registrazione
      */
     public function modulo_registrazione()
     {
-        $view = new \View\V_Login();
-        return $view->display('registrazione.tpl');
+    $V_Login = new \View\V_Login;
+        return $V_Login->fetch('registrazione.tpl');
     }
-
-
-    /**
-     * 
-     * ritorna il tpl relativo al home ospite
-     * @return tpl
-     */
-    public function modulo()
-    {
-        $view = new \View\V_Login();
-        return $view->display('home_ospite.tpl');
-    }
-
 
     /**
      * funzione per salvare un utente che si registra
@@ -66,5 +54,6 @@ class C_Registrazione
         
             \Foundation\F_User::insert($e_userSTD);
     }
+    
 
 }
