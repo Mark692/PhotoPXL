@@ -14,9 +14,9 @@ namespace Entity;
 class E_Comment
 {
     private $id;
-    private $text = '';
+    private $text;
     private $user;
-    private $photo_ID;
+    private $photo;
 
 
     /**
@@ -64,6 +64,10 @@ class E_Comment
      */
     public function set_Text($new_text)
     {
+        if(trim($new_text)=='')
+        {
+            throw new \Exceptions\input_texts(3, $new_text);
+        }
         $this->text = $new_text;
     }
 
@@ -108,7 +112,7 @@ class E_Comment
      */
     public function set_PhotoID($photo_ID)
     {
-        $this->photo_ID= $photo_ID;
+        $this->photo= $photo_ID;
     }
 
 
@@ -119,6 +123,6 @@ class E_Comment
      */
     public function get_PhotoID()
     {
-        return $this->photo_ID;
+        return $this->photo;
     }
 }

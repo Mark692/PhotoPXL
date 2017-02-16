@@ -24,7 +24,7 @@ class F_Photo extends \Foundation\F_Database
         //Insert all photo details but the categories
         $insertInto = "photo";
 
-        $set = array( //Array to pass at the parent::set() function to Bind the correct parameters
+        $set = array(
             "title" => $photo->get_Title(),
             "description" => $photo->get_Description(),
             "upload_date" => $photo->get_Upload_Date(),
@@ -33,7 +33,8 @@ class F_Photo extends \Foundation\F_Database
             "fullsize" => $photo_details->get_Fullsize(),
             "thumbnail" => $photo_details->get_Thumbnail(),
             "size" => $photo_details->get_Size(),
-            "type" => $photo_details->get_Type());
+            "type" => $photo_details->get_Type()
+                );
 
         $photo_ID = parent::insert_Query($insertInto, $set); //Inserts the photo and gets its ID.
         $photo->set_ID($photo_ID);
@@ -94,7 +95,7 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
-     * @return array The selected photo and its categories
+     * @return array The selected photo, its categories and the users that liked the photo
      */
     public static function get_By_ID($id)
     {
@@ -106,11 +107,21 @@ class F_Photo extends \Foundation\F_Database
 
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
+        $cats = [];
+        foreach($array_categories as $k => $v)
+        {
+            array_push($cats, $array_categories[$k][$v]);
+        }
 
         //Retrieves the number of likes
         $user_likes = self::get_TotalLikes($id);
+        $users = [];
+        foreach($user_likes as $k => $v)
+        {
+            array_push($users, $array_categories[$k][$v]);
+        }
 
-        return array_merge($photo, $array_categories, $user_likes);
+        return array_merge($photo, $cats, $users);
     }
 
 
@@ -133,15 +144,15 @@ class F_Photo extends \Foundation\F_Database
                     .'SELECT `photo` '
                     .'FROM `cat_photo` '
                     .'WHERE `album`=?'
-                    .')'
-                .' LIMIT '.$limit
-                .' OFFSET '.$offset
-                .' ORDER BY `id`';
-
+                    .') '
+                .'ORDER BY `id` ';
         if ($order_DESC===TRUE)
         {
-            $query .= ' DESC';
+            $query .= ' DESC ';
         }
+        $query .='LIMIT '.$limit.' '
+                .'OFFSET '.$offset;
+
         $fetchAll = TRUE;
         $toBind = array($album_ID);
         return parent::fetch_Result($query, $toBind, $fetchAll);
@@ -173,9 +184,9 @@ class F_Photo extends \Foundation\F_Database
                     .'FROM `cat_photo` '
                     .'WHERE '.$where
                     .') '
-                .' LIMIT '.$limit
-                .' OFFSET '.$offset
-                .' ORDER BY `id`';
+                .'ORDER BY `id` '
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = array($cats);
@@ -189,7 +200,6 @@ class F_Photo extends \Foundation\F_Database
      *
      * @param array $new_cats The new categories chosen for the photo
      * @param int $photo_ID The photo's ID to whom set/remove the categories
-     * @throws \Exceptions\queries In case there are no categories to add neither to remove
      */
     private static function update_Categories($new_cats, $photo_ID)
     {
@@ -212,17 +222,14 @@ class F_Photo extends \Foundation\F_Database
             if($query_DEL!=='')
             {
                 array_push($toBind, $to_remove);
+                parent::execute_Query($query, $toBind);
             }
         }
         elseif($query_DEL!=='')
         {
             $toBind = $to_remove;
+            parent::execute_Query($query, $toBind);
         }
-        else
-        {
-            throw new \Exceptions\queries(2, array_merge($new_cats, $old_cats));
-        }
-        parent::execute_Query($query, $toBind);
     }
 
 
@@ -235,13 +242,14 @@ class F_Photo extends \Foundation\F_Database
      */
     private static function query_addCats($cats, $photo_ID)
     {
-        if($cats === [])
+        $tot_cats = count($cats);
+        if($tot_cats===0)
         {
             return '';
         }
         $query = "INSERT INTO `cat_photo` (`photo`, `category`) "
                 ."VALUES ";
-        for($i=0; $i<count($cats); $i++)
+        for($i=0; $i<$tot_cats; $i++)
         {
             $query .= "('$photo_ID', ?),";
         }
@@ -250,22 +258,23 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Removes the selected categories from the album
+     * Removes the selected categories from the photo
      *
-     * @param enum or array $cats The category/ies to remove from the album selected
-     * @param int $album_ID The album to modify and remove categories from
-     * @return string The query used to remove categories from the album
+     * @param enum or array $cats The category/ies to remove from the photo selected
+     * @param int $photo_ID The photo to modify and remove categories from
+     * @return string The query used to remove categories from the photo
      */
-    private static function query_removeCats($cats, $album_ID)
+    private static function query_removeCats($cats, $photo_ID)
     {
-        if($cats === [])
+        $tot_cats = count($cats);
+        if($tot_cats===0)
         {
             return '';
         }
-        $query = "DELETE FROM `cat_album` "
-                ."WHERE (`album`=$album_ID) "
+        $query = "DELETE FROM `cat_photo` "
+                ."WHERE (`photo`=$photo_ID) "
                 ."AND (";
-        foreach ((array) $cats as $value)
+        for($i=0; $i<$tot_cats; $i++)
         {
             $query .= "(`category`=?) OR ";
         }
@@ -323,7 +332,7 @@ class F_Photo extends \Foundation\F_Database
                     .'GROUP BY `photo` '
                     .'ORDER BY COUNT(*) '
                 .') '
-                .'ORDER BY `id` '
+                .'ORDER BY `id` DESC '
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
 

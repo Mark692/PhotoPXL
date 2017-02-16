@@ -21,26 +21,24 @@ class F_Album extends \Foundation\F_Database
      */
     public static function insert(\Entity\E_Album $album, $owner)
     {
-        $query = 'INSERT INTO `album` SET '
-                .'`title`=?, '
-                .'`description`=?, '
-                .'`creation_date`=?, '
-                .'`user`=?';
+        $insertInto = "album";
 
-        $toBind = array( //Array to pass at the parent::set() function to Bind the correct parameters
-            $album->get_Title(),
-            $album->get_Description(),
-            $album->get_Creation_Date(),
-            $owner);
+        $set = array(
+            "title" => $album->get_Title(),
+            "description" => $album->get_Description(),
+            "creation_date" => $album->get_Creation_Date(),
+            "user" => $owner
+                );
 
-        $album_ID = parent::execute_Query($query, $toBind); //Inserts the album and gets its ID.
+        $album_ID = parent::insert_Query($insertInto, $set);
         $album->set_ID($album_ID);
 
-        $cats_toSet = $album->get_Categories();
-        $query_addCats = self::add_Cats($cats_toSet, $album_ID);
-        if($query_addCats!=='')
+        //Finally inserts categories
+        $cats = $album->get_Categories();
+        if($cats!==[])
         {
-            parent::execute_Query($query_addCats, $cats_toSet);
+            $query = self::query_addCats($cats, $album_ID);
+            parent::execute_Query($query, $cats);
         }
     }
 
@@ -52,46 +50,45 @@ class F_Album extends \Foundation\F_Database
      */
     public static function update(\Entity\E_Album $to_Update)
     {
-        $album_ID = $to_Update->get_ID();
-        $array_toUpdate = array(
-            "id" => $album_ID,
+        $id = $to_Update->get_ID();
+        $update = "album";
+        $set = array(
+            "id" => $id,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
             "creation_date" => $to_Update->get_Creation_Date()
                 );
-        $DB_table = "album";
-        $primary_key = "id";
-        parent::update($array_toUpdate, $DB_table, $primary_key, $album_ID);
+        $where = array("id" => $id);
+        parent::update($update, $set, $where);
 
         $cats = $to_Update->get_Categories();
-        self::update_Categories($cats, $album_ID);
+        self::update_Categories($cats, $id);
     }
 
 
     /**
      * Rethrives the albums of a user by passing the album's ID.
      *
-     * @param int $ID The user's username selected to get the albums from
+     * @param int $id The user's username selected to get the albums from
      * @return array The album searched
      */
-    public static function get_By_ID($ID)
+    public static function get_By_ID($id)
     {
-        $query1 = "SELECT * "
-                 ."FROM `album` "
-                 ."WHERE `id`=?;";
+        //Select ALL but ID, Thumbnail and Size
+        $select = '*';
+        $from = "album";
+        $where = array("id" => $id);
+        $album = parent::get_One($select, $from, $where);
 
-        $query2 = "SELECT `thumbnail` "
-                . "FROM `album_cover` "
-                . "WHERE `id`=?";
+        //Retrieves the categories
+        $array_categories = self::get_Categories($id);
+        $cats = [];
+        foreach($array_categories as $k => $v)
+        {
+            array_push($cats, $array_categories[$k][$v]);
+        }
 
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $ID);
-        $pdo_stmt->bindParam(2, $ID);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_merge($album, $cats);
     }
 
 
@@ -101,34 +98,30 @@ class F_Album extends \Foundation\F_Database
      * @param string $username The user's username selected to get the albums from
      * @return array The user's albums
      */
-    public static function get_By_User($username)
+    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
     {
-        $toSearch = array("user" => $username);
-        $DB_table = "album";
+
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT * '
+                .'FROM `album_cover` '
+                .'WHERE `album` in ('
+                    .'SELECT `id` '
+                    .'FROM `album` '
+                    .'WHERE `user`=?'
+                    .') '
+                .'ORDER BY `album` ';
+        if ($order_DESC===TRUE)
+        {
+            $query .= ' DESC ';
+        }
+        $query .='LIMIT '.$limit.' '
+                .'OFFSET '.$offset;
+
         $fetchAll = TRUE;
-        $details = parent::get_All($toSearch, $DB_table, $fetchAll);
-
-        $query = "SELECT `thumbnail` "
-                . "FROM `album_cover` "
-                . "WHERE `id`=?";
-
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $details["id"]);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        $cover = $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        //NON VA BENE.
-        //FINISCILA E CONTROLLA TUTTE LE ALTRE
-        //CONTROLLA I "return ARRAY MERGE" PERCHè SONO SBAGLIATI AL 90%
-        //USA UN FOREACH PER ASSOCIARE I DATI DI UNA QUERY AI DATI DI UN'ALTRA
-        //(foreach as $v {push(arr1[id], arr2[id]})
-
-
-
-
+        $toBind = array($username);
+        return parent::fetch_Result($query, $toBind, $fetchAll);
     }
 
 
@@ -137,7 +130,7 @@ class F_Album extends \Foundation\F_Database
      *
      * @param array $cats The category/ies to search
      */
-    public static function get_By_Categories($cats)
+    public static function get_By_Categories($cats, $page_toView=1)
     {
         $where = '';
         for($i=0; $i<count($cats); $i++)
@@ -145,22 +138,23 @@ class F_Album extends \Foundation\F_Database
             $where .= '(`category`=?) OR ';
         }
         $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
         $query = "SELECT * "
-                ."FROM `album` "
-                ."WHERE `id` in ("
+                ."FROM `album_cover` "
+                ."WHERE `album` in ("
                     ."SELECT `album` "
                     ."FROM `cat_album` "
                     .'WHERE '.$where
-                    .")";
+                    .') '
+                .'ORDER BY `id` '
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset;
 
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = parent::bind_params($pdo_stmt, $cats);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $fetchAll = TRUE;
+        $toBind = array($cats);
+        return parent::fetch_Result($query, $toBind, $fetchAll);
     }
 
 
@@ -183,7 +177,7 @@ class F_Album extends \Foundation\F_Database
         $to_add    = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
 
-        $query_ADD = self::add_Cats($to_add, $album_ID);
+        $query_ADD = self::query_addCats($to_add, $album_ID);
         $query_DEL = self::remove_Cats($to_remove, $album_ID);
         $query = $query_ADD.$query_DEL;
 
@@ -193,17 +187,14 @@ class F_Album extends \Foundation\F_Database
             if($query_DEL!=='')
             {
                 array_push($toBind, $to_remove);
+                parent::execute_Query($query, $toBind);
             }
         }
         elseif($query_DEL!=='')
         {
             $toBind = $to_remove;
+            parent::execute_Query($query, $toBind);
         }
-        else
-        {
-            throw new \Exceptions\queries(2, array_merge($new_cats, $old_cats));
-        }
-        parent::execute_Query($query, $toBind);
     }
 
 
@@ -214,40 +205,20 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */
-    private static function add_Cats($cats, $album_ID)
+    private static function query_addCats($cats, $album_ID)
     {
-        if($cats === [])
+        $tot_cats = count($cats);
+        if($tot_cats===0)
         {
             return '';
         }
-        $query = "INSERT INTO `cat_album` (`album`, `category`) VALUES ";
-        for($i=0; $i<count($cats); $i++)
+        $query = "INSERT INTO `cat_album` (`album`, `category`) "
+                . "VALUES ";
+        for($i=0; $i<$tot_cats; $i++)
         {
             $query .= "('$album_ID', ?),";
         }
         return substr($query, 0, -1).";"; //Trims the last "," and places a ";"
-    }
-
-
-    /**
-     * Retrieves the album's categories
-     *
-     * @param int $album_ID The album ID to look for categories
-     * @return array The album's categories
-     */
-    private static function get_Categories($album_ID)
-    {
-        $query = "SELECT `category` "
-                ."FROM `cat_album` "
-                ."WHERE `album`=?";
-
-        $pdo = parent::connettiti();
-        $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt->bindParam(1, $album_ID);
-        $pdo_stmt->execute();
-
-        $pdo = NULL; //Closes DB connection
-        return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -260,18 +231,34 @@ class F_Album extends \Foundation\F_Database
      */
     private static function remove_Cats($cats, $album_ID)
     {
-        if($cats === [])
+        $tot_cats = count($cats);
+        if($tot_cats===0)
         {
             return '';
         }
         $query = "DELETE FROM `cat_album` "
                 ."WHERE (`album`=$album_ID) "
                 ."AND (";
-        for($i=0; $i<count($cats); $i++)
+        for($i=0; $i<$tot_cats; $i++)
         {
             $query .= "(`category`=?) OR ";
         }
         return substr($query, 0, -4).")"; //Trims the last " OR " and closes the paranthesys
+    }
+
+
+    /**
+     * Retrieves the album's categories
+     *
+     * @param int $album_ID The album ID to look for categories
+     * @return array The album's categories
+     */
+    private static function get_Categories($album_ID)
+    {
+        $select = array("category");
+        $from = "cat_album";
+        $where = array("album" => $album_ID);
+        return parent::get_All($select, $from, $where);
     }
 
 

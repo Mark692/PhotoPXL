@@ -8,20 +8,36 @@
 
 namespace Prove\Scartate;
 
-class ScartataF_User extends \Foundation\F_Database
+class ScartataE_User
 {
+
+
     /**
-     * Retrieves all the users that match the query
+     * This function helps converting an user into an array to ease those functions in
+     * Foundation that require an array and not an E_User
      *
-     * @param array $arr_values The values to search with the query
-     * @param bool $fetchAll Whether to get 1 (FALSE) or all (TRUE) the records that match the query
-     * @param string $orderBy The table column chosen to order the results
-     * @param string $orderStyle The ASCendent or DESCendent style to return the results. Allowed values: ASC or DESC
-     * @return array All the users that match the query
+     * @param \Entity\E_User_* $e_user An user to convert into an array
+     * @return array An array made of user details to be used in Foundation functions
      */
-    public static function get_All($arr_values, $fetchAll=FALSE, $orderBy='', $orderStyle="ASC")
+    public function to_Array($e_user)
     {
-        $DB_table = "users";
-        return parent::get_All($arr_values, $DB_table, $fetchAll, $orderBy, $orderStyle);
+        $role = $e_user->get_Role();
+        $user_details = array(
+            "username" => $e_user->get_Username(),
+            "password" => $e_user->get_Password(),
+            "email" => $e_user->get_Email(),
+            $role
+            );
+
+        if($role === \Utilities\Roles::STANDARD)
+        {
+            $to_merge = array(
+                "last_Upload" => $e_user->get_Last_Upload(),
+                "up_Count" => $e_user->get_up_Count()
+                );
+            $user_details = array_merge($user_details, $to_merge); //"Pushes" the array $to_merge at the end of $user_details
+        }
+
+        return $user_details;
     }
 }

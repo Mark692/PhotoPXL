@@ -12,7 +12,7 @@ namespace Control;
 class C_Registrazione
 {
     /**
-     * 
+     *
      * ritorna il tpl relativo alla registrazine
      * @return tpl
      */
@@ -36,24 +36,27 @@ class C_Registrazione
 
         try
         {
-            $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
+            try
+            {
+                $e_userSTD = new \Entity\E_User_Standard($username, $password, $email);
+            }
+            catch(\Exceptions\input_texts $ex)
+            {
+                //Primo catch: gestire username non validi
+                $view->assign('messaggio', $ex->getMessage());
+                $this->modulo_registrazione();
+            }
         }
-        catch (\Exceptions\input_texts $ex)
-            {
+        catch(\Exceptions\InvalidInput $ex)
+        {
             //Primo catch: gestire username non validi
-            $view->assign('messaggio',$ex->getMessage());
+            $view->assign('messaggio', $ex->getMessage());
             $this->modulo_registrazione();
-            }
-        catch (\Exceptions\InvalidInput $ex)
-            {
-            //Primo catch: gestire username non validi
-            $view->assign('messaggio',$ex->getMessage());
-            $this->modulo_registrazione();
-            
-            }
-        
-            \Foundation\F_User::insert($e_userSTD);
+        }
+
+        \Foundation\F_User::insert($e_userSTD);
     }
     
+
 
 }

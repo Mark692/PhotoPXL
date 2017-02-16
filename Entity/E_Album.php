@@ -77,9 +77,10 @@ class E_Album
 
     /**
      * Checks whether the title is a valid entry
+     *
      * @param string $title The title input
      * @throws \Exceptions\input_texts Whether the title contains invalid chars
-     * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
+     * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
     private function title_isValid($title)
     {
