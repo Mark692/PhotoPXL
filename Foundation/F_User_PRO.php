@@ -14,6 +14,21 @@ namespace Foundation;
 class F_User_PRO extends F_User
 {
 
+    /**
+     * Updates a photo privacy
+     *
+     * @param int $photo_ID The photo ID
+     * @param bool $privacy The new privacy for the photo
+     */
+    public static function set_PhotoPrivacy($photo_ID, $privacy)
+    {
+        $update = "photo";
+        $set = array("is_reserved" => $privacy);
+        $where = array("id" => $photo_ID);
+
+        parent::update($update, $set, $where);
+    }
+
 
 }
 

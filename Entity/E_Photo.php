@@ -18,9 +18,9 @@ class E_Photo
     private $description;
 
     private $is_reserved;
-    private $upload_date;
-    private $categories = []; //Categorie della foto
+    private $categories; //Categorie della foto
     private $total_likes;
+    private $upload_date;
 
 
     /**
@@ -36,13 +36,13 @@ class E_Photo
      * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc, $is_Reserved, $cat, $likes=0, $up_Date='')
+    public function __construct($title, $desc = '', $is_Reserved = FALSE, $cat = [], $likes=0, $up_Date='')
     {
         $this->set_Title($title);
         $this->set_Description($desc);
-        $this->set_Likes($likes);
         $this->set_Reserved($is_Reserved);
         $this->set_Categories($cat);
+        $this->set_Likes($likes);
         $this->set_Upload_Date($up_Date);
     }
 
