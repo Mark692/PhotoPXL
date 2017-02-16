@@ -15,18 +15,18 @@ class photo_details extends \Exception
 {
     public function __construct($code, $exc)
     {
-        switch ($code)
+        switch($code)
         {
             case 0:
-                $message ="Percorso immagine non valido: $exc";
+                $message = "Percorso immagine non valido: $exc";
                 break;
 
             case 1:
-                $message ="Impossibile creare miniatura. Percorso non valido: $exc";
+                $message = "Impossibile creare miniatura. Percorso non valido: $exc";
                 break;
 
             case 2:
-                $message ="Dimensione immagine troppo grande: $exc. Dimensione massima permessa: ".MAX_SIZE;
+                $message = "Dimensione immagine troppo grande: $exc. Dimensione massima permessa: ".MAX_SIZE;
                 break;
 
 

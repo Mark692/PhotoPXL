@@ -103,7 +103,7 @@ class E_Photo
      */
     public function set_Title($new_title)
     {
-        if($this->title_isValid($new_title))
+        if($this->title_isValid($new_title)===TRUE)
         {
             $this->title = $new_title;
         }
@@ -114,7 +114,8 @@ class E_Photo
      * Checks whether the title is a valid entry
      *
      * @param string $title The photo title input
-     * @return bool Returns TRUE if the title has only a-zA-z0-9-_. and spaces chars
+     * @throws \Exceptions\input_texts Whether the title contains invalid chars
+     * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
     private function title_isValid($title)
     {

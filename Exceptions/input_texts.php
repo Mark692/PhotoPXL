@@ -29,6 +29,10 @@ class input_texts extends \Exception
                 $message ="Il testo contiene caratteri speciali non ammessi. Permessi: '-_.!? e lo spazio";
                 break;
 
+            case 3:
+                $message ="Il commento immesso non è un testo valido!";
+                break;
+
 
             //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
 

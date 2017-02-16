@@ -19,7 +19,7 @@ class F_Comment extends \Foundation\F_Database
      *
      * @param \Entity\E_Comment $comment The comment to save
      */
-    public static function execute_Query(\Entity\E_Comment $comment)
+    public static function insert(\Entity\E_Comment $comment)
     {
         $insertInto = "comment";
 
@@ -28,7 +28,7 @@ class F_Comment extends \Foundation\F_Database
             "user" => $comment->get_User(),
             "photo" => $comment->get_PhotoID()
                 );
-          
+
         $comment_ID = parent::insert_Query($insertInto, $set); //Inserts the comments and gets its ID.
         $comment->set_ID($comment_ID);
     }
@@ -44,26 +44,22 @@ class F_Comment extends \Foundation\F_Database
      */
     public static function get_By_Photo($photo_ID)
     {
-        $toSearch = array("photo_ID" => $photo_ID);
-        $DB_table = "comment";
-        $fetchAll = TRUE;
+        $select = "*";
+        $from = "comment";
+        $where = array("photo" => $photo_ID);
+        $limit = 0;
+        $offset = 0;
         $orderBy = "id";
-        parent::get_All($toSearch, $DB_table, $fetchAll, $orderBy);
+        parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
     }
 
 
-    /**
-     * Retrieves all the comments that match the query
-     *
-     * @param array $toSearch The parameters to search in the "comment" table
-     * @return array The list of all comments that match the query
-     */
-    public static function get_All($toSearch)
+    public static function update(\Entity\E_Comment $comment)
     {
-        $DB_table = "comment";
-        $fetchAll = TRUE;
-        $orderBy = "id";
-        return parent::get_All($toSearch, $DB_table, $fetchAll, $orderBy);
+        $update = "comment";
+        $set = array("text" => $comment->get_Text());
+        $where = array("id" => $comment->get_ID());
+        parent::update($update, $set, $where);
     }
 
 

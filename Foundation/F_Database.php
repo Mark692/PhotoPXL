@@ -17,8 +17,6 @@ use \PDO,
 
 class F_Database
 {
-
-
     /**
      * Tries to connect to the DB
      *
@@ -39,7 +37,7 @@ class F_Database
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
             return $connection;
         }
-        catch (PDOException $e)
+        catch(PDOException $e)
         {
             echo "Impossibile connettersi al database. Errore: ".$e;
         }
@@ -75,8 +73,8 @@ class F_Database
      */
     protected static function insert_Query($insertInto, $set)
     {
-        $set_values='';
-        foreach($set as $key => $v)
+        $set_values = '';
+        foreach(array_keys($set) as $key)
         {
             $set_values .= '`'.$key.'`=?, ';
         }
@@ -97,7 +95,7 @@ class F_Database
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
      * @return array
      */
-    public static function fetch_Result($query, $toBind, $fetchAll=FALSE)
+    public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
@@ -105,7 +103,7 @@ class F_Database
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
-        if ($fetchAll===TRUE)
+        if($fetchAll === TRUE)
         {
             return $pdo_stmt->fetchAll(PDO::FETCH_ASSOC); //Returns a multidimensional array. Different keys mean different records
         }
@@ -124,26 +122,26 @@ class F_Database
     public static function basic_Query($select, $from, $where)
     {
         $select_columns = $select;
-        if($select!=='*')
+        if($select !== "*")
         {
             $select_columns = '';
-            for($i=0; $i<count($select); $i++)
+            foreach($select as $value)
             {
-                $select_columns .= '`'.$select[$i].'`, ';
+                $select_columns .= '`'.$value.'`, ';
             }
             $select_columns = substr($select_columns, 0, -2); //Removes the ", " at the end of the string
         }
 
         $where_clause = '';
-        foreach($where as $key => $v)
+        foreach(array_keys($where) as $key)
         {
             $where_clause .= '`'.$key.'`=? AND ';
         }
         $where_clause = substr($where_clause, 0, -5); //Removes the " AND " at the end of the string
 
         return $query = 'SELECT '.$select_columns.' '
-                       .'FROM `'.$from.'` '
-                       .'WHERE '.$where_clause;
+                .'FROM `'.$from.'` '
+                .'WHERE '.$where_clause;
     }
 
 
@@ -174,23 +172,23 @@ class F_Database
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array The associative array with all the records that matched the query
      */
-    protected static function get_All($select, $from, $where, $limit=0, $offset=0, $orderBy_column='', $order_DESC=FALSE)
+    protected static function get_All($select, $from, $where, $limit = 0, $offset = 0, $orderBy_column = '', $order_DESC = FALSE)
     {
         $query = self::basic_Query($select, $from, $where);
 
-        if ($orderBy_column!=='' )
+        if($orderBy_column !== '')
         {
             $query .= ' ORDER BY `'.$orderBy_column.'`';
-            if ($order_DESC===TRUE)
+            if($order_DESC === TRUE)
             {
                 $query .= ' DESC';
             }
         }
 
-        if($limit!==0)
+        if($limit !== 0)
         {
             $query .= ' LIMIT '.$limit
-                     .' OFFSET '.$offset;
+                    .' OFFSET '.$offset;
         }
         $fetchAll = TRUE;
         return self::fetch_Result($query, $where, $fetchAll);
@@ -209,13 +207,13 @@ class F_Database
     protected static function update($update, $set, $where)
     {
         $set_values = ''; //String to use for the SET
-        foreach($set as $key => $new_value)
+        foreach(array_keys($set) as $key)
         {
             $set_values .= '`'.$key.'`=?,';
         }
 
         $where_clause = '';
-        foreach($where as $key => $v)
+        foreach(array_keys($where) as $key)
         {
             $where_clause .= '`'.$key.'`=? AND ';
         }
@@ -238,10 +236,10 @@ class F_Database
      */
     public static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
-        if(count($toBind)>0)
+        if(count($toBind) > 0)
         {
             $i = 1; //Needed to specify which placeholder to bind
-            foreach ($toBind as $k => $v)
+            foreach($toBind as $k => $v)
             {
                 //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
                 $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
@@ -249,5 +247,17 @@ class F_Database
             }
             return $pdo_stmt;
         }
+
+        
+        if(1 === 3) //PROVA SE QUESTO VA BENE
+        {
+            for($i=0; $i<count($toBind); $i++)
+            {
+                $pdo_stmt->bindParam($i, $toBind[$i]); //Correctly binds parameters
+            }
+            return $pdo_stmt;
+        }
     }
+
+
 }

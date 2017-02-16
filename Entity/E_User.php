@@ -18,9 +18,7 @@ class E_User
     private $password;
     private $email;
 
-    /**
-     * @type int The user role
-     */
+    /** @type enum The user role */
     private $role;
 
 
@@ -41,11 +39,12 @@ class E_User
 
     /**
      * Sets a new username for the User
+     *
      * @param string The username input by the user
      */
     public function set_Username($new_username)
     {
-        if($this->username_isValid($new_username)===FALSE)
+        if($this->username_isValid($new_username) === FALSE)
         {
             throw new \Exceptions\InvalidInput(0, $new_username);
         }
@@ -68,7 +67,7 @@ class E_User
      * Checks whether the username is a valid entry
      *
      * @param string $username The username input
-     * @return bool Returns TRUE if the username has only a-zA-z0-9-_. chars
+     * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
     private function username_isValid($username)
     {
@@ -122,7 +121,7 @@ class E_User
      */
     public function set_Email($new_email)
     {
-        if($this->email_isValid($new_email)===FALSE)
+        if($this->email_isValid($new_email) === FALSE)
         {
             throw new \Exceptions\InvalidInput(1, $new_email);
         }
@@ -176,32 +175,4 @@ class E_User
     }
 
 
-    /**
-     * This function helps converting an user into an array to ease those functions in
-     * Foundation that require an array and not an E_User
-     *
-     * @param \Entity\E_User_* $e_user An user to convert into an array
-     * @return array An array made of user details to be used in Foundation functions
-     */
-    public function to_Array($e_user)
-    {
-        $role = $e_user->get_Role();
-        $user_details = array(
-            "username" => $e_user->get_Username(),
-            "password" => $e_user->get_Password(),
-            "email" => $e_user->get_Email(),
-            $role
-            );
-
-        if($role === \Utilities\Roles::STANDARD)
-        {
-            $to_merge = array(
-                "last_Upload" => $e_user->get_Last_Upload(),
-                "up_Count" => $e_user->get_up_Count()
-                );
-            $user_details = array_merge($user_details, $to_merge); //"Pushes" the array $to_merge at the end of $user_details
-        }
-
-        return $user_details;
-    }
 }
