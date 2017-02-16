@@ -17,56 +17,52 @@ class C_Home
     {
         $V_Home = new \View\V_Home();
         $U_Session = new \Utilities\U_Session();
-        $U_Cookie = new \Utilities\U_Cookie();
+        $username = $U_Session->get_val('username');
         $role = $U_Session->get_val('role');
-        if($role != \Utilities\Roles::BANNED)
+        $contenuto = $this->smista();
+        if($username !== FALSE)
         {
-            $contenuto = $this->smista();
-            $this->set_menu();
-            $U_Cookie->set_Cookie();
-            $this->assegna_foto();
-            $V_Home->set_Contenuto($contenuto);
-            $V_Home->inserisciContenuto();
+            if($role !== \Utilities\Roles::BANNED)
+            {
+                echo'sono auenticato';
+                $U_Cookie->set_Cookie(); //verifica i cookie
+                $V_Home->assign('username', $username);
+                $cont = $V_Home->set_Bar($role);
+                $V_Home->assign('sidebar', $cont);
+                if($contenuto === FALSE)
+                {
+                    $this->assegna_foto();
+                    $V_Home->fetch('home_log_default.tpl');
+                    $V_Home->set_Contenuto($contenuto);
+                }
+                else
+                {
+                    $V_Home->set_Contenuto($contenuto);
+                }
+
+                $V_Home->set_home();
+            }
+            else
+            {
+                $V_Home->set_ban();
+            }
+        }
+        else
+        {
+            $cont = $V_Home->set_Bar($role);
+            $V_Home->assign('sidebar', $cont);
+            if($contenuto !== FALSE)
+            {
+                $V_Home->set_Contenuto($contenuto);
+                //per utenti non autenticati role sara FALSE
+            }
+            else
+            {
+                $this->assegna_foto();
+                $contenuto = $V_Home->fetch('home_ospite.tpl');
+                $V_Home->set_Contenuto($contenuto);
+            }
             $V_Home->set_home();
-        }
-        else
-        {
-            //tpl bannato;
-        }
-    }
-
-
-    /**
-     * Imposta la topbar in base a tipo di utente
-     */
-    public function set_menu()
-    {
-        $V_Home = new \View\V_Home();
-        $U_Session = new \Utilities\U_Session();
-        $role = $U_Session->get_val('role');
-        if($role == '1')
-        {
-            $V_Home->set_Bar('top_bar_standard');
-        }
-        elseif($role == '2')
-        {
-            $V_Home->set_Bar('top_bar_pro');
-        }
-        elseif($role == '3')
-        {
-            $V_Home->set_Bar('top_bar_mod');
-        }
-        elseif($role == '4')
-        {
-            $V_Home->set_Bar('top_bar_admin');
-        }
-        elseif(($role == ''))
-        {
-            $V_Home->set_Bar('top_bar_ospite');
-        }
-        else
-        {
-            //lanciare eccezione per ban
         }
     }
 
@@ -80,11 +76,8 @@ class C_Home
     {
         $V_Home = new \View\V_Home();
         $F_Photo = new \Foundation\F_Photo;
-        $foto = array ();
-        $ordinamento = 'decrescente';
-        $limit = '16';
-        $risultato = $ffoto->//funzione che mi trova le foto in maniera decrescente e limitata
-        $view->assign('imege', $risultato);
+        $foto = $F_Photo->get_MostLiked();
+        $V_Home->assign('foto_home', array_chunk($foto, PHOTOS_PER_ROW));
     }
 
 
@@ -99,13 +92,15 @@ class C_Home
         Switch ($controller)
         {
             case 'registrazione':
-                $CRegistrazione = new \Control\C_Registrazione;
+                $C_Registrazione = new \Control\C_Registrazione;
                 return $C_Registrazione->smista();
             case 'Login':
-                $CRicerca = new \Control\C_Login();
+                $C_Logine = new \Control\C_Login();
                 return $C_Login->smista();
-            default:
-                return $this->ritorna_home();
+            case 'Photo':
+                $C_Photo = new \Control\C_Photo();
+            default :
+                return FALSE;
         }
     }
 

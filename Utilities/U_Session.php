@@ -14,7 +14,7 @@ class U_Session
      * Il metodo, crea la sessione. Imposta la frequenza di passaggio del garbage collector
      * sul server a 1 passaggio ogni 20 richieste e il tempo di scadenza dei dati server a 1 ora
      */
-    public function __construct()
+    public function start()
     {
         ini_set('session.gc_divisor', 0);
         ini_set('session.gc_maxlifetime', 600);
@@ -35,12 +35,12 @@ class U_Session
     /**
      * Distrugge la sessione ed elimina il cookie per il controllo della sessione
      */
-    function unset_session()
+    function session_destroy()
     {
-        $cookie = USingleton::getInstance('UCookie');
-        $cookie->eliminaCookie('sessione');
+//        $cookie = new \Utilities\U_Cookie();
+//        $cookie->eliminaCookie('sessione');
         session_destroy();
-        $cookie->eliminaCookie("PHPSESSID");
+//        $cookie->eliminaCookie("PHPSESSID");
     }
 
 
@@ -49,7 +49,7 @@ class U_Session
      * @param mixed $chiave
      * @param mixed $valore
      */
-    function set_Valore($chiave, $valore)
+    function set_Val($chiave, $valore)
     {
         $_SESSION[$chiave] = $valore;
     }

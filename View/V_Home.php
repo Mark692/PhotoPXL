@@ -10,44 +10,72 @@ namespace View;
 
 class V_Home extends \View\V_Basic
 {
-    
     private $mainContent;
-    
-
     /**
      * 
-     * Mostra il tamplete della Home di default 
+     * Mostra il tamplete della Home di default in base al tipo di utente
      */
-    public function set_home()
+    public function set_home($tipo)
     {
         $this->display('home_default.tpl');
     }
-
-
+    
     /**
      * imposta il contenuto principale alla variabile privata della classe
+     * Scrive nel tpl gli attributi della classe
      */
     public function set_Contenuto($contenuto)
     {
         $this->mainContent = $contenuto;
+        $this->assign('content', $this->mainContent);
     }
 
 
     /**
-     * Scrive nel tpl gli attributi della classe
+     * 
+     * Mostra il tamplete per un utente bannato
      */
-    public function inserisciContenuto()
+    public function set_ban()
     {
-        $this->assign('content', $this->mainContent);
+
+        $this->display('bannato.tpl');
     }
 
     /**
      * 
+     * @param type $role
      */
-    public function set_Bar($tipo)
+
+    private function imposta_ruolo($role){
+        switch ($role)
+        {
+            case \Utilities\Roles::BANNED:
+                return $ruolo ="bannato";
+            
+            case \Utilities\Roles::STANDARD:
+                return $ruolo ="standard";
+            
+            case \Utilities\Roles::PRO:
+                return $ruolo ="pro";
+            
+            case \Utilities\Roles::MOD:
+                return $ruolo ="mod";
+            
+            case \Utilities\Roles::ADMIN:
+                return $ruolo ="admin";
+            
+            default : return $ruolo="ospite";
+        }
+         
+        
+    }
+    /**
+     * setta la barra in base all'utente
+     */
+    public function set_Bar($role)
     {
-        $cont = $this->fetch('Topbar_'.$tipo.'.tpl');
-        $this->assign('TopBar', $cont);
+        $ruolo=$this->imposta_ruolo($role);
+        return $this->fetch('topbar_'.$ruolo.'.tpl');
     }
 
 
