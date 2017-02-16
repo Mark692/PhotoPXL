@@ -18,7 +18,7 @@ class input_texts extends \Exception
         switch ($code)
         {
             case 0:
-                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: -_.";
+                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: -_.";
                 break;
 
             case 1:
@@ -26,7 +26,7 @@ class input_texts extends \Exception
                 break;
 
             case 2:
-                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: '-_.!? e lo spazio";
+                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: '-_.!? e lo spazio";
                 break;
 
             case 3:

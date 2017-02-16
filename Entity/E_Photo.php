@@ -20,6 +20,7 @@ class E_Photo
     private $is_reserved;
     private $categories; //Categorie della foto
     private $total_likes;
+    private $total_comments;
     private $upload_date;
 
 
@@ -31,16 +32,20 @@ class E_Photo
      *
      * @param string $title The title given by the user
      * @param string $desc The description given by the user
-     * @param bool $is_Reserved Whether the photo is reserved or public
+     * @param bool $is_reserved Whether the photo is reserved or public
      * @param array $cat The categories of this photo
      * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc = '', $is_Reserved = FALSE, $cat = [], $likes=0, $up_Date='')
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes=0, $up_Date=0)
     {
+        if($this->check($title)===FALSE)
+        {
+            throw new \Exceptions\input_texts(2, $title);
+        }
         $this->set_Title($title);
         $this->set_Description($desc);
-        $this->set_Reserved($is_Reserved);
+        $this->set_Reserved($is_reserved);
         $this->set_Categories($cat);
         $this->set_Likes($likes);
         $this->set_Upload_Date($up_Date);
@@ -50,7 +55,7 @@ class E_Photo
     /**
      * Sets the ID for the photo. It is the Database ID, so it should be used in __construct() only
      *
-     * @param string $ID The photo ID. Rethrived from the Database.
+     * @param int $ID The photo ID. Rethrived from the Database.
      */
     public function set_ID($ID)
     {
@@ -61,7 +66,7 @@ class E_Photo
     /**
      * Returns the ID of this photo
      *
-     * @return string The Database ID of the photo
+     * @return int The Database ID of the photo
      */
     public function get_ID()
     {
@@ -78,10 +83,7 @@ class E_Photo
      */
     public function set_Reserved($is_reserved)
     {
-        if(is_bool($is_reserved))
-        {
-            $this->is_reserved = $is_reserved;
-        }
+        $this->is_reserved = $is_reserved;
     }
 
 
@@ -103,10 +105,7 @@ class E_Photo
      */
     public function set_Title($new_title)
     {
-        if($this->title_isValid($new_title)===TRUE)
-        {
-            $this->title = $new_title;
-        }
+        $this->title = $new_title;
     }
 
 
@@ -114,17 +113,16 @@ class E_Photo
      * Checks whether the title is a valid entry
      *
      * @param string $title The photo title input
-     * @throws \Exceptions\input_texts Whether the title contains invalid chars
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    private function title_isValid($title)
+    private function check($title)
     {
         $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
         {
             return TRUE;
         }
-        throw new \Exceptions\input_texts(2, $title);
+        return FALSE;
     }
 
 
@@ -162,13 +160,25 @@ class E_Photo
 
 
     /**
+     * Used to check whether the input description uses UTF-8 chars
+     *
+     * @param string $desc The description to evaluate
+     * @return bool Whether the description uses UTF-8 chars only
+     */
+    private function check_Description($desc)
+    {
+        return mb_check_encoding($desc, 'UTF-8');
+    }
+
+
+    /**
      * Sets the date in Timestamp format of the Photo's upload
      *
      * @param int The timestamp of uploading
      */
-    public function set_Upload_Date($up_date = '')
+    public function set_Upload_Date($up_date = 0)
     {
-        if ($up_date==='' || $up_date<0)
+        if ($up_date<=0)
         {
             $up_date = time();
         }
@@ -184,28 +194,6 @@ class E_Photo
     public function get_Upload_Date()
     {
         return $this->upload_date;
-    }
-
-
-    /**
-     * Sets the number of likes received
-     *
-     * @param int $total_likes The number of likes received on this photo
-     */
-    public function set_Likes($total_likes)
-    {
-        $this->total_likes = $total_likes;
-    }
-
-
-    /**
-     * Retrieves the number of likes received
-     *
-     * @return int The number of likes received
-     */
-    public function get_Likes()
-    {
-        return $this->total_likes;
     }
 
 
@@ -232,6 +220,28 @@ class E_Photo
 
 
     /**
+     * Sets the number of likes received
+     *
+     * @param int $total_likes The number of likes received on this photo
+     */
+    public function set_Likes($total_likes)
+    {
+        $this->total_likes = $total_likes;
+    }
+
+
+    /**
+     * Retrieves the number of likes received
+     *
+     * @return int The number of likes received
+     */
+    public function get_Likes()
+    {
+        return $this->total_likes;
+    }
+
+
+    /**
      * Sets the number of comments for this photo
      *
      * @param int $comments The number of comments for this photo
@@ -245,7 +255,7 @@ class E_Photo
     /**
      * Retrieves the number of comments for this photo
      *
-     * @return array The number of comments for this photo
+     * @return int The number of comments for this photo
      */
     public function get_Comments()
     {
