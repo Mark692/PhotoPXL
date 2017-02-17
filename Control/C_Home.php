@@ -13,56 +13,53 @@ class C_Home
     /**
      * Imposta la Home page in base a fatto che si è loggati oppure no
      */
-    public function Set_home()
+    public function Set_page()
     {
         $V_Home = new \View\V_Home();
         $U_Session = new \Utilities\U_Session();
         $username = $U_Session->get_val('username');
         $role = $U_Session->get_val('role');
-        $contenuto = $this->smista();
-        if($username !== FALSE)
+        $U_Cookie = new \Utilities\U_Cookie;
+        $U_Cookie->set_Cookie(); //setta un cookie per verificare che il browser accetta i cookie
+        if($U_Cookie->check_Cookie())
         {
-            if($role !== \Utilities\Roles::BANNED)
+            $user_role = 1; //appena pull mettere la funzione 
+            if($role === $user_role)
             {
-                echo'sono auenticato';
-                $U_Cookie->set_Cookie(); //verifica i cookie
+                $contenuto = $this->smista();
                 $V_Home->assign('username', $username);
                 $cont = $V_Home->set_Bar($role);
                 $V_Home->assign('sidebar', $cont);
-                if($contenuto === FALSE)
-                {
-                    $this->assegna_foto();
-                    $V_Home->fetch('home_log_default.tpl');
-                    $V_Home->set_Contenuto($contenuto);
-                }
-                else
-                {
-                    $V_Home->set_Contenuto($contenuto);
-                }
-
+                $V_Home->set_Contenuto($contenuto);
                 $V_Home->set_home();
             }
             else
             {
-                $V_Home->set_ban();
+                $U_Session->session_destroy();
             }
         }
         else
         {
-            $cont = $V_Home->set_Bar($role);
-            $V_Home->assign('sidebar', $cont);
-            if($contenuto !== FALSE)
-            {
-                $V_Home->set_Contenuto($contenuto);
-                //per utenti non autenticati role sara FALSE
-            }
-            else
-            {
-                $this->assegna_foto();
-                $contenuto = $V_Home->fetch('home_ospite.tpl');
-                $V_Home->set_Contenuto($contenuto);
-            }
-            $V_Home->set_home();
+            //ritorna un tpl che spieghi come abilitare i cookie
+        }
+    }
+
+
+    /**
+     * ritorna una vista della home in base al fatto che sia loggato oppure no
+     * @return type
+     */
+    public function ritornaHome()
+    {
+        $VHome = new \View\V_Home();
+        $session = new \Utilities\U_Session();
+        if($session->get_val('username' !== FALSE))
+        {
+            return $VHome->fetch('home_loggato');
+        }
+        else
+        {
+            return $VHome->fetch('home_ospite');
         }
     }
 
@@ -95,12 +92,16 @@ class C_Home
                 $C_Registrazione = new \Control\C_Registrazione;
                 return $C_Registrazione->smista();
             case 'Login':
-                $C_Logine = new \Control\C_Login();
+                $C_Login = new \Control\C_Login();
                 return $C_Login->smista();
             case 'Photo':
                 $C_Photo = new \Control\C_Photo();
+                return $C_Photo->smista();
+            case 'User':
+                $C_User = new \Control\C_User;
+                return $C_User->smista();
             default :
-                return FALSE;
+                return $this->ritornaHome();
         }
     }
 

@@ -23,28 +23,37 @@ class C_Login
      */
     public function check_user_pass()
     {
-//Da view() ottieni il risultato della generate() fatta via client
-        $dati = new \View\V_Login();
-        $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
-
-        $array_user = \Foundation\F_User::get_UserDetails($array_dati['username']);
-        if(count($array_user) !== 0)
+        //Da view() ottieni il risultato della generate() fatta via client
+        $C_Home = new \Control\C_Home();
+        $v_Login = new \View\V_Login();
+        $array_dati = $v_Login->get_Dati(); //ottieni il risultato della generate()
+        $login_info = \Foundation\F_User::get_LoginInfo($array_dati['username']);
+        if(count($login_info) !== 0)
         {
-            if($array_user['role'] != \Utilities\Roles::BANNED)
+            if($login_info['role'] != \Utilities\Roles::BANNED)
             {
-                $DB_pass = $array_user["password"];
+                $DB_pass = $login_info["password"];
                 if($this->pass_isValid($DB_pass, $array_dati["nonce"]))
                 {
                     $session = new \Utilities\U_Session();
-                    $session->set_Valore('username', $array_user['username']);
-                    $session->set_Valore('role', $array_user['role']);
-                    return TRUE; //TEMPLATE?
+                    $session->set_Valore('username', $login_info['username']);
+                    $session->set_Valore('role', $login_info['role']);
+                    return $C_Home->Set_page();
                 }
-                return FALSE; //password sbagliata
+                else
+                {
+                    $v_Login->assign('messaggio password', 'Password Sbagliata ');
+                    return$this->modulo_login();
+                }
             }
-            return FALSE; //utente bannato
+            else
+            {
+                $v_Login->assign('messaggio', 'Sei stato bannato, non puoi effettuare l'.'accesso');
+                return $this->modulo_login();
+            }
+            $v_Login->assign('messaggio', 'Username Sbagliato ');
+            return $this->modulo_login();
         }
-        return FALSE; //usernamesbagliato
     }
 
 
@@ -110,4 +119,5 @@ class C_Login
     }
 
 
+    
 }
