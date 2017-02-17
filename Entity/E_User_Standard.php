@@ -134,6 +134,4 @@ class E_User_Standard extends E_User
         }
         return FALSE;
     }
-
-
 }

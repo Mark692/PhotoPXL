@@ -64,12 +64,15 @@ class F_User extends \Foundation\F_Database
                 $last_up = $details["last_Up"];
                 $user = new \Entity\E_User_Standard($username, $password, $email, $up_Count, $last_up);
                 break;
+
             case \Utilities\Roles::PRO:
                 $user = new \Entity\E_User_PRO($username, $password, $email);
                 break;
+
             case \Utilities\Roles::MOD:
                 $user = new \Entity\E_User_MOD($username, $password, $email);
                 break;
+
             case \Utilities\Roles::ADMIN:
                 $user = new \Entity\E_User_ADMIN($username, $password, $email);
                 break;

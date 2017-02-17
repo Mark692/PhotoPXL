@@ -30,5 +30,14 @@ class F_User_PRO extends F_User
     }
 
 
+    /**
+     * Enables the user to upload any photo
+     *
+     * @return boolean TRUE
+     */
+    public function canUpload()
+    {
+        return TRUE;
+    }
 }
 
