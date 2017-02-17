@@ -11,13 +11,17 @@ namespace Entity;
 use Utilities\Roles;
 
 /**
- * This class represents higher level users than Standard ones.
- * PRO Users are able to set a privacy to their photos and are not limited in daily uploads
+ * This class represents a Standard User which has some limitation in its functions.
+ * Limitations:
+ * - Limited number of daily uploads
+ * - All its photos are public, means that everybody logged in can see them
  */
-class E_User_PRO extends E_User
+class E_User_Banned extends E_User
 {
+
     /**
-     * Instantiates a PRO User
+     * Instantiates a Banned User object.
+     * This user has limited uploads and no rights to set reserved photos
      *
      * @param string $username This user's username
      * @param string $password This user's password
@@ -26,17 +30,18 @@ class E_User_PRO extends E_User
     public function __construct($username, $password, $email)
     {
         parent::__construct($username, $password, $email);
-        parent::set_Role(Roles::PRO);
+        parent::set_Role(Roles::BANNED);
     }
 
 
     /**
-     * Enables the user to upload any photo
+     * Negates the user to upload any photo
      *
-     * @return boolean TRUE
+     * @return boolean FALSE 
      */
     public function canUpload()
     {
-        return TRUE;
+        return FALSE;
     }
 }
+

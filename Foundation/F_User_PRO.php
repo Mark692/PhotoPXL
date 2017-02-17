@@ -28,7 +28,5 @@ class F_User_PRO extends F_User
 
         parent::update($update, $set, $where);
     }
-
-
 }
 
