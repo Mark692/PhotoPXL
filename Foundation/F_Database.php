@@ -140,8 +140,8 @@ class F_Database
         $where_clause = substr($where_clause, 0, -5); //Removes the " AND " at the end of the string
 
         return $query = 'SELECT '.$select_columns.' '
-                .'FROM `'.$from.'` '
-                .'WHERE '.$where_clause;
+                       .'FROM `'.$from.'` '
+                       .'WHERE '.$where_clause;
     }
 
 
@@ -248,7 +248,7 @@ class F_Database
             return $pdo_stmt;
         }
 
-        
+
         if(1 === 3) //PROVA SE QUESTO VA BENE
         {
             for($i=0; $i<count($toBind); $i++)

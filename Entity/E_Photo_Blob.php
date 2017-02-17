@@ -21,7 +21,6 @@ class E_Photo_Blob
     private $size;
     private $type;
 
-
     /**
      * Generates a photo blob object
      *
@@ -29,7 +28,7 @@ class E_Photo_Blob
      * @param int $size The photo size
      * @param string $type The photo type
      */
-    public function __construct($path, $size, $type)
+    public function generate($path, $size, $type)
     {
         if(realpath($path)===FALSE)
         {

@@ -18,12 +18,12 @@ class photo_details extends \Exception
         switch($code)
         {
             case 0:
-                //E_Photo_Blob->__construct() - Fullsize/Thumbnail check
+                //E_Photo_Blob->generate() - Fullsize/Thumbnail check
                 $message = "Percorso immagine non valido: $exc";
                 break;
 
             case 2:
-                //E_Photo_Blob->__construct() - Size check
+                //E_Photo_Blob->generate() - Size check
                 $message = "Dimensione immagine troppo grande: $exc. Dimensione massima permessa: ".MAX_SIZE;
                 break;
 

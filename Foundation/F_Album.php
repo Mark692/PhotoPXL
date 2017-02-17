@@ -8,8 +8,6 @@
 
 namespace Foundation;
 
-use PDO;
-
 class F_Album extends \Foundation\F_Database
 {
 
@@ -67,18 +65,18 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Rethrives the albums of a user by passing the album's ID.
+     * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
-     * @param int $id The user's username selected to get the albums from
-     * @return array The album searched
+     * @param int $id The album ID to search for
+     * @return array The album searched, its thumbnail and its uploader
      */
     public static function get_By_ID($id)
     {
-        //Select ALL but ID, Thumbnail and Size
         $select = '*';
         $from = "album";
         $where = array("id" => $id);
-        $album = parent::get_One($select, $from, $where);
+        $album_info = parent::get_One($select, $from, $where);
+        $username = $album_info["username"];
 
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
@@ -88,19 +86,30 @@ class F_Album extends \Foundation\F_Database
             array_push($cats, $array_categories[$k][$v]);
         }
 
-        return array_merge($album, $cats);
+        $title = $album_info["title"];
+        $desc = $album_info["description"];
+        $creation = $album_info["creation_date"];
+        $album = new \Entity\E_Album($title, $desc, $cats, $creation);
+        $album->set_ID($id);
+
+        $select = array("thumnail");
+        $from = "album_cover";
+        $where = array("album" => $id);
+        $array_cover = parent::get_One($select, $from, $where);
+        $cover = $array_cover[0];
+
+        return array($album, $cover, $username);
     }
 
 
     /**
-     * Rethrives the albums of a user by passing its username.
+     * Rethrives the album IDs and Thumbnails of a user by passing its username.
      *
      * @param string $username The user's username selected to get the albums from
      * @return array The user's albums
      */
     public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
     {
-
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
@@ -128,7 +137,7 @@ class F_Album extends \Foundation\F_Database
     /**
      * Rethrives all the album with the selected categories
      *
-     * @param array $cats The category/ies to search
+     * @param array $cats The categories to search
      */
     public static function get_By_Categories($cats, $page_toView=1)
     {
@@ -142,8 +151,8 @@ class F_Album extends \Foundation\F_Database
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
         $query = "SELECT * "
-                ."FROM `album_cover` "
-                ."WHERE `album` in ("
+                ."FROM `album` "
+                ."WHERE `id` in ("
                     ."SELECT `album` "
                     ."FROM `cat_album` "
                     .'WHERE '.$where
@@ -162,9 +171,8 @@ class F_Album extends \Foundation\F_Database
      * Updates the categories of an album. This function both add new categories
      * and remove old categories (if selected) from the album
      *
-     * @param array $new_cats The new category/ies chosen for the album
+     * @param array $new_cats The new categories chosen for the album
      * @param int $album_ID The album's ID to whom set/remove the categories
-     * @throws \Exceptions\queries In case there are no categories to add neither to remove
      */
     private static function update_Categories($new_cats, $album_ID)
     {
@@ -201,7 +209,7 @@ class F_Album extends \Foundation\F_Database
     /**
      * Sets the album categories. To be used on album creation
      *
-     * @param enum or array $cat The category/ies chosen for the album
+     * @param array $cats The categories chosen for the album
      * @param int $album_ID The album's ID to whom set the categories
      * @return string The query used to add categories to the album
      */

@@ -115,13 +115,13 @@ class F_Photo extends \Foundation\F_Database
 
         //Retrieves the number of likes
         $user_likes = self::get_TotalLikes($id);
-        $users = [];
+        $liked_By = [];
         foreach($user_likes as $k => $v)
         {
-            array_push($users, $array_categories[$k][$v]);
+            array_push($liked_By, $array_categories[$k][$v]);
         }
 
-        return array_merge($photo, $cats, $users);
+        return array_merge($photo, $cats, $liked_By);
     }
 
 
@@ -337,7 +337,14 @@ class F_Photo extends \Foundation\F_Database
                 .'OFFSET '.$offset.' ';
 
         $toBind = [];
-        return parent::execute_Query($query, $toBind);
+        $mostLiked = parent::execute_Query($query, $toBind);
+        
+        $matchingRows = 'SELECT COUNT(id) '
+                        .'FROM `photo` '
+                        .'WHERE 1';
+        $total["page_tot"] = parent::execute_Query($matchingRows, $toBind);
+        return array_merge($mostLiked, $total);
+
     }
 
 
