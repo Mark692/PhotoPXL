@@ -22,26 +22,22 @@ class C_Profilo
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
-        $array_post = $v_Profilo->getdati('username', 'page_toView', 'page_tot', 'order');
+        $array_post = $V_Profilo->getdati('username', 'page_toView', 'page_tot', 'order');
         $page_toView = $array_post['page_toView'];
         if($page_toView == NULL)
         {
             $page_toView = 1;
         }
-        $page_tot = $array_post['page_tot'];
-        if($page_tot == NULL)
-        {
-            //richiamo funzione dal database $page_tot
-        }
-        $v_Album->assign('page_tot', $page_tot);
         $order = $array_post['order'];
         if($order == NULL)
         {
             $order = FALSE;
         }
         $array_album = \Foundation\F_Album::get_By_User($username, $page_toView, $order);
-        $v_Album->assign('id_thumbnail', $array_album['id']);
-        $v_Album->assign('thumbnail', $array_album['thumbnail']);
+        $page_tot= ceil($array_album['photo_tot']/PHOTOS_PER_PAGE);
+        $V_Profilo->assign('page_tot', $page_tot);
+        $V_Profilo->assign('id_thumbnail', $array_album['id']);
+        $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
         $V_Profilo->assign('utente', $user_datails);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
         return $V_Profilo->fetch('profilo_riepilogo.tpl');

@@ -45,16 +45,10 @@ class C_Album
         //page_to_view sarà gestito nel template con una form dove verrà incrementato per vedere la pagina succesiva
         //alrimenti decrementato
         $page_toView = $array_post['page_toView'];
-        if($page_toView == NULL)
+        if(!is_int($page_toView))//la prima volta sarà null 
         {
             $page_toView = 1;
         }
-        $page_tot = $array_post['page_tot'];
-        if($page_tot == NULL)
-        {
-            //richiamo funzione dal database $page_tot
-        }
-        $v_Album->assign('page_tot', $page_tot);
         $id_album = $array_post['id'];
         $order = $array_post['order'];
         if($order == NULL)
@@ -64,6 +58,8 @@ class C_Album
         $v_Album->assign('order', $order);
         $thumbnail = \Foundation\F_Photo::get_By_Album($id_album, $page_toView, $order);
         $album_details = \Foundation\F_Album::get_By_ID($id_album);
+        $page_tot= ceil($thumbnail['photo_tot']/PHOTOS_PER_PAGE);
+        $v_Album->assign('page_tot', $page_tot);
         $v_Album->assign('title', $album_details['title']);
         $v_Album->assign('description', $album_details['description']);
         $v_Album->assign('categories', $album_details['categories']);
