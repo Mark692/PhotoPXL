@@ -13,7 +13,7 @@ class C_Profilo
     /**
      * 
      * mostra il profilo di un utente in cui è possibile visualizzare 
-     * la foto profilo i dati(nome user, email, ruolo) e le ultime 16 foto;
+     * la foto profilo i dati(nome user, email, ruolo) e gli album;
      */
     public function riepilogo_dati()
     {
@@ -21,15 +21,29 @@ class C_Profilo
         $V_Profilo = new \View\V_Profilo;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $user_datails = \Foundation\F_User::get_By_Username($username);
-        $array_thumbnail = \Foundation\F_Photo::get_By_User($username);
-        $id=$array_thumbnail["id"];
-        $ultime_foto = $QUALCOSA_DA_SISTEMARE1->display_foto($array_thumbnail["thumbnail"]);
-        //recupero foto profilo
+        $user_datails = \Foundation\F_User::get_UserDetails($username);
+        $array_post = $v_Profilo->getdati('username', 'page_toView', 'page_tot', 'order');
+        $page_toView = $array_post['page_toView'];
+        if($page_toView == NULL)
+        {
+            $page_toView = 1;
+        }
+        $page_tot = $array_post['page_tot'];
+        if($page_tot == NULL)
+        {
+            //richiamo funzione dal database $page_tot
+        }
+        $v_Album->assign('page_tot', $page_tot);
+        $order = $array_post['order'];
+        if($order == NULL)
+        {
+            $order = FALSE;
+        }
+        $array_album = \Foundation\F_Album::get_By_User($username, $page_toView, $order);
+        $v_Album->assign('id_thumbnail', $array_album['id']);
+        $v_Album->assign('thumbnail', $array_album['thumbnail']);
         $V_Profilo->assign('utente', $user_datails);
-        $V_Profilo->assign('id', $id);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
-        $V_Profilo->assign('array_ultime_foto', $ultime_foto);
         return $V_Profilo->fetch('profilo_riepilogo.tpl');
     }
 
@@ -37,7 +51,7 @@ class C_Profilo
     /**
      * ritorna il tpl per la modifica dei dati
      */
-    public function modifica()
+    public function modifica_dati()
     {
         $V_Profilo = new \View\V_Profilo;
         $user_details = $V_Profilo->get_Dati('username', 'email');
