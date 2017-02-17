@@ -28,16 +28,5 @@ class F_User_PRO extends F_User
 
         parent::update($update, $set, $where);
     }
-
-
-    /**
-     * Enables the user to upload any photo
-     *
-     * @return boolean TRUE
-     */
-    public function canUpload()
-    {
-        return TRUE;
-    }
 }
 

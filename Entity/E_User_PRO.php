@@ -28,4 +28,15 @@ class E_User_PRO extends E_User
         parent::__construct($username, $password, $email);
         parent::set_Role(Roles::PRO);
     }
+
+
+    /**
+     * Enables the user to upload any photo
+     *
+     * @return boolean TRUE
+     */
+    public function canUpload()
+    {
+        return TRUE;
+    }
 }

@@ -83,11 +83,6 @@ class E_User_Standard extends E_User
      */
     public function get_up_Count()
     {
-        if(date('d-m-y', $this->last_Upload) !== date('d-m-y'))
-        {
-            $this->set_Last_Upload(time());
-            $this->reset_Up_Count();
-        }
         return $this->up_Count;
     }
 
@@ -128,6 +123,12 @@ class E_User_Standard extends E_User
      */
     public function can_Upload()
     {
+        if(date('d-m-y', $this->last_Upload) !== date('d-m-y'))
+        {
+            $this->set_Last_Upload(time());
+            $this->reset_Up_Count();
+        }
+        
         if($this->get_up_Count < UPLOAD_STD_LIMIT)
         {
             return TRUE;

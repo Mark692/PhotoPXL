@@ -59,6 +59,10 @@ class F_User extends \Foundation\F_Database
         $email = $details["email"];
         switch ($details["role"])
         {
+            case \Utilities\Roles::BANNED:
+                $user = new \Entity\E_User_Banned($username, $password, $email);
+                break;
+
             case \Utilities\Roles::STANDARD:
                 $up_Count = $details["up_Count"];
                 $last_up = $details["last_Up"];
@@ -78,6 +82,21 @@ class F_User extends \Foundation\F_Database
                 break;
         }
         return $user;
+    }
+
+
+    /**
+     * Retrieves the user's role only. Used in Control session operations
+     *
+     * @param string $username The user's username
+     * @return int The user's role
+     */
+    public static function get_LoginInfo($username)
+    {
+        $select = array("password", "role");
+        $from = "users";
+        $where = array("username" => $username);
+        return parent::get_One($select, $from, $where);
     }
 
 
