@@ -342,7 +342,7 @@ class F_Photo extends \Foundation\F_Database
         $matchingRows = 'SELECT COUNT(id) '
                         .'FROM `photo` '
                         .'WHERE 1';
-        $total["page_max"] = parent::execute_Query($matchingRows, $toBind);
+        $total["tot_photo"] = parent::execute_Query($matchingRows, $toBind);
         return array_merge($mostLiked, $total);
 
     }
