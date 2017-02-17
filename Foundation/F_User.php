@@ -19,7 +19,6 @@ class F_User extends \Foundation\F_Database
      */
     public static function get_UserDetails($username)
     {
-        //User details from "users" DB table
         $select = "*";
         $from = "users";
         $where = array("username" => $username);
@@ -37,7 +36,7 @@ class F_User extends \Foundation\F_Database
      * @param string $username The user owner of the profile pic to search
      * @return image The profile pic, thumbnail style
      */
-    protected static function get_ProfilePic($username)
+    private static function get_ProfilePic($username)
     {
         $select = array("photo");
         $from = "profile_pic";
