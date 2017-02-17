@@ -29,6 +29,11 @@ class E_Comment
      */
     public function __construct($text, $user_ID, $photo_ID)
     {
+        if(trim($text) == ''
+            && ($this->check_Text($text) === FALSE))
+        {
+            throw new \Exceptions\input_texts(3, $text);
+        }
         $this->set_Text($text);
         $this->set_User($user_ID);
         $this->set_PhotoID($photo_ID);
@@ -64,10 +69,6 @@ class E_Comment
      */
     public function set_Text($new_text)
     {
-        if(trim($new_text)=='')
-        {
-            throw new \Exceptions\input_texts(3, $new_text);
-        }
         $this->text = $new_text;
     }
 
@@ -80,6 +81,18 @@ class E_Comment
     public function get_Text()
     {
         return $this->text;
+    }
+
+
+    /**
+     * Used to check whether the input comment uses UTF-8 chars
+     *
+     * @param string $text The text to evaluate
+     * @return bool Whether the comment uses UTF-8 chars only
+     */
+    private function check_Text($text)
+    {
+        return mb_check_encoding($text, 'UTF-8');
     }
 
 

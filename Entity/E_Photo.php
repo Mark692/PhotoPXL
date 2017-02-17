@@ -16,7 +16,6 @@ class E_Photo
     private $ID;
     private $title;
     private $description;
-
     private $is_reserved;
     private $categories; //Categorie della foto
     private $total_likes;
@@ -37,13 +36,18 @@ class E_Photo
      * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes=0, $up_Date=0)
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes = 0, $up_Date = 0)
     {
-        if($this->check($title)===FALSE)
+        if($this->check_Title($title) === FALSE)
         {
             throw new \Exceptions\input_texts(2, $title);
         }
         $this->set_Title($title);
+
+        if($desc !== '' && $this->check_Description($desc) === FALSE)
+        {
+            throw new \Exceptions\input_texts(3, $desc);
+        }
         $this->set_Description($desc);
         $this->set_Reserved($is_reserved);
         $this->set_Categories($cat);
@@ -110,23 +114,6 @@ class E_Photo
 
 
     /**
-     * Checks whether the title is a valid entry
-     *
-     * @param string $title The photo title input
-     * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
-     */
-    private function check($title)
-    {
-        $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
-        if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
-        {
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-
-    /**
      * Retrieves the title of the Photo
      *
      * @return string The photo's title
@@ -134,6 +121,23 @@ class E_Photo
     public function get_Title()
     {
         return $this->title;
+    }
+
+
+    /**
+     * Checks whether the title is a valid entry
+     *
+     * @param string $title The photo title input
+     * @return bool Whether the title has only a-zA-Z0-9 and the $allowed chars
+     */
+    private function check_Title($title)
+    {
+        $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
+        if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 
@@ -178,7 +182,7 @@ class E_Photo
      */
     public function set_Upload_Date($up_date = 0)
     {
-        if ($up_date<=0)
+        if($up_date <= 0)
         {
             $up_date = time();
         }
@@ -261,4 +265,6 @@ class E_Photo
     {
         return $this->total_comments;
     }
+
+
 }

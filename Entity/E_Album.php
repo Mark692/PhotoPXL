@@ -30,9 +30,18 @@ class E_Album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album
      */
-    public function __construct($title, $desc, $categories=[], $creation_date='')
+    public function __construct($title, $desc='', $categories=[], $creation_date='')
     {
+        if($this->check_Title($title) === FALSE)
+        {
+            throw new \Exceptions\input_texts(2, $title);
+        }
         $this->set_Title($title);
+
+        if($desc !== '' && $this->check_Description($desc) === FALSE)
+        {
+            throw new \Exceptions\input_texts(3, $desc);
+        }
         $this->set_Description($desc);
         $this->set_Categories($categories);
         $this->set_Creation_Date($creation_date);
@@ -68,10 +77,7 @@ class E_Album
      */
     public function set_Title($new_title)
     {
-        if($this->title_isValid($new_title))
-        {
-            $this->title = $new_title;
-        }
+        $this->title = $new_title;
     }
 
 
@@ -82,14 +88,14 @@ class E_Album
      * @throws \Exceptions\input_texts Whether the title contains invalid chars
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    private function title_isValid($title)
+    private function check_Title($title)
     {
         $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
         if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
         {
             return TRUE;
         }
-        throw new \Exceptions\input_texts(2, $title);
+        return FALSE;
     }
 
 
@@ -123,6 +129,18 @@ class E_Album
     public function get_Description()
     {
         return $this->description;
+    }
+
+
+    /**
+     * Used to check whether the input description uses UTF-8 chars
+     *
+     * @param string $desc The description to evaluate
+     * @return bool Whether the description uses UTF-8 chars only
+     */
+    private function check_Description($desc)
+    {
+        return mb_check_encoding($desc, 'UTF-8');
     }
 
 

@@ -15,6 +15,28 @@ class F_User_Standard extends F_User
 {
 
     /**
+     * Inserts the user into "users" DB table
+     *
+     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
+     */
+    public static function insert(\Entity\E_User_Standard $STD_user)
+    {
+        $insertInto = "users";
+
+        $set = array(
+            "username" => $STD_user->get_Username(),
+            "password" => $STD_user->get_Password(),
+            "email" => $STD_user->get_Email(),
+            "role" => $STD_user->get_Role(),
+            "last_Upload" => $STD_user->get_Last_Upload(),
+            "up_Count" => $STD_user->get_up_Count()
+                );
+
+        parent::insert_Query($insertInto, $set);
+    }
+    
+
+    /**
      * Upgrades the user's role to PRO
      *
      * @param string $username The user's username

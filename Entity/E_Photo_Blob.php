@@ -31,8 +31,17 @@ class E_Photo_Blob
      */
     public function __construct($path, $size, $type)
     {
+        if(realpath($path)===FALSE)
+        {
+            throw new \Exceptions\photo_details(0, $path);
+        }
         $this->set_Fullsize($path);
         $this->set_Thumbnail($path);
+
+        if($size>MAX_SIZE)
+        {
+            throw new \Exceptions\photo_details(1, $size);
+        }
         $this->set_Size($size);
         $this->set_Type($type);
     }
@@ -46,10 +55,6 @@ class E_Photo_Blob
      */
     public function set_Fullsize($path)
     {
-        if(realpath($path)===FALSE)
-        {
-            throw new \Exceptions\photo_details(0, $path);
-        }
         $this->fullsize = realpath($path);
     }
 
@@ -69,14 +74,9 @@ class E_Photo_Blob
      * Creates and sets a thumbnail image
      *
      * @param string $path The path to the photo
-     * @throws \Exceptions\photo_details Whether the path is incorrect
      */
     public function set_Thumbnail($path)
     {
-        if(realpath($path)===FALSE)
-        {
-            throw new \Exceptions\photo_details(1, $path);
-        }
         $imagick = new Imagick(realpath($path));
         $width = THUMBNAIL_WIDTH;
         $height = THUMBNAIL_HEIGHT;
@@ -103,14 +103,9 @@ class E_Photo_Blob
      * Sets the size of the photo
      *
      * @param int $size The size of the photo
-     * @throws \Exceptions\photo_details Whether the size is over the maximum allowed
      */
     public function set_Size($size)
     {
-        if($size>MAX_SIZE)
-        {
-            throw new \Exceptions\photo_details(2, $size);
-        }
         $this->size = $size;
     }
 
