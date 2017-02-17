@@ -22,7 +22,6 @@ class E_User_Standard extends E_User
      * @type int The Date of the last uploaded photo in time() format
      */
     private $last_Upload;
-
     /**
      * @type int Daily counter of total uploaded photos
      */
@@ -36,35 +35,38 @@ class E_User_Standard extends E_User
      * @param string $username This user's username
      * @param string $password This user's password
      * @param string $email This user's email
-     * @param int $up_Count The number of uploads done. Leave empty to set it to 0
-     * @param int $last_up The timestamp of last upload. Leave empty to set it to NOW
+     * @param int $up_Count The number of uploads done
+     * @param int $last_up The timestamp of last upload
      */
-    public function __construct($username, $password, $email, $up_Count='', $last_up = '')
+    public function __construct($username, $password, $email, $up_Count = 0, $last_up = 0)
     {
         parent::__construct($username, $password, $email);
         parent::set_Role(Roles::STANDARD);
 
         $this->set_up_Count($up_Count);
+
+        if($last_up <= 0)
+        {
+            $last_up = time();
+        }
         $this->set_Last_Upload($last_up);
     }
 
 
     /**
      * Sets the last upload date
+     *
      * @param int $date The timestamp of this user's last upload
      */
-    private function set_Last_Upload($date = '')
+    private function set_Last_Upload($date)
     {
-        if ($date==='' || $date<0)
-        {
-            $date = time();
-        }
         $this->last_Upload = $date;
     }
 
 
     /**
      * Gets the last upload date in timestamp format
+     *
      * @return int The timestamp of this user's last upload
      */
     public function get_Last_Upload()
@@ -76,13 +78,14 @@ class E_User_Standard extends E_User
     /**
      * Returns the total of Uploads done today.
      * Resets the Upload count to 0 if the date of the last upload is different from "today"'s date.
+     *
      * @return int The number of uploads done today by this user
      */
     public function get_up_Count()
     {
-        if (date('d-m-y', $this->last_Upload) !== date('d-m-y')) //date(...) is a STRING!! Can NOT use < or >
+        if(date('d-m-y', $this->last_Upload) !== date('d-m-y'))
         {
-            $this->set_Last_Upload();
+            $this->set_Last_Upload(time());
             $this->reset_Up_Count();
         }
         return $this->up_Count;
@@ -91,14 +94,11 @@ class E_User_Standard extends E_User
 
     /**
      * Sets the number of uploads done by the user
+     *
      * @param int $upc The number of uploads done already
      */
-    public function set_up_Count($upc='')
+    public function set_up_Count($upc)
     {
-        if($upc==='' || $upc<0)
-        {
-            $upc = 0;
-        }
         $this->up_Count = $upc;
     }
 
@@ -123,14 +123,17 @@ class E_User_Standard extends E_User
 
     /**
      * Checks whether the user can still upload
+     *
      * @return bool Returns TRUE if the user can upload at least 1 more photo
      */
     public function can_Upload()
     {
-        if ($this->get_up_Count <= UPLOAD_STD_LIMIT) //STD User with less or equal to 10 uploads done today
+        if($this->get_up_Count < UPLOAD_STD_LIMIT)
         {
             return TRUE;
         }
         return FALSE;
     }
+
+
 }

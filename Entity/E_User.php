@@ -31,14 +31,14 @@ class E_User
      */
     public function __construct($username, $password, $email)
     {
-        if($this->check($username) === FALSE)
+        if($this->check_Username($username) === FALSE)
         {
             throw new \Exceptions\input_texts(0, $username);
         }
         $this->set_Username($username);
         $this->set_Password($password);
 
-        if($this->filtered($email) === FALSE)
+        if($this->check_Email($email) === FALSE)
         {
             throw new \Exceptions\input_texts(1, $email);
         }
@@ -74,7 +74,7 @@ class E_User
      * @param string $username The username input
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    private function check($username)
+    private function check_Username($username)
     {
         $allowed = array('-', '_', '.'); //Allows -_. inside a Username
         if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -136,7 +136,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    private function filtered($email)
+    private function check_Email($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }

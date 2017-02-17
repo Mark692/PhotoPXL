@@ -18,23 +18,27 @@ class input_texts extends \Exception
         switch ($code)
         {
             case 0:
-                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: -_.";
+                //E_User->__construct() - Username check
+                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: -_.";
                 break;
 
             case 1:
+                //E_User->__construct() - Email check
                 $message ="L'email inserita non è valida. Immessa: $exc";
                 break;
 
             case 2:
-                $message ="Il testo contiene caratteri speciali non ammessi. Permessi: '-_.!? e lo spazio";
+                //E_Photo->__construct() - Title check
+                //E_Album->__construct() - Title check
+                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: '-_.!? e lo spazio";
                 break;
 
             case 3:
-                $message ="Il commento immesso non è un testo valido!";
+                //E_Photo->__construct() - Description check
+                //E_Album->__construct() - Description check
+                //E_Comment->__construct() - Text check
+                $message ="Il testo immesso non è un testo valido!";
                 break;
-
-
-            //AGGIUNGERE CASI PER IL TITOLO DI FOTO ED ALBUM
 
             default: $message = "ATTENZIONE! Parametro non valido: $exc";
         }
