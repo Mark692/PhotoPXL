@@ -13,7 +13,7 @@ class C_Home
     /**
      * Imposta la Home page in base a fatto che si è loggati oppure no
      */
-    public function Set_home()
+    public function Set_page()
     {
         $V_Home = new \View\V_Home();
         $U_Session = new \Utilities\U_Session();
