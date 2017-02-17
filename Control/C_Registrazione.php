@@ -49,7 +49,6 @@ class C_Registrazione
             }
         }
         catch(\Exceptions\input_texts $ex)
-        catch (\Exceptions\InvalidInput $ex)
         {
             //Secondo catch: gestire email non valide
             $view->assign('messaggio', $ex->getMessage());

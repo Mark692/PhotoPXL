@@ -11,13 +11,12 @@ namespace Utilities;
 class U_Session
 {
     /**
-     * Il metodo, crea la sessione. Imposta la frequenza di passaggio del garbage collector
-     * sul server a 1 passaggio ogni 20 richieste e il tempo di scadenza dei dati server a 1 ora
+     * Il metodo, crea la sessione. Il tempo di scadenza dei dati server e del cookie di sessione è di 30 giorni 
      */
-    public function start()
+    public function __construct()
     {
-        ini_set('session.gc_divisor', 0);
-        ini_set('session.gc_maxlifetime', 600);
+        ini_set('session.gc_maxlifetime',MAX_TIME_SESSION);
+        ini_set('session.cookie_lifetime',MAX_TIME_SESSION);
         session_start();
     }
 

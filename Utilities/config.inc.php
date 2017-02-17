@@ -58,3 +58,6 @@ define("THUMBNAIL_WIDTH", 100); //Larghezza
 define("THUMBNAIL_HEIGHT", 100); //Altezza
 define("FULL_WIDTH",1600);//LUNGHEZZA
 define("FULL_HEIGHT",1600);//ALTEZZA
+
+//-----tempo di scadenza della sessione-----\\
+define("MAX_TIME_SESSION",2592000);

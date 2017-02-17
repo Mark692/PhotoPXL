@@ -200,6 +200,7 @@ class C_Photo
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
         $v_foto->assign('dati_foto', $foto);
+        //switch template in base al ruolo
         return $v_foto->fetch('modifica_foto.tpl');
     }
 

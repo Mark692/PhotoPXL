@@ -23,10 +23,9 @@ class C_Login
      */
     public function check_user_pass()
     {
-//Da view() ottieni il risultato della generate() fatta via client
+        //Da view() ottieni il risultato della generate() fatta via client
         $dati = new \View\V_Login();
         $array_dati = $dati->get_Dati(); //ottieni il risultato della generate()
-
         $array_user = \Foundation\F_User::get_UserDetails($array_dati['username']);
         if(count($array_user) !== 0)
         {
