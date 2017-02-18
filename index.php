@@ -12,32 +12,8 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPETENTE
 
 
-
-
 //------------------------------PROVE------------------------------//
-global $config;
 echo(nl2br("\r\n"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 $avvia=new View\V_Basic();
 $avvia->display('upload_standard.tpl');

@@ -54,10 +54,12 @@ define("PHOTOS_PER_PAGE", 16);
 define("MAX_SIZE_FULL", 16777215); //MEDIUMBLOB max size allowed
 define("MAX_SIZE_THUMB", 65535); //BLOB max size allowed
 
-define("THUMBNAIL_WIDTH", 100); //Larghezza
-define("THUMBNAIL_HEIGHT", 100); //Altezza
-define("FULL_WIDTH",1600);//LUNGHEZZA
-define("FULL_HEIGHT",1600);//ALTEZZA
+define("THUMBNAIL_WIDTH", 100); //Lunghezza miniatura
+define("THUMBNAIL_HEIGHT", 100); //Altezza miniatura
+define("FULL_WIDTH",1600);//Lunghezza Fullsize
+define("FULL_HEIGHT",1600);//Altezza Fullsize
 
-//-----tempo di scadenza della sessione-----\\
+
+
+//-----Tempo di scadenza della sessione-----\\
 define("MAX_TIME_SESSION",2592000);
