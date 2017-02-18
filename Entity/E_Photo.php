@@ -18,8 +18,7 @@ class E_Photo
     private $description;
     private $is_reserved;
     private $categories; //Categorie della foto
-    private $total_likes;
-    private $total_comments;
+    private $likes;
     private $upload_date;
 
 
@@ -33,10 +32,10 @@ class E_Photo
      * @param string $desc The description given by the user
      * @param bool $is_reserved Whether the photo is reserved or public
      * @param array $cat The categories of this photo
-     * @param int $likes The number of like this photo earned. Leave it empty to set it to 0
+     * @param array $likes The list of users that liked the photo
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes = 0, $up_Date = 0)
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes = [], $up_Date = 0)
     {
         if($this->check_Title($title) === FALSE)
         {
@@ -226,22 +225,22 @@ class E_Photo
     /**
      * Sets the number of likes received
      *
-     * @param int $total_likes The number of likes received on this photo
+     * @param array $total_likes The number of likes received on this photo
      */
     public function set_Likes($total_likes)
     {
-        $this->total_likes = $total_likes;
+        $this->likes = $total_likes;
     }
 
 
     /**
      * Retrieves the number of likes received
      *
-     * @return int The number of likes received
+     * @return array The number of likes received
      */
     public function get_Likes()
     {
-        return $this->total_likes;
+        return $this->likes;
     }
 
 

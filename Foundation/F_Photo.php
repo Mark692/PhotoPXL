@@ -59,10 +59,9 @@ class F_Photo extends \Foundation\F_Database
         $id = $to_Update->get_ID();
         $update = "photo";
         $set = array(
-            "id" => $id,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
-            "creation_date" => $to_Update->get_Upload_Date(),
+            "upload_date" => $to_Update->get_Upload_Date(),
             "is_reserved" => $to_Update->get_Reserved()
                 );
         $where = array("id" => $id);
@@ -90,7 +89,7 @@ class F_Photo extends \Foundation\F_Database
         $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
 
         $count = "id";
-        $where = "`user`=$username";
+        $where = "`user`='$username'";
         $tot = parent::count($count, $from, $where);
         $tot_photo = array("tot_photo" => $tot);
 
@@ -115,20 +114,35 @@ class F_Photo extends \Foundation\F_Database
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
         $cats = [];
-        foreach($array_categories as $k => $v)
+        foreach($array_categories as $v)
         {
-            array_push($cats, $array_categories[$k][$v]);
+            array_push($cats, intval($v["category"]));
         }
 
-        //Retrieves the number of likes
+        //Retrieves the likes
         $user_likes = self::get_TotalLikes($id);
         $liked_By = [];
-        foreach($user_likes as $k => $v)
+        foreach($user_likes as $v)
         {
-            array_push($liked_By, $array_categories[$k][$v]);
+            array_push($liked_By, $v["user"]);
         }
 
-        return array_merge($photo, $cats, $liked_By);
+        $e_photo = new \Entity\E_Photo(
+                $photo["title"],
+                $photo["description"],
+                $photo["is_reserved"],
+                $cats,
+                $liked_By,
+                $photo["upload_date"]
+                );
+        $e_photo->set_ID($id);
+
+        return array(
+            "photo" => $e_photo,
+            "uploader" => $photo["user"],
+            "fullsize" => $photo["fullsize"],
+            "type" => $photo["type"]
+            );
     }
 
 
@@ -226,11 +240,13 @@ class F_Photo extends \Foundation\F_Database
     private static function update_Categories($new_cats, $photo_ID)
     {
         $old = self::get_Categories($photo_ID); //$old will be an associative array
+
         $old_cats=[];
-        foreach($old as $v)
+        foreach($old as $sub_array)
         {
-            array_push($old_cats, $v); //Keep only the values
+            array_push($old_cats, $sub_array["category"]); //Keep only the values
         }
+
         $to_add    = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
 

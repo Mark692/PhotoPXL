@@ -212,13 +212,14 @@ class F_Database
             $set_values .= '`'.$key.'`=?,';
         }
 
+
         $where_clause = '';
         foreach(array_keys($where) as $key)
         {
             $where_clause .= '`'.$key.'`=? AND ';
         }
         $set_values = substr($set_values, 0, -1); //Removes the trailing char: ","
-        $where_clause = substr($set_values, 0, -5);
+        $where_clause = substr($where_clause, 0, -5);
         $query = "UPDATE `$update` "
                 ."SET $set_values "
                 ."WHERE $where_clause";

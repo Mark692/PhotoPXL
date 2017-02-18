@@ -56,7 +56,8 @@ class TE_Photo extends \Prove\TFun
                 $this->upload_date);
 
         echo("Oggetto E_Photo appena creato: ");
-        var_dump($this->e_photo);
+        parent::ogg2arr($this->e_photo);
+//        var_dump($this->e_photo);
     }
 
 
@@ -67,6 +68,27 @@ class TE_Photo extends \Prove\TFun
     }
 
 
+    public function update()
+    {
+        $this->e_photo->set_ID(28);
+        $cat = array(3, 5, 6, 8);
+        $this->e_photo->set_Categories($cat);
+        \Foundation\F_Photo::update($this->e_photo);
+    }
+
+
+    public function get_By_User()
+    {
+        $user = "provaDB";
+        $page_toView = 1;
+        return \Foundation\F_Photo::get_By_User($user, $page_toView, TRUE);
+    }
+
+
+    public function get_By_ID()
+    {
+        return \Foundation\F_Photo::get_By_ID(26);
+    }
 
 
 
