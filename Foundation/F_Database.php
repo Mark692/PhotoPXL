@@ -55,7 +55,7 @@ class F_Database
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $toBind);
+        self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
 
         $last_id = $pdo->lastInsertId();
@@ -99,7 +99,7 @@ class F_Database
     {
         $pdo = self::connettiti();
         $pdo_stmt = $pdo->prepare($query);
-        $pdo_stmt = self::bind_params($pdo_stmt, $toBind);
+        self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
 
         $pdo = NULL; //Closes DB connection
@@ -228,6 +228,27 @@ class F_Database
 
 
     /**
+     * Returns the count of matching rows
+     *
+     * @param string $count The column to count the affected rows from
+     * @param string $from The table to count in
+     * @param string $where The clauses to be matched for the count
+     * @return int The number of affected rows
+     */
+    public static function count($count, $from, $where)
+    {
+        $key = 'COUNT(`'.$count.'`)';
+        $query = 'SELECT '.$key.' '
+                .'FROM '.$from.' '
+                .'WHERE '.$where;
+        $toBind = [];
+
+        $total = self::fetch_Result($query, $toBind);
+        return intval($total[$key]);
+    }
+
+
+    /**
      * Binds an array of parameters to the query using Question Marks
      *
      * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
@@ -247,17 +268,5 @@ class F_Database
             }
             return $pdo_stmt;
         }
-
-
-        if(1 === 3) //PROVA SE QUESTO VA BENE
-        {
-            for($i=0; $i<count($toBind); $i++)
-            {
-                $pdo_stmt->bindParam($i, $toBind[$i]); //Correctly binds parameters
-            }
-            return $pdo_stmt;
-        }
     }
-
-
 }

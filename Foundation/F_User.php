@@ -86,10 +86,10 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the user's role only. Used in Control session operations
+     * Retrieves the user's password and role. Used to check login credentials
      *
      * @param string $username The user's username
-     * @return int The user's role
+     * @return array The user's password and role
      */
     public static function get_LoginInfo($username)
     {
@@ -101,7 +101,7 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the user's role only. Used in Control session operations
+     * Retrieves the user's role only. Used in Control Session operations
      *
      * @param string $username The user's username
      * @return int The user's role
@@ -120,16 +120,15 @@ class F_User extends \Foundation\F_Database
      * Returns a list of all users with the given role
      *
      * @param enum $role The role to search the users for
-     * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array All the users (usernames only) with the specified role
      */
-    public static function get_By_Role($role, $limit=0, $offset=0, $orderBy_column='username', $order_DESC=FALSE)
+    public static function get_By_Role(\Utilities\Roles $role)
     {
         $select = array("username");
         $from = "users";
         $where = array("role" => $role);
 
-        return $array_user = parent::get_All($select, $from, $where,  $limit, $offset, $orderBy_column, $order_DESC);
+        return $array_user = parent::get_All($select, $from, $where);
     }
 
 

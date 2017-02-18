@@ -86,8 +86,12 @@ class F_Photo extends \Foundation\F_Database
         $where = array("user" => $username);
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
-        $orderBy = $username;
-        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
+        $orderBy = "id";
+        $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
+
+
+
+
     }
 
 
@@ -317,12 +321,13 @@ class F_Photo extends \Foundation\F_Database
      *
      * @param int $page_toView The page selected as offset to fetch the photos
      * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
      */
     public static function get_MostLiked($page_toView=1)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
-
         $query = 'SELECT `id`, `thumbnail` '
                 .'FROM `photo` '
                 .'WHERE `id` in '
@@ -335,16 +340,17 @@ class F_Photo extends \Foundation\F_Database
                 .'ORDER BY `id` DESC '
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
-
         $toBind = [];
-        $mostLiked = parent::execute_Query($query, $toBind);
+        $fetchAll = TRUE;
+        $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);
 
-        $matchingRows = 'SELECT COUNT(id) '
-                        .'FROM `photo` '
-                        .'WHERE 1';
-        $total["tot_photo"] = parent::execute_Query($matchingRows, $toBind);
-        return array_merge($mostLiked, $total);
+        $count = "photo";
+        $from = "likes";
+        $where = "1";
+        $tot = parent::count($count, $from, $where);
+        $tot_photo = array("tot_photo" => $tot);
 
+        return array_merge($mostLiked, $tot_photo);
     }
 
 
