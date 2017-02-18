@@ -14,9 +14,8 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 
 //------------------------------PROVE------------------------------//
 echo(nl2br("\r\n"));
-
-$avvia=new View\V_Basic();
-$avvia->display('upload_standard.tpl');
+$test = new Prove\TE_Photo();
+$test->insert();
 
 
 
