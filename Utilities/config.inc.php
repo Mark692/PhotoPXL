@@ -10,15 +10,15 @@ namespace Utilities;
 
 global $config;
 
+$smarty_path = ".".DIRECTORY_SEPARATOR
+                    ."templates".DIRECTORY_SEPARATOR
+                        ."main".DIRECTORY_SEPARATOR;
+
 //----Smarty Directories----\\
-$config['smarty']['template_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/template';
-$config['smarty']['compile_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/template_c/';
-$config['smarty']['config_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/configs/';
-$config['smarty']['cache_dir'] =
-'/Users/federicosantomero/Documents/PhotoPXL/PhotoPXL/PhotoPXL/templates/main/cache/';
+$config['smarty']['cache_dir']    = $path.'cache'.DIRECTORY_SEPARATOR;
+$config['smarty']['config_dir']   = $path.'configs'.DIRECTORY_SEPARATOR;
+$config['smarty']['template_dir'] = $path.'template'.DIRECTORY_SEPARATOR;
+$config['smarty']['compile_dir']  = $path.'template_c'.DIRECTORY_SEPARATOR;
 
 
 

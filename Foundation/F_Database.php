@@ -233,15 +233,15 @@ class F_Database
      * @param string $count The column to count the affected rows from
      * @param string $from The table to count in
      * @param string $where The clauses to be matched for the count
+     * @param array $toBind The values to bind at the query
      * @return int The number of affected rows
      */
-    public static function count($count, $from, $where)
+    public static function count($count, $from, $where, $toBind=[])
     {
         $key = 'COUNT(`'.$count.'`)';
         $query = 'SELECT '.$key.' '
                 .'FROM '.$from.' '
                 .'WHERE '.$where;
-        $toBind = [];
 
         $total = self::fetch_Result($query, $toBind);
         return intval($total[$key]);

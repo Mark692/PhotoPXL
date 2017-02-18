@@ -89,9 +89,12 @@ class F_Photo extends \Foundation\F_Database
         $orderBy = "id";
         $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
 
+        $count = "id";
+        $where = "`user`=$username";
+        $tot = parent::count($count, $from, $where);
+        $tot_photo = array("tot_photo" => $tot);
 
-
-
+        return array_merge($photos, $tot_photo);
     }
 
 
@@ -146,7 +149,7 @@ class F_Photo extends \Foundation\F_Database
                 .'FROM `photo` '
                 .'WHERE `id` in ('
                     .'SELECT `photo` '
-                    .'FROM `cat_photo` '
+                    .'FROM `photo_album` '
                     .'WHERE `album`=?'
                     .') '
                 .'ORDER BY `id` ';
@@ -159,7 +162,15 @@ class F_Photo extends \Foundation\F_Database
 
         $fetchAll = TRUE;
         $toBind = array($album_ID);
-        return parent::fetch_Result($query, $toBind, $fetchAll);
+        $photos = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "photo";
+        $from = "photo_album";
+        $where = "`album`=?";
+        $tot = parent::count($count, $from, $where, $toBind);
+        $tot_photo = array("tot_photo" => $tot);
+
+        return array_merge($photos, $tot_photo);
     }
 
 
@@ -194,7 +205,14 @@ class F_Photo extends \Foundation\F_Database
 
         $fetchAll = TRUE;
         $toBind = array($cats);
-        return parent::fetch_Result($query, $toBind, $fetchAll);
+        $photos = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "photo";
+        $from = "cat_photo";
+        $tot = parent::count($count, $from, $where, $toBind);
+        $tot_photo = array("tot_photo" => $tot);
+
+        return array_merge($photos, $tot_photo);
     }
 
 
