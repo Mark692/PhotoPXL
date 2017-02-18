@@ -44,6 +44,7 @@ class V_Basic extends \Smarty
         }
         return $dettagli;
     }
+    
 
     /**
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
@@ -56,6 +57,7 @@ class V_Basic extends \Smarty
             return $_REQUEST['id'];
         }
     }
+
 
     /**
      * Questa funzione, restituisce il task inviato all'interno del vettore
