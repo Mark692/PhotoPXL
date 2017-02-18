@@ -8,8 +8,6 @@
 
 namespace View;
 
-
-
 require('libs/Smarty.class.php');
 
 class V_Basic extends \Smarty
