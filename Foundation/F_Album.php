@@ -65,44 +65,6 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Rethrives an album (info, Thumbnail, owner) by passing its ID.
-     *
-     * @param int $id The album ID to search for
-     * @return array The album searched, its thumbnail and its uploader
-     */
-    public static function get_By_ID($id)
-    {
-        $select = '*';
-        $from = "album";
-        $where = array("id" => $id);
-        $album_info = parent::get_One($select, $from, $where);
-        $username = $album_info["username"];
-
-        //Retrieves the categories
-        $array_categories = self::get_Categories($id);
-        $cats = [];
-        foreach($array_categories as $k => $v)
-        {
-            array_push($cats, $array_categories[$k][$v]);
-        }
-
-        $title = $album_info["title"];
-        $desc = $album_info["description"];
-        $creation = $album_info["creation_date"];
-        $album = new \Entity\E_Album($title, $desc, $cats, $creation);
-        $album->set_ID($id);
-
-        $select = array("thumnail");
-        $from = "album_cover";
-        $where = array("album" => $id);
-        $array_cover = parent::get_One($select, $from, $where);
-        $cover = $array_cover[0];
-
-        return array($album, $cover, $username);
-    }
-
-
-    /**
      * Rethrives the album IDs and Thumbnails of a user by passing its username.
      *
      * @param string $username The user's username selected to get the albums from
@@ -132,6 +94,73 @@ class F_Album extends \Foundation\F_Database
         $toBind = array($username);
         return parent::fetch_Result($query, $toBind, $fetchAll);
     }
+
+
+    /**
+     * Rethrives an album (info, Thumbnail, owner) by passing its ID.
+     *
+     * @param int $id The album ID to search for
+     * @return array The album searched, its thumbnail and its uploader
+     */
+    public static function get_By_ID($id)
+    {
+        $select = '*';
+        $from = "album";
+        $where = array("id" => $id);
+        $album = parent::get_One($select, $from, $where);
+
+        //Retrieves the categories
+        $array_categories = self::get_Categories($id);
+        $cats = [];
+        foreach($array_categories as $v)
+        {
+            array_push($cats, intval($v["category"]));
+        }
+
+        $e_album = new \Entity\E_Album(
+                $album["title"],
+                $album["description"],
+                $cats,
+                $album["creation_date"]
+                );
+        $e_album->set_ID($id);
+
+        return array(
+            "album" => $e_album,
+            "cover" => self::get_Cover($id),
+            "username" => $album["user"]);
+    }
+
+
+    /**
+     * Retrieves the thumbnail bound to the album
+     *
+     * @param int $albumID The album's ID to get the cover from
+     * @return mediumblob The photo's thumbnail
+     */
+    public static function get_Cover($albumID)
+    {
+        $query = 'SELECT `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` = '
+                    .'( '
+                    .'SELECT `photo` '
+                    .'FROM `album_cover` '
+                    .'WHERE `album` = ?'
+                . ')';
+
+//        $query_JOIN = 'SELECT `thumbnail` '
+//                     .'FROM `photo` '
+//                         .'INNER JOIN `album_cover` '
+//                         .'ON photo.id = album_cover.photo '
+//                     .'WHERE `album` = ?';
+
+        $toBind = array($albumID);
+        $cover_array = parent::fetch_Result($query, $toBind);
+        return $cover_array["thumbnail"];
+    }
+
+
 
 
     /**

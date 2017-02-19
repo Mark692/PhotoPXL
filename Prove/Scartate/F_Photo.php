@@ -57,6 +57,20 @@ class ScartataF_Photo extends \Foundation\F_Database
     }
 
 
+    /**
+     * Retrieves the thumbnails only. Used in F_Album to get the album cover
+     *
+     * @param int $id The photo's ID to search
+     * @return mediumblob The photo's thumbnail
+     */
+    public static function get_Thumbnail($id)
+    {
+        $select = array("thumbnail");
+        $from = "photo";
+        $where = array("id" => $id);
+        $thumbnail_array = parent::get_One($select, $from, $where);
+        return $thumbnail_array["thumbnail"];
+    }
 
 
     /**
@@ -84,7 +98,7 @@ class ScartataF_Photo extends \Foundation\F_Database
 //                .'ORDER BY `id` DESC '
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
-        
+
         $toBind = [];
         $fetchAll = TRUE;
         $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);

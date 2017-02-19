@@ -377,7 +377,7 @@ class F_Photo extends \Foundation\F_Database
                 .'ORDER BY COUNT(*) DESC ' //From most liked to less liked
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
-        
+
         $toBind = [];
         $fetchAll = TRUE;
         $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);

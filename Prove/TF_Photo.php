@@ -65,7 +65,7 @@ class TF_Photo extends \Prove\TFun
     public function insert()
     {
         $uploader = "provaDB";
-        \Foundation\F_Photo::insert($this->e_photo, $uploader);
+        return \Foundation\F_Photo::insert($this->e_photo, $uploader);
     }
 
 
@@ -74,7 +74,7 @@ class TF_Photo extends \Prove\TFun
         $this->e_photo->set_ID(28);
         $cat = array(7);
         $this->e_photo->set_Categories($cat);
-        \Foundation\F_Photo::update($this->e_photo);
+        return \Foundation\F_Photo::update($this->e_photo);
     }
 
 
@@ -122,37 +122,24 @@ class TF_Photo extends \Prove\TFun
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function t_countPages()
+    public function delete()
     {
-        $count = "photo";
-        $from = "likes";
-        $where = "1";
-        $tot = parent::count($count, $from, $where);
-        return array("tot_photo" => $tot);
+        $photo_ID = 31;
+        return \Foundation\F_Photo::delete($photo_ID);
     }
 
+
+    public function delete_ALL_fromAlbum()
+    {
+        $album_ID = 152;
+        return \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+    }
+
+
+    public function move_To()
+    {
+        $photo_ID = 26;
+        $album_ID = 152;
+        return \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+    }
 }
