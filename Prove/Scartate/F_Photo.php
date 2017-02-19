@@ -56,4 +56,46 @@ class ScartataF_Photo extends \Foundation\F_Database
         parent::execute_Query($query, $toBind);
     }
 
+
+
+
+    /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
+     */
+    public static function get_MostLiked($page_toView=1)
+    {
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT `id`, `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` in '
+                .'('
+                    .'SELECT `photo` '
+                    .'FROM `likes` '
+                    .'GROUP BY `photo` '
+                    .'ORDER BY COUNT(*) '
+                .') '
+//                .'ORDER BY `id` DESC '
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset.' ';
+        
+        $toBind = [];
+        $fetchAll = TRUE;
+        $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "photo";
+        $from = "likes";
+        $where = "1";
+        $tot = parent::count($count, $from, $where);
+        $tot_photo = array("tot_photo" => $tot);
+
+        return array_merge($mostLiked, $tot_photo);
+    }
+
 }

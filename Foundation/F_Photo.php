@@ -218,7 +218,7 @@ class F_Photo extends \Foundation\F_Database
                 .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
-        $toBind = array($cats);
+        $toBind = $cats;
         $photos = parent::fetch_Result($query, $toBind, $fetchAll);
 
         $count = "photo";
@@ -346,7 +346,13 @@ class F_Photo extends \Foundation\F_Database
         $select = array("user");
         $from = "likes";
         $where = array("photo" => $photo_ID);
-        return parent::get_All($select, $from, $where);
+        $likes = parent::get_All($select, $from, $where);
+        $usernames_only = [];
+        foreach($likes as $v)
+        {
+            array_push($usernames_only, $v["user"]);
+        }
+        return $usernames_only;
     }
 
 
@@ -362,18 +368,16 @@ class F_Photo extends \Foundation\F_Database
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
         $query = 'SELECT `id`, `thumbnail` '
                 .'FROM `photo` '
-                .'WHERE `id` in '
-                .'('
-                    .'SELECT `photo` '
-                    .'FROM `likes` '
-                    .'GROUP BY `photo` '
-                    .'ORDER BY COUNT(*) '
-                .') '
-                .'ORDER BY `id` DESC '
+                    .'INNER JOIN `likes` '
+                    .'ON photo.id=likes.photo '
+                .'GROUP BY `photo` '
+                .'ORDER BY COUNT(*) DESC ' //From most liked to less liked
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
+        
         $toBind = [];
         $fetchAll = TRUE;
         $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);

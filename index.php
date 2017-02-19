@@ -14,8 +14,8 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 
 //------------------------------PROVE------------------------------//
 //echo(nl2br("\r\n"));
-$test = new Prove\TE_Photo();
-var_dump($test->get_By_ID());
+$test = new Prove\TF_Photo();
+print_r($test->get_MostLiked());
 
 
 

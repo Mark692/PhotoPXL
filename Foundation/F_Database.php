@@ -239,7 +239,7 @@ class F_Database
      */
     public static function count($count, $from, $where, $toBind=[])
     {
-        $key = 'COUNT(`'.$count.'`)';
+        $key = 'COUNT(DISTINCT `'.$count.'`)'; //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
         $query = 'SELECT '.$key.' '
                 .'FROM '.$from.' '
                 .'WHERE '.$where;
