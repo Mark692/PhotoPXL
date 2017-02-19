@@ -70,28 +70,39 @@ class F_Album extends \Foundation\F_Database
      * @param string $username The user's username selected to get the albums from
      * @return array The user's albums
      */
-    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($username, $page_toView=1)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT * '
-                .'FROM `album_cover` '
-                .'WHERE `album` in ('
-                    .'SELECT `id` '
-                    .'FROM `album` '
-                    .'WHERE `user`=?'
-                    .') '
-                .'ORDER BY `album` ';
-        if ($order_DESC===TRUE)
-        {
-            $query .= ' DESC ';
-        }
-        $query .='LIMIT '.$limit.' '
+        $query = 'SELECT `id` '
+                .'FROM `album` '
+                .'WHERE `user`= '.$username.' '
+                .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
-        $toBind = array($username);
+        $toBind = [];
+        $album_IDs = parent::fetch_Result($query, $toBind, $fetchAll);
+    }
+
+
+    public static function get_Covers($album_IDs)
+    {
+        $query = 'SELECT `thumbnail` '
+                .'FROM `photo` '
+                .'WHERE `id` IN ('
+                    .'SELECT MIN(`photo`) '
+                    .'FROM `photo_album` '
+                    .'WHERE `album` IN (';
+
+        foreach($album_IDs as $v)
+        {
+            $query .= $v["id"].','; //Adds all the IDs
+        }
+        $query = substr($query, 0, -1).')';
+        $toBind = [];
+        $fetchAll = TRUE;
         return parent::fetch_Result($query, $toBind, $fetchAll);
     }
 
@@ -127,37 +138,8 @@ class F_Album extends \Foundation\F_Database
 
         return array(
             "album" => $e_album,
-            "cover" => self::get_Cover($id),
+            "cover" => self::get_Covers((array) $id),
             "username" => $album["user"]);
-    }
-
-
-    /**
-     * Retrieves the thumbnail bound to the album
-     *
-     * @param int $albumID The album's ID to get the cover from
-     * @return mediumblob The photo's thumbnail
-     */
-    public static function get_Cover($albumID)
-    {
-        $query = 'SELECT `thumbnail` '
-                .'FROM `photo` '
-                .'WHERE `id` = '
-                    .'( '
-                    .'SELECT `photo` '
-                    .'FROM `album_cover` '
-                    .'WHERE `album` = ?'
-                . ')';
-
-//        $query_JOIN = 'SELECT `thumbnail` '
-//                     .'FROM `photo` '
-//                         .'INNER JOIN `album_cover` '
-//                         .'ON photo.id = album_cover.photo '
-//                     .'WHERE `album` = ?';
-
-        $toBind = array($albumID);
-        $cover_array = parent::fetch_Result($query, $toBind);
-        return $cover_array["thumbnail"];
     }
 
 
