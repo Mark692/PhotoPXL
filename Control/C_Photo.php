@@ -257,22 +257,31 @@ class C_Photo
     public function update()
     {
         $V_Foto = new \View\V_Foto;
-
         $dati_foto = $V_Foto->get_Dati();
         $id = $V_Foto->getID();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
+        $categories=$V_Foto->reimposta_categorie($cat);
         $album_ID = $dati_foto['album_ID'];
-        $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $categories);
         $foto->set_ID($id);
         \Foundation\F_Photo::update($foto);
         \Foundation\F_Photo::move_To($album_ID, $photo_ID);
         $this->display_photo();
     }
+    /**
+     * funzione per elimanre una foto
+     */
 
-
+    public function elimina_foto(){
+        $V_Foto = new \View\V_Foto;
+        $id = $V_Foto->getID();
+        \Foundation\F;
+        
+    }
+    
     public function smista()
     {
         $V_Photo = new \View\V_Profilo();
