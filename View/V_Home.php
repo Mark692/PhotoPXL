@@ -41,34 +41,7 @@ class V_Home extends \View\V_Basic
         $this->display('bannato.tpl');
     }
 
-    /**
-     * 
-     * @param type $role
-     */
 
-    private function imposta_ruolo($role){
-        switch ($role)
-        {
-            case \Utilities\Roles::BANNED:
-                return $ruolo ="bannato";
-            
-            case \Utilities\Roles::STANDARD:
-                return $ruolo ="standard";
-            
-            case \Utilities\Roles::PRO:
-                return $ruolo ="pro";
-            
-            case \Utilities\Roles::MOD:
-                return $ruolo ="mod";
-            
-            case \Utilities\Roles::ADMIN:
-                return $ruolo ="admin";
-            
-            default : return $ruolo="ospite";
-        }
-         
-        
-    }
     /**
      * setta la barra in base all'utente
      */

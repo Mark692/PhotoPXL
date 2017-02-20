@@ -47,7 +47,7 @@ class C_Like
         $session = new \Utilities\U_Session();
         $username = $session->get_val('username');
         $comment = new \Entity\E_Comment($text['commento'], $username, $text['id']);
-        \Foundation\F_Comment::execute_Query($comment);
+        \Foundation\F_Comment::insert($comment);
         $c_foto=new \Control\C_Photo();
         return $c_foto->display_photo();
     }
@@ -59,6 +59,7 @@ class C_Like
         $text = $v_User->get_Dati_commento();
         $session = new \Utilities\U_Session();
         $username = $session->get_val('username');
+        //può rimuovere solo mod admin e utente che ha inserito il commento
         \Foundation\F_Comment::remove($comment_ID);
         $c_foto=new \Control\C_Photo();
         return $c_foto->display_photo();
