@@ -56,13 +56,13 @@ class C_Photo
         $photo = $foto_details[0];
         $cat = $foto_details[1];
         $user_like = $foto_details[2];
-        $v_foto->assign('commenti',$commenti);
+        $v_foto->assign('commenti', $commenti);
         $v_foto->assign('foto_deteils', $photo);
         $categories = $v_foto->imposta_categoria($cat);
         $v_foto->assign('categories', $categories);
         $this->button_like($user_like, $v_foto, $username);
         //commenti foto vederee bene perche cosi assegna il tasto a un solo commento
-        $commenti=$this->button_remove_comments($comments, $v_foto, $username, $role);
+        $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
         $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
@@ -164,7 +164,28 @@ class C_Photo
         $session = new \Utilities\U_Session;
         $username = $session->get_val('username');
         $v_foto = new \View\V_Foto();
-        $dati_foto = $v_foto->get_Dati();
+        $dati_foto = $v_foto->get_Dati();//mi dovrebbe tornare tre array contententi le tre foto 
+        $user = \Foundation\F_User::get_UserDetails($username);
+        if($user->can_Upload() === TRUE)
+        {
+            $this->save_photo();
+            if($user->getRole() === \Utilities\Roles::STANDARD)
+            {
+                $user->add_up_Count();
+                $user->set_Last_Upload(time());
+                \Foundation\F_User_Standard::update_Counters($user);
+            }
+        }
+        else
+        {
+            $v_foto->assign('messaggio', 'Il limite è stato superato');
+            return $v_foto->fetch('template_diventa_pro');
+        }
+    }
+
+
+    public function save_photo($dati_foto)
+    {
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
@@ -183,7 +204,7 @@ class C_Photo
         }
         $type = $dati_foto['type'];
         $size = $dati_foto['size'];
-        $photo_blob = addslashes(file_get_contents($dati_foto['tmp_name']));
+        $path= $dati_foto['tmp_name'];
         if($dati_foto['error'] == 0)
         {
             if($type == 'image/jpeg' && $type == 'image/jpg' && $type == 'image/png')
@@ -192,7 +213,8 @@ class C_Photo
                 {
                     try
                     {
-                        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type);
+                        $photo_blob=new \Entity\E_Photo_Blob();
+                        $photo=$photo_blob->generate($path, $size, $type);
                     }
                     catch (\Exceptions\photo_details $ex)
                     {
@@ -210,7 +232,6 @@ class C_Photo
 
                 \Foundation\F_Photo::insert($photo_details, $photo, $username);
                 \Foundation\F_Photo::move_To($album_ID, $photo_ID);
-                //template successo
             }
             else
             {
@@ -263,7 +284,7 @@ class C_Photo
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
-        $categories=$V_Foto->reimposta_categorie($cat);
+        $categories = $V_Foto->reimposta_categorie($cat);
         $album_ID = $dati_foto['album_ID'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $categories);
         $foto->set_ID($id);
@@ -271,17 +292,19 @@ class C_Photo
         \Foundation\F_Photo::move_To($album_ID, $photo_ID);
         $this->display_photo();
     }
+
+
     /**
      * funzione per elimanre una foto
      */
-
-    public function elimina_foto(){
+    public function elimina_foto()
+    {
         $V_Foto = new \View\V_Foto;
         $id = $V_Foto->getID();
         \Foundation\F;
-        
     }
-    
+
+
     public function smista()
     {
         $V_Photo = new \View\V_Profilo();

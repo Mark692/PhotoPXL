@@ -19,7 +19,14 @@ class V_Foto extends \View\V_Basic
      */
     public function get_Dati()
     {
-        $keys = array ('image', 'title', 'desc', 'is_reserved', 'cat');
-        return parent::get_Dati($keys);
+    $keys1 = array ('foto1', 'foto2', 'foto3');
+//    $keys2= array ('title','desc','is_reserved','cat','album_ID','tmp_name','size','type');
+    $total = [];
+     foreach($keys1 as $dato1){
+    array_push($total, array_merge($_REQUEST[$dato1], $_FILES[$dato1]));
     }
+    return $total;
+    
+        }
+    
 }
