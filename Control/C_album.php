@@ -18,8 +18,8 @@ class C_Album
         $role = $Session->get_val('role');
         $v_Album->assign('utente', $username);
         $v_Album->assign('role', $role);
-        $categorie=$v_Album->imposta_categoria();//imposta tutte le categorie dal numero alla stringa
-        $v_Album->assign('categorie',$categorie);
+        $categorie = $v_Album->imposta_categoria(); //imposta tutte le categorie dal numero alla stringa
+        $v_Album->assign('categorie', $categorie);
         if($role == \Utilities\Roles::STANDARD)
         {
             return $v_Album->fetch('crea_album_standard.tpl');
@@ -60,14 +60,21 @@ class C_Album
         $v_Album->assign('order', $order);
         $thumbnail = \Foundation\F_Photo::get_By_Album($id_album, $page_toView, $order);
         $album_details = \Foundation\F_Album::get_By_ID($id_album);
-        $page_tot= ceil($thumbnail['photo_tot']/PHOTOS_PER_PAGE);
-        $v_Album->assign('page_tot', $page_tot);
+        if($thumbnail['tot_photo'] !== 0)
+        {
+            $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
+            $v_Album->assign('thumbnail', $thumbnail['thumbnail']);
+            $v_Album->assign('page_tot', $page_tot);
+        }
+        else
+        {
+            $v_Album->assign('message', "Nessun Risultato trovato");
+        }
         $v_Album->assign('title', $album_details['title']);
         $v_Album->assign('description', $album_details['description']);
-        $categorie=$v_Album->imposta_categoria($album_details['categories']);//dal numero alla stringa
+        $categorie = $v_Album->imposta_categoria($album_details['categories']); //dal numero alla stringa
         $v_Album->assign('categories', $album_details['categories']);
         $v_Album->assign('id_thumbnail', $thumbnail['id']);
-        $v_Album->assign('thumbnail', $thumbnail['thumbnail']);
         if($album_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
@@ -98,7 +105,7 @@ class C_Album
             $title = $dati_album['title'];
             $desc = $dati_album['desc'];
             $cat = $dati_album['cat'];
-            $categorie=$v_album->reimposta_categorie($cat);//dalla stringa al numero
+            $categorie = $v_album->reimposta_categorie($cat); //dalla stringa al numero
             try
             {
                 $album_details = new \Entity\E_Album($title, $desc, $categorie);

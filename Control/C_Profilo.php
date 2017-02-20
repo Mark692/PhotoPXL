@@ -34,15 +34,23 @@ class C_Profilo
             $order = FALSE;
         }
         $array_album = \Foundation\F_Photo::get_By_User($username, $page_toView, $order_DESC);
-        $page_tot= ceil($array_album['photo_tot']/PHOTOS_PER_PAGE);
-        $V_Profilo->assign('page_tot', $page_tot);
-        $V_Profilo->assign('id_thumbnail', $array_album['id']);
-        $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+        if($array_album['photo_tot'] !== 0)
+        {
+            $page_tot = ceil($array_album['photo_tot'] / PHOTOS_PER_PAGE);
+            $V_Profilo->assign('page_tot', $page_tot);
+            $V_Profilo->assign('id_thumbnail', $array_album['id']);
+            $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+        }
+        else
+        {
+            $V_Profilo->assign('message', "Nessuna foto Caricata");
+        }
         $V_Profilo->assign('utente', $user_datails);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
         return $V_Profilo->fetch('profilo_riepilogo.tpl');
     }
-    
+
+
     /**
      * 
      * mostra il profilo di un utente in cui è possibile visualizzare 
@@ -67,10 +75,17 @@ class C_Profilo
             $order = FALSE;
         }
         $array_album = \Foundation\F_Album::get_By_User($username, $page_toView, $order);
-        $page_tot= ceil($array_album['photo_tot']/PHOTOS_PER_PAGE);
-        $V_Profilo->assign('page_tot', $page_tot);
-        $V_Profilo->assign('id_thumbnail', $array_album['id']);
-        $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+        if($array_album['tot_album'])
+        {
+            $page_tot = ceil($array_album['tot_album'] / PHOTOS_PER_PAGE);
+            $V_Profilo->assign('page_tot', $page_tot);
+            $V_Profilo->assign('id_thumbnail', $array_album['id']);
+            $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+        }
+        else
+        {
+            $V_Profilo->assign('message', "Nessun Album creato");
+        }
         $V_Profilo->assign('utente', $user_datails);
         $V_Profilo->assign('foto_profilo', $user_datails["photo"]); //CONTROLLA SE IMPLEMENTATA IN FOUNDATION
         return $V_Profilo->fetch('profilo_riepilogo.tpl');
@@ -93,6 +108,7 @@ class C_Profilo
         return $V_Profilo->fetch('modifica profilo.tpl');
     }
 
+
     /**
      * update dei dati dati dell'utente
      */
@@ -110,29 +126,30 @@ class C_Profilo
             $new_details = new \Entity\E_User($new_username, $new_password, $new_email);
         }
         catch (\Exceptions\input_texts $ex)
-            {
+        {
             //Primo catch: gestire username non validi
-            $view->assign('messaggio',$ex->getMessage());
+            $view->assign('messaggio', $ex->getMessage());
             $this->modulo_registrazione();
-            }
+        }
         catch (\Exceptions\InvalidInput $ex)
-            {
+        {
             //Primo catch: gestire username non validi
-            $view->assign('messaggio',$ex->getMessage());
+            $view->assign('messaggio', $ex->getMessage());
             $this->modulo_registrazione();
-            
-            }
-        
-            \Foundation\F_User::update_details($new_details, $old_Username);
-            $this->riepilogo_dati();
+        }
 
+        \Foundation\F_User::update_details($new_details, $old_Username);
+        $this->riepilogo_dati();
     }
-   /**
-    * modifica la foto del profilo
-    */ 
-    public function update_profile_pic(){
+
+
+    /**
+     * modifica la foto del profilo
+     */
+    public function update_profile_pic()
+    {
         $v_Profilo = new \View\V_Profilo;
-        $dati= $v_Profilo->get_Dati();
+        $dati = $v_Profilo->get_Dati();
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $type = $dati_foto['type'];
@@ -190,13 +207,14 @@ class C_Profilo
             $v_foto->assign('messaggio', 'Errone nel caricamento della foto. Riprova!');
             $this->modifica_profile_pic();
         }
-    }   
-    
+    }
+
+
     /**
      * modulo per la modifica dell'immagine del profilo
      * @return type tpl
      */
-     public function modifica_profile_pic()
+    public function modifica_profile_pic()
     {
         $V_Profilo = new \View\V_Profilo;
         $user_details = $V_Profilo->get_Dati('username', 'email');
@@ -205,6 +223,7 @@ class C_Profilo
         $V_Profilo->assign('utente', $user_details);
         return $V_Profilo->fetch('modifica_foto_profilo.tpl');
     }
+
 
     /**
      * smista in base al task alle varie function 
