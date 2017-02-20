@@ -19,6 +19,7 @@ class F_Album extends \Foundation\F_Database
      */
     public static function insert(\Entity\E_Album $album, $owner)
     {
+        //Insert all album details but the categories
         $insertInto = "album";
 
         $set = array(
@@ -65,45 +66,54 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Rethrives the album IDs and Thumbnails of a user by passing its username.
+     * Rethrives the album IDs, Titles and Thumbnails of a user by passing its username.
      *
      * @param string $username The user's username selected to get the albums from
-     * @return array The user's albums
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
      */
-    public static function get_By_User($username, $page_toView=1)
+    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT `id` '
-                .'FROM `album` '
-                .'WHERE `user`= '.$username.' '
-                .'LIMIT '.$limit.' '
-                .'OFFSET '.$offset;
-
-        $fetchAll = TRUE;
-        $toBind = [];
-        $album_IDs = parent::fetch_Result($query, $toBind, $fetchAll);
-    }
-
-
-    public static function get_Covers($album_IDs)
-    {
-        $query = 'SELECT `thumbnail` '
+        $query = 'SELECT album.id, album.title, photo.thumbnail '
                 .'FROM `photo` '
-                .'WHERE `id` IN ('
-                    .'SELECT MIN(`photo`) '
+                    .'INNER JOIN `photo_album` '
+                    .'ON photo.id=photo_album.photo '
+                        .'INNER JOIN `album` '
+                        .'ON photo_album.album=album.id '
+                .'WHERE photo.id IN '
+                .'('
+                    .'SELECT MIN(photo_album.photo) '
                     .'FROM `photo_album` '
-                    .'WHERE `album` IN (';
-
-        foreach($album_IDs as $v)
+                    .'WHERE photo_album.album IN '
+                    .'('
+                        .'SELECT album.id '
+                        .'FROM `album` '
+                        .'WHERE album.user=? '
+                    .') '
+                    .'GROUP BY photo_album.album '
+                .') ';
+        if($order_DESC===TRUE)
         {
-            $query .= $v["id"].','; //Adds all the IDs
+            $query .= 'ORDER BY album.id DESC ';
         }
-        $query = substr($query, 0, -1).')';
-        $toBind = [];
+        $query .= 'LIMIT '.$limit.' '
+                 .'OFFSET '.$offset;
+
+        $toBind = array($username);
         $fetchAll = TRUE;
-        return parent::fetch_Result($query, $toBind, $fetchAll);
+        $albums = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "id";
+        $from = "album";
+        $where = "`user`='$username'";
+        $tot = parent::count($count, $from, $where);
+        $tot_photo = array("tot_album" => $tot);
+
+        return array_merge($albums, $tot_photo);
     }
 
 
@@ -111,14 +121,26 @@ class F_Album extends \Foundation\F_Database
      * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
      * @param int $id The album ID to search for
-     * @return array The album searched, its thumbnail and its uploader
+     * @return array The \Entity\E_Album object searched, its thumbnail and its uploader
      */
     public static function get_By_ID($id)
     {
-        $select = '*';
-        $from = "album";
-        $where = array("id" => $id);
-        $album = parent::get_One($select, $from, $where);
+        //Retrieves album details and its Thumbnail
+        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, photo.thumbnail '
+                .'FROM `photo` '
+                    .'INNER JOIN `photo_album` '
+                    .'ON photo.id=photo_album.photo '
+                        .'INNER JOIN `album` '
+                        .'ON photo_album.album=album.id '
+                .'WHERE photo.id IN '
+                .'('
+                    .'SELECT MIN(photo_album.photo) '
+                    .'FROM `photo_album` '
+                    .'WHERE photo_album.album=? '
+                .') ';
+
+        $toBind = array($id);
+        $album = parent::fetch_Result($query, $toBind);
 
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
@@ -138,25 +160,66 @@ class F_Album extends \Foundation\F_Database
 
         return array(
             "album" => $e_album,
-            "cover" => self::get_Covers((array) $id),
-            "username" => $album["user"]);
+            "cover" => $album["thumbnail"],
+            "username" => $album["user"]
+            );
     }
-
-
 
 
     /**
      * Rethrives all the album with the selected categories
      *
      * @param array $cats The categories to search
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @return array An array with the albums matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1)
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
         $where = '';
         for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
+
+
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT DISTINCT album.id, album.title, photo.thumbnail '
+                .'FROM `photo` '
+                    .'INNER JOIN `photo_album` '
+                    .'ON photo.id=photo_album.photo '
+                        .'INNER JOIN `album` '
+                        .'ON photo_album.album=album.id '
+                            .'INNER JOIN `cat_album` '
+                            .'ON album.id=cat_album.album '
+                .'WHERE photo.id IN '
+                .'('
+                    .'SELECT MIN(photo_album.photo) '
+                    .'FROM `photo_album` '
+                    .'WHERE photo_album.album IN '
+                    .'('
+                        .'SELECT cat_album.album '
+                        .'FROM `cat_album` '
+                        .'WHERE '.$where.' '
+                    .') '
+                    .'GROUP BY photo_album.album '
+                .') ';
+        if($order_DESC===TRUE)
+        {
+            $query .= 'ORDER BY album.id DESC ';
+        }
+        $query .= 'LIMIT '.$limit.' '
+                 .'OFFSET '.$offset;
+
+
+
+
+
+
+
+
+
         $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
