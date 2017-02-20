@@ -19,7 +19,7 @@ class C_Photo
         $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $role=$Session->get_val('role');
+        $role = $Session->get_val('role');
         $v_foto->assign('utente', $username);
         $v_foto->assign('role', $role);
         if($role == \Utilities\Roles::STANDARD)
@@ -46,7 +46,7 @@ class C_Photo
         $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $role=$Session->get_val('role');
+        $role = $Session->get_val('role');
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
         $id = $v_foto->getID();
@@ -81,6 +81,7 @@ class C_Photo
     /**
      * ridimensiona la foto per la visualizzazione
      * @param type $fullsize foto
+     * @param type $V_foto oggetto v_foto
      * @return array che contiene le nuove dimensioni
      */
     private function ridimensiona($fullsize, $V_foto)
@@ -138,6 +139,7 @@ class C_Photo
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
+        $album_ID = $dati_foto['album_ID'];
         try
         {
             $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
@@ -153,30 +155,37 @@ class C_Photo
         $photo_blob = addslashes(file_get_contents($dati_foto['tmp_name']));
         if($dati_foto['error'] == 0)
         {
-            try
+            if($type == 'image/jpeg' && $type == 'image/jpg' && $type == 'image/png')
             {
-                $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type);
+                try
+                {
+                    try
+                    {
+                        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type);
+                    }
+                    catch (\Exceptions\photo_details $ex)
+                    {
+                        //Primo catch: Percorso immagine non valido
+                        $v_foto->assign('messaggio', $ex->getMessage());
+                        $this->modulo_upload();
+                    }
+                }
+                catch (\Exceptions\photo_details $ex)
+                {
+                    //Primo catch: Dimensione immagine troppo grande
+                    $v_foto->assign('messaggio', $ex->getMessage());
+                    $this->modulo_upload();
+                }
+
+                \Foundation\F_Photo::insert($photo_details, $photo, $username);
+                \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+                //template successo
             }
-            catch (\Exceptions\photo_details $ex)
+            else
             {
-                //Primo catch: gestire username non validi
-                $v_foto->assign('messaggio', $ex->getMessage());
+                $v_foto->assign('messaggio', 'Formato errato, sono ammessi formati .jpg, .png, .jpeg. Riprova!');
                 $this->modulo_upload();
             }
-            catch (\Exceptions\photo_details $ex)
-            {
-                //Primo catch: gestire username non validi
-                $v_foto->assign('messaggio', $ex->getMessage());
-                $this->modulo_upload();
-            }
-            catch (\Exceptions\photo_details $ex)
-            {
-                //Primo catch: gestire username non validi
-                $v_foto->assign('messaggio', $ex->getMessage());
-                $this->modulo_upload();
-            }
-            \Foundation\F_Photo::insert($photo_details, $photo, $username);
-            
         }
         else
         {
@@ -194,13 +203,17 @@ class C_Photo
         $v_foto = new \View\V_Foto;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $role=$Session->get_val('role');
-        $id=  $v_foto->getID();
-        $foto= \Foundation\F_Photo::get_By_ID($id);
+        $role = $Session->get_val('role');
+        $id = $v_foto->getID();
+        $album = \Foundation\F_Album::;//funzione per riotnare id e titolo album;
+        $foto = \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
         $v_foto->assign('dati_foto', $foto);
-        //switch template in base al ruolo
+        $v_foto->assign('album', $album);
+        if($role > \Utilities\Roles::STANDARD){
+            return $v_foto->fetch('modifica_foto_pro.tpl');
+        }
         return $v_foto->fetch('modifica_foto.tpl');
     }
 
@@ -211,16 +224,18 @@ class C_Photo
     public function update()
     {
         $V_Foto = new \View\V_Foto;
-        
+
         $dati_foto = $V_Foto->get_Dati();
-        $id=$V_Foto->getID();
+        $id = $V_Foto->getID();
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
+        $album_ID = $dati_foto['album_ID'];
         $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         $foto->set_ID($id);
         \Foundation\F_Photo::update($foto);
+        \Foundation\F_Photo::move_To($album_ID, $photo_ID);
         $this->display_photo();
     }
 
@@ -241,10 +256,8 @@ class C_Photo
                 break;
             case 'modifica':
                 return $this->modifica();
-                break;
             case 'update':
                 return $this->update();
-                break;
         }
     }
 
