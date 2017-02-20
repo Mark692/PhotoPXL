@@ -288,7 +288,7 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Removes the selected categories from the photo
      *
-     * @param enum or array $cats The category/ies to remove from the photo selected
+     * @param array $cats The category/ies to remove from the photo selected
      * @param int $photo_ID The photo to modify and remove categories from
      * @return string The query used to remove categories from the photo
      */

@@ -182,6 +182,8 @@ class F_Album extends \Foundation\F_Database
         {
             $where .= '(`category`=?) OR ';
         }
+        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
+
 
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
@@ -213,32 +215,18 @@ class F_Album extends \Foundation\F_Database
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
 
-
-
-
-
-
-
-
-
-        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
-        $limit = PHOTOS_PER_PAGE;
-        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
-
-        $query = "SELECT * "
-                ."FROM `album` "
-                ."WHERE `id` in ("
-                    ."SELECT `album` "
-                    ."FROM `cat_album` "
-                    .'WHERE '.$where
-                    .') '
-                .'ORDER BY `id` '
-                .'LIMIT '.$limit.' '
-                .'OFFSET '.$offset;
+        echo($query.nl2br("\r\n"));
 
         $fetchAll = TRUE;
-        $toBind = array($cats);
-        return parent::fetch_Result($query, $toBind, $fetchAll);
+        $toBind = $cats;
+        $albums = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "album";
+        $from = "cat_album";
+        $tot = parent::count($count, $from, $where, $toBind);
+        $tot_photo = array("tot_album" => $tot);
+
+        return array_merge($albums, $tot_photo);
     }
 
 
@@ -251,17 +239,13 @@ class F_Album extends \Foundation\F_Database
      */
     private static function update_Categories($new_cats, $album_ID)
     {
-        $old = self::get_Categories($album_ID); //$old will be an associative array
-        $old_cats=[];
-        foreach($old as $v)
-        {
-            array_push($old_cats, $v); //Keep only the values
-        }
+        $old_cats = self::get_Categories($album_ID); //$old will be an associative array
+
         $to_add    = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
 
         $query_ADD = self::query_addCats($to_add, $album_ID);
-        $query_DEL = self::remove_Cats($to_remove, $album_ID);
+        $query_DEL = self::query_removeCats($to_remove, $album_ID);
         $query = $query_ADD.$query_DEL;
 
         if($query_ADD!=='')
@@ -282,7 +266,7 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Sets the album categories. To be used on album creation
+     * Sets the album categories
      *
      * @param array $cats The categories chosen for the album
      * @param int $album_ID The album's ID to whom set the categories
@@ -308,11 +292,11 @@ class F_Album extends \Foundation\F_Database
     /**
      * Removes the selected categories from the album
      *
-     * @param enum or array $cats The category/ies to remove from the album selected
+     * @param array $cats The category/ies to remove from the album selected
      * @param int $album_ID The album to modify and remove categories from
      * @return string The query used to remove categories from the album
      */
-    private static function remove_Cats($cats, $album_ID)
+    private static function query_removeCats($cats, $album_ID)
     {
         $tot_cats = count($cats);
         if($tot_cats===0)
@@ -341,7 +325,14 @@ class F_Album extends \Foundation\F_Database
         $select = array("category");
         $from = "cat_album";
         $where = array("album" => $album_ID);
-        return parent::get_All($select, $from, $where);
+        $cats_array = parent::get_All($select, $from, $where);
+
+        $cats=[];
+        foreach($cats_array as $sub_array)
+        {
+            array_push($cats, $sub_array["category"]); //Keep only the values
+        }
+        return $cats;
     }
 
 

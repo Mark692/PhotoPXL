@@ -205,7 +205,7 @@ class C_Photo
         $username = $Session->get_val('username');
         $role = $Session->get_val('role');
         $id = $v_foto->getID();
-        $album = \Foundation\F_Album::;//funzione per riotnare id e titolo album;
+//        $album = \Foundation\F_Album::;//funzione per riotnare id e titolo album;
         $foto = \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
@@ -219,7 +219,7 @@ class C_Photo
 
 
     /**
-     * update dei dati della foto 
+     * update dei dati della foto
      */
     public function update()
     {
