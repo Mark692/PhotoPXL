@@ -29,38 +29,6 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Set the user's profile pic
-     *
-     * @param string $username The user owner of the profile pic to search
-     * @return image The profile pic, thumbnail style
-     */
-    public static function set_ProfilePic($username)
-    {
-        $select = array("photo");
-        $from = "profile_pic";
-        $where = array("user" => $username);
-        $array_pic = parent::get_One($select, $from, $where);
-        return $array_pic[0];
-    }
-
-
-    /**
-     * Retrieves the user's profile pic
-     *
-     * @param string $username The user owner of the profile pic to search
-     * @return image The profile pic, thumbnail style
-     */
-    public static function get_ProfilePic($username)
-    {
-        $select = array("photo");
-        $from = "profile_pic";
-        $where = array("user" => $username);
-        $array_pic = parent::get_One($select, $from, $where);
-        return $array_pic[0];
-    }
-
-
-    /**
      * Instantiates an \Entity\E_User_* user according to its role
      *
      * @param array $details The user details fetched from a query
@@ -115,7 +83,7 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the user's role only. Used in Control Session operations
+     * Retrieves the user's role only
      *
      * @param string $username The user's username
      * @return int The user's role
@@ -170,6 +138,41 @@ class F_User extends \Foundation\F_Database
 
 
     /**
+     * Sets a profile pic for the user
+     * @param string $username The user's username
+     * @param int $photo_ID The photo ID to save as profile pic
+     */
+    public static function set_ProfilePic($username, $photo_ID)
+    {
+        $insertInto = "profile_pic";
+        $set = array(
+            "username" => $username,
+            "photo" => $photo_ID
+                );
+        parent::insert_Query($insertInto, $set);
+    }
+
+
+    /**
+     * Retrieves the user's profile pic (thumbnail style)
+     *
+     * @param string $username The user owner of the profile pic to search
+     * @return image The profile pic, thumbnail style
+     */
+    public static function get_ProfilePic($username)
+    {
+        $query = 'SELECT `thumbnail` '
+                .'FROM `photo` '
+                    .'INNER JOIN `profile_pic` '
+                    .'ON photo.id = profile_pic.photo '
+                .'WHERE profile_pic.user = ?';
+        $toBind = array($username);
+        $proPic = parent::fetch_Result($query, $toBind);
+        return $proPic["thumbnail"];
+    }
+
+
+    /**
      * Updates the user's profile pic
      *
      * @param string $username The user's username
@@ -182,6 +185,21 @@ class F_User extends \Foundation\F_Database
         $where = array("user" => $username);
 
         parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Removes the user's profile pic
+     *
+     * @param string $username The user that wants to remove the profile pic
+     */
+    public static function remove_ProfilePic($username)
+    {
+        $query = "DELETE FROM `profile_pic` "
+                ."WHERE (`user`=?)";
+
+        $toBind = array($username);
+        parent::execute_Query($query, $toBind);
     }
 
 
