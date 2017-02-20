@@ -15,7 +15,7 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user details matching the given $username
      *
      * @param string $username The user's username to search
-     * @return array The array cointaining the user searched for and its profile pic
+     * @return \Entity\E_User_* The user searched
      */
     public static function get_UserDetails($username)
     {
@@ -23,10 +23,24 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("username" => $username);
         $array_user = parent::get_One($select, $from, $where);
-        $user = self::instantiate_EUser($array_user);
-        $pic = self::get_ProfilePic($username);
 
-        return array($user, $pic);
+        return self::instantiate_EUser($array_user);
+    }
+
+
+    /**
+     * Set the user's profile pic
+     *
+     * @param string $username The user owner of the profile pic to search
+     * @return image The profile pic, thumbnail style
+     */
+    public static function set_ProfilePic($username)
+    {
+        $select = array("photo");
+        $from = "profile_pic";
+        $where = array("user" => $username);
+        $array_pic = parent::get_One($select, $from, $where);
+        return $array_pic[0];
     }
 
 
@@ -36,7 +50,7 @@ class F_User extends \Foundation\F_Database
      * @param string $username The user owner of the profile pic to search
      * @return image The profile pic, thumbnail style
      */
-    private static function get_ProfilePic($username)
+    public static function get_ProfilePic($username)
     {
         $select = array("photo");
         $from = "profile_pic";
