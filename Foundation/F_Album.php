@@ -171,16 +171,17 @@ class F_Album extends \Foundation\F_Database
      *
      * @param array $cats The categories to search
      * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the albums matching the categories selected.
      */
     public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
         $where = '';
+        //Alternate $where = `category` IN ( foreach($cats as $c) );
         for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
-
 
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);

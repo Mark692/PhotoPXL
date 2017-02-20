@@ -184,11 +184,13 @@ class F_Photo extends \Foundation\F_Database
      *
      * @param array $cats The categories to search
      * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1)
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
         $where = '';
+        //Alternate $where = `category` IN ( foreach($cats as $c) );
         for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
@@ -203,10 +205,13 @@ class F_Photo extends \Foundation\F_Database
                     .'SELECT `photo` '
                     .'FROM `cat_photo` '
                     .'WHERE '.$where
-                    .') '
-                .'ORDER BY `id` '
-                .'LIMIT '.$limit.' '
-                .'OFFSET '.$offset;
+                    .') ';
+        if($order_DESC===TRUE)
+        {
+            $query .= 'ORDER BY album.id DESC ';
+        }
+        $query .= 'LIMIT '.$limit.' '
+                 .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = $cats;
