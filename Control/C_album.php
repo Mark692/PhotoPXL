@@ -18,6 +18,8 @@ class C_Album
         $role = $Session->get_val('role');
         $v_Album->assign('utente', $username);
         $v_Album->assign('role', $role);
+        $categorie=$v_Album->imposta_categoria();//imposta tutte le categorie dal numero alla stringa
+        $v_Album->assign('categorie',$categorie);
         if($role == \Utilities\Roles::STANDARD)
         {
             return $v_Album->fetch('crea_album_standard.tpl');
@@ -62,6 +64,7 @@ class C_Album
         $v_Album->assign('page_tot', $page_tot);
         $v_Album->assign('title', $album_details['title']);
         $v_Album->assign('description', $album_details['description']);
+        $categorie=$v_Album->imposta_categoria($album_details['categories']);//dal numero alla stringa
         $v_Album->assign('categories', $album_details['categories']);
         $v_Album->assign('id_thumbnail', $thumbnail['id']);
         $v_Album->assign('thumbnail', $thumbnail['thumbnail']);
@@ -95,9 +98,10 @@ class C_Album
             $title = $dati_album['title'];
             $desc = $dati_album['desc'];
             $cat = $dati_album['cat'];
+            $categorie=$v_album->reimposta_categorie($cat);//dalla stringa al numero
             try
             {
-                $album_details = new \Entity\E_Album($title, $desc, $cat);
+                $album_details = new \Entity\E_Album($title, $desc, $categorie);
             }
             catch (\Exceptions\input_texts $ex)
             {

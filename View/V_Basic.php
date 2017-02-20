@@ -12,7 +12,6 @@ require('libs/Smarty.class.php');
 
 class V_Basic extends \Smarty
 {
-
     /**
      * Costruttore della classe
      */
@@ -22,9 +21,9 @@ class V_Basic extends \Smarty
         global $config;
 //        $this->Smarty();
         $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
-        $this->compile_dir  = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
-        $this->config_dir   = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
-        $this->cache_dir    = $config['smarty']['cache_dir'];     //cartelle usate dal programma
+        $this->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
+        $this->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
+        $this->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
         $this->caching = false;
     }
 
@@ -38,13 +37,13 @@ class V_Basic extends \Smarty
     public function get_Dati($keys)
     {
         $total = array_merge($_REQUEST, $_FILES);
-        foreach ($keys as $dato)
+        foreach($keys as $dato)
         {
             $dettagli[$dato] = $total[$dato];
         }
         return $dettagli;
     }
-    
+
 
     /**
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
@@ -52,7 +51,7 @@ class V_Basic extends \Smarty
      */
     public function getID()
     {
-        if (isset($_REQUEST['id']))
+        if(isset($_REQUEST['id']))
         {
             return $_REQUEST['id'];
         }
@@ -65,7 +64,7 @@ class V_Basic extends \Smarty
      */
     public function getTask()
     {
-        if (isset($_REQUEST['task']))
+        if(isset($_REQUEST['task']))
         {
             return $_REQUEST['task'];
         }
@@ -77,7 +76,7 @@ class V_Basic extends \Smarty
      */
     public function getController()
     {
-        if (isset($_REQUEST['controller']))
+        if(isset($_REQUEST['controller']))
         {
             return $_REQUEST['controller'];
         }
@@ -109,5 +108,87 @@ class V_Basic extends \Smarty
         $this->assign('username', $dati['username']);
         $this->assign('email', $dati['email']);
     }
+
+
+    /**
+     * 
+     * @param type $role
+     */
+    public function imposta_ruolo($role)
+    {
+        switch ($role)
+        {
+            case \Utilities\Roles::BANNED:
+                return $ruolo = "bannato";
+
+            case \Utilities\Roles::STANDARD:
+                return $ruolo = "standard";
+
+            case \Utilities\Roles::PRO:
+                return $ruolo = "pro";
+
+            case \Utilities\Roles::MOD:
+                return $ruolo = "mod";
+
+            case \Utilities\Roles::ADMIN:
+                return $ruolo = "admin";
+
+            default : return $ruolo = "ospite";
+        }
+    }
+
+
+    /**
+     * dal valore numerico mi ritorna un array con scritte
+     * @param type $categories
+     * @return array
+     */
+    public function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
+    {
+        $cost = [];
+        foreach($categories as $valore)
+        {
+
+            switch ($valore)
+            {
+                case \Utilities\Roles::BANNED:
+                    $categoria = "bannato";
+                    break;
+
+                case \Utilities\Roles::STANDARD:
+                    $categoria = "standard";
+                    break;
+
+                case \Utilities\Roles::PRO:
+                    $categoria = "pro";
+                    break;
+
+                case \Utilities\Roles::MOD:
+                    $categoria = "mod";
+                    break;
+
+                case \Utilities\Roles::ADMIN:
+                    $categoria = "admin";
+                    break;
+            }
+            array_push($cost, $categoria);
+        }
+        return $cost;
+    }
+
+
+    /**
+     * trasforma le stringe in numeri per le categorie
+     */
+    public function reimposta_categorie($categories)
+    {
+        $cost = [];
+        foreach($categories as $valore)
+        {
+            array_push($cost, constant(strtoupper(trim($valore))));
+        }
+        return $cost;
+    }
+
 
 }

@@ -22,6 +22,8 @@ class C_Photo
         $role = $Session->get_val('role');
         $v_foto->assign('utente', $username);
         $v_foto->assign('role', $role);
+        $categorie = $v_foto->imposta_categoria();
+        $v_foto->assign('categorie', $categorie);
         if($role == \Utilities\Roles::STANDARD)
         {
             return $v_foto->fetch('upload_standard.tpl');
@@ -52,11 +54,15 @@ class C_Photo
         $id = $v_foto->getID();
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
         $photo = $foto_details[0];
-        $categories = $foto_details[1];
+        $cat = $foto_details[1];
         $user_like = $foto_details[2];
+        $v_foto->assign('commenti',$commenti);
         $v_foto->assign('foto_deteils', $photo);
+        $categories = $v_foto->imposta_categoria($cat);
         $v_foto->assign('categories', $categories);
-        $this->assegna_tasto($user_like, $v_foto, $username);
+        $this->button_like($user_like, $v_foto, $username);
+        //commenti foto vederee bene perche cosi assegna il tasto a un solo commento
+        $commenti=$this->button_remove_comments($comments, $v_foto, $username, $role);
         $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
@@ -111,7 +117,7 @@ class C_Photo
      * @param \View\V_Foto $v_foto
      * @param stirng $username
      */
-    private function assegna_tasto($user_like, $v_foto, $username)
+    private function button_like($user_like, $v_foto, $username)
     {
         $total_like = count($user_like);
         $v_foto->assign('total_like', $total_like);
@@ -123,6 +129,30 @@ class C_Photo
         {
             $v_foto->assign('attiva', $attiva = FALSE);
         }
+    }
+
+
+    /**
+     * serve per impostare il tasto remove ai commenti
+     * @param array $user_like contiene gli user che hanno messo il like alla foto
+     * @param \View\V_Foto $v_foto
+     * @param stirng $username
+     */
+    private function button_remove_comments($comments, $v_foto, $username, $role)
+    {
+        foreach($comments as $valore)
+        {
+            if(($username !== $valore["user"]) && ($role <= Utilities\Roles::PRO))
+            {
+                $add = array ("attiva" => FALSE);
+            }
+            else
+            {
+                $add = array ("attiva" => TRUE);
+            }
+            array_push($valore, $add);
+        }
+        return $comments;
     }
 
 
@@ -139,6 +169,7 @@ class C_Photo
         $desc = $dati_foto['desc'];
         $is_Reserved = $dati_foto['is_Reserved'];
         $cat = $dati_foto['cat'];
+        $categorie = $v_foto->reimposta_categorie($cat);
         $album_ID = $dati_foto['album_ID'];
         try
         {
@@ -205,13 +236,15 @@ class C_Photo
         $username = $Session->get_val('username');
         $role = $Session->get_val('role');
         $id = $v_foto->getID();
-        $album = \Foundation\F_Album::;//funzione per riotnare id e titolo album;
+        $album = \Foundation\F_Album::; //funzione per riotnare id e titolo album;
         $foto = \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
+        $v_foto->imposta_categoria($foto['categories'])
         $v_foto->assign('dati_foto', $foto);
         $v_foto->assign('album', $album);
-        if($role > \Utilities\Roles::STANDARD){
+        if($role > \Utilities\Roles::STANDARD)
+        {
             return $v_foto->fetch('modifica_foto_pro.tpl');
         }
         return $v_foto->fetch('modifica_foto.tpl');
