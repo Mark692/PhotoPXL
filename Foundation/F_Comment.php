@@ -44,22 +44,13 @@ class F_Comment extends \Foundation\F_Database
      */
     public static function get_By_Photo($photo_ID)
     {
-        $select = "*";
+        $select = array("id", "text", "user");
         $from = "comment";
         $where = array("photo" => $photo_ID);
         $limit = 0;
         $offset = 0;
         $orderBy = "id";
         parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
-    }
-
-
-    public static function update(\Entity\E_Comment $comment)
-    {
-        $update = "comment";
-        $set = array("text" => $comment->get_Text());
-        $where = array("id" => $comment->get_ID());
-        parent::update($update, $set, $where);
     }
 
 

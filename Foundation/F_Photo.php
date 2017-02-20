@@ -12,8 +12,7 @@ class F_Photo extends \Foundation\F_Database
 {
 
     /**
-     * Saves a photo object in the DB using ONLY one table instead of two.
-     * This will half the queries for "inserts" and "gets"
+     * Saves a photo object
      *
      * @param \Entity\E_Photo $photo The photo to save
      * @param \Entity\E_Photo_Blob $photo_details The blob file, its size and type
@@ -36,7 +35,7 @@ class F_Photo extends \Foundation\F_Database
             "type" => $photo_details->get_Type()
                 );
 
-        $photo_ID = parent::insert_Query($insertInto, $set); //Inserts the photo and gets its ID.
+        $photo_ID = parent::insert_Query($insertInto, $set);
         $photo->set_ID($photo_ID);
 
         //Finally inserts categories
@@ -76,6 +75,8 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives all the IDs and thumbnails of a user photos by passing its username
      *
      * @param string $username The user's username selected to get the photos from
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's photos
      */
     public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
@@ -101,7 +102,7 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
-     * @return array The selected photo, its categories and the users that liked the photo
+     * @return array The \Entity\E_Photo object photo, its uploader, fullsize and type
      */
     public static function get_By_ID($id)
     {
@@ -112,20 +113,10 @@ class F_Photo extends \Foundation\F_Database
         $photo = parent::get_One($select, $from, $where);
 
         //Retrieves the categories
-        $array_categories = self::get_Categories($id);
-        $cats = [];
-        foreach($array_categories as $v)
-        {
-            array_push($cats, intval($v["category"]));
-        }
+        $cats = self::get_Categories($id);
 
         //Retrieves the likes
-        $user_likes = self::get_TotalLikes($id);
-        $liked_By = [];
-        foreach($user_likes as $v)
-        {
-            array_push($liked_By, $v["user"]);
-        }
+        $liked_By = self::get_TotalLikes($id);
 
         $e_photo = new \Entity\E_Photo(
                 $photo["title"],
@@ -150,7 +141,7 @@ class F_Photo extends \Foundation\F_Database
      * Retrieves the IDs and thumbnails of all photos belonging to a specific album
      *
      * @param int $album_ID
-     * @param int $page_toView The number of page to view. It influences the offset
+     * @param int $page_toView The page number to view. It influences the offset
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with photo IDs and thumbnails
      */
@@ -191,13 +182,15 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Rethrives all the photos with the selected categories
      *
-     * @param array $cats The category/ies to search
+     * @param array $cats The categories to search
      * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1)
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
         $where = '';
+        //Alternate $where = `category` IN ( foreach($cats as $c) );
         for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
@@ -212,10 +205,13 @@ class F_Photo extends \Foundation\F_Database
                     .'SELECT `photo` '
                     .'FROM `cat_photo` '
                     .'WHERE '.$where
-                    .') '
-                .'ORDER BY `id` '
-                .'LIMIT '.$limit.' '
-                .'OFFSET '.$offset;
+                    .') ';
+        if($order_DESC===TRUE)
+        {
+            $query .= 'ORDER BY album.id DESC ';
+        }
+        $query .= 'LIMIT '.$limit.' '
+                 .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = $cats;
@@ -239,13 +235,7 @@ class F_Photo extends \Foundation\F_Database
      */
     private static function update_Categories($new_cats, $photo_ID)
     {
-        $old = self::get_Categories($photo_ID); //$old will be an associative array
-
-        $old_cats=[];
-        foreach($old as $sub_array)
-        {
-            array_push($old_cats, $sub_array["category"]); //Keep only the values
-        }
+        $old_cats = self::get_Categories($photo_ID);
 
         $to_add    = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
@@ -298,7 +288,7 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Removes the selected categories from the photo
      *
-     * @param enum or array $cats The category/ies to remove from the photo selected
+     * @param array $cats The category/ies to remove from the photo selected
      * @param int $photo_ID The photo to modify and remove categories from
      * @return string The query used to remove categories from the photo
      */
@@ -331,7 +321,14 @@ class F_Photo extends \Foundation\F_Database
         $select = array("category");
         $from = "cat_photo";
         $where = array("photo" => $photo_ID);
-        return parent::get_All($select, $from, $where);
+        $cats_array = parent::get_All($select, $from, $where);
+
+        $cats=[];
+        foreach($cats_array as $sub_array)
+        {
+            array_push($cats, $sub_array["category"]); //Keep only the values
+        }
+        return $cats;
     }
 
 
