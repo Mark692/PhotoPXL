@@ -34,8 +34,26 @@ class F_User_Standard extends F_User
 
         parent::insert_Query($insertInto, $set);
     }
-    
 
+
+    /**
+     * Updates the "last_Upload" and the "up_Count" of the user
+     *
+     * @param \Entity\E_User_Standard $STD_user The user uploading a photo
+     */
+    public static function update_Counters(\Entity\E_User_Standard $STD_user)
+    {
+        $update = "users";
+        $set = array(
+            "last_Upload" => $STD_user->get_Last_Upload(),
+            "up_Count" => $STD_user->get_up_Count()
+            );
+        $where = array("username" => $STD_user->get_Username());
+
+        parent::update($update, $set, $where);
+    }
+
+    
     /**
      * Upgrades the user's role to PRO
      *

@@ -13,19 +13,23 @@ namespace Foundation;
  */
 class F_User_MOD extends F_User_PRO
 {
-    
+
     /**
-     * Bans a user
+     * Bans a user if its not an Admin
      *
-     * @param string $username The user's username
+     * @param string $username The user's username to ban
      */
     public static function ban($username)
     {
-        $update = "users";
-        $set = array("role" => \Utilities\Roles::BANNED);
-        $where = array("username" => $username);
+        $user_Role = parent::get_Role($username);
+        if($user_Role !== \Utilities\Roles::ADMIN)
+        {
+            $update = "users";
+            $set = array("role" => \Utilities\Roles::BANNED);
+            $where = array("username" => $username);
 
-        parent::update($update, $set, $where);
+            parent::update($update, $set, $where);
+        }
     }
 }
 
