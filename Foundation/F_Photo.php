@@ -390,29 +390,38 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Deletes a photo from the DB
+     * Deletes a photo from the DB including its likes and comments
      *
      * @param int $photo_ID The photo ID to delete from the DB
      */
     public static function delete($photo_ID)
     {
-        $query = "DELETE FROM `photo` "
-                ."WHERE (`id`=?) ";
+        $query = 'DELETE FROM `likes` '
+                    .'INNER JOIN `comment` '
+                    .'ON likes.photo = comment.photo '
+                        .'INNER JOIN `photo` '
+                        .'ON comment.photo = photo.id '
+                .'WHERE (photo.id = ?)';
 
-        $toBind = array("id" => $photo_ID);
+        $toBind = array($photo_ID);
+
         parent::execute_Query($query, $toBind);
     }
 
 
     /**
-     * Deletes all photos whithin an album
+     * Deletes all photos within an album including their likes and comments
      *
      * @param int $album_ID The album from which we want to delete photos
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
-        $query = "DELETE FROM `photo` "
-                ."WHERE `id` in ("
+        $query = 'DELETE FROM `likes` '
+                    .'INNER JOIN `comment` '
+                    .'ON likes.photo = comment.photo '
+                        .'INNER JOIN `photo` '
+                        .'ON comment.photo = photo.id '
+                ."WHERE photo.id IN ("
                     ."SELECT `photo` "
                     ."FROM `photo_album` "
                     ."WHERE `album`=?"

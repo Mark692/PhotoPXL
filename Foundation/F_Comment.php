@@ -50,7 +50,7 @@ class F_Comment extends \Foundation\F_Database
         $limit = 0;
         $offset = 0;
         $orderBy = "id";
-        parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
+        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
     }
 
 
