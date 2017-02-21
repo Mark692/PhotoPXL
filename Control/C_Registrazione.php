@@ -28,8 +28,8 @@ class C_Registrazione
      */
     public function save_user()
     {
-        $view = new \View\V_Registazione();
-        $dati = $view->get_Dati();
+        $v_registrazione = new \View\V_Registazione();
+        $dati = $v_registrazione->get_Dati();
 
         $username = $dati['username'];
         $password = $dati['password'];
@@ -44,19 +44,19 @@ class C_Registrazione
             catch (\Exceptions\input_texts $ex)
             {
                 //Primo catch: gestire username non validi
-                $view->assign('messaggio', $ex->getMessage());
+                $v_registrazione->assign('messaggio', $ex->getMessage());
                 $this->modulo_registrazione();
             }
         }
-        catch(\Exceptions\input_texts $ex)
+        catch (\Exceptions\input_texts $ex)
         {
             //Secondo catch: gestire email non valide
-            $view->assign('messaggio', $ex->getMessage());
+            $v_registrazione->assign('messaggio', $ex->getMessage());
             $this->modulo_registrazione();
         }
 
         \Foundation\F_User::insert($e_userSTD);
-        //torna al modulo home_default per non loggati
+        return $v_registrazione->fetch('registrazione_ok');
     }
 
 
@@ -66,11 +66,10 @@ class C_Registrazione
         Switch ($V_Home->getTask())
         {
             case 'registrazione':
-                $this->modulo_registrazione();
-                break;
+                return $this->modulo_registrazione();
+
             case 'salva':
-                $this->save_user();
-                break;
+                return $this->save_user();
         }
     }
 

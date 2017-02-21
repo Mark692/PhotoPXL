@@ -38,11 +38,11 @@ class C_Login
                     $session = new \Utilities\U_Session();
                     $session->set_Valore('username', $login_info['username']);
                     $session->set_Valore('role', $login_info['role']);
-                    return $C_Home->Set_page();
+                    return $C_Home->Set_page(); //ritorna la home da loggato ovviamente
                 }
                 else
                 {
-                    $v_Login->assign('messaggio password', 'Password Sbagliata ');
+                    $v_Login->assign('messaggio password', 'Password Sbagliata');
                     return$this->modulo_login();
                 }
             }
@@ -119,5 +119,20 @@ class C_Login
     }
 
 
+    public function smista()
+    {
+        $V_Login = new \View\V_Login();
+        switch ($V_Login->getTask())
+        {
+
+            case 'login':
+                return $this->check_user_pass();
+            case 'logout':
+                return $this->logout());
+            case 'modulo_login':
+                return $this->modulo_login();
+                break;
+        }
+    }
+
     
-}

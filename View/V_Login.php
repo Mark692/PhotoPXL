@@ -10,7 +10,6 @@ namespace View;
 
 class V_Login extends \View\V_Basic
 {
-
     /**
      * Grazie a questa funzione all'interno della variabile $dati_log vengono
      * registrati tutti i dati inviati tramite POST dal modulo di login
@@ -22,4 +21,6 @@ class V_Login extends \View\V_Basic
         $keys = array ('username', 'nonce');
         return parent::get_Dati($keys);
     }
+
+
 }

@@ -177,7 +177,9 @@ class C_Photo
                 {
                     $errore = $this->save_photo($dati_foto);
                     if($errore === [])
-                    {
+                    {   
+                        $photo_blob = new \Entity\E_Photo_Blob();
+                        $photo = $photo_blob->generate($dati_foto['tmp_name'], $dati_foto['size'], $dati_foto['type']);
                         \Foundation\F_Photo::insert($photo_details, $photo, $username);
                         \Foundation\F_Photo::move_To($album_ID, $photo_ID);
                     }
@@ -243,7 +245,7 @@ class C_Photo
                     try
                     {
                         $photo_blob = new \Entity\E_Photo_Blob();
-                        $photo = $photo_blob->generate($path, $size, $type);
+                        $photo = $photo_blob->generate($dati_foto['tmp_name'], $dati_foto['size'], $dati_foto['type']);
                     }
                     catch(\Exceptions\photo_details $ex)
                     {
