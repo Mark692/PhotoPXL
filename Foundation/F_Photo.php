@@ -396,6 +396,13 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function delete($photo_ID)
     {
+        $album_ID = self::check_LastOne($photo_ID);
+        if($album_ID!==FALSE)
+        {
+            \Foundation\F_Album::update_Cover($album_ID);
+        }
+
+        //Deletes the photo
         $query = 'DELETE FROM `likes` '
                     .'INNER JOIN `comment` '
                     .'ON likes.photo = comment.photo '
@@ -416,6 +423,11 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
+
+        //Sets the default cover for the empty album
+        \Foundation\F_Album::update_Cover($album_ID);
+
+        //Deletes the album photos
         $query = 'DELETE FROM `likes` '
                     .'INNER JOIN `comment` '
                     .'ON likes.photo = comment.photo '
@@ -440,9 +452,43 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function move_To($album_ID, $photo_ID)
     {
+        $album_ID = self::check_LastOne($photo_ID);
+        if($album_ID!==FALSE)
+        {
+            \Foundation\F_Album::update_Cover($album_ID);
+        }
+
         $update = "photo_album";
         $set = array("album" => $album_ID);
         $where = array("photo" => $photo_ID);
         parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Checks whether this photo is the last photo of its album
+     *
+     * @param int $photo_ID The photo to check
+     * @return mixed Returns "int": the album ID if the photo is the last one
+     *               Returns "boolean" FALSE: the photo is not the last one in the album
+     */
+    private static function check_LastOne($photo_ID)
+    {
+        //Checks whether this photo is the last photo of its album
+        //if TRUE then sets the default cover for the album
+        $select = array("album");
+        $from = "photo_album";
+        $where = array("photo" => $photo_ID);
+        $album_ID = parent::get_One($select, $from, $where);
+
+        $count = "photo";
+        $where = '`album` = ?';
+        $count = parent::count($count, $from, $where, $album_ID);
+
+        if($count===1)
+        {
+            return $album_ID;
+        }
+        return FALSE;
     }
 }

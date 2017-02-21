@@ -240,7 +240,7 @@ class C_Photo
         $foto = \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
-        $v_foto->imposta_categoria($foto['categories'])
+        $v_foto->imposta_categoria($foto['categories']);
         $v_foto->assign('dati_foto', $foto);
         $v_foto->assign('album', $album);
         if($role > \Utilities\Roles::STANDARD)
@@ -279,9 +279,9 @@ class C_Photo
         $V_Foto = new \View\V_Foto;
         $id = $V_Foto->getID();
         \Foundation\F;
-        
+
     }
-    
+
     public function smista()
     {
         $V_Photo = new \View\V_Profilo();
