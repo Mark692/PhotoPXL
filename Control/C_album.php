@@ -63,6 +63,7 @@ class C_Album
         if($thumbnail['tot_photo'] !== 0)
         {
             $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
+            $v_Album->assign('id', $thumbnail['id']);
             $v_Album->assign('thumbnail', $thumbnail['thumbnail']);
             $v_Album->assign('page_tot', $page_tot);
         }
@@ -74,7 +75,6 @@ class C_Album
         $v_Album->assign('description', $album_details['description']);
         $categorie = $v_Album->imposta_categoria($album_details['categories']); //dal numero alla stringa
         $v_Album->assign('categories', $album_details['categories']);
-        $v_Album->assign('id_thumbnail', $thumbnail['id']);
         if($album_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
@@ -122,19 +122,32 @@ class C_Album
     }
 
 
+    /**
+     * funzione per elimanre un album
+     */
+    public function delete_album()
+    {
+        $v_Album = new \View\V_Album();
+        $album_id = $v_Album->get_ID_Album();
+        \Foundation\F_Album::delete($album_ID);
+        $c_profilo = new \Control\C_Profilo();
+        return $c_profilo->display_user();
+    }
+
+
     public function smista()
     {
         $v_Album = new \View\V_Profilo();
         switch ($v_Album->getTask())
         {
             case 'Modulo_Crea_Album';
-                return $this->crea_album();
-            case 'display_Album':
+                return $this->modulo_Crea_Album();
+            case 'Display_Album':
                 return $this->display_photo_album();
-                break;
             case 'Crea_Album':
-                $this->crea_album();
-                break;
+                return $this->crea_album();
+            case 'Elimina Album':
+                return $this->delete_album();
         }
     }
 
