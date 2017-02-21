@@ -164,17 +164,42 @@ class C_Photo
         $session = new \Utilities\U_Session;
         $username = $session->get_val('username');
         $v_foto = new \View\V_Foto();
-        $dati_foto = $v_foto->get_Dati();//mi dovrebbe tornare tre array contententi le tre foto 
         $user = \Foundation\F_User::get_UserDetails($username);
         if($user->can_Upload() === TRUE)
         {
-            $this->save_photo();
+            $keys1 = array ('foto1', 'foto2', 'foto3');
+            $errori = [];
+//    $keys2= array ('title','desc','is_reserved','cat','album_ID','tmp_name','size','type');
+            foreach($keys1 as $dato1)
+            {
+                $dati_foto = array_merge($_REQUEST[$dato1], $_FILES[$dato1]);
+                if($dati_foto !== NULL)
+                {
+                    $errore = $this->save_photo($dati_foto);
+                    if($errore === [])
+                    {
+                        \Foundation\F_Photo::insert($photo_details, $photo, $username);
+                        \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+                    }
+                    else
+                    {
+                        array_push($errori[$dato1], $errore);
+                    }
+                }
+            }
+            if($errori !== [])
+            {
+                $v_foto->assign('messaggio', $errori); //foreach su smarty
+                $this->modulo_upload();
+            }
             if($user->getRole() === \Utilities\Roles::STANDARD)
             {
                 $user->add_up_Count();
                 $user->set_Last_Upload(time());
                 \Foundation\F_User_Standard::update_Counters($user);
             }
+            $c_profilo = new \Control\C_Profilo();
+            return $c_profilo->display_user();
         }
         else
         {
@@ -184,7 +209,12 @@ class C_Photo
     }
 
 
-    public function save_photo($dati_foto)
+    /**
+     * funzione per il controlo degli errori durante il caricamento di una foto
+     * @param type $dati_foto
+     * @return type array
+     */
+    private function error_photo($dati_foto)
     {
         $title = $dati_foto['title'];
         $desc = $dati_foto['desc'];
@@ -199,12 +229,11 @@ class C_Photo
         catch (\Exceptions\input_texts $ex)
         {
             //Catch per il titolo
-            $v_foto->assign('messaggio', $ex->getMessage());
-            $this->modulo_upload();
+            array_push($errore, $ex->getMessage());
         }
         $type = $dati_foto['type'];
         $size = $dati_foto['size'];
-        $path= $dati_foto['tmp_name'];
+        $path = $dati_foto['tmp_name'];
         if($dati_foto['error'] == 0)
         {
             if($type == 'image/jpeg' && $type == 'image/jpg' && $type == 'image/png')
@@ -213,37 +242,32 @@ class C_Photo
                 {
                     try
                     {
-                        $photo_blob=new \Entity\E_Photo_Blob();
-                        $photo=$photo_blob->generate($path, $size, $type);
+                        $photo_blob = new \Entity\E_Photo_Blob();
+                        $photo = $photo_blob->generate($path, $size, $type);
                     }
                     catch (\Exceptions\photo_details $ex)
                     {
                         //Primo catch: Percorso immagine non valido
-                        $v_foto->assign('messaggio', $ex->getMessage());
-                        $this->modulo_upload();
+                        array_push($errore, $ex->getMessage());
                     }
                 }
                 catch (\Exceptions\photo_details $ex)
                 {
-                    //Primo catch: Dimensione immagine troppo grande
-                    $v_foto->assign('messaggio', $ex->getMessage());
-                    $this->modulo_upload();
+                    //Secondo catch: Dimensione immagine troppo grande
+                    array_push($errore, $ex->getMessage());
                 }
-
-                \Foundation\F_Photo::insert($photo_details, $photo, $username);
-                \Foundation\F_Photo::move_To($album_ID, $photo_ID);
             }
             else
             {
-                $v_foto->assign('messaggio', 'Formato errato, sono ammessi formati .jpg, .png, .jpeg. Riprova!');
-                $this->modulo_upload();
+                array_push($errore, 'Formato errato, sono ammessi formati .jpg, .png, .jpeg. Riprova!');
             }
         }
         else
         {
-            $v_foto->assign('messaggio', 'Errone nel caricamento della foto. Riprova!');
-            $this->modulo_upload();
+            array_push($errore, 'Errone nel caricamento della foto. Riprova!');
         }
+        }
+        return $errore;
     }
 
 
@@ -286,22 +310,34 @@ class C_Photo
         $cat = $dati_foto['cat'];
         $categories = $V_Foto->reimposta_categorie($cat);
         $album_ID = $dati_foto['album_ID'];
-        $foto = new \Entity\E_Photo($title, $desc, $is_Reserved, $categories);
+        try
+        {
+            $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+        }
+        catch (\Exceptions\input_texts $ex)
+        {
+            //Catch per il titolo
+            $V_Foto->assign('messaggio', $ex->getMessage());
+            $V_Foto->assign('id', $id);
+            return $this->modifica();
+        }
         $foto->set_ID($id);
         \Foundation\F_Photo::update($foto);
         \Foundation\F_Photo::move_To($album_ID, $photo_ID);
-        $this->display_photo();
+        return $this->display_photo();
     }
 
 
     /**
      * funzione per elimanre una foto
      */
-    public function elimina_foto()
+    public function delete_foto()
     {
         $V_Foto = new \View\V_Foto;
         $id = $V_Foto->getID();
-        \Foundation\F;
+        \Foundation\F_Photo::delete($id);
+        $c_profilo = new \Control\C_Profilo();
+        return $c_profilo->display_user();
     }
 
 

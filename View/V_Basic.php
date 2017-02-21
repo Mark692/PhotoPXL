@@ -45,17 +45,7 @@ class V_Basic extends \Smarty
     }
 
 
-    /**
-     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
-     * superglobale $_REQUEST
-     */
-    public function getID()
-    {
-        if(isset($_REQUEST['id']))
-        {
-            return $_REQUEST['id'];
-        }
-    }
+    
 
 
     /**
