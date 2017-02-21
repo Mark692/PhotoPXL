@@ -20,6 +20,23 @@ var_dump($zeroResult);
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 echo("Count: ".count($zeroResult));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+if($zeroResult===[])
+{
+    echo("ZeroResult è === []");
+}
+elseif($zeroResult!==[])
+{
+    echo("ZeroResult è !== [] :(");
+}
+else
+{
+    echo("Boh, non so che è sta roba");
+}
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+
 
 
 

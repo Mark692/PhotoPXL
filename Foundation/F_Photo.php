@@ -402,7 +402,6 @@ class F_Photo extends \Foundation\F_Database
             \Foundation\F_Album::update_Cover($album_ID);
         }
 
-        //Deletes the photo
         $query = 'DELETE FROM `likes` '
                     .'INNER JOIN `comment` '
                     .'ON likes.photo = comment.photo '
@@ -445,7 +444,8 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Moves a photo to another album
+     * Moves a photo to another album and sets a default cover for the album if
+     * it would be empty after the move
      *
      * @param int $album_ID The new album ID to move to photo to
      * @param int $photo_ID The photo to move
@@ -469,25 +469,25 @@ class F_Photo extends \Foundation\F_Database
      * Checks whether this photo is the last photo of its album
      *
      * @param int $photo_ID The photo to check
-     * @return mixed Returns "int": the album ID if the photo is the last one
-     *               Returns "boolean" FALSE: the photo is not the last one in the album
+     * @return mixed - "int": the album ID if the photo is the last one
+     *               - "boolean" FALSE: The photo is not the last one in the album
+     *                                  OR the photo is not in any album
      */
     private static function check_LastOne($photo_ID)
     {
-        //Checks whether this photo is the last photo of its album
-        //if TRUE then sets the default cover for the album
         $select = array("album");
         $from = "photo_album";
         $where = array("photo" => $photo_ID);
         $album_ID = parent::get_One($select, $from, $where);
-
-        $count = "photo";
-        $where = '`album` = ?';
-        $count = parent::count($count, $from, $where, $album_ID);
-
-        if($count===1)
+        if($album_ID!==[])
         {
-            return $album_ID;
+            $count = "photo";
+            $where = '`album` = ?';
+            $count = parent::count($count, $from, $where, $album_ID);
+            if($count===1)
+            {
+                return $album_ID;
+            }
         }
         return FALSE;
     }
