@@ -144,11 +144,11 @@ class C_Photo
         {
             if(($username !== $valore["user"]) && ($role <= Utilities\Roles::PRO))
             {
-                $add = array ("attiva" => FALSE);
+                $add = array("attiva" => FALSE);
             }
             else
             {
-                $add = array ("attiva" => TRUE);
+                $add = array("attiva" => TRUE);
             }
             array_push($valore, $add);
         }
@@ -167,7 +167,7 @@ class C_Photo
         $user = \Foundation\F_User::get_UserDetails($username);
         if($user->can_Upload() === TRUE)
         {
-            $keys1 = array ('foto1', 'foto2', 'foto3');
+            $keys1 = array('foto1', 'foto2', 'foto3');
             $errori = [];
 //    $keys2= array ('title','desc','is_reserved','cat','album_ID','tmp_name','size','type');
             foreach($keys1 as $dato1)
@@ -226,7 +226,7 @@ class C_Photo
         {
             $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         }
-        catch (\Exceptions\input_texts $ex)
+        catch(\Exceptions\input_texts $ex)
         {
             //Catch per il titolo
             array_push($errore, $ex->getMessage());
@@ -245,13 +245,13 @@ class C_Photo
                         $photo_blob = new \Entity\E_Photo_Blob();
                         $photo = $photo_blob->generate($path, $size, $type);
                     }
-                    catch (\Exceptions\photo_details $ex)
+                    catch(\Exceptions\photo_details $ex)
                     {
                         //Primo catch: Percorso immagine non valido
                         array_push($errore, $ex->getMessage());
                     }
                 }
-                catch (\Exceptions\photo_details $ex)
+                catch(\Exceptions\photo_details $ex)
                 {
                     //Secondo catch: Dimensione immagine troppo grande
                     array_push($errore, $ex->getMessage());
@@ -313,7 +313,7 @@ class C_Photo
         {
             $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         }
-        catch (\Exceptions\input_texts $ex)
+        catch(\Exceptions\input_texts $ex)
         {
             //Catch per il titolo
             $V_Foto->assign('messaggio', $ex->getMessage());
@@ -338,10 +338,12 @@ class C_Photo
         $c_profilo = new \Control\C_Profilo();
         return $c_profilo->display_user();
     }
+
+
     public function smista()
     {
         $V_Photo = new \View\V_Profilo();
-        switch ($V_Photo->getTask())
+        switch($V_Photo->getTask())
         {
             case 'modulo_upload';
                 return $this->modulo_upload();
