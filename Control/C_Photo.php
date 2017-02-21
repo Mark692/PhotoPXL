@@ -56,13 +56,13 @@ class C_Photo
         $photo = $foto_details[0];
         $cat = $foto_details[1];
         $user_like = $foto_details[2];
+        $commenti= \Foundation\F_Comment::get_By_Photo($id);
+        $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
         $v_foto->assign('commenti', $commenti);
         $v_foto->assign('foto_deteils', $photo);
         $categories = $v_foto->imposta_categoria($cat);
         $v_foto->assign('categories', $categories);
         $this->button_like($user_like, $v_foto, $username);
-        //commenti foto vederee bene perche cosi assegna il tasto a un solo commento
-        $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
         $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
@@ -134,9 +134,9 @@ class C_Photo
 
     /**
      * serve per impostare il tasto remove ai commenti
-     * @param array $user_like contiene gli user che hanno messo il like alla foto
+     * @param array $comments contiene gli user che hanno messo il like alla foto
      * @param \View\V_Foto $v_foto
-     * @param stirng $username
+     * @param stirng 
      */
     private function button_remove_comments($comments, $v_foto, $username, $role)
     {
@@ -144,11 +144,11 @@ class C_Photo
         {
             if(($username !== $valore["user"]) && ($role <= Utilities\Roles::PRO))
             {
-                $add = array ("attiva" => FALSE);
+                $add = array("attiva" => FALSE);
             }
             else
             {
-                $add = array ("attiva" => TRUE);
+                $add = array("attiva" => TRUE);
             }
             array_push($valore, $add);
         }
@@ -167,7 +167,7 @@ class C_Photo
         $user = \Foundation\F_User::get_UserDetails($username);
         if($user->can_Upload() === TRUE)
         {
-            $keys1 = array ('foto1', 'foto2', 'foto3');
+            $keys1 = array('foto1', 'foto2', 'foto3');
             $errori = [];
 //    $keys2= array ('title','desc','is_reserved','cat','album_ID','tmp_name','size','type');
             foreach($keys1 as $dato1)
@@ -226,7 +226,7 @@ class C_Photo
         {
             $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         }
-        catch (\Exceptions\input_texts $ex)
+        catch(\Exceptions\input_texts $ex)
         {
             //Catch per il titolo
             array_push($errore, $ex->getMessage());
@@ -245,13 +245,13 @@ class C_Photo
                         $photo_blob = new \Entity\E_Photo_Blob();
                         $photo = $photo_blob->generate($path, $size, $type);
                     }
-                    catch (\Exceptions\photo_details $ex)
+                    catch(\Exceptions\photo_details $ex)
                     {
                         //Primo catch: Percorso immagine non valido
                         array_push($errore, $ex->getMessage());
                     }
                 }
-                catch (\Exceptions\photo_details $ex)
+                catch(\Exceptions\photo_details $ex)
                 {
                     //Secondo catch: Dimensione immagine troppo grande
                     array_push($errore, $ex->getMessage());
@@ -265,7 +265,6 @@ class C_Photo
         else
         {
             array_push($errore, 'Errone nel caricamento della foto. Riprova!');
-        }
         }
         return $errore;
     }
@@ -285,7 +284,7 @@ class C_Photo
         $foto = \Foundation\F_Photo::get_By_ID($id);
         $v_foto->assign('username', $username);
         $v_foto->assign('role', $role);
-        $v_foto->imposta_categoria($foto['categories'])
+        $v_foto->imposta_categoria($foto['categories']);
         $v_foto->assign('dati_foto', $foto);
         $v_foto->assign('album', $album);
         if($role > \Utilities\Roles::STANDARD)
@@ -314,7 +313,7 @@ class C_Photo
         {
             $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
         }
-        catch (\Exceptions\input_texts $ex)
+        catch(\Exceptions\input_texts $ex)
         {
             //Catch per il titolo
             $V_Foto->assign('messaggio', $ex->getMessage());

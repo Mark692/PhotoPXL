@@ -32,13 +32,36 @@ class F_Album extends \Foundation\F_Database
         $album_ID = parent::insert_Query($insertInto, $set);
         $album->set_ID($album_ID);
 
-        //Finally inserts categories
+        //Inserts categories
         $cats = $album->get_Categories();
         if($cats!==[])
         {
             $query = self::query_addCats($cats, $album_ID);
             parent::execute_Query($query, $cats);
         }
+
+        //Sets a basic cover for the album
+        self::insert_Cover($album_ID);
+    }
+
+
+    /**
+     * Sets the album cover. If no photo has been selected, a default photo
+     * will be chosen
+     *
+     * @param int $album_ID The album ID to set the cover to
+     * @param int $photo_ID The photo ID
+     */
+    private static function insert_Cover($album_ID, $photo_ID=1)
+    {
+        $insertInto = "album_cover";
+
+        $set = array(
+            "album" => $album_ID,
+            "photo" => $photo_ID
+                );
+
+        parent::insert_Query($insertInto, $set);
     }
 
 
@@ -47,7 +70,7 @@ class F_Album extends \Foundation\F_Database
      *
      * @param \Entity\E_Album $to_Update The new Album object to save
      */
-    public static function update(\Entity\E_Album $to_Update)
+    public static function update_Details(\Entity\E_Album $to_Update)
     {
         $id = $to_Update->get_ID();
         $update = "album";
@@ -62,6 +85,22 @@ class F_Album extends \Foundation\F_Database
 
         $cats = $to_Update->get_Categories();
         self::update_Categories($cats, $id);
+    }
+
+
+    /**
+     * Updates the album cover
+     *
+     * @param int $album_ID The album ID to update
+     * @param int $photo_ID The new cover chosen for the album
+     */
+    public static function update_Cover($album_ID, $photo_ID=1)
+    {
+        $update = "album_cover";
+        $set = array("photo" => $photo_ID);
+        $where = array("album" => $album_ID);
+
+        parent::update($update, $set, $where);
     }
 
 

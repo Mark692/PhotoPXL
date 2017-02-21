@@ -17,7 +17,10 @@ class V_Amministratore extends \View\V_Basic
      */
     public function get_dati()
     {
-        $keys = array ('username','page_toView', 'page_tot','role');
+        //'bannati' mi riporta i nomi degli utenti bannati che sono stati selezionati
+        //nel tpl dovrò inserire nella <input type="checkbox" name='bannati' valure='$username'/>$username </ br>
+        
+        $keys = array ('bannati','page_toView', 'page_tot','username','role');
         return parent::get_Dati($keys);
     }
 
