@@ -17,7 +17,7 @@ class C_Profilo
      */
     public function display_user()
     {
-
+        
         $V_Profilo = new \View\V_Profilo;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
@@ -39,6 +39,7 @@ class C_Profilo
             $page_tot = ceil($array_album['photo_tot'] / PHOTOS_PER_PAGE);
             $V_Profilo->assign('page_tot', $page_tot);
             $V_Profilo->assign('id_thumbnail', $array_album['id']);
+            $V_Profilo->assign('page_toView', $page_toView);
             $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
         }
         else
@@ -63,7 +64,7 @@ class C_Profilo
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
-        $array_post = $V_Profilo->getdati('username', 'page_toView', 'page_tot', 'order');
+        $array_post = $V_Profilo->getdati();
         $page_toView = $array_post['page_toView'];
         if($page_toView == NULL)
         {
@@ -81,6 +82,7 @@ class C_Profilo
             $V_Profilo->assign('page_tot', $page_tot);
             $V_Profilo->assign('id_thumbnail', $array_album['id']);
             $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+            $V_Profilo->assign('page_toView', $page_toView);
         }
         else
         {
@@ -98,7 +100,7 @@ class C_Profilo
     public function modifica_dati()
     {
         $V_Profilo = new \View\V_Profilo;
-        $user_details = $V_Profilo->get_Dati('username', 'email');
+        $user_details = $V_Profilo->get_Dati();
         $V_Profilo->assign('utente', $user_details);
         //recupero foto profilo
         $V_Profilo->assign('foto_profilo', $user_details['photo']);
@@ -149,7 +151,7 @@ class C_Profilo
     public function update_profile_pic()
     {
         $v_Profilo = new \View\V_Profilo;
-        $dati = $v_Profilo->get_Dati();
+        $dati_foto= $v_Profilo->get_Dati();
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $type = $dati_foto['type'];
@@ -217,7 +219,7 @@ class C_Profilo
     public function modifica_profile_pic()
     {
         $V_Profilo = new \View\V_Profilo;
-        $user_details = $V_Profilo->get_Dati('username', 'email');
+        $user_details = $V_Profilo->get_Dati();
         $V_Profilo->assign('utente', $user_details);
         $V_Profilo->assign('foto_profilo', $user_details['photo']);
         $V_Profilo->assign('utente', $user_details);

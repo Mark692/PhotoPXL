@@ -343,7 +343,7 @@ class C_Photo
 
     public function smista()
     {
-        $V_Photo = new \View\V_Profilo();
+        $V_Photo = new \View\V_Foto();
         switch ($V_Photo->getTask())
         {
             case 'modulo_upload';

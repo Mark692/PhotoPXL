@@ -1,18 +1,14 @@
 <?php
 
-/*
+/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-/**
- * @access public
- * @package View
- */
 
 namespace View;
 
-class V_Profilo extends \View\V_Basic
+class V_Mod extends \View\V_Basic
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono
@@ -20,9 +16,9 @@ class V_Profilo extends \View\V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public function get_dati()
     {
-        $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email','tmp_name','size','type');
+        $keys = array ('username','page_toView', 'page_tot');
         return parent::get_Dati($keys);
     }
 

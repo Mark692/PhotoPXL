@@ -63,3 +63,6 @@ define("FULL_HEIGHT",1600);//Altezza Fullsize
 
 //-----Tempo di scadenza della sessione-----\\
 define("MAX_TIME_SESSION",2592000);
+
+//-----Username per pagina-----\\
+define("USER_PER_PAGE", 100);
