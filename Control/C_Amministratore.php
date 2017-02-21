@@ -137,6 +137,10 @@ class C_Amministartore
                 return $this->modulo_banna();
             case 'ban':
                 return $this->ban();
+            case 'modulo_cambia_ruolo';
+                return $this->modulo_cambiaruolo();
+            case 'cambia_ruolo';
+                return $this->change_role();
         }
     }
 
