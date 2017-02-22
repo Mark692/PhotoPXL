@@ -24,10 +24,12 @@ class F_User_MOD extends F_User_PRO
      */
     public static function get_UsersList($pageToView, $starts_With = '', $limit_PerPage = 100)
     {
+        $offset = ($pageToView - 1) * $limit_PerPage;
+
         $query = 'SELECT `username` '
                 .'FROM `users` ';
 
-        $len = count($starts_With);
+        $len = strlen($starts_With);
         if($len>0)
         {
             $query .= 'WHERE LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
@@ -36,11 +38,10 @@ class F_User_MOD extends F_User_PRO
         {
             $query .= 'WHERE 1 ';
         }
-        $query .= 'LIMIT ? '
-                .'OFFSET ?';
-
-        $offset = ($pageToView - 1) * $limit_PerPage;
-        $toBind = array($limit_PerPage, $offset);
+        $query .= 'LIMIT '.$limit_PerPage.' '
+                .'OFFSET '.$offset;
+        
+        $toBind = [];
         $fetchAll = TRUE;
         $users_array = parent::fetch_Result($query, $toBind, $fetchAll);
         $users = [];
@@ -53,8 +54,9 @@ class F_User_MOD extends F_User_PRO
         $from = "users";
         $where = "1";
         $tot = parent::count($count, $from, $where);
+        $total = array("total_inDB" => $tot);
 
-        return array_merge($users, array("total_found" => $tot));
+        return array_merge($users, $total);
     }
 
 

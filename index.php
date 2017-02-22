@@ -14,29 +14,11 @@ require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPET
 
 //------------------------------PROVE------------------------------//
 //echo(nl2br("\r\n"));
-$zeroResult = \Foundation\F_Comment::get_By_Photo("99");
-echo("Var Dump: ");
-var_dump($zeroResult);
-echo(nl2br("\r\n"));
-echo(nl2br("\r\n"));
-echo("Count: ".count($zeroResult));
-echo(nl2br("\r\n"));
-echo(nl2br("\r\n"));
-if($zeroResult===[])
-{
-    echo("ZeroResult è === []");
-}
-elseif($zeroResult!==[])
-{
-    echo("ZeroResult è !== [] :(");
-}
-else
-{
-    echo("Boh, non so che è sta roba");
-}
-echo(nl2br("\r\n"));
-echo(nl2br("\r\n"));
+//$pd = new \Entity\E_Photo_Blob();
+//$percorso = ".".DIRECTORY_SEPARATOR."TTGL.jpg";
+//$pd->generateThumbnail($percorso);
 
+phpinfo();
 
 
 

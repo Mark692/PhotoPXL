@@ -88,11 +88,15 @@ class E_Comment
      * Used to check whether the input comment uses UTF-8 chars
      *
      * @param string $text The text to evaluate
-     * @return bool Whether the comment uses UTF-8 chars only
+     * @return bool Whether the comment uses UTF-8 chars only and is less than 2000 chars
      */
     private function check_Text($text)
     {
-        return mb_check_encoding($text, 'UTF-8');
+        if(strlen($text)<=MAX_COMMENT_CHARS)
+        {
+            return mb_check_encoding($text, 'UTF-8');
+        }
+        return FALSE;
     }
 
 

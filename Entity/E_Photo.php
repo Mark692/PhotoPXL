@@ -127,14 +127,18 @@ class E_Photo
      * Checks whether the title is a valid entry
      *
      * @param string $title The photo title input
-     * @return bool Whether the title has only a-zA-Z0-9 and the $allowed chars
+     * @return bool Whether the title has only a-zA-Z0-9, the $allowed chars and a length of [3, 30] chars
      */
     private function check_Title($title)
     {
-        $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside a photo title
-        if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        if(strlen($title)>=MIN_TITLE_CHARS
+                && strlen($title)<=MAX_TITLE_CHARS)
         {
-            return TRUE;
+            $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
+            if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
+            {
+                return TRUE;
+            }
         }
         return FALSE;
     }
@@ -166,11 +170,15 @@ class E_Photo
      * Used to check whether the input description uses UTF-8 chars
      *
      * @param string $desc The description to evaluate
-     * @return bool Whether the description uses UTF-8 chars only
+     * @return bool Whether the description uses UTF-8 chars only and has less than 500 chars
      */
     private function check_Description($desc)
     {
-        return mb_check_encoding($desc, 'UTF-8');
+        if(strlen($desc)<=MAX_DESCRIPTION_CHARS)
+        {
+            return mb_check_encoding($desc, 'UTF-8');
+        }
+        return FALSE;
     }
 
 

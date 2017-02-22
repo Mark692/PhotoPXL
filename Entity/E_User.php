@@ -15,7 +15,7 @@ namespace Entity;
 class E_User
 {
     private $username;
-    private $password;
+    private $hashedPassword;
     private $email;
 
     /** @type enum The user role */
@@ -36,7 +36,7 @@ class E_User
             throw new \Exceptions\input_texts(0, $username);
         }
         $this->set_Username($username);
-        $this->set_Password($password);
+        $this->set_hashedPassword($password);
 
         if($this->check_Email($email) === FALSE)
         {
@@ -76,10 +76,14 @@ class E_User
      */
     private function check_Username($username)
     {
-        $allowed = array('-', '_', '.'); //Allows -_. inside a Username
-        if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
+        if(strlen($username)>=MIN_USERNAME_CHARS
+                && strlen($username)<=MAX_USERNAME_CHARS)
         {
-            return TRUE;
+            $allowed = array('-', '_', '.'); //Allows -_. inside a Username
+            if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
+            {
+                return TRUE;
+            }
         }
         return FALSE;
     }
@@ -90,9 +94,9 @@ class E_User
      *
      * @param string $pass The user's hash('sha512', password)
      */
-    public function set_Password($pass)
+    public function set_hashedPassword($pass)
     {
-        $this->password = $pass;
+        $this->hashedPassword = $pass;
     }
 
 
@@ -102,7 +106,7 @@ class E_User
      * @param string $pass2hash The password in clear text to hash before save it
      * @return string The hashed password
      */
-    public static function hash_of($pass2hash)
+    public function hash_of($pass2hash)
     {
         return hash('sha512', $pass2hash);
     }
@@ -115,7 +119,7 @@ class E_User
      */
     public function get_Password()
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
 

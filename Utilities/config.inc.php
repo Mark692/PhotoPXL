@@ -47,6 +47,19 @@ define("SPORT", 8);
 define("UPLOAD_STD_LIMIT", 10);
 
 
+
+//----Input important text----\\
+define("MIN_TITLE_CHARS", 3);
+define("MAX_TITLE_CHARS", 30);
+define("MAX_DESCRIPTION_CHARS", 500);
+
+define("MIN_USERNAME_CHARS", 3);
+define("MAX_USERNAME_CHARS", 20);
+
+define("MAX_COMMENT_CHARS", 2000);
+
+
+
 //----Photo's Details----\\
 define("PHOTOS_PER_ROW", 4);
 define("PHOTOS_PER_PAGE", 16);
