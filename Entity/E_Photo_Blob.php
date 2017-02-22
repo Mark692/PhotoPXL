@@ -12,100 +12,84 @@ namespace Entity;
 
 class E_Photo_Blob
 {
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
 
-    function generate_Thumbnail($source_Path, $dest_Path, $THUMB_width, $THUMB_height, $crop = 0)
+    /**
+     * Resizes an image. Used to generate Thumbnails and standardized Full Size images
+     *
+     * @param string $source_Path The source patht to get the image from
+     * @param string $dest_Path The destination path where to output the resized image
+     * @param int $MAX_WIDTH The desired resize width
+     * @param int $MAX_HEIGHT The desired resize height
+     * @return image The resized image. Returns FALSE in case of failure
+     */
+    function generate_ResizedImage($source_Path, $dest_Path, $MAX_WIDTH, $MAX_HEIGHT)
     {
-        //The return value is the same value that getimagesize() returns in index 2 but exif_imagetype() is much faster
-        $type = exif_imagetype($source_Path);
+        list($w, $h) = getImageSize($source_Path);
+        list($new_W, $new_H) = $this->resize($w, $h, $MAX_WIDTH, $MAX_HEIGHT);
+        $thumbnail = imageCreateTrueColor($new_W, $new_H);
+
+        //Note about exif_imagetype:
+        //"The return value is the same value that getimagesize() returns in index 2 but exif_imagetype() is much faster"
+        $type = exif_ImageType($source_Path);
         if($type !== FALSE)
         {
             switch($type)
             {
                 case IMAGETYPE_JPEG:
-                    $img = imagecreatefromjpeg($source_Path);
+                    $img = imageCreateFromJPEG($source_Path);
+                    imageCopyResampled($thumbnail, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
+                    imageJPEG($thumbnail, $dest_Path);
                     break;
 
                 case IMAGETYPE_PNG:
-                    $img = imagecreatefrompng($source_Path);
+                    $img = imageCreateFromPNG($source_Path);
+                    imageCopyResampled($thumbnail, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
+                    $this->preserve_PNG_Transparency($thumbnail);
+                    imagePNG($thumbnail, $dest_Path);
                     break;
 
                 default:
                     return FALSE;
             }
         }
-
-        list($SOURCE_Width, $SOURCE_Height) = getimagesize($source_Path);
-
+    }
 
 
-        // resize
-        if($crop)
+    private function resize($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
+    {
+        //Image is bigger than the MAX
+        if($height > $MAX_HEIGHT && $width > $MAX_WIDTH)
         {
-            $ratio = floor(FULL_WIDTH / $width);
-            $width_new = $ratio * $width;
-            $height_new = $ratio * $THUMB_height;
-
-
-
-
-
-
-
-
-
-
-
-            if($SOURCE_Width < $THUMB_width or $SOURCE_Height < $THUMB_height)
+            $ratio = $width / $height;
+            if($ratio > 1) //Image is horizontal
             {
-                return "Picture is too small!";
+                $new_W = $MAX_WIDTH;
+                $new_H = floor($new_W / $ratio);
             }
-            $ratio = max($THUMB_width / $SOURCE_Width, $THUMB_height / $SOURCE_Height);
-            $SOURCE_Height = $THUMB_height / $ratio;
-            $x = ($SOURCE_Width - $THUMB_width / $ratio) / 2;
-            $SOURCE_Width = $THUMB_width / $ratio;
-        }
-        else
-        {
-            if($SOURCE_Width < $THUMB_width and $SOURCE_Height < $THUMB_height)
+            else //Image is vertical or squared
             {
-                return "Picture is too small!";
+                $new_H = $MAX_HEIGHT;
+                $new_W = floor($new_H * $ratio);
             }
-            $ratio = min($THUMB_width / $SOURCE_Width, $THUMB_height / $SOURCE_Height);
-            $THUMB_width = $SOURCE_Width * $ratio;
-            $THUMB_height = $SOURCE_Height * $ratio;
-            $x = 0;
         }
-
-        $new = imagecreatetruecolor($THUMB_width, $THUMB_height);
-
-        // preserve transparency
-        if($type === IMAGETYPE_PNG)
+        else //Image is smaller than the MAX
         {
-            imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
-            imagealphablending($new, false);
-            imagesavealpha($new, true);
+            $new_W = $width;
+            $new_H = $height;
         }
+        return array($new_W, $new_H);
+    }
 
-        imagecopyresampled($new, $img, 0, 0, 0, 0, $THUMB_width, $THUMB_height, $SOURCE_Width, $SOURCE_Height);
 
-        switch($type)
-        {
-            case 'bmp': imagewbmp($new, $dest_Path);
-                break;
-            case 'gif': imagegif($new, $dest_Path);
-                break;
-            case 'jpg': imagejpeg($new, $dest_Path);
-                break;
-            case 'png': imagepng($new, $dest_Path);
-                break;
-        }
-        return true;
+    private function preserve_PNG_Transparency($image)
+    {
+        $red = 0;
+        $green = 0;
+        $blue = 0;
+        $fullyTransparent = 127;
+        imageColorTransparent($image, imageColorAllocateAlpha($image, $red, $green, $blue, $fullyTransparent));
+        imageAlphaBlending($image, FALSE);
+        imageSaveAlpha($image, TRUE);
     }
 
 
