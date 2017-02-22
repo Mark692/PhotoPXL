@@ -27,7 +27,7 @@
 </p><br />
 </div>
 </td>
-<td class="colonna login" width="900px" align="center">
+<td width="750px" align="center">
 <h3 class="title">Dati foto </h3>
 <div class="dati">
               <p><label for="Description" >Descrizione</label><br />
@@ -46,7 +46,7 @@
 </div>
 </td>
 </tr>
-<tr>
+<tr width="1300px" align="center">
     <td>
         <form method="POST" action="da vedere">
         <p><label for="Description" class="top">Descrizione:</label><br />
@@ -59,7 +59,7 @@
     </td>
 </tr>
 <tr>
-<td>
+<td width="1300px" align="center">
     <table>
     {foreach from=$commenti item=$valore}
         <tr>
