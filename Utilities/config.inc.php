@@ -15,10 +15,10 @@ $smarty_path = ".".DIRECTORY_SEPARATOR
                         ."main".DIRECTORY_SEPARATOR;
 
 //----Smarty Directories----\\
-$config['smarty']['cache_dir']    = $path.'cache'.DIRECTORY_SEPARATOR;
-$config['smarty']['config_dir']   = $path.'configs'.DIRECTORY_SEPARATOR;
-$config['smarty']['template_dir'] = $path.'template'.DIRECTORY_SEPARATOR;
-$config['smarty']['compile_dir']  = $path.'template_c'.DIRECTORY_SEPARATOR;
+$config['smarty']['cache_dir']    = $smarty_path.'cache'.DIRECTORY_SEPARATOR;
+$config['smarty']['config_dir']   = $smarty_path.'configs'.DIRECTORY_SEPARATOR;
+$config['smarty']['template_dir'] = $smarty_path.'template'.DIRECTORY_SEPARATOR;
+$config['smarty']['compile_dir']  = $smarty_path.'template_c'.DIRECTORY_SEPARATOR;
 
 
 

@@ -12,7 +12,7 @@
 
 namespace View;
 
-class V_Profilo extends \View\V_Basic
+class V_Album extends \View\V_Basic
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono

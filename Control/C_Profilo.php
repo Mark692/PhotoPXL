@@ -18,7 +18,7 @@ class C_Profilo
     public function display_user()
     {
 
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
@@ -60,7 +60,7 @@ class C_Profilo
     public function display_user_album()
     {
 
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
@@ -99,7 +99,7 @@ class C_Profilo
      */
     public function modifica_dati_utente()
     {
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
@@ -116,7 +116,7 @@ class C_Profilo
      */
     public function update_dati_utente()
     {
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $dati = $V_Profilo->get_Dati();
         $new_username = $dati['username'];
         $new_password = $dati['password'];
@@ -150,7 +150,7 @@ class C_Profilo
      */
     public function update_profile_pic()
     {
-        $v_Profilo = new \View\V_Profilo;
+        $v_Profilo = new \View\V_Album;
         $dati_foto = $v_Profilo->get_Dati();
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
@@ -216,13 +216,13 @@ class C_Profilo
      */
     public function modifica_profile_pic()
     {
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $user_datails = \Foundation\F_User::get_UserDetails($username);
+        $user_details = \Foundation\F_User::get_UserDetails($username);
         $V_Profilo->assign('utente', $user_details);
         $foto_profilo = \Foundation\F_User::get_ProfilePic($username);
-        $V_Profilo->assign('utente', $user_details);
+        $V_Profilo->assign('utente', $foto_profilo);
         return $V_Profilo->fetch('modifica_foto_profilo.tpl');
     }
 
@@ -233,7 +233,7 @@ class C_Profilo
      */
     public function smista()
     {
-        $V_Profilo = new \View\V_Profilo();
+        $V_Profilo = new \View\V_Album();
         switch ($V_Profilo->getTask())
         {
             case 'riepilogo':

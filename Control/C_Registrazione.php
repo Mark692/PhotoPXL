@@ -65,7 +65,7 @@ class C_Registrazione
         $V_Home = new \View\V_Home();
         Switch ($V_Home->getTask())
         {
-            case 'registrazione':
+            case 'modulo_registrazione':
                 return $this->modulo_registrazione();
 
             case 'salva':

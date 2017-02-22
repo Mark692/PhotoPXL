@@ -53,17 +53,16 @@ class C_Photo
         $v_foto->assign('role', $role);
         $id = $v_foto->getID();
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
-        $photo = $foto_details[0];
-        $cat = $foto_details[1];
-        $user_like = $foto_details[2];
+        $user_like= \Foundation\F_Photo::get_TotalLikes($id);
         $commenti= \Foundation\F_Comment::get_By_Photo($id);
         $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
         $v_foto->assign('commenti', $commenti);
-        $v_foto->assign('foto_deteils', $photo);
-        $categories = $v_foto->imposta_categoria($cat);
+        $foto=$this->ridimensiona($foto_details['fullsize'], $v_foto);
+        $v_foto->assign('foto_deteils', $foto_details);
+        $v_foto->assign('foto', $foto);
+        $categories = $v_foto->imposta_categoria($foto_details['categories']);
         $v_foto->assign('categories', $categories);
         $this->button_like($user_like, $v_foto, $username);
-        $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
@@ -144,11 +143,11 @@ class C_Photo
         {
             if(($username !== $valore["user"]) && ($role <= Utilities\Roles::PRO))
             {
-                $add = array("attiva" => FALSE);
+                $add = array("attiva_remove_comments" => FALSE);
             }
             else
             {
-                $add = array("attiva" => TRUE);
+                $add = array("attiva_remove_comments" => TRUE);
             }
             array_push($valore, $add);
         }
@@ -210,7 +209,14 @@ class C_Photo
         }
     }
 
-
+    
+    
+    
+            //definire funzione diventa pro
+    
+    
+    
+    
     /**
      * funzione per il controlo degli errori durante il caricamento di una foto
      * @param type $dati_foto

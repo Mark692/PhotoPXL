@@ -128,11 +128,12 @@ class C_Login
             case 'login':
                 return $this->check_user_pass();
             case 'logout':
-                return $this->logout());
+                return $this->logout();
             case 'modulo_login':
                 return $this->modulo_login();
-                break;
+               
         }
     }
+}
 
     
