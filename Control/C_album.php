@@ -137,10 +137,10 @@ class C_Album
 
     public function smista()
     {
-        $v_Album = new \View\V_Profilo();
+        $v_Album = new \View\V_Album();
         switch ($v_Album->getTask())
         {
-            case 'Modulo_Crea_Album';
+            case 'Modulo_Crea_Album':
                 return $this->modulo_Crea_Album();
             case 'Display_Album':
                 return $this->display_photo_album();

@@ -1,36 +1,90 @@
-<table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
-<tr class="contenuto">
-<td class="colonna1" width="900px" align="center">
-<fieldset>
+<table>
+<tr>
+<td width="750px" align="center">
+
 <div class="foto">
-                <p><label for="Title" class="top">Titolo:</label><br /></p>
-                <p><label for="Title" class="top">{$dati_foto.title}</label></p> </br>
-                <p><img src={$dati_foto.fullsize}></p>
-                <p><label for="like" class="top">like:{$numero_di_like}><br /></p>
-                <p><label for="date" class="top">Data di pubblicazione:{$upload_date}><br /></p>
-                <p><label for="date" class="top">Album di appartenenza:{$name_album}><br /></p>
-                
-</fieldset>
+                <p><label for="Title">Titolo:</label><br /></p>
+                <p><label for="Title">{$foto_deteils.title}</label></p> </br>
+                <p><img src={$foto}></p>
+                <p><label for="like">like:{$total_like}></label><br /></p>
+                {if $attiva==="TRUE"}
+                    <form method="post" action="deve andare alla pagina di modifca">
+                        <p><input type="hidden" name="controller" value="user" /></p>
+                        <p><input type="hidden" name="task" value="add_like" /></p>
+                        <p><input type="hidden" name="id" value="{$foto_deteils.id}" /></p>
+                    <p><input type="submit" name="modifica" class="button" value="Mi Piace"  /></p>
+                    </form>
+                    {else}
+                        <form method="post" action="deve andare alla pagina di modifca">
+                            <p><input type="hidden" name="controller" value="user" /></p>
+                            <p><input type="hidden" name="task" value="remove_like" /></p>
+                            <p><input type="hidden" name="id" value="{$foto_deteils.id}" /></p>
+                    <p><input type="submit" name="modifica" class="button" value="Non Piace Piu&grave;"  /></p>
+                    </form>
+                {/if}
+                <p><label for="date">Data di pubblicazione:{$foto_deteils.upload_date}></label><br /></p>
+                <p><label for="date">Album di appartenenza:{$name_album}></label><br /></p>
 </p><br />
-</fieldset>
 </div>
 </td>
-<td class="colonna login" width="900px" align="center">
+<td width="750px" align="center">
 <h3 class="title">Dati foto </h3>
 <div class="dati">
-              <p><label for="Description" class="top">Descrizione</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.description}</label></p>
-              <p><label for="is_reserved" class="top">Riservata</label><br />
-              <p><label for="is_reserved" class="top"><{$dati_foto.is_reserved}</label></p>   
-              <p><label for="categories" class="top">Categoria</label><br />
-              <p><label for="categories" class="top"><{$dati_foto.categories}</label></p>
+              <p><label for="Description" >Descrizione</label><br />
+              <p><label for="Description" ><{$foto_deteils.description}</label></p>
+              <p><label for="is_reserved" >Riservata</label><br />
+              <p><label for="is_reserved" ><{$foto_deteils.is_reserved}</label></p>   
+              <p><label for="categories" >Categoria</label><br />
+              <p><label for="categories" ><{$categories}</label></p>
               <form method="post" action="deve andare alla pagina di modifca">
-                    <p><input type="hidden" name="controller" value="modifica_foto da definire" />
+                    <p><input type="hidden" name="controller" value="photo" />
                     <p><input type="hidden" name="task" value="modifca" />
+                    <p><input type="hidden" name="id" value="{$foto_deteils.id}" />
                     <p><input type="submit" name="modifica" class="button" value="Modifica"  /></p>
               </form>
               {*aggiungere i commenti*}
 </div>
+</td>
+</tr>
+<tr width="1300px" align="center">
+    <td>
+        <form method="POST" action="da vedere">
+        <p><label for="Description" class="top">Descrizione:</label><br />
+        <p><textarea type="text" name="Description" cols="20" rows="5">{*da mettere in trasparte da vedere sulle cose di marco*}</textarea></p>
+        <p><input type="hidden" name="controller" value="user" /></p>
+        <p><input type="hidden" name="task" value="add_comments" /></p>
+        <p><input type="hidden" name="id" value="{$foto_deteils.id}" /></p>
+        <p><input type="submit" name="modifica" class="button" value="Aggiungi"></p>
+        </form>
+    </td>
+</tr>
+<tr>
+<td width="1300px" align="center">
+    <table>
+    {foreach from=$commenti item=$valore}
+        <tr>
+            <td>
+                <fieldset>
+                   <p><label for="username" ><{$valore.username}</label></p>
+                   <fieldset>
+                   <p><label for="text">{$valore.username}</label> </p>
+                   </fieldset>
+                   {if $attiva_remove_comments==="TRUE"}
+                    <form method="post" action="deve andare alla pagina di modifca">
+                        <p><input type="hidden" name="controller" value="user" /></p>
+                        <p><input type="hidden" name="task" value="remove_comments" /></p>
+                        <p><input type="hidden" name="id" value="{$foto_deteils.id}" /></p>
+                    <p><input type="submit" name="modifica" class="button" value="Rimuovi"  /></p>
+                    </form>
+                    {/if}
+                </fieldset>
+    
+            
+            </td>
+        </tr>
+                                
+    {/foreach}
+    </table>
 </td>
 </tr>
 </table>

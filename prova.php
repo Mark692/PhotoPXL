@@ -6,10 +6,10 @@
  * and open the template in the editor.
  */
 
-$path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
-require_once $path."Autoloader.php";
-require_once $path."config.inc.php";
-require_once $path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPETENTE
+$$smarty_path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
+require_once $$smarty_path."Autoloader.php";
+require_once $$smarty_path."config.inc.php";
+require_once $$smarty_path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPETENTE
 
 
 
@@ -35,4 +35,4 @@ $array_dati=["username" => "cazzofritto", "password" => "tuozio",
 $avvia->assign('immagine_profilo',$foto);
 $avvia->assign('ultime_foto',array_chunk($array_foto, PHOTOS_PER_ROW));
 $avvia->assign('utente',$array_dati);
-$avvia->display('album.tpl');
+$avvia->display('home_default');

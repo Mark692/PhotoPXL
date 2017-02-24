@@ -23,7 +23,7 @@ class C_Home
         $U_Cookie->set_Cookie(); //setta un cookie per verificare che il browser accetta i cookie
         if($U_Cookie->check_Cookie())
         {
-            $user_role = 1; //appena pull mettere la funzione 
+            $user_role = \Foundation\F_User::get_Role($username);
             if($role === $user_role)
             {
                 $contenuto = $this->smista();
@@ -88,7 +88,7 @@ class C_Home
         $controller = $V_Home->getController();
         Switch ($controller)
         {
-            case 'registrazione':
+            case 'Registrazione':
                 $C_Registrazione = new \Control\C_Registrazione;
                 return $C_Registrazione->smista();
             case 'Login':
@@ -100,6 +100,21 @@ class C_Home
             case 'User':
                 $C_User = new \Control\C_User;
                 return $C_User->smista();
+            case 'Profilo':
+                $C_Profilo = new \Control\C_Profilo();
+                return $C_Profilo->smista();
+            case 'Album':
+                $C_Album = new \Control\C_Album();
+                return $C_Album->smista();
+            case 'Mod':
+                $C_Mod = new \Control\C_Mod();
+                return $C_Mod->smista();
+            case 'Cerca':
+                $C_Cerca = new \Control\C_Cerca();
+                return $C_Cerca->smista();
+            case 'Amministartore':
+                $C_Amministratore = new \Control\C_Amministratore();
+                return $C_Amministratore->smista();
             default :
                 return $this->ritornaHome();
         }

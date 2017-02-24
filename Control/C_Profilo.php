@@ -18,7 +18,7 @@ class C_Profilo
     public function display_user()
     {
 
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
@@ -39,6 +39,7 @@ class C_Profilo
             $page_tot = ceil($array_album['photo_tot'] / PHOTOS_PER_PAGE);
             $V_Profilo->assign('page_tot', $page_tot);
             $V_Profilo->assign('id_thumbnail', $array_album['id']);
+            $V_Profilo->assign('page_toView', $page_toView);
             $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
         }
         else
@@ -59,11 +60,11 @@ class C_Profilo
     public function display_user_album()
     {
 
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
         $user_datails = \Foundation\F_User::get_UserDetails($username);
-        $array_post = $V_Profilo->getdati('username', 'page_toView', 'page_tot', 'order');
+        $array_post = $V_Profilo->getdati();
         $page_toView = $array_post['page_toView'];
         if($page_toView == NULL)
         {
@@ -81,6 +82,7 @@ class C_Profilo
             $V_Profilo->assign('page_tot', $page_tot);
             $V_Profilo->assign('id_thumbnail', $array_album['id']);
             $V_Profilo->assign('thumbnail', $array_album['thumbnail']);
+            $V_Profilo->assign('page_toView', $page_toView);
         }
         else
         {
@@ -95,16 +97,16 @@ class C_Profilo
     /**
      * ritorna il tpl per la modifica dei dati
      */
-    public function modifica_dati()
+    public function modifica_dati_utente()
     {
-        $V_Profilo = new \View\V_Profilo;
-        $user_details = $V_Profilo->get_Dati('username', 'email');
+        $V_Profilo = new \View\V_Album;
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
+        $user_datails = \Foundation\F_User::get_UserDetails($username);
         $V_Profilo->assign('utente', $user_details);
-        //recupero foto profilo
-        $V_Profilo->assign('foto_profilo', $user_details['photo']);
+        $foto_profilo = \Foundation\F_User::get_ProfilePic($username);
+        $V_Profilo->assign('foto_profilo', $foto_profilo);
         $V_Profilo->assign('utente', $user_details);
-        $V_Profilo->assign('foto_profilo', $fotoprofilo);
-
         return $V_Profilo->fetch('modifica profilo.tpl');
     }
 
@@ -112,9 +114,9 @@ class C_Profilo
     /**
      * update dei dati dati dell'utente
      */
-    public function update()
+    public function update_dati_utente()
     {
-        $V_Profilo = new \View\V_Profilo;
+        $V_Profilo = new \View\V_Album;
         $dati = $V_Profilo->get_Dati();
         $new_username = $dati['username'];
         $new_password = $dati['password'];
@@ -148,16 +150,14 @@ class C_Profilo
      */
     public function update_profile_pic()
     {
-        $v_Profilo = new \View\V_Profilo;
-        $dati = $v_Profilo->get_Dati();
+        $v_Profilo = new \View\V_Album;
+        $dati_foto = $v_Profilo->get_Dati();
         $Session = new \Utilities\U_Session;
         $username = $Session->get_val('username');
-        $type = $dati_foto['type'];
-        $size = $dati_foto['size'];
-        $photo_blob = addslashes(file_get_contents($dati_foto['tmp_name']));
         try
         {
-            $photo_details = new \Entity\E_Photo($title, $desc, $is_Reserved, $cat);
+            $title = "immagine_profilo_".$username;
+            $photo_details = new \Entity\E_Photo($title);
         }
         catch (\Exceptions\input_texts $ex)
         {
@@ -165,9 +165,6 @@ class C_Profilo
             $v_foto->assign('messaggio', $ex->getMessage());
             $this->modulo_upload();
         }
-        $type = $dati_foto['type'];
-        $size = $dati_foto['size'];
-        $photo_blob = addslashes(file_get_contents($dati_foto['tmp_name']));
         if($dati_foto['error'] == 0)
         {
             if($type == 'image/jpeg' && $type == 'image/jpg' && $type == 'image/png')
@@ -176,8 +173,8 @@ class C_Profilo
                 {
                     try
                     {
-                        //per immagine profilo
-                        $photo = new \Entity\E_Photo_Blob($photo_blob, $size, $type);
+                        $photo_blob = new \Entity\E_Photo_Blob();
+                        $photo = $photo_blob->generate($dati_foto['tmp_name'], $dati_foto['size'], $dati_foto['type']);
                     }
                     catch (\Exceptions\photo_details $ex)
                     {
@@ -193,7 +190,10 @@ class C_Profilo
                     $this->modifica_profile_pic();
                 }
                 //per immagine profilo
+                \Foundation\F_User::remove_ProfilePic($username);
                 \Foundation\F_Photo::insert($photo_details, $photo, $username);
+                $profile_Pic_ID = $photo_details->get_ID();
+                \Foundation\F_User::update_ProfilePic($username, $profile_Pic_ID);
                 $this->display_user();
             }
             else
@@ -216,11 +216,13 @@ class C_Profilo
      */
     public function modifica_profile_pic()
     {
-        $V_Profilo = new \View\V_Profilo;
-        $user_details = $V_Profilo->get_Dati('username', 'email');
+        $V_Profilo = new \View\V_Album;
+        $Session = new \Utilities\U_Session;
+        $username = $Session->get_val('username');
+        $user_details = \Foundation\F_User::get_UserDetails($username);
         $V_Profilo->assign('utente', $user_details);
-        $V_Profilo->assign('foto_profilo', $user_details['photo']);
-        $V_Profilo->assign('utente', $user_details);
+        $foto_profilo = \Foundation\F_User::get_ProfilePic($username);
+        $V_Profilo->assign('utente', $foto_profilo);
         return $V_Profilo->fetch('modifica_foto_profilo.tpl');
     }
 
@@ -231,7 +233,7 @@ class C_Profilo
      */
     public function smista()
     {
-        $V_Profilo = new \View\V_Profilo();
+        $V_Profilo = new \View\V_Album();
         switch ($V_Profilo->getTask())
         {
             case 'riepilogo':
@@ -240,9 +242,8 @@ class C_Profilo
                 return $this->display_user_album();
             case 'Modifica':
                 return $this->modifica();
-                break;
             case 'update':
-                return $this->update();
+                return $this->update_dati_utente();
             case 'modifca_pic':
                 return $this->modifica_profile_pic();
             case 'update_pic':

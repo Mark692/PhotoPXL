@@ -41,14 +41,14 @@ class C_Like
 
 
     public function add_comments()
-    {
+    {   
         $v_User = new \View\V_Users();
         $text = $v_User->get_Dati_commento();
         $session = new \Utilities\U_Session();
         $username = $session->get_val('username');
         $comment = new \Entity\E_Comment($text['commento'], $username, $text['id']);
         \Foundation\F_Comment::insert($comment);
-        $c_foto=new \Control\C_Photo();
+        $c_foto=new \Control\C_Photo();//ricorda di inserire l'id della foto nel submit
         return $c_foto->display_photo();
     }
 

@@ -45,9 +45,6 @@ class V_Basic extends \Smarty
     }
 
 
-    
-
-
     /**
      * Questa funzione, restituisce il task inviato all'interno del vettore
      * superglobale $_REQUEST
@@ -101,36 +98,64 @@ class V_Basic extends \Smarty
 
 
     /**
-     * 
+     * dal valore numerico mi ritorna un array con stringhe
      * @param type $role
+     * @return array
      */
-    public function imposta_ruolo($role)
+    public function imposta_ruolo($role = [0, 1, 2, 3, 4])
     {
-        switch ($role)
+        $cost = [];
+        foreach($role as $valore)
         {
-            case \Utilities\Roles::BANNED:
-                return $ruolo = "bannato";
+            switch ($valore)
+            {
+                case \Utilities\Roles::BANNED:
+                    $ruolo = "bannato";
+                    break;
 
-            case \Utilities\Roles::STANDARD:
-                return $ruolo = "standard";
+                case \Utilities\Roles::STANDARD:
+                    $ruolo = "standard";
+                    break;
 
-            case \Utilities\Roles::PRO:
-                return $ruolo = "pro";
+                case \Utilities\Roles::PRO:
+                    $ruolo = "pro";
+                    break;
 
-            case \Utilities\Roles::MOD:
-                return $ruolo = "mod";
+                case \Utilities\Roles::MOD:
+                    $ruolo = "mod";
+                    break;
 
-            case \Utilities\Roles::ADMIN:
-                return $ruolo = "admin";
-
-            default : return $ruolo = "ospite";
+                case \Utilities\Roles::ADMIN:
+                    $ruolo = "admin";
+                    break;
+                default :
+                    $ruolo= "ospite";
+            }
+            array_push($cost, $ruolo);
         }
+        return $cost;
+    }
+
+
+    /**
+     * trasforma le stringe in numeri per i ruoli
+     * @param array $role 
+     * @return array
+     */
+    public function reimposta_ruolo($role)
+    {
+        $cost = [];
+        foreach($role as $valore)
+        {
+            array_push($cost, constant(strtoupper(trim($valore))));
+        }
+        return $cost;
     }
 
 
     /**
      * dal valore numerico mi ritorna un array con scritte
-     * @param type $categories
+     * @param array $categories
      * @return array
      */
     public function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
@@ -142,23 +167,32 @@ class V_Basic extends \Smarty
             switch ($valore)
             {
                 case \Utilities\Roles::BANNED:
-                    $categoria = "bannato";
+                    $categoria = "Paesaggi";
                     break;
 
                 case \Utilities\Roles::STANDARD:
-                    $categoria = "standard";
+                    $categoria = "Ritratti";
                     break;
 
                 case \Utilities\Roles::PRO:
-                    $categoria = "pro";
+                    $categoria = "Fauna";
                     break;
 
                 case \Utilities\Roles::MOD:
-                    $categoria = "mod";
+                    $categoria = "Bianco e Nero";
                     break;
 
                 case \Utilities\Roles::ADMIN:
-                    $categoria = "admin";
+                    $categoria = "Astronomia";
+                    break;
+                case \Utilities\Roles::ADMIN:
+                    $categoria = "Street";
+                    break;
+                case \Utilities\Roles::ADMIN:
+                    $categoria = "Natura Morta";
+                    break;
+                case \Utilities\Roles::ADMIN:
+                    $categoria = "Sport";
                     break;
             }
             array_push($cost, $categoria);

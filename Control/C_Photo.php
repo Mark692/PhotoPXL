@@ -53,17 +53,16 @@ class C_Photo
         $v_foto->assign('role', $role);
         $id = $v_foto->getID();
         $foto_details = \Foundation\F_Photo::get_By_ID($id);
-        $photo = $foto_details[0];
-        $cat = $foto_details[1];
-        $user_like = $foto_details[2];
+        $user_like= \Foundation\F_Photo::get_TotalLikes($id);
+        $commenti= \Foundation\F_Comment::get_By_Photo($id);
+        $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
         $v_foto->assign('commenti', $commenti);
-        $v_foto->assign('foto_deteils', $photo);
-        $categories = $v_foto->imposta_categoria($cat);
+        $foto=$this->ridimensiona($foto_details['fullsize'], $v_foto);
+        $v_foto->assign('foto_deteils', $foto_details);
+        $v_foto->assign('foto', $foto);
+        $categories = $v_foto->imposta_categoria($foto_details['categories']);
         $v_foto->assign('categories', $categories);
         $this->button_like($user_like, $v_foto, $username);
-        //commenti foto vederee bene perche cosi assegna il tasto a un solo commento
-        $commenti = $this->button_remove_comments($comments, $v_foto, $username, $role);
-        $this->ridimensiona($photo['fullsize'], $v_foto);
         if($foto_details['username'] != $username)
         {
             if($role >= \Utilities\Roles::MOD)
@@ -134,9 +133,9 @@ class C_Photo
 
     /**
      * serve per impostare il tasto remove ai commenti
-     * @param array $user_like contiene gli user che hanno messo il like alla foto
+     * @param array $comments contiene gli user che hanno messo il like alla foto
      * @param \View\V_Foto $v_foto
-     * @param stirng $username
+     * @param stirng 
      */
     private function button_remove_comments($comments, $v_foto, $username, $role)
     {
@@ -144,11 +143,11 @@ class C_Photo
         {
             if(($username !== $valore["user"]) && ($role <= Utilities\Roles::PRO))
             {
-                $add = array("attiva" => FALSE);
+                $add = array("attiva_remove_comments" => FALSE);
             }
             else
             {
-                $add = array("attiva" => TRUE);
+                $add = array("attiva_remove_comments" => TRUE);
             }
             array_push($valore, $add);
         }
@@ -177,7 +176,9 @@ class C_Photo
                 {
                     $errore = $this->save_photo($dati_foto);
                     if($errore === [])
-                    {
+                    {   
+                        $photo_blob = new \Entity\E_Photo_Blob();
+                        $photo = $photo_blob->generate($dati_foto['tmp_name'], $dati_foto['size'], $dati_foto['type']);
                         \Foundation\F_Photo::insert($photo_details, $photo, $username);
                         \Foundation\F_Photo::move_To($album_ID, $photo_ID);
                     }
@@ -208,7 +209,14 @@ class C_Photo
         }
     }
 
-
+    
+    
+    
+            //definire funzione diventa pro
+    
+    
+    
+    
     /**
      * funzione per il controlo degli errori durante il caricamento di una foto
      * @param type $dati_foto
@@ -243,7 +251,7 @@ class C_Photo
                     try
                     {
                         $photo_blob = new \Entity\E_Photo_Blob();
-                        $photo = $photo_blob->generate($path, $size, $type);
+                        $photo = $photo_blob->generate($dati_foto['tmp_name'], $dati_foto['size'], $dati_foto['type']);
                     }
                     catch(\Exceptions\photo_details $ex)
                     {
@@ -342,8 +350,8 @@ class C_Photo
 
     public function smista()
     {
-        $V_Photo = new \View\V_Profilo();
-        switch($V_Photo->getTask())
+        $V_Photo = new \View\V_Foto();
+        switch ($V_Photo->getTask())
         {
             case 'modulo_upload';
                 return $this->modulo_upload();
