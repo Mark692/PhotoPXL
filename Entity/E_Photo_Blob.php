@@ -8,10 +8,22 @@
 
 namespace Entity;
 
-//include SmartImage.class.php;
-
 class E_Photo_Blob
 {
+
+    /**
+     * Generates a Thumbnail image in order to be stored in the DB
+     *
+     * @param string $source_Path The path to the image to resize
+     * @param string $dest_Path The destination path of the thumbnail
+     */
+    public function generate_Thumbnail($source_Path, $dest_Path)
+    {
+        $max_width = THUMB_WIDTH;
+        $max_height = THUMB_HEIGHT;
+        $this->resize($source_Path, $dest_Path, $max_width, $max_height);
+    }
+
 
     /**
      * Resizes an image. Used to generate Thumbnails and standardized Full Size images
@@ -20,42 +32,45 @@ class E_Photo_Blob
      * @param string $dest_Path The destination path where to output the resized image
      * @param int $MAX_WIDTH The desired resize width
      * @param int $MAX_HEIGHT The desired resize height
-     * @return image The resized image. Returns FALSE in case of failure
+     * @return image The resized image
      */
-    function generate_ResizedImage($source_Path, $dest_Path, $MAX_WIDTH, $MAX_HEIGHT)
+    function resize($source_Path, $dest_Path, $MAX_WIDTH, $MAX_HEIGHT)
     {
         list($w, $h) = getImageSize($source_Path);
-        list($new_W, $new_H) = $this->resize($w, $h, $MAX_WIDTH, $MAX_HEIGHT);
-        $thumbnail = imageCreateTrueColor($new_W, $new_H);
+        list($new_W, $new_H) = $this->adapt_Dimensions($w, $h, $MAX_WIDTH, $MAX_HEIGHT);
+        $outputImage = imageCreateTrueColor($new_W, $new_H);
 
         //Note about exif_imagetype:
         //"The return value is the same value that getimagesize() returns in index 2 but exif_imagetype() is much faster"
         $type = exif_ImageType($source_Path);
-        if($type !== FALSE)
+        switch($type)
         {
-            switch($type)
-            {
-                case IMAGETYPE_JPEG:
-                    $img = imageCreateFromJPEG($source_Path);
-                    imageCopyResampled($thumbnail, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
-                    imageJPEG($thumbnail, $dest_Path);
-                    break;
+            case IMAGETYPE_JPEG:
+                $img = imageCreateFromJPEG($source_Path);
+                imageCopyResampled($outputImage, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
+                imageJPEG($outputImage, $dest_Path);
+                break;
 
-                case IMAGETYPE_PNG:
-                    $img = imageCreateFromPNG($source_Path);
-                    imageCopyResampled($thumbnail, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
-                    $this->preserve_PNG_Transparency($thumbnail);
-                    imagePNG($thumbnail, $dest_Path);
-                    break;
-
-                default:
-                    return FALSE;
-            }
+            case IMAGETYPE_PNG:
+                $img = imageCreateFromPNG($source_Path);
+                imageCopyResampled($outputImage, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
+                $this->preserve_PNG_Transparency($outputImage);
+                imagePNG($outputImage, $dest_Path);
+                break;
         }
     }
 
 
-    private function resize($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
+    /**
+     * Adapts the given dimensions to fit the MAX values given
+     *
+     * @param int $width The original image width
+     * @param int $height The original image height
+     * @param int $MAX_WIDTH The max output width
+     * @param int $MAX_HEIGHT The max output height
+     * @return array An array with the new Width and Height
+     */
+    private function adapt_Dimensions($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
     {
         //Image is bigger than the MAX
         if($height > $MAX_HEIGHT && $width > $MAX_WIDTH)
@@ -81,6 +96,11 @@ class E_Photo_Blob
     }
 
 
+    /**
+     * Preserves the PNG images transparency
+     *
+     * @param resource $image The image to keep the transparency
+     */
     private function preserve_PNG_Transparency($image)
     {
         $red = 0;
@@ -93,35 +113,38 @@ class E_Photo_Blob
     }
 
 
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-//----------------------------------------------------------------------------\\
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function generateThumbnail($path)
+    /**
+     * Checks whether the uploaded image is JPG, JPEG, PNG and less than MAX_SIZE_FULL
+     *
+     * @param string $source_Path The path where the image is actually stored
+     * @return bool Whether the uploaded image is of right type and size
+     */
+    public function check_UploadedFile($source_Path)
     {
-        $img = new \SmartImage($path);
-        // Ridimensionamento e salvataggio su file
-        // il valore true dice di tagliare l'immagine
-        $img->resize(400, 220, true);
-        $img->saveImage("Dio è porco.jpg", 85);
+        $type = exif_ImageType($source_Path);
+        switch($type)
+        {
+            case IMAGETYPE_JPEG:
+            case IMAGETYPE_PNG:
+                $type_Ok = TRUE;
+
+            default:
+                $type_Ok = FALSE;
+        }
+
+        $size = filesize($source_Path);
+        if($size<MAX_SIZE_FULL)
+        {
+            $size_Ok = TRUE;
+        }
+        $size_Ok = FALSE;
+
+        return ($type_Ok && $size_Ok);
     }
+
+    
+
+
 
 
 //
