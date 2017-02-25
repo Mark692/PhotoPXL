@@ -69,12 +69,23 @@ class E_User
 
 
     /**
+    * 
+    * @param string $username user's name
+    * @return boolean if the choosen username is available
+    */
+    public static function usernameAvailable($username)
+   {
+       $userInfo = F_User::get_LoginInfo($username);
+       return empty($userInfo);
+   }
+    
+    /**
      * Checks whether the username is a valid entry
      *
      * @param string $username The username input
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    private function check_Username($username)
+    public static function check_Username($username)
     {
         if(strlen($username)>=MIN_USERNAME_CHARS
                 && strlen($username)<=MAX_USERNAME_CHARS)
@@ -140,7 +151,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    private function check_Email($email)
+    public static function check_Email($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
