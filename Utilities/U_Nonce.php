@@ -28,8 +28,8 @@ namespace Utilities;
  *            }
  *
  */
-class U_Nonce
-{
+class U_Nonce {
+
     /**
      * Generate a Nonce.
      * The generated array contains:
@@ -43,42 +43,34 @@ class U_Nonce
      * @return array The Nonce.
      *
      */
-    public static function generate($login_pass, $salt_length = 15)
-    {
-        if($salt_length<15) //If the length is less than 15
-        {
+    public static function generate($salt_length = 15) {
+        if ($salt_length < 15) { //If the length is less than 15
             $salt_length = 15; //Sets to 15
         }
         $allowed_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $max_chars = strlen($allowed_chars) - 1;
         $salt = '';
-        while (strlen($salt) < $salt_length)
-        {
+        while (strlen($salt) < $salt_length) {
             $salt .= $allowed_chars[rand(0, $max_chars)];
         }
-        $hashed_loginPass = \Entity\E_User::hash_of($login_pass);
-        $hash = hash('sha512', $salt.$hashed_loginPass);
-        return $nonce = array($salt, $hash);
-    }
 
+        return $salt;
+    }
 
     /**
      * Check a hashed password against the previously generated Nonce.
      *
      * @param string $db_pass The user hashed password saved in the DB.
-     * @param array $nonce The array generated with generate() method.
+     * @param string $nonce.
      * @returns bool Whether the Nonce is valid.
      */
-    public static function pass_isValid($db_pass, $nonce)
-    {
-        $salt = $nonce[0];
-        $generated_nonceHash = $nonce[1];
+    public static function pass_isValid($db_pass, $nonce, $sent) {
 
-        $DB_nonceHash = hash('sha512', $salt.$db_pass);
-        if ($DB_nonceHash !== $generated_nonceHash)
-        {
+        $DB_nonceHash = hash('sha512', $nonce . $db_pass);
+        if ($DB_nonceHash !== $sent) {
             return FALSE;
         }
         return TRUE;
     }
+
 }
