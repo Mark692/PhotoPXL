@@ -70,7 +70,7 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Checks whether the username is available. Case INsensitive.
+     * Checks whether the username is available. Case Sensitive.
      *
      * @param string $username The username to check
      * @return boolean Whether the username is already taken
@@ -80,7 +80,7 @@ class F_User extends \Foundation\F_Database
         $query = 'SELECT EXISTS('
                     .'SELECT 1 '
                     .'FROM `users` '
-                    .'WHERE `username`=? '
+                    .'WHERE `username`= BINARY ? '
                     .'LIMIT 1'
                 .')';
         $toBind = array($username);
@@ -91,7 +91,7 @@ class F_User extends \Foundation\F_Database
         $pdo = NULL;
 
         $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
-        if($exists[0] === 1)
+        if($exists[0] == 1)
         {
             return TRUE;
         }
@@ -133,10 +133,10 @@ class F_User extends \Foundation\F_Database
     /**
      * Returns a list of all users with the given role
      *
-     * @param enum $role The role to search the users for
+     * @param int $role The role to search the users for
      * @return array All the users (usernames only) with the specified role
      */
-    public static function get_By_Role(\Utilities\Roles $role)
+    public static function get_By_Role($role)
     {
         $select = array("username");
         $from = "users";
