@@ -8,6 +8,8 @@
 
 namespace Foundation;
 
+use \PDO;
+
 class F_User extends \Foundation\F_Database
 {
 
@@ -64,6 +66,36 @@ class F_User extends \Foundation\F_Database
                 break;
         }
         return $user;
+    }
+
+
+    /**
+     * Checks whether the username is available. Case INsensitive.
+     *
+     * @param string $username The username to check
+     * @return boolean Whether the username is already taken
+     */
+    public static function is_Available($username)
+    {
+        $query = 'SELECT EXISTS('
+                    .'SELECT 1 '
+                    .'FROM `users` '
+                    .'WHERE `username`=? '
+                    .'LIMIT 1'
+                .')';
+        $toBind = array($username);
+        $pdo = parent::connettiti();
+        $pdo_stmt = $pdo->prepare($query);
+        parent::bind_params($pdo_stmt, $toBind);
+        $pdo_stmt->execute();
+        $pdo = NULL;
+
+        $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
+        if($exists[0] === 1)
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
 

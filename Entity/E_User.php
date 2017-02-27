@@ -17,7 +17,6 @@ class E_User
     private $username;
     private $hashedPassword;
     private $email;
-
     /** @type enum The user role */
     private $role;
 
@@ -69,17 +68,6 @@ class E_User
 
 
     /**
-    * 
-    * @param string $username user's name
-    * @return boolean if the choosen username is available
-    */
-    public static function usernameAvailable($username)
-   {
-       $userInfo = F_User::get_LoginInfo($username);
-       return empty($userInfo);
-   }
-    
-    /**
      * Checks whether the username is a valid entry
      *
      * @param string $username The username input
@@ -87,8 +75,7 @@ class E_User
      */
     public static function check_Username($username)
     {
-        if(strlen($username)>=MIN_USERNAME_CHARS
-                && strlen($username)<=MAX_USERNAME_CHARS)
+        if(strlen($username) >= MIN_USERNAME_CHARS && strlen($username) <= MAX_USERNAME_CHARS)
         {
             $allowed = array('-', '_', '.'); //Allows -_. inside a Username
             if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -189,4 +176,6 @@ class E_User
     {
         return $this->role;
     }
+
+
 }
