@@ -25,7 +25,7 @@ $config['smarty']['compile_dir']  = $smarty_path.'template_c'.DIRECTORY_SEPARATO
 
 //----Database Connection Parameters----\\
 $config['mysql_host']     = 'localhost';
-$config['mysql_database'] = 'photopxl';
+$config['mysql_database'] = 'my_photopxl';
 $config['mysql_user']     = 'root';
 $config['mysql_password'] = 'FRIGO A LEGNA';
 

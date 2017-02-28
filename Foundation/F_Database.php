@@ -30,7 +30,11 @@ class F_Database
         {
             global $config;
             $connection = new PDO(
-                    'mysql:host='.$config['mysql_host'].'; dbname='.$config['mysql_database'], $config['mysql_user'], $config['mysql_password']);
+                    'mysql:host='.$config['mysql_host'].'; '
+                   .'dbname='.$config['mysql_database'],
+                    $config['mysql_user'],
+                    $config['mysql_password']
+                    );
 
             //Sostituzione di PDO::ERRMOD_SILENT
 //            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT); //Decommenta in Produzione
@@ -71,7 +75,7 @@ class F_Database
      * @param array $set The values to insert
      * @return int The last inserted ID
      */
-    protected static function insert_Query($insertInto, $set)
+    public static function insert_Query($insertInto, $set)
     {
         $set_values = '';
         foreach(array_keys($set) as $key)
@@ -88,12 +92,14 @@ class F_Database
 
 
     /**
-     * Fetches the result/s of the query
+     * Fetches the results of the query
      *
      * @param string $query The query to execute
      * @param array $toBind The values to bind to the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @return array
+     * @return array An associative array with a numeric keys. At each key corresponds
+     *               another associative array with keys named as DB column and
+     *               their values are the DB records
      */
     public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
@@ -112,7 +118,7 @@ class F_Database
 
 
     /**
-     * Returns a basic query from the given parameters
+     * Generates a basic query from the given parameters
      *
      * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in

@@ -13,26 +13,17 @@ require_once $path."U_Nonce.php";
 
 
 //------------------------------PROVE------------------------------//
-
 //phpinfo();
-//$res = \Foundation\F_User::get_LoginInfo("allser");
-//print_r($res);
-//echo(nl2br("\r\n"));
-//if(empty($res))
-//{
-//    echo("il risultato è EMPTY");
-//}
-//else
-//{
-//    echo("No, non è EMPTY. E' ");
-//    var_dump($res);
-//}
-
-//
-//$res = \Foundation\F_User::get_By_Role(8);
-//var_dump($res);
-
-
+$app = new \Utilities\installer;
+$is_installed = $app->is_Installed();
+if($is_installed)
+{
+    echo("Yeee, l'app è installata");
+}
+else
+{
+    var_dump($is_installed);
+}
 
 
 
@@ -50,3 +41,7 @@ require_once $path."U_Nonce.php";
 //$avvia->assign('username',"UsernameLoggato");
 //$avvia->assign('thumbnail',array_chunk($array_foto, PHOTOS_PER_ROW));
 //$avvia->display('home_default.tpl');
+
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
