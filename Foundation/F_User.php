@@ -103,7 +103,8 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user's password and role. Used to check login credentials
      *
      * @param string $username The user's username
-     * @return array The user's password and role
+     * @return mixed An ARRAY with user's password and role IF the $username is
+     *               stored in the DB, FALSE otherwise
      */
     public static function get_LoginInfo($username)
     {
@@ -171,6 +172,7 @@ class F_User extends \Foundation\F_Database
 
     /**
      * Sets a profile pic for the user
+     *
      * @param string $username The user's username
      * @param int $photo_ID The photo ID to save as profile pic
      */
@@ -221,17 +223,13 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Removes the user's profile pic
+     * Removes the user's profile pic and sets the default Profile Pic
      *
      * @param string $username The user that wants to remove the profile pic
      */
     public static function remove_ProfilePic($username)
     {
-        $query = "DELETE FROM `profile_pic` "
-                ."WHERE (`user`=?)";
-
-        $toBind = array($username);
-        parent::execute_Query($query, $toBind);
+        self::update_ProfilePic($username, NO_PRO_PIC);
     }
 
 

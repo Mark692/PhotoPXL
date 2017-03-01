@@ -178,6 +178,71 @@ class E_User
     }
 
 
+    //---ENTITY -> FOUNDATION---\\
+
+
+
+    /**
+     * Retrieves the user's info from the DB
+     *
+     * @param string $username
+     * @return \Entity\E_User_* An \Entity\E_User object based on the $username's role
+     */
+    public static function get_UserDetails($username)
+    {
+        return \Foundation\F_User::get_UserDetails($username);
+    }
+
+
+    /**
+     * Checks whether the username is available. Case Sensitive.
+     *
+     * @param string $username The username to check
+     * @return boolean Whether the username is already taken
+     */
+    public static function is_Available($username)
+    {
+        return \Foundation\F_User::is_Available($username);
+    }
+
+
+    /**
+     * Retrieves the user's password and role. Used to check login credentials
+     *
+     * @param string $username The user's username
+     * @return mixed An ARRAY with user's password and role IF the $username is
+     *               stored in the DB, FALSE otherwise
+     */
+    public static function get_LoginInfo($username)
+    {
+        return \Foundation\F_User::get_LoginInfo($username);
+    }
+
+
+    /**
+     * Retrieves the user's role only
+     *
+     * @param string $username The user's username
+     * @return int The user's role
+     */
+    public static function get_DB_Role($username)
+    {
+        return \Foundation\F_User::get_Role($username);
+    }
+
+
+    /**
+     * Returns a list of all users with the given role
+     *
+     * @param int $role The role to search the users for
+     * @return array All the users (usernames only) with the specified role
+     */
+    public static function get_By_Role($role)
+    {
+        return \Foundation\F_User::get_By_Role($role);
+    }
+
+
     /**
      * Updates the user's state in the DB
      *
@@ -187,10 +252,88 @@ class E_User
      * @param enum $role The user's role
      * @param type $old_Username The old user's username. Needed in case the user changed username
      */
-    public static function saveState($username, $password, $email, $role, $old_Username)
+    public static function update_Profile($username, $password, $email, $role, $old_Username)
     {
         $e_user2Save = new \Entity\E_User($username, $password, $email);
         $e_user2Save->set_Role($role);
         \Foundation\F_User::update_Profile($e_user2Save, $old_Username);
     }
+
+
+    /**
+     * Sets a profile pic for the user
+     *
+     * @param string $username The user's username
+     * @param int $photo_ID The photo ID to save as profile pic
+     */
+    public static function set_ProfilePic($username, $photo_ID)
+    {
+        \Foundation\F_User::set_ProfilePic($username, $photo_ID);
+    }
+
+
+    /**
+     * Retrieves the user's profile pic (thumbnail style)
+     *
+     * @param string $username The user owner of the profile pic to search
+     * @return image The profile pic, thumbnail style
+     */
+    public static function get_ProfilePic($username)
+    {
+        return \Foundation\F_User::get_ProfilePic($username);
+    }
+
+
+    /**
+     * Updates the user's profile pic
+     *
+     * @param string $username The user's username
+     * @param int $profile_Pic_ID The ID of the new profile pic
+     */
+    public static function update_ProfilePic($username, $profile_Pic_ID)
+    {
+        \Foundation\F_User::update_ProfilePic($username, $profile_Pic_ID);
+    }
+
+
+    /**
+     * Removes the user's profile pic
+     *
+     * @param string $username The user that wants to remove the profile pic
+     */
+    public static function remove_ProfilePic($username)
+    {
+        \Foundation\F_User::remove_ProfilePic($username);
+    }
+
+
+    /**
+     * Adds a like to the photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @param string $username The user's username
+     */
+    public static function add_Like_to($photo_ID, $username)
+    {
+        \Foundation\F_User::add_Like_to($photo_ID, $username);
+    }
+
+
+    /**
+     * Removes the user's like from the selected photo
+     *
+     * @param string $username The user that wants to remove the like
+     * @param int $photo_ID The target photo's ID
+     */
+    public static function remove_Like($username, $photo_ID)
+    {
+        \Foundation\F_User::remove_Like($username, $photo_ID);
+    }
+
+
+
+
+
+
+
 }

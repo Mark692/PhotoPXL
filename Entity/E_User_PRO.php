@@ -39,4 +39,20 @@ class E_User_PRO extends E_User
     {
         return TRUE;
     }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Updates a photo privacy
+     *
+     * @param int $photo_ID The photo ID
+     * @param bool $privacy The new privacy for the photo
+     */
+    public static function set_PhotoPrivacy($photo_ID, $privacy)
+    {
+        \Foundation\F_User_PRO::set_PhotoPrivacy($photo_ID, $privacy);
+    }
 }

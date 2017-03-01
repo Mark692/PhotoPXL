@@ -201,4 +201,108 @@ class E_Album
     {
         return $this->creation_date;
     }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Saves the album in the DB
+     *
+     * @param \Entity\E_Album $album The album to save
+     * @param string $owner The $owner's username
+     */
+    public static function insert(\Entity\E_Album $album, $owner)
+    {
+        \Foundation\F_Album::insert($album, $owner);
+    }
+
+
+    /**
+     * Updates the album details
+     *
+     * @param \Entity\E_Album $to_Update The new Album object to save
+     */
+    public static function update_Details(\Entity\E_Album $to_Update)
+    {
+        \Foundation\F_Album::update_Details($to_Update);
+    }
+
+
+    /**
+     * Updates the album cover
+     *
+     * @param int $album_ID The album ID to update
+     * @param int $photo_ID The new cover chosen for the album
+     */
+    public static function update_Cover($album_ID, $photo_ID)
+    {
+        \Foundation\F_Album::update_Cover($album_ID, $photo_ID);
+    }
+
+
+    /**
+     * Rethrives the album IDs, Titles and Thumbnails of a user by passing its username.
+     *
+     * @param string $username The user's username selected to get the albums from
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
+     */
+    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Album::get_By_User($username, $page_toView=1, $order_DESC=FALSE);
+    }
+
+
+    /**
+     * Rethrives an album (info, Thumbnail, owner) by passing its ID.
+     *
+     * @param int $id The album ID to search for
+     * @return array The \Entity\E_Album object searched, its thumbnail and its uploader
+     */
+    public static function get_By_ID($id)
+    {
+        return \Foundation\F_Album::get_By_ID($id);
+    }
+
+
+    /**
+     * Rethrives all the album with the selected categories
+     *
+     * @param array $cats The categories to search
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with the albums matching the categories selected.
+     */
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Album::get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE);
+    }
+
+
+    /**
+     * Deletes an album from the DB.
+     * Its photos will be kept with no album association
+     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum()
+     * To delete an album and all its photos use F_Album::delete_Album_AND_Photos()
+     *
+     * @param int $album_ID The album ID to delete from the DB
+     */
+    public static function delete($album_ID)
+    {
+        \Foundation\F_Album::delete($album_ID);
+    }
+
+
+    /**
+     * Deletes an album and all its photos
+     *
+     * @param int $album_ID The album to delete with all its associated photos
+     */
+    public static function delete_Album_AND_Photos($album_ID)
+    {
+        \Foundation\F_Album::delete_Album_AND_Photos($album_ID);
+    }
 }

@@ -142,4 +142,44 @@ class E_Comment
     {
         return $this->photo;
     }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Saves a comment in the DB
+     *
+     * @param \Entity\E_Comment $comment The comment to save
+     */
+    public static function insert(\Entity\E_Comment $comment)
+    {
+        \Foundation\F_Comment::insert($comment);
+    }
+
+
+    /**
+     * Rethrives the comments posted on a photo passing its ID.
+     * The output will be in ASCendent order = from the first comment made to
+     * the latest one.
+     *
+     * @param int $photo_ID The photo's ID selected to get the comments from
+     * @return array The comments made for the photo
+     */
+    public static function get_By_Photo($photo_ID)
+    {
+        return \Foundation\F_Comment::get_By_Photo($photo_ID);
+    }
+
+
+    /**
+     * Deletes a comment
+     *
+     * @param int $comment_ID The ID of the comment to remove
+     */
+    public static function remove($comment_ID)
+    {
+        \Foundation\F_Comment::remove($comment_ID);
+    }
 }

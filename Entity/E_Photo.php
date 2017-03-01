@@ -274,4 +274,145 @@ class E_Photo
     }
 
 
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Saves a photo object
+     *
+     * @param \Entity\E_Photo $photo The photo to save
+     * @param \Entity\E_Photo_Blob $photo_details The blob file, its size and type
+     * @param string $uploader The uploader's username
+     */
+    public static function insert(\Entity\E_Photo $photo, \Entity\E_Photo_Blob $photo_details, $uploader)
+    {
+        \Foundation\F_Photo::insert($photo, $photo_details, $uploader);
+    }
+
+
+    /**
+     * Updates a record from the "photo" table
+     *
+     * @param \Entity\E_Photo $to_Update The photo to update
+     */
+    public static function update(\Entity\E_Photo $to_Update)
+    {
+        \Foundation\F_Photo::update($to_Update);
+    }
+
+
+    /**
+     * Rethrives all the IDs and thumbnails of a user photos by passing its username
+     *
+     * @param string $username The user's username selected to get the photos from
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array The user's photos
+     */
+    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_User($username, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Rethrives the photo corresponding to the ID selected
+     *
+     * @param int $id The photo's ID
+     * @return array The \Entity\E_Photo object photo, its uploader, fullsize and type
+     */
+    public static function get_By_ID($id)
+    {
+        return \Foundation\F_Photo::get_By_ID($id);
+    }
+
+
+    /**
+     * Retrieves the IDs and thumbnails of all photos belonging to a specific album
+     *
+     * @param int $album_ID
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with photo IDs and thumbnails
+     */
+    public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_Album($album_ID, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Rethrives all the photos with the selected categories
+     *
+     * @param array $cats The categories to search
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with the photos matching the categories selected.
+     */
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_Categories($cats, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Retrieves the list of all uses that liked the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return array The users that liked the selected photo
+     */
+    public static function get_TotalLikes($photo_ID)
+    {
+        return \Foundation\F_Photo::get_TotalLikes($photo_ID);
+    }
+
+
+    /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
+     */
+    public static function get_MostLiked($page_toView=1)
+    {
+        return \Foundation\F_Photo::get_MostLiked($page_toView);
+    }
+
+
+    /**
+     * Deletes a photo from the DB including its likes and comments
+     *
+     * @param int $photo_ID The photo ID to delete from the DB
+     */
+    public static function delete($photo_ID)
+    {
+        \Foundation\F_Photo::delete($photo_ID);
+    }
+
+
+    /**
+     * Deletes all photos within an album including their likes and comments
+     *
+     * @param int $album_ID The album from which we want to delete photos
+     */
+    public static function delete_ALL_fromAlbum($album_ID)
+    {
+        \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+    }
+
+
+    /**
+     * Moves a photo to another album and sets a default cover for the album if
+     * it would be empty after the move
+     *
+     * @param int $album_ID The new album ID to move to photo to
+     * @param int $photo_ID The photo to move
+     */
+    public static function move_To($album_ID, $photo_ID)
+    {
+        \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+    }
 }

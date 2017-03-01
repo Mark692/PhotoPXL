@@ -43,6 +43,12 @@ define("SPORT", 8);
 
 
 
+//----FIXED DB IDs----\\
+define("NO_ALBUM_COVER", 1);
+define("NO_PRO_PIC", 2);
+
+
+
 //----Standard User Limits----\\
 define("UPLOAD_STD_LIMIT", 10);
 
@@ -67,15 +73,18 @@ define("PHOTOS_PER_PAGE", 16);
 define("MAX_SIZE_FULL", 16777215); //MEDIUMBLOB max size allowed
 define("MAX_SIZE_THUMB", 65535); //BLOB max size allowed
 
+
+define("FULL_WIDTH", 1600); //Lunghezza Fullsize
+define("FULL_HEIGHT", 1600); //Altezza Fullsize
 define("THUMB_WIDTH", 100); //Lunghezza miniatura
 define("THUMB_HEIGHT", 100); //Altezza miniatura
-define("FULL_WIDTH",1600);//Lunghezza Fullsize
-define("FULL_HEIGHT",1600);//Altezza Fullsize
 
 
 
 //-----Tempo di scadenza della sessione-----\\
-define("MAX_TIME_SESSION",2592000);
+define("MAX_TIME_SESSION", 2592000); //= 30 days
+
+
 
 //-----Username per pagina-----\\
 define("USER_PER_PAGE", 100);

@@ -128,11 +128,48 @@ class E_User_Standard extends E_User
             $this->set_Last_Upload(time());
             $this->reset_Up_Count();
         }
-        
+
         if($this->get_up_Count < UPLOAD_STD_LIMIT)
         {
             return TRUE;
         }
         return FALSE;
+    }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Inserts the user into "users" DB table
+     *
+     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
+     */
+    public static function insert(\Entity\E_User_Standard $STD_user)
+    {
+        \Foundation\F_User_Standard::insert($STD_user);
+    }
+
+
+    /**
+     * Updates the "last_Upload" and the "up_Count" of the user
+     *
+     * @param \Entity\E_User_Standard $STD_user The user uploading a photo
+     */
+    public static function update_Counters(\Entity\E_User_Standard $STD_user)
+    {
+        \Foundation\F_User_Standard::update_Counters($STD_user);
+    }
+
+
+    /**
+     * Upgrades the user's role to PRO
+     *
+     * @param string $username The user's username
+     */
+    public static function becomePRO($username)
+    {
+        \Foundation\F_User_Standard::becomePRO($username);
     }
 }

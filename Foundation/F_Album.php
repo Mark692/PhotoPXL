@@ -12,7 +12,7 @@ class F_Album extends \Foundation\F_Database
 {
 
     /**
-     * Creates an album in the DB
+     * Saves the album in the DB
      *
      * @param \Entity\E_Album $album The album to save
      * @param string $owner The $owner's username
@@ -52,7 +52,7 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album ID to set the cover to
      * @param int $photo_ID The photo ID
      */
-    private static function insert_Cover($album_ID, $photo_ID=1)
+    private static function insert_Cover($album_ID, $photo_ID = NO_ALBUM_COVER)
     {
         $insertInto = "album_cover";
 
@@ -94,7 +94,7 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
      */
-    public static function update_Cover($album_ID, $photo_ID=1)
+    public static function update_Cover($album_ID, $photo_ID)
     {
         $update = "album_cover";
         $set = array("photo" => $photo_ID);
@@ -376,8 +376,10 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Deletes an album from the DB. Its photos will be kept with no album association
-     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum
+     * Deletes an album from the DB.
+     * Its photos will be kept with no album association
+     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum()
+     * To delete an album and all its photos use F_Album::delete_Album_AND_Photos()
      *
      * @param int $album_ID The album ID to delete from the DB
      */
@@ -390,4 +392,15 @@ class F_Album extends \Foundation\F_Database
         parent::execute_Query($query, $toBind);
     }
 
+
+    /**
+     * Deletes an album and all its photos
+     *
+     * @param int $album_ID The album to delete with all its associated photos
+     */
+    public static function delete_Album_AND_Photos($album_ID)
+    {
+        \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+        self::delete($album_ID);
+    }
 }

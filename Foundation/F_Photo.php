@@ -399,7 +399,7 @@ class F_Photo extends \Foundation\F_Database
         $album_ID = self::check_LastOne($photo_ID);
         if($album_ID!==FALSE)
         {
-            \Foundation\F_Album::update_Cover($album_ID);
+            \Foundation\F_Album::update_Cover($album_ID, NO_ALBUM_COVER);
         }
 
         $query = 'DELETE FROM `likes` '
@@ -422,9 +422,8 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
-
         //Sets the default cover for the empty album
-        \Foundation\F_Album::update_Cover($album_ID);
+        \Foundation\F_Album::update_Cover($album_ID, NO_ALBUM_COVER);
 
         //Deletes the album photos
         $query = 'DELETE FROM `likes` '
@@ -453,9 +452,9 @@ class F_Photo extends \Foundation\F_Database
     public static function move_To($album_ID, $photo_ID)
     {
         $album_ID = self::check_LastOne($photo_ID);
-        if($album_ID!==FALSE)
+        if($album_ID!==FALSE) //It IS the last one
         {
-            \Foundation\F_Album::update_Cover($album_ID);
+            \Foundation\F_Album::update_Cover($album_ID, NO_ALBUM_COVER);
         }
 
         $update = "photo_album";
