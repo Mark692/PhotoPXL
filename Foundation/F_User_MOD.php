@@ -40,14 +40,14 @@ class F_User_MOD extends F_User_PRO
         }
         $query .= 'LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
-        
+
         $toBind = [];
         $fetchAll = TRUE;
         $users_array = parent::fetch_Result($query, $toBind, $fetchAll);
         $users = [];
-        foreach($users_array as $u)
+        foreach($users_array as $record)
         {
-            array_push($users, $u["username"]); //Keeps only the usernames
+            array_push($users, $record["username"]); //Keeps only the usernames
         }
 
         $count = "username";

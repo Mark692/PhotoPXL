@@ -24,10 +24,10 @@ $config['smarty']['compile_dir']  = $smarty_path.'template_c'.DIRECTORY_SEPARATO
 
 
 //----Database Connection Parameters----\\
-$config['mysql_host']     = 'localhost';
 $config['mysql_database'] = 'my_photopxl';
-$config['mysql_user']     = 'root';
-$config['mysql_password'] = 'FRIGO A LEGNA';
+$config['mysql_host']     = 'localhost';     //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
+$config['mysql_user']     = 'root';          //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
+$config['mysql_password'] = 'FRIGO A LEGNA'; //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
 
 
 

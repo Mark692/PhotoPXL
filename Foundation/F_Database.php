@@ -22,9 +22,9 @@ class F_Database
      *
      * @global array $config Needed to set the connection parameters
      * @throws PDOException In case of connection errors
-     * @return PDO $connection The PDO connection to the DB
+     * @return PDO The PDO connection to the DB
      */
-    protected static function connettiti()
+    protected static function connect()
     {
         try
         {
@@ -43,7 +43,7 @@ class F_Database
         }
         catch(PDOException $e)
         {
-            echo "Impossibile connettersi al database. Errore: ".$e;
+            echo "Impossibile connettersi al database.";
         }
     }
 
@@ -57,7 +57,7 @@ class F_Database
      */
     protected static function execute_Query($query, $toBind)
     {
-        $pdo = self::connettiti();
+        $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
@@ -103,7 +103,7 @@ class F_Database
      */
     public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
-        $pdo = self::connettiti();
+        $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();

@@ -84,14 +84,14 @@ class F_User extends \Foundation\F_Database
                     .'LIMIT 1'
                 .')';
         $toBind = array($username);
-        $pdo = parent::connettiti();
+        $pdo = parent::connect();
         $pdo_stmt = $pdo->prepare($query);
         parent::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
         $pdo = NULL;
 
         $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
-        if($exists[0] == 1)
+        if($exists[0] == 1) // if($exists[0] === "1")
         {
             return TRUE;
         }
@@ -149,11 +149,11 @@ class F_User extends \Foundation\F_Database
     /**
      * Updates a record from the "users" table
      *
-     * @param \Entity\E_User $to_Update The user with new details
+     * @param \Entity\E_User_* $to_Update The entity user with new details
      * @param string $old_Username The DB username record to refer to
      * @param int $profile_Pic_ID The ID of the new profile pic
      */
-    public static function update_Profile(\Entity\E_User $to_Update, $old_Username)
+    public static function update_Profile($to_Update, $old_Username)
     {
         $update = "users";
         $new_username = $to_Update->get_Username();

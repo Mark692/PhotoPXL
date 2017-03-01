@@ -8,44 +8,88 @@
 
 namespace Utilities;
 
+use \PDO,
+    \PDOException;
+
 class installer
 {
-    private $default_DB_user;
+    private $default_DBuser;
     private $installer_txt;
+    private $DBSetup_txt;
+
 
     public function __construct()
     {
-        $this->default_DB_user = "AllUser";
+        $this->default_DBuser = "AllUser";
         $this->installer_txt = ".".DIRECTORY_SEPARATOR."installed.txt";
+        $this->DBSetup_txt = ".".DIRECTORY_SEPARATOR."DBSetup.txt";
     }
 
 
     /**
      * Sets the correct paramenter to the DB configuration file
      *
-     * @param string $form_DBHost
-     * @param string $form_DBName
-     * @param string $form_DBUsername
-     * @param string $form_DBPassword
+     * @param string $form_DBHost The DB host name
+     * @param string $form_DBName The DataBase name
+     * @param string $form_DBUsername The user connecting to the DB
+     * @param string $form_DBPassword The user connecting password
      */
-    public function DB_Setup($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword)
+    public function DB_ConnectionParameters(
+            $form_DBHost = 'localhost', //Not really necessary
+            $form_DBName = 'my_photopxl',
+            $form_DBUsername = '',
+            $form_DBPassword = '') //Default values for Altervista
     {
-        //Prendi questi valori dal FORM
-        //Imposta i valori all'array globale $config
-        global $config;
+        try
+        {
+            $connection = $this->DB_Check($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword);
+            $connection = NULL; //Closes DB connection
+            echo("ok, i parametri inseriti sono giusti");
 
-        $config['mysql_host'] = $form_DBHost;
-        $config['mysql_database'] = $form_DBName;
-        $config['mysql_user'] = $form_DBUsername;
-        $config['mysql_password'] = $form_DBPassword;
+            //Saves connection parameters
+            //---SBAGLIATO---\\
+//---NON SI DEVONO SALVARE STE COSE SU TXT---\\
+            $text = fopen($this->DBSetup_txt, "w");
+            fwrite($text, $form_DBHost."\n");
+            fwrite($text, $form_DBName."\n");
+            fwrite($text, $form_DBUsername."\n");
+            fwrite($text, $form_DBPassword."\n");
+            fclose($text);
+//----SBAGLIATO!!!----\\
 
-        $this->DB_Check(); //Controlla che questi parametri siano corretti facendo
-                           //una query al DB e verificando la tabella "installed"
+            //PROSEGUI CON L'ESECUZIONE DELL'APP
+        }
+        catch(PDOException $ex)
+        {
+            echo("Il DB non è correttamente configurato. Cambia i parametri di connessione!");
+            echo(nl2br("\r\n"));
+            echo("In dettaglio: ".$ex->getMessage());
+            //Rimanda al form che usa questa funzione
+        }
     }
 
 
     /**
-     * Checks whether the app is installed or not opening a txt file. If the file
+     * Tries to connect to the DB in order to test the parameters given
+     *
+     * @throws PDOException Whether the connection parameters are not correct
+     * @return PDO The PDO connection to the DB
+     */
+    private function DB_Check($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword)
+    {
+        $connection = new PDO(
+                'mysql:host='.$form_DBHost.'; '
+                .'dbname='.$form_DBName,
+                $form_DBUsername,
+                $form_DBPassword
+        );
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
+        return $connection;
+    }
+
+
+    /**
+     * Checks whether the app is installed (or not) opening a txt file. If the file
      * does not exists or 0 is written into it, FALSE will be returned.
      *
      * @return boolean Whether the app is already installed or not
@@ -73,107 +117,71 @@ class installer
     public function set_asInstalled()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
-        fwrite($text, "1"); //The app is installed
+        fwrite($text, "1\n"); //The app is correctly installed
         fclose($text);
     }
 
 
     /**
-     * Writes to the installation text fle that the app is not correctly installed
+     * Writes to the installation text file that the app is not correctly installed
      */
     public function set_asInvalidInstallation()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
-        fwrite($text, "0"); //The app is not correctly installed
+        fwrite($text, "0\n"); //The app is not correctly installed
         fclose($text);
-    }
-
-
-    /**
-     * Checks that the DB connection paramenters are correct and performs a query
-     * to check whether the app is installed or not
-     *
-     * @global array $config
-     */
-    public function DB_Check()
-    {
-
-//---CREATION OF A DB TABLE: CHECKING INSTALLATION---\\
-        global $config;
-        $DB_Name = $config['mysql_database'];
-
-        $query = "CREATE DATABASE IF NOT EXISTS ".$DB_Name."; "
-                ."CREATE TABLE IF NOT EXISTS `installed` "
-                ."( "
-                    ."`check` tinyint(1) NOT NULL DEFAULT '0', "
-                    ."UNIQUE KEY `installed` (`check`)"
-                .")";
-
-        //TRY
-            //Fai una query
-                //-> seleziona il valore di "check"
-                    //-> se installed.check === 1
-                        //-> l'app è già stata installata. Prosegui normalmente
-
-                    //->se installed.check === 0
-                        //-> l'app NON è stata installata ma la query ha avuto successo
-                        //quindi i parametri di connessione sono giusti
-                            //?!? bisogna impostare gli utenti predefiniti e le foto di default?!?!?!!??
-        //CATCH
-            //E' stata catturata un'eccezione di PDO
-            //Il DB può non essere presente
-                //-> FORM DI INSTALLAZIONE
     }
 
 
     public function createDB()
     {
-
+        //Prendi il dump sql e usalo per creare il DB.
+        //Altervista non permette di avere più di 1 DB o di DROPpare
+        //quello esistente.
+        //Bisogna fare una CREATE DATABASE IF NOT EXISTS my_photopxl
+        //Anche il nome del DB non può essere cambiato e dobbiamo usare
+        //il nome datoci da Altervista: my_photopxl
     }
-
 
 
     public function DB_Users()
     {
-//---DEFAULT USERS---\\
         $insertInto = "users";
 
         $AllUser = array(
-            "username" => $this->default_DB_user,
+            "username" => $this->default_DBuser,
             "password" => "password0",
-            "role" => \Utilities\Roles::ADMIN
-                );
+            "role"     => \Utilities\Roles::ADMIN
+        );
 
         $Marco = array(
             "username" => "Marco",
             "password" => "password1",
-            "role" => \Utilities\Roles::ADMIN
-                );
+            "role"     => \Utilities\Roles::ADMIN
+        );
 
         $Bene = array(
             "username" => "Bene",
             "password" => "password2",
-            "role" => \Utilities\Roles::ADMIN
-                );
+            "role"     => \Utilities\Roles::ADMIN
+        );
 
         $Fede = array(
             "username" => "Fede",
             "password" => "password3",
-            "role" => \Utilities\Roles::ADMIN
-                );
+            "role"     => \Utilities\Roles::ADMIN
+        );
 
         $set = array($AllUser, $Marco, $Bene, $Fede);
         foreach($set as $user)
         {
             \Foundation\F_Database::insert_Query($insertInto, $user);
         }
-//---END DEFAULT USERS---\\
     }
 
 
     public function DB_Photos()
     {
-//---DEFAULT IMAGES---\\
         $noAlbumCover = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."NoPhoto.jpg";
         $title = "NO ALBUM COVER";
         $desc = "In case no cover has been selected for the album";
@@ -206,10 +214,8 @@ class installer
 
         foreach($e_photo as $k => $v)
         {
-            \Foundation\F_Photo::insert($v, $e_photo_Blob[$k], $this->default_DB_user);
+            \Foundation\F_Photo::insert($v, $e_photo_Blob[$k], $this->default_DBuser);
         }
-
-//---END DEFAULT IMAGES---\\
     }
 
 

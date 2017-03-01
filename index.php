@@ -14,17 +14,6 @@ require_once $path."U_Nonce.php";
 
 //------------------------------PROVE------------------------------//
 //phpinfo();
-$app = new \Utilities\installer;
-$is_installed = $app->is_Installed();
-if($is_installed)
-{
-    echo("Yeee, l'app è installata");
-}
-else
-{
-    var_dump($is_installed);
-}
-
 
 
 
