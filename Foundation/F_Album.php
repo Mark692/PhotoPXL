@@ -180,6 +180,10 @@ class F_Album extends \Foundation\F_Database
 
         $toBind = array($id);
         $album = parent::fetch_Result($query, $toBind);
+        if($album === FALSE)
+        {
+            return [];
+        }
 
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
@@ -367,7 +371,7 @@ class F_Album extends \Foundation\F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach($cats_array as $sub_array)
+        foreach($cats_array as $sub_array) //If $cats_array is empty the foreach will not run
         {
             array_push($cats, $sub_array["category"]); //Keep only the values
         }

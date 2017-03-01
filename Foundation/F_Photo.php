@@ -102,7 +102,8 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
-     * @return array The \Entity\E_Photo object photo, its uploader, fullsize and type
+     * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               A boolean FALSE if no photos match the query
      */
     public static function get_By_ID($id)
     {
@@ -111,6 +112,11 @@ class F_Photo extends \Foundation\F_Database
         $from = "photo";
         $where = array("id" => $id);
         $photo = parent::get_One($select, $from, $where);
+
+        if($photo === FALSE) //No photos match the query
+        {
+            return FALSE;
+        }
 
         //Retrieves the categories
         $cats = self::get_Categories($id);
@@ -162,8 +168,8 @@ class F_Photo extends \Foundation\F_Database
         {
             $query .= ' DESC ';
         }
-        $query .='LIMIT '.$limit.' '
-                .'OFFSET '.$offset;
+        $query .= 'LIMIT '.$limit.' '
+                 .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = array($album_ID);
@@ -345,9 +351,9 @@ class F_Photo extends \Foundation\F_Database
         $where = array("photo" => $photo_ID);
         $likes = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach($likes as $v)
+        foreach($likes as $record)
         {
-            array_push($usernames_only, $v["user"]);
+            array_push($usernames_only, $record["user"]);
         }
         return $usernames_only;
     }
@@ -478,7 +484,7 @@ class F_Photo extends \Foundation\F_Database
         $from = "photo_album";
         $where = array("photo" => $photo_ID);
         $album_ID = parent::get_One($select, $from, $where);
-        if($album_ID!==[])
+        if($album_ID !== FALSE) //if(the photo belongs to an album)
         {
             $count = "photo";
             $where = '`album` = ?';

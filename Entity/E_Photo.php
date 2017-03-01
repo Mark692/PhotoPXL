@@ -320,7 +320,8 @@ class E_Photo
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
-     * @return array The \Entity\E_Photo object photo, its uploader, fullsize and type
+     * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               A boolean FALSE if no photos match the query
      */
     public static function get_By_ID($id)
     {

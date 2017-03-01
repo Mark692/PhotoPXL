@@ -186,7 +186,8 @@ class E_User
      * Retrieves the user's info from the DB
      *
      * @param string $username
-     * @return \Entity\E_User_* An \Entity\E_User object based on the $username's role
+     * @return mixed \Entity\E_User_* The user searched
+     *               boolean FALSE if no user matchs the given username
      */
     public static function get_UserDetails($username)
     {
@@ -223,7 +224,8 @@ class E_User
      * Retrieves the user's role only
      *
      * @param string $username The user's username
-     * @return int The user's role
+     * @return mixed int The user's role
+     *               boolean FALSE if no username was found in the DB
      */
     public static function get_DB_Role($username)
     {
@@ -329,11 +331,4 @@ class E_User
     {
         \Foundation\F_User::remove_Like($username, $photo_ID);
     }
-
-
-
-
-
-
-
 }

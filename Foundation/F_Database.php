@@ -97,9 +97,10 @@ class F_Database
      * @param string $query The query to execute
      * @param array $toBind The values to bind to the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @return array An associative array with a numeric keys. At each key corresponds
-     *               another associative array with keys named as DB column and
-     *               their values are the DB records
+     * @return mixed array An associative array with a numeric keys.
+     *                     At each key corresponds another associative array with
+     *                     keys named as DB column and their values are the DB records
+     *               boolean FALSE in case $fetchAll=FALSE and no records were affected by the query
      */
     public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
@@ -157,7 +158,8 @@ class F_Database
      * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in
      * @param array $where The associative array with the values to search for
-     * @return array The record matching the query
+     * @return mixed An array with the record matching the query
+     *               boolean FALSE in case no record matched the query
      */
     public static function get_One($select, $from, $where)
     {
@@ -177,6 +179,7 @@ class F_Database
      * @param string $orderBy_column The table column chosen to order the results
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array The associative array with all the records that matched the query
+     *               An ampty array [] in case no record were affected by the query
      */
     protected static function get_All($select, $from, $where, $limit = 0, $offset = 0, $orderBy_column = '', $order_DESC = FALSE)
     {
@@ -234,6 +237,16 @@ class F_Database
     }
 
 
+    public static function stokes()
+    {
+        return [];
+    }
+
+
+
+
+
+
     /**
      * Returns the count of matching rows
      *
@@ -251,6 +264,10 @@ class F_Database
                 .'WHERE '.$where;
 
         $total = self::fetch_Result($query, $toBind);
+        if($total === FALSE)
+        {
+            return 0;
+        }
         return intval($total[$key]);
     }
 

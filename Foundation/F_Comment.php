@@ -40,9 +40,10 @@ class F_Comment extends \Foundation\F_Database
      * the latest one.
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The comments made for the photo
      */
-    public static function get_By_Photo($photo_ID)
+    public static function get_By_Photo($photo_ID, $order_DESC = FALSE)
     {
         $select = array("id", "text", "user");
         $from = "comment";
@@ -50,7 +51,7 @@ class F_Comment extends \Foundation\F_Database
         $limit = 0;
         $offset = 0;
         $orderBy = "id";
-        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
+        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
     }
 
 

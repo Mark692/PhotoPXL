@@ -17,7 +17,8 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user details matching the given $username
      *
      * @param string $username The user's username to search
-     * @return \Entity\E_User_* The user searched
+     * @return mixed \Entity\E_User_* The user searched
+     *               boolean FALSE if no user matchs the given username
      */
     public static function get_UserDetails($username)
     {
@@ -25,6 +26,10 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("username" => $username);
         $array_user = parent::get_One($select, $from, $where);
+        if($array_user === FALSE)
+        {
+            return FALSE;
+        }
 
         return self::instantiate_EUser($array_user);
     }
@@ -119,7 +124,8 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user's role only
      *
      * @param string $username The user's username
-     * @return int The user's role
+     * @return mixed int The user's role
+     *               boolean FALSE if no username was found in the DB
      */
     public static function get_Role($username)
     {
@@ -127,6 +133,10 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("username" => $username);
         $role = parent::get_One($select, $from, $where);
+        if($role === FALSE)
+        {
+            return FALSE;
+        }
         return $role["role"];
     }
 
@@ -143,7 +153,7 @@ class F_User extends \Foundation\F_Database
         $from = "users";
         $where = array("role" => $role);
 
-        return $array_user = parent::get_All($select, $from, $where);
+        return parent::get_All($select, $from, $where);
     }
 
 
@@ -191,7 +201,7 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return image The profile pic, thumbnail style
+     * @return resource The profile pic, thumbnail style
      */
     public static function get_ProfilePic($username)
     {
@@ -201,7 +211,8 @@ class F_User extends \Foundation\F_Database
                     .'ON photo.id = profile_pic.photo '
                 .'WHERE profile_pic.user = ?';
         $toBind = array($username);
-        $proPic = parent::fetch_Result($query, $toBind);
+        $proPic = parent::fetch_Result($query, $toBind); //Can not return FALSE because a default photo will always exist
+
         return $proPic["thumbnail"];
     }
 
