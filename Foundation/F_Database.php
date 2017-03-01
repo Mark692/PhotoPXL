@@ -256,7 +256,7 @@ class F_Database
      * @param array $toBind The values to bind at the query
      * @return int The number of affected rows
      */
-    public static function count($count, $from, $where, $toBind=[])
+    public static function count($count, $from, $where, $toBind = [])
     {
         $key = 'COUNT(DISTINCT `'.$count.'`)'; //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
         $query = 'SELECT '.$key.' '
