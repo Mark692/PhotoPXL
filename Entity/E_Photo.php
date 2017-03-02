@@ -242,24 +242,46 @@ class E_Photo
 
 
     /**
-     * Retrieves the number of likes received
+     * Retrieves the list of users that liked the photo
      *
-     * @return array The number of likes received
+     * @return array The list of users that liked the photo
      */
-    public function get_Likes()
+    public function get_LikesList()
     {
         return $this->likes;
     }
 
 
     /**
-     * Sets the number of comments for this photo
+     * Retrieves the number of likes received
      *
-     * @param int $comments The number of comments for this photo
+     * @return int The number of likes received
      */
-    public function set_Comments($comments)
+    public function get_NLikes()
+    {
+        return count($this->likes);
+    }
+
+
+    /**
+     * Sets the list of users that commented the photo
+     *
+     * @param array $comments The list of users that commented the photo
+     */
+    public function set_Comments($comments = [])
     {
         $this->total_comments = $comments;
+    }
+
+
+    /**
+     * Retrieves the list of users that commented the photo
+     *
+     * @return int The list of users that commented the photo
+     */
+    public function get_CommentsList()
+    {
+        return $this->total_comments;
     }
 
 
@@ -268,9 +290,9 @@ class E_Photo
      *
      * @return int The number of comments for this photo
      */
-    public function get_Comments()
+    public function get_NComments()
     {
-        return $this->total_comments;
+        return count($this->total_comments);
     }
 
 
@@ -363,9 +385,9 @@ class E_Photo
      * @param int $photo_ID The photo's ID
      * @return array The users that liked the selected photo
      */
-    public static function get_TotalLikes($photo_ID)
+    public static function get_DB_LikeList($photo_ID)
     {
-        return \Foundation\F_Photo::get_TotalLikes($photo_ID);
+        return \Foundation\F_Photo::get_LikeList($photo_ID);
     }
 
 

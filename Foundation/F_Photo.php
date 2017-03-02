@@ -122,7 +122,7 @@ class F_Photo extends \Foundation\F_Database
         $cats = self::get_Categories($id);
 
         //Retrieves the likes
-        $liked_By = self::get_TotalLikes($id);
+        $liked_By = self::get_LikeList($id);
 
         $e_photo = new \Entity\E_Photo(
                 $photo["title"],
@@ -344,7 +344,7 @@ class F_Photo extends \Foundation\F_Database
      * @param int $photo_ID The photo's ID
      * @return array The users that liked the selected photo
      */
-    public static function get_TotalLikes($photo_ID)
+    public static function get_LikeList($photo_ID)
     {
         $select = array("user");
         $from = "likes";
