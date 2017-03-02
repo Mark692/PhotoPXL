@@ -9,8 +9,8 @@
 namespace Control;
 
 use Entity\E_User_Standard;
-use Foundation\F_User; //Can use its methods from the related E_ class
-use Foundation\F_User_Standard; //Can use its methods from the related E_ class
+//use Foundation\F_User; //Can use its methods from the related E_ class
+//use Foundation\F_User_Standard; //Can use its methods from the related E_ class
 use Utilities\U_Nonce;
 use Exceptions\input_texts;
 

@@ -41,28 +41,26 @@ class F_Album extends \Foundation\F_Database
         }
 
         //Sets a basic cover for the album
-        self::insert_Cover($album_ID);
+//        self::insert_DefaultCover($album_ID);
     }
 
 
     /**
-     * Sets the album cover. If no photo has been selected, a default photo
-     * will be chosen
+     * Sets a default album cover
      *
      * @param int $album_ID The album ID to set the cover to
-     * @param int $photo_ID The photo ID
      */
-    private static function insert_Cover($album_ID, $photo_ID = NO_ALBUM_COVER)
-    {
-        $insertInto = "album_cover";
-
-        $set = array(
-            "album" => $album_ID,
-            "photo" => $photo_ID
-                );
-
-        parent::insert_Query($insertInto, $set);
-    }
+//    private static function insert_DefaultCover($album_ID)
+//    {
+//        $insertInto = "album_cover";
+//
+//        $set = array(
+//            "album" => $album_ID,
+//            "photo" => NO_ALBUM_COVER
+//                );
+//
+//        parent::insert_Query($insertInto, $set);
+//    }
 
 
     /**
@@ -75,7 +73,6 @@ class F_Album extends \Foundation\F_Database
         $id = $to_Update->get_ID();
         $update = "album";
         $set = array(
-            "id" => $id,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
             "creation_date" => $to_Update->get_Creation_Date()
@@ -94,14 +91,14 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
      */
-    public static function update_Cover($album_ID, $photo_ID)
-    {
-        $update = "album_cover";
-        $set = array("photo" => $photo_ID);
-        $where = array("album" => $album_ID);
-
-        parent::update($update, $set, $where);
-    }
+//    public static function update_Cover($album_ID, $photo_ID)
+//    {
+//        $update = "album_cover";
+//        $set = array("photo" => $photo_ID);
+//        $where = array("album" => $album_ID);
+//
+//        parent::update($update, $set, $where);
+//    }
 
 
     /**
@@ -112,7 +109,7 @@ class F_Album extends \Foundation\F_Database
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
      */
-    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($username, $page_toView = 1, $order_DESC = FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
@@ -297,11 +294,12 @@ class F_Album extends \Foundation\F_Database
             if($query_DEL!=='')
             {
                 array_push($toBind, $to_remove);
-                parent::execute_Query($query, $toBind);
             }
+            parent::execute_Query($query, $toBind);
         }
         elseif($query_DEL!=='')
         {
+            echo("3 :(");
             $toBind = $to_remove;
             parent::execute_Query($query, $toBind);
         }

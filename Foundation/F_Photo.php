@@ -261,8 +261,8 @@ class F_Photo extends \Foundation\F_Database
             if($query_DEL!=='')
             {
                 array_push($toBind, $to_remove);
-                parent::execute_Query($query, $toBind);
             }
+            parent::execute_Query($query, $toBind);
         }
         elseif($query_DEL!=='')
         {
