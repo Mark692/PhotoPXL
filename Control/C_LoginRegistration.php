@@ -9,8 +9,8 @@
 namespace Control;
 
 use Entity\E_User_Standard;
-use Foundation\F_User;
-use Foundation\F_User_Standard;
+use Foundation\F_User; //Can use its methods from the related E_ class
+use Foundation\F_User_Standard; //Can use its methods from the related E_ class
 use Utilities\U_Nonce;
 use Exceptions\input_texts;
 
@@ -45,7 +45,7 @@ class C_LoginRegistration
     public function login($username, $nonce, $hash, $keepLogged)
     {
 
-        $userInfo = F_User::get_LoginInfo($username);
+        $userInfo = E_User::get_LoginInfo($username);
         if(empty($userInfo))
         {
             return false;
@@ -74,14 +74,14 @@ class C_LoginRegistration
     public function register($username, $email, $password, $keepLogged)
     {
 
-        if(F_User::is_Available($username) === FALSE)
+        if(E_User::is_Available($username) === FALSE)
         {
             return false;
         }
         try
         {
             $STD_user = new E_User_Standard($username, $password, $email);
-            F_User_Standard::insert($STD_user);
+            E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
         }
         catch(input_texts $e)

@@ -17,6 +17,7 @@ class E_User
     private $username;
     private $hashedPassword;
     private $email;
+
     /** @type enum The user role */
     private $role;
 

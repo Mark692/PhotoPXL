@@ -17,10 +17,10 @@ class E_Photo
     private $title;
     private $description;
     private $is_reserved;
-    private $categories; //Categorie della foto
-    private $likes;
-    private $comments;
+    private $categories = []; //Categorie della foto
     private $upload_date;
+    private $likes = [];
+    private $comments = [];
 
 
     /**
@@ -52,7 +52,7 @@ class E_Photo
         $this->set_Reserved($is_reserved);
         $this->set_Categories($cat);
         $this->set_Upload_Date($up_Date);
-        $this->set_Likes($likes);
+        $this->set_LikesList($likes);
         $this->set_Comments($comments);
     }
 
@@ -237,7 +237,7 @@ class E_Photo
      *
      * @param array $total_likes The number of likes received on this photo
      */
-    public function set_Likes($total_likes)
+    public function set_LikesList($total_likes = [])
     {
         $this->likes = $total_likes;
     }

@@ -13,7 +13,6 @@ namespace Foundation;
  */
 class F_User_MOD extends F_User_PRO
 {
-
     /**
      * Retrieves the list of all usernames that match the query
      *
@@ -30,7 +29,7 @@ class F_User_MOD extends F_User_PRO
                 .'FROM `users` ';
 
         $len = strlen($starts_With);
-        if($len>0)
+        if($len > 0)
         {
             $query .= 'WHERE LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
         }
@@ -39,7 +38,7 @@ class F_User_MOD extends F_User_PRO
             $query .= 'WHERE 1 ';
         }
         $query .= 'LIMIT '.$limit_PerPage.' '
-                 .'OFFSET '.$offset;
+                .'OFFSET '.$offset;
 
         $toBind = [];
         $fetchAll = TRUE;
@@ -68,7 +67,8 @@ class F_User_MOD extends F_User_PRO
     public static function ban($username)
     {
         $user_Role = parent::get_Role($username);
-        if($user_Role !== \Utilities\Roles::ADMIN)
+        if($user_Role !== FALSE //The username exists
+                && $user_Role !== \Utilities\Roles::ADMIN) //AND it's not an Admin
         {
             $update = "users";
             $set = array("role" => \Utilities\Roles::BANNED);
@@ -77,5 +77,6 @@ class F_User_MOD extends F_User_PRO
             parent::update($update, $set, $where);
         }
     }
-}
 
+
+}
