@@ -19,6 +19,7 @@ class E_Photo
     private $is_reserved;
     private $categories; //Categorie della foto
     private $likes;
+    private $comments;
     private $upload_date;
 
 
@@ -35,7 +36,7 @@ class E_Photo
      * @param array $likes The list of users that liked the photo
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes = [], $up_Date = 0)
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $up_Date = 0, $likes = [], $comments = [])
     {
         if($this->check_Title($title) === FALSE)
         {
@@ -50,8 +51,9 @@ class E_Photo
         $this->set_Description($desc);
         $this->set_Reserved($is_reserved);
         $this->set_Categories($cat);
-        $this->set_Likes($likes);
         $this->set_Upload_Date($up_Date);
+        $this->set_Likes($likes);
+        $this->set_Comments($comments);
     }
 
 
@@ -270,7 +272,7 @@ class E_Photo
      */
     public function set_Comments($comments = [])
     {
-        $this->total_comments = $comments;
+        $this->comments = $comments;
     }
 
 
@@ -281,7 +283,7 @@ class E_Photo
      */
     public function get_CommentsList()
     {
-        return $this->total_comments;
+        return $this->comments;
     }
 
 
@@ -292,7 +294,7 @@ class E_Photo
      */
     public function get_NComments()
     {
-        return count($this->total_comments);
+        return count($this->comments);
     }
 
 
@@ -388,6 +390,18 @@ class E_Photo
     public static function get_DB_LikeList($photo_ID)
     {
         return \Foundation\F_Photo::get_LikeList($photo_ID);
+    }
+
+
+    /**
+     * Retrieves the list of all uses that commented the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return array The users that commented the selected photo
+     */
+    public static function get_DB_CommentsList($photo_ID)
+    {
+        return \Foundation\F_Photo::get_CommentsList($photo_ID);
     }
 
 

@@ -124,13 +124,18 @@ class F_Photo extends \Foundation\F_Database
         //Retrieves the likes
         $liked_By = self::get_LikeList($id);
 
+        //Retrieves the comments
+        $commented_By = self::get_CommentsList($id);
+
+
         $e_photo = new \Entity\E_Photo(
                 $photo["title"],
                 $photo["description"],
                 $photo["is_reserved"],
                 $cats,
+                $photo["upload_date"],
                 $liked_By,
-                $photo["upload_date"]
+                $commented_By
                 );
         $e_photo->set_ID($id);
 
@@ -352,6 +357,27 @@ class F_Photo extends \Foundation\F_Database
         $likes = parent::get_All($select, $from, $where);
         $usernames_only = [];
         foreach($likes as $record)
+        {
+            array_push($usernames_only, $record["user"]);
+        }
+        return $usernames_only;
+    }
+
+
+    /**
+     * Retrieves the list of all uses that commented the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return array The users that commented the selected photo
+     */
+    public static function get_CommentsList($photo_ID)
+    {
+        $select = array("user");
+        $from = "comment";
+        $where = array("photo" => $photo_ID);
+        $comments = parent::get_All($select, $from, $where);
+        $usernames_only = [];
+        foreach($comments as $record)
         {
             array_push($usernames_only, $record["user"]);
         }
