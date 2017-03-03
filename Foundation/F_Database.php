@@ -102,7 +102,7 @@ class F_Database
      *                     keys named as DB column and their values are the DB records
      *               boolean FALSE in case $fetchAll=FALSE and no records were affected by the query
      */
-    public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
+    protected static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
         $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
@@ -126,7 +126,7 @@ class F_Database
      * @param array $where The associative array with the values to search for
      * @return string The complete query
      */
-    public static function basic_Query($select, $from, $where)
+    private static function basic_Query($select, $from, $where)
     {
         $select_columns = $select;
         if($select !== "*")
@@ -161,7 +161,7 @@ class F_Database
      * @return mixed An array with the record matching the query
      *               boolean FALSE in case no record matched the query
      */
-    public static function get_One($select, $from, $where)
+    protected static function get_One($select, $from, $where)
     {
         $query = self::basic_Query($select, $from, $where);
         return self::fetch_Result($query, $where);
@@ -246,7 +246,7 @@ class F_Database
      * @param array $toBind The values to bind at the query
      * @return int The number of affected rows
      */
-    public static function count($count, $from, $where, $toBind = [])
+    protected static function count($count, $from, $where, $toBind = [])
     {
         $key = 'COUNT(DISTINCT `'.$count.'`)'; //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
         $query = 'SELECT '.$key.' '
@@ -269,7 +269,7 @@ class F_Database
      * @param array $toBind The array of parameters to bind
      * @return \PDOStatement The object to execute()
      */
-    public static function bind_params(\PDOStatement $pdo_stmt, $toBind)
+    protected static function bind_params(\PDOStatement $pdo_stmt, $toBind)
     {
         if(count($toBind) > 0)
         {

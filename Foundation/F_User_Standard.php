@@ -35,23 +35,8 @@ class F_User_Standard extends F_User
 
         parent::insert_Query($insertInto, $set);
 
-        self::insert_DefaultProPic($username);
-    }
-
-
-    /**
-     * Sets a default profile pic
-     *
-     * @param int $username The users'username to set the pic to
-     */
-    private static function insert_DefaultProPic($username)
-    {
-        $query = 'INSERT INTO `profile_pic` (`user`, `photo`, `type` ) '
-                    .'SELECT ?, `thumbnail`, `type` '
-                    .'FROM `photo` '
-                    .'WHERE `id` = '.DEFAULT_PRO_PIC.' ';
-        $toBind = array($username);
-        parent::execute_Query($query, $toBind);
+        //Inserts a default Profile Pic
+        parent::insert_DefaultProPic($username);
     }
 
 

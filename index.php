@@ -23,6 +23,22 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
+$t = new \P\std_user();
+$t->INSERT();
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+$t->BECOMEPRO();
+
+
+
+
+
+
+
+
+
+
 
 //$avvia = new \View\V_Home();
 //// prove federico

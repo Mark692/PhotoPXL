@@ -87,7 +87,7 @@ class F_User extends \Foundation\F_Database
                     .'SELECT 1 '
                     .'FROM `users` '
                     .'WHERE `username`= BINARY ? '
-                    .'LIMIT 1'
+                    .'LIMIT 1' //Can this speed the query up?
                 .')';
         $toBind = array($username);
         $pdo = parent::connect();
@@ -138,7 +138,7 @@ class F_User extends \Foundation\F_Database
         {
             return FALSE;
         }
-        return $role["role"];
+        return intval($role["role"]);
     }
 
 
@@ -182,19 +182,41 @@ class F_User extends \Foundation\F_Database
 
 
     /**
-     * Sets a profile pic for the user
+     * Updates the profile pic with an existing photo
      *
      * @param string $username The user's username
      * @param int $photo_ID The photo ID to save as profile pic
      */
     public static function set_ProfilePic($username, $photo_ID)
     {
-        $insertInto = "profile_pic";
-        $set = array(
-            "username" => $username,
-            "photo" => $photo_ID
-                );
-        parent::insert_Query($insertInto, $set);
+        $query = 'UPDATE `profile_pic`, '
+                .'('
+                    .'SELECT * '
+                    .'FROM `photo` '
+                    .'WHERE `id` = ?'
+                .') photo '
+                .'SET '
+                    .'`photo` = photo.thumbnail '
+                    .'`type` = photo.type '
+                .'WHERE `user` = ?';
+        $toBind = array($photo_ID, $username);
+        parent::execute_Query($query, $toBind);
+    }
+
+
+    /**
+     * Updates the profile pic by uploading a new photo to be used ONLY as ProPic
+     *
+     * @param int $username The user to update
+     * @param int $blob The new profile pic to upload for the user
+     */
+    public static function upload_NewCover($username, \Entity\E_Photo_Blob $blob)
+    {
+        $update = "profile_pic";
+        $set = array("photo" => $blob->get_Thumbnail(),
+                     "type" => $blob->get_Type());
+        $where = array("user" => $username);
+        parent::update($update, $set, $where);
     }
 
 
@@ -202,35 +224,31 @@ class F_User extends \Foundation\F_Database
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return resource The profile pic, thumbnail style
+     * @return resource The profile pic, thumbnail style, and its type
      */
     public static function get_ProfilePic($username)
     {
-        $query = 'SELECT `thumbnail` '
-                .'FROM `photo` '
-                    .'INNER JOIN `profile_pic` '
-                    .'ON photo.id = profile_pic.photo '
-                .'WHERE profile_pic.user = ?';
-        $toBind = array($username);
-        $proPic = parent::fetch_Result($query, $toBind); //Can not return FALSE because a default photo will always exist
+        $select = array("photo", "type");
+        $from = "profile_pic";
+        $where = array("user" => $username);
 
-        return $proPic["thumbnail"];
+        return parent::get_One($select, $from, $where); //Can not return FALSE because a default photo will always exist
     }
 
 
     /**
-     * Updates the user's profile pic
+     * Sets a default profile pic
      *
-     * @param string $username The user's username
-     * @param int $profile_Pic_ID The ID of the new profile pic
+     * @param int $username The users'username to set the pic to
      */
-    public static function update_ProfilePic($username, $profile_Pic_ID)
+    protected static function insert_DefaultProPic($username)
     {
-        $update = "profile_pic";
-        $set = array("photo" => $profile_Pic_ID);
-        $where = array("user" => $username);
-
-        parent::update($update, $set, $where);
+        $query = 'INSERT INTO `profile_pic` (`user`, `photo`, `type` ) '
+                    .'SELECT ?, `thumbnail`, `type` '
+                    .'FROM `photo` '
+                    .'WHERE `id` = '.DEFAULT_PRO_PIC.' ';
+        $toBind = array($username);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -239,9 +257,9 @@ class F_User extends \Foundation\F_Database
      *
      * @param string $username The user that wants to remove the profile pic
      */
-    public static function remove_ProfilePic($username)
+    public static function remove_CurrentProPic($username)
     {
-        self::update_ProfilePic($username, NO_PRO_PIC);
+        self::insert_DefaultProPic($username);
     }
 
 
@@ -277,6 +295,4 @@ class F_User extends \Foundation\F_Database
         $toBind = array($username, $photo_ID);
         parent::execute_Query($query, $toBind);
     }
-
-
 }

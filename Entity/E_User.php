@@ -36,7 +36,7 @@ class E_User
             throw new \Exceptions\input_texts(0, $username);
         }
         $this->set_Username($username);
-        $this->set_hashedPassword($password);
+        $this->set_Password($password);
 
         if($this->check_Email($email) === FALSE)
         {
@@ -74,9 +74,10 @@ class E_User
      * @param string $username The username input
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    public static function check_Username($username)
+    private function check_Username($username)
     {
-        if(strlen($username) >= MIN_USERNAME_CHARS && strlen($username) <= MAX_USERNAME_CHARS)
+        if(strlen($username) >= MIN_USERNAME_CHARS
+                && strlen($username) <= MAX_USERNAME_CHARS)
         {
             $allowed = array('-', '_', '.'); //Allows -_. inside a Username
             if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -89,13 +90,13 @@ class E_User
 
 
     /**
-     * Sets an ALREADY HASHED password for the User
+     * Sets a password for the User
      *
-     * @param string $pass The user's hash('sha512', password)
+     * @param string $pass The user's hashed password
      */
-    public function set_hashedPassword($pass)
+    public function set_Password($pass)
     {
-        $this->hashedPassword = $pass;
+        $this->hashedPassword = $this->hash_of($pass);
     }
 
 
@@ -105,7 +106,7 @@ class E_User
      * @param string $pass2hash The password in clear text to hash before save it
      * @return string The hashed password
      */
-    public function hash_of($pass2hash)
+    private function hash_of($pass2hash)
     {
         return hash('sha512', $pass2hash);
     }
@@ -139,7 +140,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    public static function check_Email($email)
+    private function check_Email($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -276,10 +277,22 @@ class E_User
 
 
     /**
+     * Updates the profile pic by uploading a new photo to be used ONLY as ProPic
+     *
+     * @param int $username The user to update
+     * @param int $blob The new profile pic to upload for the user
+     */
+    public static function upload_NewCover($username, \Entity\E_Photo_Blob $blob)
+    {
+        \Foundation\F_User::upload_NewCover($username, $blob);
+    }
+
+
+    /**
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return image The profile pic, thumbnail style
+     * @return image The profile pic, thumbnail style, and its type
      */
     public static function get_ProfilePic($username)
     {
@@ -288,25 +301,13 @@ class E_User
 
 
     /**
-     * Updates the user's profile pic
-     *
-     * @param string $username The user's username
-     * @param int $profile_Pic_ID The ID of the new profile pic
-     */
-    public static function update_ProfilePic($username, $profile_Pic_ID)
-    {
-        \Foundation\F_User::update_ProfilePic($username, $profile_Pic_ID);
-    }
-
-
-    /**
      * Removes the user's profile pic
      *
      * @param string $username The user that wants to remove the profile pic
      */
-    public static function remove_ProfilePic($username)
+    public static function remove_CurrentProPic($username)
     {
-        \Foundation\F_User::remove_ProfilePic($username);
+        \Foundation\F_User::remove_CurrentProPic($username);
     }
 
 

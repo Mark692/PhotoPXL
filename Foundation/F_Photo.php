@@ -119,7 +119,12 @@ class F_Photo extends \Foundation\F_Database
         }
 
         //Retrieves the categories
-        $cats = self::get_Categories($id);
+        $array_categories = self::get_Categories($id);
+        $cats = [];
+        foreach($array_categories as $v)
+        {
+            array_push($cats, intval($v["category"]));
+        }
 
         //Retrieves the likes
         $liked_By = self::get_LikeList($id);
