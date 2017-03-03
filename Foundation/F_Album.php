@@ -41,7 +41,7 @@ class F_Album extends \Foundation\F_Database
         }
 
         //Sets a basic cover for the album
-//        self::insert_DefaultCover($album_ID);
+        self::insert_DefaultCover($album_ID);
     }
 
 
@@ -50,17 +50,15 @@ class F_Album extends \Foundation\F_Database
      *
      * @param int $album_ID The album ID to set the cover to
      */
-//    private static function insert_DefaultCover($album_ID)
-//    {
-//        $insertInto = "album_cover";
-//
-//        $set = array(
-//            "album" => $album_ID,
-//            "photo" => NO_ALBUM_COVER
-//                );
-//
-//        parent::insert_Query($insertInto, $set);
-//    }
+    private static function insert_DefaultCover($album_ID)
+    {
+        $query = 'INSERT INTO `album_cover` (`album`, `cover` ) '
+                    .'SELECT ?, `thumbnail` '
+                    .'FROM `photo` '
+                    .'WHERE `id` = '.NO_ALBUM_COVER.' ';
+        $toBind = array($album_ID);
+        parent::execute_Query($query, $toBind);
+    }
 
 
     /**
