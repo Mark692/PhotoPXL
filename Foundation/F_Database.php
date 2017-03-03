@@ -237,16 +237,6 @@ class F_Database
     }
 
 
-    public static function stokes()
-    {
-        return [];
-    }
-
-
-
-
-
-
     /**
      * Returns the count of matching rows
      *

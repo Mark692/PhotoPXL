@@ -49,7 +49,7 @@ class E_Photo_Blob
      *
      * @param string $path The path to the photo
      */
-    public function set_Fullsize($path)
+    private function set_Fullsize($path)
     {
         $this->fullsize = file_get_contents(realpath($path));
     }
@@ -71,7 +71,7 @@ class E_Photo_Blob
      *
      * @param resource $thumb_Image The thumbnail image
      */
-    public function set_Thumbnail($thumb_Image)
+    private function set_Thumbnail($thumb_Image)
     {
         $this->thumbnail = $thumb_Image;
     }
@@ -93,7 +93,7 @@ class E_Photo_Blob
      *
      * @param int $size The size of the photo
      */
-    public function set_Size($size)
+    private function set_Size($size)
     {
         $this->size = $size;
     }
@@ -115,7 +115,7 @@ class E_Photo_Blob
      *
      * @param string $type The type of the photo
      */
-    public function set_Type($type)
+    private function set_Type($type)
     {
         $this->type = $type;
     }
@@ -138,7 +138,7 @@ class E_Photo_Blob
      * @param string $source_Path The path to the image to resize
      * @return resource The resized image
      */
-    public function generate_Thumbnail($source_Path)
+    private function generate_Thumbnail($source_Path)
     {
         $max_width = THUMB_WIDTH;
         $max_height = THUMB_HEIGHT;
@@ -154,7 +154,7 @@ class E_Photo_Blob
      * @param int $MAX_HEIGHT The desired resize height
      * @return resource The resized image
      */
-    public function resize($source_Path, $MAX_WIDTH, $MAX_HEIGHT)
+    private function resize($source_Path, $MAX_WIDTH, $MAX_HEIGHT)
     {
         list($w, $h, $type) = getimagesize($source_Path);
         list($new_W, $new_H) = $this->adapt_Dimensions($w, $h, $MAX_WIDTH, $MAX_HEIGHT);

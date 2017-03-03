@@ -15,83 +15,11 @@ require_once $path."U_Nonce.php";
 //------------------------------PROVE------------------------------//
 //phpinfo();
 
-//$user = "AllUser";
-//$album1 = new \Entity\E_Album("Titolo a caso");
-//$album2 = new \Entity\E_Album("Titolo a 2");
-//$album3 = new \Entity\E_Album("Titolo 3");
-//$album4 = new \Entity\E_Album("Quattro");
-////
-//$salva = array($album1, $album2, $album3, $album4);
-////foreach($salva as $a)
-////{
-////    \Foundation\F_Album::insert($a, $user);
-////}
-//
-//$c1 = [1, 6, 4, 5, 2];
-//$c2 = [6];
-//$c3 = [1, 2, 3, 4, 7];
-//$c4 = [2, 5, 6];
-//
-//$cats = array($c1, $c2, $c3, $c4);
-//foreach($cats as $k => $v)
-//{
-//    $salva[$k]->set_Categories($v);
-//    $salva[$k]->set_ID($k +1);
-//    $salva[$k]->set_Description("BLEEEEE");
-//
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//}
-//
-//\Foundation\F_Album::update_Details($album1);
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//\Foundation\F_Album::update_Details($album2);
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//\Foundation\F_Album::update_Details($album3);
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//    echo(nl2br("\r\n"));
-//\Foundation\F_Album::update_Details($album4);
+$bob = new \Entity\E_Photo_Blob();
+$percorso = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."ccc.png";
+$bob->on_Upload($percorso);
 
-
-//var_dump(\Foundation\F_Album::get_By_User($user));
-
-
-//$e_photo = new \Entity\E_Photo("Tre");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."1.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-//
-//$e_photo = new \Entity\E_Photo("Quattro");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."2.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-//
-//$e_photo = new \Entity\E_Photo("Cinque");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."3.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-//
-//$e_photo = new \Entity\E_Photo("Sei");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."4.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-//
-//$e_photo = new \Entity\E_Photo("Sette");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."5.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-//
-//$e_photo = new \Entity\E_Photo("Otto");
-//$bob = new \Entity\E_Photo_Blob();
-//$bob->on_Upload(".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."6.jpg");
-//\Foundation\F_Photo::insert($e_photo, $bob, "AllUser");
-
+echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
 

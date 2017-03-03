@@ -89,14 +89,44 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
      */
-//    public static function update_Cover($album_ID, $photo_ID)
-//    {
-//        $update = "album_cover";
-//        $set = array("photo" => $photo_ID);
-//        $where = array("album" => $album_ID);
-//
-//        parent::update($update, $set, $where);
-//    }
+    public static function set_Cover($album_ID, $photo_ID)
+    {
+        $query = 'UPDATE `album_cover`, '
+                .'('
+                    .'SELECT * '
+                    .'FROM `photo` '
+                    .'WHERE `id` = ?'
+                .') photo '
+                .'SET `cover` = photo.thumbnail '
+                .'WHERE `album` = ?';
+        $toBind = array($photo_ID, $album_ID);
+        parent::execute_Query($query, $toBind);
+    }
+
+
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    /**
+     * Updates the album cover
+     *
+     * @param int $album_ID The album ID to update
+     * @param int $blob The new cover to upload for the album
+     */
+    public static function upload_NewCover($album_ID, \Entity\E_Photo_Blob $blob)
+    {
+        $update = "album_cover";
+        $set = array("cover" => $blob->get_Thumbnail());
+        $where = array("album" => $album_ID);
+        parent::update($update, $set, $where);
+    }
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
+    //INSERISCI IN ENTITY :'(
 
 
     /**

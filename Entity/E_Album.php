@@ -238,7 +238,7 @@ class E_Album
      */
     public static function update_Cover($album_ID, $photo_ID)
     {
-        \Foundation\F_Album::update_Cover($album_ID, $photo_ID);
+        \Foundation\F_Album::set_Cover($album_ID, $photo_ID);
     }
 
 
