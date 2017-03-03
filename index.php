@@ -15,11 +15,12 @@ require_once $path."U_Nonce.php";
 //------------------------------PROVE------------------------------//
 //phpinfo();
 
-$bob = new \Entity\E_Photo_Blob();
-$percorso = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."ccc.png";
-$bob->on_Upload($percorso);
 
-echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
+//$bob = new \Entity\E_Photo_Blob();
+//$percorso = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."ccc.png";
+//$bob->on_Upload($percorso);
+//
+//echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
 

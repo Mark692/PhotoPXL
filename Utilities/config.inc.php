@@ -45,7 +45,7 @@ define("SPORT", 8);
 
 //----FIXED DB IDs----\\
 define("NO_ALBUM_COVER", 1);
-define("NO_PRO_PIC", 2);
+define("DEFAULT_PRO_PIC", 2);
 
 
 

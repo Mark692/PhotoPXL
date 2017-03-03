@@ -22,9 +22,10 @@ class F_User_Standard extends F_User
     public static function insert(\Entity\E_User_Standard $STD_user)
     {
         $insertInto = "users";
+        $username = $STD_user->get_Username();
 
         $set = array(
-            "username" => $STD_user->get_Username(),
+            "username" => $username,
             "password" => $STD_user->get_Password(),
             "email" => $STD_user->get_Email(),
             "role" => $STD_user->get_Role(),
@@ -33,6 +34,24 @@ class F_User_Standard extends F_User
                 );
 
         parent::insert_Query($insertInto, $set);
+
+        self::insert_DefaultProPic($username);
+    }
+
+
+    /**
+     * Sets a default profile pic
+     *
+     * @param int $username The users'username to set the pic to
+     */
+    private static function insert_DefaultProPic($username)
+    {
+        $query = 'INSERT INTO `profile_pic` (`user`, `photo`, `type` ) '
+                    .'SELECT ?, `thumbnail`, `type` '
+                    .'FROM `photo` '
+                    .'WHERE `id` = '.DEFAULT_PRO_PIC.' ';
+        $toBind = array($username);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -53,7 +72,7 @@ class F_User_Standard extends F_User
         parent::update($update, $set, $where);
     }
 
-    
+
     /**
      * Upgrades the user's role to PRO
      *

@@ -52,8 +52,8 @@ class F_Album extends \Foundation\F_Database
      */
     private static function insert_DefaultCover($album_ID)
     {
-        $query = 'INSERT INTO `album_cover` (`album`, `cover` ) '
-                    .'SELECT ?, `thumbnail` '
+        $query = 'INSERT INTO `album_cover` (`album`, `cover`, `type` ) '
+                    .'SELECT ?, `thumbnail`, `type` '
                     .'FROM `photo` '
                     .'WHERE `id` = '.NO_ALBUM_COVER.' ';
         $toBind = array($album_ID);
@@ -84,7 +84,7 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Updates the album cover
+     * Updates the album cover with an existing photo
      *
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
@@ -97,20 +97,17 @@ class F_Album extends \Foundation\F_Database
                     .'FROM `photo` '
                     .'WHERE `id` = ?'
                 .') photo '
-                .'SET `cover` = photo.thumbnail '
+                .'SET '
+                    .'`cover` = photo.thumbnail '
+                    .'`type` = photo.type '
                 .'WHERE `album` = ?';
         $toBind = array($photo_ID, $album_ID);
         parent::execute_Query($query, $toBind);
     }
 
 
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
     /**
-     * Updates the album cover
+     * Updates the album cover by uploading a new photo to be used ONLY as cover
      *
      * @param int $album_ID The album ID to update
      * @param int $blob The new cover to upload for the album
@@ -118,15 +115,11 @@ class F_Album extends \Foundation\F_Database
     public static function upload_NewCover($album_ID, \Entity\E_Photo_Blob $blob)
     {
         $update = "album_cover";
-        $set = array("cover" => $blob->get_Thumbnail());
+        $set = array("cover" => $blob->get_Thumbnail(),
+                     "type" => $blob->get_Type());
         $where = array("album" => $album_ID);
         parent::update($update, $set, $where);
     }
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
-    //INSERISCI IN ENTITY :'(
 
 
     /**
@@ -142,23 +135,15 @@ class F_Album extends \Foundation\F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT album.id, album.title, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                .'WHERE photo.id IN '
+        $query = 'SELECT album.id, album.title, album_cover.cover, album_cover.type '
+                .'FROM `album_cover` '
+                    .'INNER JOIN `album` '
+                    .'ON album_cover.album=album.id '
+                .'WHERE album.id IN '
                 .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album IN '
-                    .'('
-                        .'SELECT album.id '
-                        .'FROM `album` '
-                        .'WHERE album.user=? '
-                    .') '
-                    .'GROUP BY photo_album.album '
+                    .'SELECT album.id '
+                    .'FROM `album` '
+                    .'WHERE album.user=? '
                 .') ';
         if($order_DESC===TRUE)
         {
@@ -190,22 +175,15 @@ class F_Album extends \Foundation\F_Database
     public static function get_By_ID($id)
     {
         //Retrieves album details and its Thumbnail
-        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                .'WHERE photo.id IN '
-                .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album=? '
-                .') ';
+        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, album_cover.cover, album_cover.type '
+                .'FROM `album` '
+                    .'INNER JOIN `album_cover` '
+                    .'ON album.id=album_cover.album '
+                .'WHERE album.id = ?';
 
         $toBind = array($id);
         $album = parent::fetch_Result($query, $toBind);
-        if($album === FALSE)
+        if($album === FALSE) //Only in case no album has the given ID
         {
             return [];
         }
@@ -242,7 +220,7 @@ class F_Album extends \Foundation\F_Database
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the albums matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $page_toView = 1, $order_DESC = FALSE)
     {
         $where = '';
         //Alternate $where = `category` IN ( foreach($cats as $c) );
@@ -256,25 +234,15 @@ class F_Album extends \Foundation\F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT DISTINCT album.id, album.title, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                            .'INNER JOIN `cat_album` '
-                            .'ON album.id=cat_album.album '
-                .'WHERE photo.id IN '
+        $query = 'SELECT DISTINCT album.id, album.title, album_cover.cover, album_cover.type '
+                .'FROM `album` '
+                    .'INNER JOIN `album_cover` '
+                    .'ON album.id=album_cover.album '
+                .'WHERE album.id IN '
                 .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album IN '
-                    .'('
-                        .'SELECT cat_album.album '
-                        .'FROM `cat_album` '
-                        .'WHERE '.$where.' '
-                    .') '
-                    .'GROUP BY photo_album.album '
+                    .'SELECT DISTINCT cat_album.album '
+                    .'FROM `cat_album` '
+                    .'WHERE '.$where.' '
                 .') ';
         if($order_DESC===TRUE)
         {

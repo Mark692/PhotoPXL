@@ -231,14 +231,26 @@ class E_Album
 
 
     /**
-     * Updates the album cover
+     * Updates the album cover with an existing photo
      *
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
      */
-    public static function update_Cover($album_ID, $photo_ID)
+    public static function set_Cover($album_ID, $photo_ID)
     {
         \Foundation\F_Album::set_Cover($album_ID, $photo_ID);
+    }
+
+
+    /**
+     * Updates the album cover by uploading a new photo to be used ONLY as cover
+     *
+     * @param int $album_ID The album ID to update
+     * @param int $blob The new cover to upload for the album
+     */
+    public static function upload_NewCover($album_ID, \Entity\E_Photo_Blob $blob)
+    {
+        \Foundation\F_Album::upload_NewCover($album_ID, $blob);
     }
 
 

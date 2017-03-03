@@ -82,7 +82,8 @@ class F_User extends \Foundation\F_Database
      */
     public static function is_Available($username)
     {
-        $query = 'SELECT EXISTS('
+        $query = 'SELECT EXISTS'
+                . '('
                     .'SELECT 1 '
                     .'FROM `users` '
                     .'WHERE `username`= BINARY ? '
