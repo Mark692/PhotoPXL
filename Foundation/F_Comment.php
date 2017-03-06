@@ -57,12 +57,17 @@ class F_Comment extends F_Database
     }
 
 
+    /**
+     * Updates the text of a comment
+     *
+     * @param E_Comment $comment The new comment to store in the DB
+     */
     public static function update(E_Comment $comment)
     {
         $update = "comment";
         $set = array("text" => $comment->get_Text());
         $where = array("id" => $comment->get_ID());
-        
+
         parent::update($update, $set, $where);
     }
 

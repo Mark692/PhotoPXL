@@ -31,13 +31,15 @@ class user extends \P\prova
      */
     public function GET_USERDETAILS()
     {
-        $nomi = array("GGWGsxkMDs", "dAquwO1kDFW", "AllUser", "NonEsisteNelDB");
+        $nomi = array("GGWGsxkMDs", "dAquwO1kDF", "AllUser", "NonEsisteNelDB");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Dettagli: ");
             var_dump(\Foundation\F_User::get_UserDetails($n));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
         }
     }
@@ -56,6 +58,8 @@ class user extends \P\prova
             echo(nl2br("\r\n"));
             echo("E' disponibile: ");
             var_dump(\Foundation\F_User::is_Available($n));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
         }
     }
@@ -76,6 +80,102 @@ class user extends \P\prova
             var_dump(\Foundation\F_User::get_LoginInfo($n));
             echo(nl2br("\r\n"));
         }
+    }
+
+
+    /*
+     * Prende il ruolo dell'utente selezionato. Se l'utente non esiste ritorna
+     * un booleano FALSE
+     */
+    public function GET_ROLE()
+    {
+        $nomi = array("AllUser", "NonEsiste", "4NJTwjzfBC", "ChissàSeQuestoVaBene", "dAquwO1kDFW");
+        foreach($nomi as $n)
+        {
+            echo("Nome: $n");
+            echo(nl2br("\r\n"));
+            echo("Ruolo: ");
+            var_dump(\Foundation\F_User::get_Role($n));
+            echo(nl2br("\r\n"));
+        }
+    }
+
+
+    /*
+     * Prende il ruolo dell'utente selezionato.
+     * Divide il totale di record trovati in pagine con limite impostato in USER_PER_PAGE
+     * Se l'utente non esiste ritorna un booleano FALSE
+     */
+    public function GET_BY_ROLE()
+    {
+        $ruolo = array(
+            "Bannato" => 0,
+            "STD" => 1,
+            "PRO" => 2,
+            "MOD" => 3,
+            "ADMIN" => 4,
+            "Non Usato" => 5);
+        $pageToView = 1;
+        foreach($ruolo as $k => $r)
+        {
+            echo("Ruolo: $k");
+            echo(nl2br("\r\n"));
+            echo("Utenti trovati: ");
+            var_dump(\Foundation\F_User::get_By_Role($r, $pageToView));
+            echo(nl2br("\r\n"));
+        }
+    }
+
+
+    /*
+     * Aggiorna un utente nella tabella "users"
+     */
+    public function UPDATE_PROFILE()
+    {
+        $old = array("AllUser", "YkgoustH6r", "iZnMBrGUFz", "dAquwO1kDFW", "QuestoNonEsiste");
+        foreach($old as $n)
+        {
+            $username = parent::rnd_str(15);
+            $password = parent::rnd_str(15);
+            $email = "MOD@pro.va";
+            echo("Vecchio Username: $n");
+            echo(nl2br("\r\n"));
+            echo("Nuovo Username: $username");
+            echo(nl2br("\r\n"));
+            echo("Nuovo oggetto: ");
+            $user = new \Entity\E_User_MOD($username, $password, $email);
+            echo(nl2br("\r\n"));
+            echo("Esito dell'update: ");
+            var_dump(\Foundation\F_User::update_Profile($user, $n));
+            echo(nl2br("\r\n"));
+        }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

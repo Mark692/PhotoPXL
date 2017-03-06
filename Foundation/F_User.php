@@ -61,7 +61,7 @@ class F_User extends F_Database
 
             case Roles::STANDARD:
                 $up_Count = $details["up_Count"];
-                $last_up = $details["last_Up"];
+                $last_up = $details["last_Upload"];
                 $user = new E_User_Standard($username, $password, $email, $up_Count, $last_up);
                 break;
 
@@ -104,7 +104,7 @@ class F_User extends F_Database
         $pdo = NULL;
 
         $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
-        return boolval($exists[0]);
+        return boolval(!$exists[0]);
     }
 
 
@@ -151,13 +151,18 @@ class F_User extends F_Database
      * @param int $role The role to search the users for
      * @return array All the users (usernames only) with the specified role
      */
-    public static function get_By_Role($role)
+    public static function get_By_Role($role, $page_toView = 1)
     {
+        $limit = USER_PER_PAGE;
+        $offset = USER_PER_PAGE * ($page_toView - 1);
+
         $select = array("username");
         $from = "users";
         $where = array("role" => $role);
 
-        return parent::get_All($select, $from, $where);
+        return parent::get_All($select, $from, $where, $limit, $offset);
+
+//        return parent::get_All($select, $from, $where);
     }
 
 
@@ -166,7 +171,6 @@ class F_User extends F_Database
      *
      * @param \Entity\E_User_* $to_Update The entity user with new details
      * @param string $old_Username The DB username record to refer to
-     * @param int $profile_Pic_ID The ID of the new profile pic
      */
     public static function update_Profile($to_Update, $old_Username)
     {

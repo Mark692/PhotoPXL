@@ -39,7 +39,7 @@ class F_User_MOD extends F_User_PRO
         {
             $query .= 'WHERE 1 ';
         }
-        $query .= 'LIMIT '.$limit_PerPage.' '
+        $query .='LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
 
         $toBind = [];
