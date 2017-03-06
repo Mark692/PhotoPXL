@@ -160,9 +160,13 @@ class F_User extends F_Database
         $from = "users";
         $where = array("role" => $role);
 
-        return parent::get_All($select, $from, $where, $limit, $offset);
-
-//        return parent::get_All($select, $from, $where);
+        $array_users = parent::get_All($select, $from, $where, $limit, $offset);
+        $username_only = [];
+        foreach($array_users as $u)
+        {
+            array_push($username_only, $u["username"]);
+        }
+        return $username_only;
     }
 
 
@@ -175,9 +179,8 @@ class F_User extends F_Database
     public static function update_Profile($to_Update, $old_Username)
     {
         $update = "users";
-        $new_username = $to_Update->get_Username();
         $set = array(
-            "username" => $new_username,
+//            "username" => $to_Update->get_Username(),
             "password" => $to_Update->get_Password(),
             "email" => $to_Update->get_Email(),
             "role" => $to_Update->get_Role()

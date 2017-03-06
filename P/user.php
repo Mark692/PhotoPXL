@@ -27,7 +27,7 @@ class user extends \P\prova
 
 
     /*
-     * Prende tutte le colonne dalla tabella "users"
+     * Istanzia un oggetto E_User_* in base al ruolo.
      */
     public function GET_USERDETAILS()
     {
@@ -51,7 +51,7 @@ class user extends \P\prova
      */
     public function IS_AVAILABLE()
     {
-        $nomi = array("AllUser", "allusers", "NonEsiste", "DisponibileEeEe", "ChissàSeQuestoVaBene", "dAquwO1kDFW");
+        $nomi = array("AllUser", "allusers", "NonEsiste", "DisponibileEeEe", "ChissàSeQuestoVaBene", "dAquwO1kDF");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
@@ -71,13 +71,15 @@ class user extends \P\prova
      */
     public function GET_LOGININFO()
     {
-        $nomi = array("AllUser", "NonEsiste", "oCOXiFp17P", "ChissàSeQuestoVaBene", "dAquwO1kDFW");
+        $nomi = array("AllUser", "NonEsiste", "oCOXiFp17P", "ChissàSeQuestoVaBene", "dAquwO1kDF");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Login Info: ");
             var_dump(\Foundation\F_User::get_LoginInfo($n));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
         }
     }
@@ -89,13 +91,15 @@ class user extends \P\prova
      */
     public function GET_ROLE()
     {
-        $nomi = array("AllUser", "NonEsiste", "4NJTwjzfBC", "ChissàSeQuestoVaBene", "dAquwO1kDFW");
+        $nomi = array("AllUser", "NonEsiste", "4NJTwjzfBC", "ChissàSeQuestoVaBene", "dAquwO1kDF");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Ruolo: ");
             var_dump(\Foundation\F_User::get_Role($n));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
         }
     }
@@ -123,6 +127,8 @@ class user extends \P\prova
             echo("Utenti trovati: ");
             var_dump(\Foundation\F_User::get_By_Role($r, $pageToView));
             echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
         }
     }
 
@@ -144,9 +150,12 @@ class user extends \P\prova
             echo(nl2br("\r\n"));
             echo("Nuovo oggetto: ");
             $user = new \Entity\E_User_MOD($username, $password, $email);
+            var_dump($user);
             echo(nl2br("\r\n"));
             echo("Esito dell'update: ");
             var_dump(\Foundation\F_User::update_Profile($user, $n));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
         }
 
