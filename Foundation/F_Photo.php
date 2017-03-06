@@ -90,7 +90,7 @@ class F_Photo extends \Foundation\F_Database
         $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
 
         $count = "id";
-        $where = "`user`='$username'";
+        $where = '`user`=\''.$username.'\'';
         $tot = parent::count($count, $from, $where);
         $tot_photo = array("tot_photo" => $tot);
 
@@ -102,20 +102,26 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
      *               A boolean FALSE if no photos match the query
      */
-    public static function get_By_ID($id)
+    public static function get_By_ID($id, $user_Watching, $user_Role)
     {
-        $check = array("is_reserved", "user");
-        $from = "photo";
-        $where = array("id" => $id);
-        $photo = parent::get_One($check, $from, $where);
-
-        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
         //Select ALL but ID, Thumbnail and Size
         $select = array("title", "description", "is_reserved", "upload_date", "user", "fullsize", "type");
+        $from = "photo";
+        if(self::can_beShowed($id, $user_Watching, $user_Role))
+        {
+            $where = array("id" => $id);
+        }
+        else
+        {
+            $where = array(
+                "id" => $id,
+                "is_reserved" => "0"); //Fetches only PUBLIC photos
+        }
         $photo = parent::get_One($select, $from, $where);
 
         if($photo === FALSE) //No photos match the query
@@ -162,26 +168,55 @@ class F_Photo extends \Foundation\F_Database
      * Retrieves the IDs and thumbnails of all photos belonging to a specific album
      *
      * @param int $album_ID
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with photo IDs and thumbnails
      */
-    public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT `id`, `thumbnail` '
+        $query = 'SELECT photo.id, photo.thumbnail '
                 .'FROM `photo` '
-                .'WHERE `id` in ('
+                    .'INNER JOIN `users` '
+                    .'ON photo.user=users.username '
+                .'WHERE photo.id in '
+                .'( '
                     .'SELECT `photo` '
                     .'FROM `photo_album` '
-                    .'WHERE `album`=?'
-                    .') '
-                .'ORDER BY `id` ';
+                    .'WHERE `album`=? ' //$album_ID
+                .') ';
+
+        if($user_Role < \Utilities\Roles::MOD)
+        {
+//            $query .= 'AND '
+//                .'( '
+//                    .'IF photo.user != BINARY ? ' //$user_Watching - Case sensitive check
+//                    .'THEN photo.is_reserved = 0 '
+//                    .'END IF;'
+//                .') ';
+            $query .= 'AND IF '
+                    .'( '
+                        .'photo.user = BINARY ? , ' //$user_Watching - Case sensitive check
+                        .'1, photo.is_reserved = 0' //if TRUE, if FALSE
+                    .') ';
+        }
+        ////////////
+//        $query = 'SELECT `id`, `thumbnail` '
+//                .'FROM `photo` '
+//                .'WHERE `id` in ('
+//                    .'SELECT `photo` '
+//                    .'FROM `photo_album` '
+//                    .'WHERE `album`=? '
+//                    .') '
+//                .'ORDER BY `id` ';
+        $query .= 'ORDER BY `id` ';
         if ($order_DESC===TRUE)
         {
-            $query .= ' DESC ';
+            $query .= 'DESC ';
         }
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
@@ -535,13 +570,15 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * 
-     * @param type $photo_ID
-     * @param type $user
-     * @param type $user_Role
-     * @return boolean
+     * Cheks whether the user can look at "reserved" photos.
+     * Returns TRUE whether the user is the uploader or at least a MOD
+     *
+     * @param int $photo_ID The photo to check if public or reserved
+     * @param string $user The user trying to look at the photo
+     * @param enum $user_Role The user role
+     * @return boolean Whether the user can look at the specific photo
      */
-    private static function has_HighPrivileges($photo_ID, $user, $user_Role)
+    private static function can_beShowed($photo_ID, $user, $user_Role)
     {
         $check = array("is_reserved", "user");
         $from = "photo";
