@@ -165,9 +165,11 @@ class F_Photo extends \Foundation\F_Database
 
 
     /**
-     * Retrieves the IDs and thumbnails of all photos belonging to a specific album
+     * Retrieves the IDs and thumbnails of the photos belonging to a specific album.
+     * The fetched photos are always the public ones but can also be the private
+     * ones if the user watching is the Uploader or a MOD/Admin
      *
-     * @param int $album_ID
+     * @param int $album_ID The album ID of which get the photos from
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
@@ -190,30 +192,7 @@ class F_Photo extends \Foundation\F_Database
                     .'WHERE `album`=? ' //$album_ID
                 .') ';
 
-        if($user_Role < \Utilities\Roles::MOD)
-        {
-//            $query .= 'AND '
-//                .'( '
-//                    .'IF photo.user != BINARY ? ' //$user_Watching - Case sensitive check
-//                    .'THEN photo.is_reserved = 0 '
-//                    .'END IF;'
-//                .') ';
-            $query .= 'AND IF '
-                    .'( '
-                        .'photo.user = BINARY ? , ' //$user_Watching - Case sensitive check
-                        .'1, photo.is_reserved = 0' //if TRUE, if FALSE
-                    .') ';
-        }
-        ////////////
-//        $query = 'SELECT `id`, `thumbnail` '
-//                .'FROM `photo` '
-//                .'WHERE `id` in ('
-//                    .'SELECT `photo` '
-//                    .'FROM `photo_album` '
-//                    .'WHERE `album`=? '
-//                    .') '
-//                .'ORDER BY `id` ';
-        $query .= 'ORDER BY `id` ';
+        $query .= self::add_ClauseNoPermission($user_Role).'ORDER BY `id` ';
         if ($order_DESC===TRUE)
         {
             $query .= 'DESC ';
@@ -222,13 +201,19 @@ class F_Photo extends \Foundation\F_Database
                  .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
-        $toBind = array($album_ID);
+        $toBind = array($album_ID, $user_Watching);
         $photos = parent::fetch_Result($query, $toBind, $fetchAll);
 
         $count = "photo";
         $from = "photo_album";
-        $where = "`album`=?";
-        $tot = parent::count($count, $from, $where, $toBind);
+        $where = "`album`=? ";
+        $count_toBind = array($album_ID);
+        if($user_Role < \Utilities\Roles::MOD)
+        {
+            $where .= self::add_ClauseNoPermission($user_Role);
+            array_push($count_toBind, $user_Watching);
+        }
+        $tot = parent::count($count, $from, $where, $count_toBind);
         $tot_photo = array("tot_photo" => $tot);
 
         return array_merge($photos, $tot_photo);
@@ -239,11 +224,13 @@ class F_Photo extends \Foundation\F_Database
      * Rethrives all the photos with the selected categories
      *
      * @param array $cats The categories to search
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @param int $page_toView The number of page to view. It influences the offset
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
         $where = '';
         //Alternate $where = `category` IN ( foreach($cats as $c) );
@@ -262,19 +249,27 @@ class F_Photo extends \Foundation\F_Database
                     .'FROM `cat_photo` '
                     .'WHERE '.$where
                     .') ';
+
+        $noPermissions = self::add_ClauseNoPermission($user_Role);
+        $query .= $noPermissions.'ORDER BY album.id ';
         if($order_DESC===TRUE)
         {
-            $query .= 'ORDER BY album.id DESC ';
+            $query .= 'DESC ';
         }
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = $cats;
+        if($noPermissions !== '')
+        {
+            array_push($toBind, $user_Watching);
+        }
         $photos = parent::fetch_Result($query, $toBind, $fetchAll);
 
-        $count = "photo";
-        $from = "cat_photo";
+        $count = "cat_photo.photo";
+        $from = "`cat_photo` INNER JOIN `photo` ON cat_photo.photo=photo.id";
+        $where .= $noPermissions;
         $tot = parent::count($count, $from, $where, $toBind);
         $tot_photo = array("tot_photo" => $tot);
 
@@ -438,7 +433,7 @@ class F_Photo extends \Foundation\F_Database
      *               and the number of rows affected by the query (to be used to
      *               determine how many pages to show)
      */
-    public static function get_MostLiked($page_toView=1)
+    public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
@@ -446,19 +441,25 @@ class F_Photo extends \Foundation\F_Database
         $query = 'SELECT `id`, `thumbnail` '
                 .'FROM `photo` '
                     .'INNER JOIN `likes` '
-                    .'ON photo.id=likes.photo '
-                .'GROUP BY `photo` '
+                    .'ON photo.id=likes.photo ';
+        $noPermissions = self::add_ClauseNoPermission($user_Role); //Trims "AND IF "
+        $toBind = [];
+        if($noPermissions !== '')
+        {
+            $query .= "WHERE ".substr($noPermissions, 6); //Trims "AND IF "
+            $toBind = array($user_Watching);
+        }
+        $query .='GROUP BY `photo` '
                 .'ORDER BY COUNT(*) DESC ' //From most liked to less liked
                 .'LIMIT '.$limit.' '
                 .'OFFSET '.$offset.' ';
 
-        $toBind = [];
         $fetchAll = TRUE;
         $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);
 
         $count = "photo";
-        $from = "likes";
-        $where = "1";
+        $from = "`likes` INNER JOIN `photo` ON likes.photo=photo.id";
+        $where = substr($noPermissions, 3); //Trims "AND"
         $tot = parent::count($count, $from, $where);
         $tot_photo = array("tot_photo" => $tot);
 
@@ -596,5 +597,26 @@ class F_Photo extends \Foundation\F_Database
             }
         }
         return FALSE;
+    }
+
+
+    /**
+     * Sets a basic WHERE clause whether the user's Role is not MOD/Admin
+     *
+     * @param enum $user_Role The user's Role
+     * @return string The WHERE clause to add at the query
+     */
+    private function add_ClauseNoPermission($user_Role)
+    {
+        if($user_Role < \Utilities\Roles::MOD)
+        {
+            return 'AND IF '
+                    .'( '
+                        .'photo.user = BINARY ? , ' //$user_Watching - Case sensitive check
+                        .'1, ' //if TRUE
+                        .'photo.is_reserved = 0' //if FALSE
+                    .') ';
+        }
+        return '';
     }
 }
