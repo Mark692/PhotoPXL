@@ -8,16 +8,21 @@
 
 namespace Foundation;
 
-class F_Album extends \Foundation\F_Database
+use Entity\E_Album;
+use Entity\E_Photo_Blob;
+use Foundation\F_Database;
+use Foundation\F_Photo;
+
+class F_Album extends F_Database
 {
 
     /**
      * Saves the album in the DB
      *
-     * @param \Entity\E_Album $album The album to save
+     * @param E_Album $album The album to save
      * @param string $owner The $owner's username
      */
-    public static function insert(\Entity\E_Album $album, $owner)
+    public static function insert(E_Album $album, $owner)
     {
         //Insert all album details but the categories
         $insertInto = "album";
@@ -64,9 +69,9 @@ class F_Album extends \Foundation\F_Database
     /**
      * Updates the album details
      *
-     * @param \Entity\E_Album $to_Update The new Album object to save
+     * @param E_Album $to_Update The new Album object to save
      */
-    public static function update_Details(\Entity\E_Album $to_Update)
+    public static function update_Details(E_Album $to_Update)
     {
         $id = $to_Update->get_ID();
         $update = "album";
@@ -112,7 +117,7 @@ class F_Album extends \Foundation\F_Database
      * @param int $album_ID The album ID to update
      * @param int $blob The new cover to upload for the album
      */
-    public static function upload_NewCover($album_ID, \Entity\E_Photo_Blob $blob)
+    public static function upload_NewCover($album_ID, E_Photo_Blob $blob)
     {
         $update = "album_cover";
         $set = array("cover" => $blob->get_Thumbnail(),
@@ -196,7 +201,7 @@ class F_Album extends \Foundation\F_Database
             array_push($cats, intval($v["category"]));
         }
 
-        $e_album = new \Entity\E_Album(
+        $e_album = new E_Album(
                 $album["title"],
                 $album["description"],
                 $cats,
@@ -398,7 +403,7 @@ class F_Album extends \Foundation\F_Database
      */
     public static function delete_Album_AND_Photos($album_ID)
     {
-        \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+        F_Photo::delete_ALL_fromAlbum($album_ID);
         self::delete($album_ID);
     }
 }

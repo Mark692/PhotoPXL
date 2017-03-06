@@ -6,10 +6,11 @@
  * and open the template in the editor.
  */
 
-namespace Foundation;
+namespace Foundation; //Both needed to avoid errors with the Autoloader
 
-use \PDO,
-    \PDOException; //Both needed to avoid errors with the Autoloader
+use PDO;
+use PDOException;
+use PDOStatement;
 
 /**
  * This class enables basic DB operations
@@ -265,11 +266,11 @@ class F_Database
     /**
      * Binds an array of parameters to the query using Question Marks
      *
-     * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
+     * @param PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
      * @param array $toBind The array of parameters to bind
-     * @return \PDOStatement The object to execute()
+     * @return PDOStatement The object to execute()
      */
-    protected static function bind_params(\PDOStatement $pdo_stmt, $toBind)
+    protected static function bind_params(PDOStatement $pdo_stmt, $toBind)
     {
         if(count($toBind) > 0)
         {

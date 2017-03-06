@@ -8,17 +8,23 @@
 
 namespace Foundation;
 
-class F_Photo extends \Foundation\F_Database
+use Entity\E_Photo;
+use Entity\E_Photo_Blob;
+use Utilities\Roles;
+use const NO_ALBUM_COVER;
+use const PHOTOS_PER_PAGE;
+
+class F_Photo extends F_Database
 {
 
     /**
      * Saves a photo object
      *
-     * @param \Entity\E_Photo $photo The photo to save
-     * @param \Entity\E_Photo_Blob $photo_details The blob file, its size and type
+     * @param E_Photo $photo The photo to save
+     * @param E_Photo_Blob $photo_details The blob file, its size and type
      * @param string $uploader The uploader's username
      */
-    public static function insert(\Entity\E_Photo $photo, \Entity\E_Photo_Blob $photo_details, $uploader)
+    public static function insert(E_Photo $photo, E_Photo_Blob $photo_details, $uploader)
     {
         //Insert all photo details but the categories
         $insertInto = "photo";
@@ -51,9 +57,9 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Updates a record from the "photo" table
      *
-     * @param \Entity\E_Photo $to_Update The photo to update
+     * @param E_Photo $to_Update The photo to update
      */
-    public static function update(\Entity\E_Photo $to_Update)
+    public static function update(E_Photo $to_Update)
     {
         $id = $to_Update->get_ID();
         $update = "photo";
@@ -74,24 +80,40 @@ class F_Photo extends \Foundation\F_Database
     /**
      * Rethrives all the IDs and thumbnails of a user photos by passing its username
      *
-     * @param string $username The user's username selected to get the photos from
+     * @param string $uploader The user's username selected to get the photos from
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The watching user's role
      * @param int $page_toView The page number to view. It influences the offset
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's photos
      */
-    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
         $select = array("id", "thumbnail");
         $from = "photo";
-        $where = array("user" => $username);
+        $where = array("user" => $uploader);
+        if($user_Watching !== $uploader)
+        {
+            if($user_Role < Roles::MOD)
+            {
+                $publicOnly = array("reserved" => 0);
+                array_push($where, $publicOnly);
+            }
+        }
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
         $orderBy = "id";
         $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
 
         $count = "id";
-        $where = '`user`=\''.$username.'\'';
-        $tot = parent::count($count, $from, $where);
+        $noPermissions = self::add_ClauseNoPermission($user_Role);
+        $where = '`user`=\''.$uploader.'\''.$noPermissions;
+        $toBind = [];
+        if($noPermissions !== '')
+        {
+            $toBind = $user_Watching;
+        }
+        $tot = parent::count($count, $from, $where, $toBind);
         $tot_photo = array("tot_photo" => $tot);
 
         return array_merge($photos, $tot_photo);
@@ -144,7 +166,7 @@ class F_Photo extends \Foundation\F_Database
         $commented_By = self::get_CommentsList($id);
 
 
-        $e_photo = new \Entity\E_Photo(
+        $e_photo = new E_Photo(
                 $photo["title"],
                 $photo["description"],
                 $photo["is_reserved"],
@@ -208,7 +230,7 @@ class F_Photo extends \Foundation\F_Database
         $from = "photo_album";
         $where = "`album`=? ";
         $count_toBind = array($album_ID);
-        if($user_Role < \Utilities\Roles::MOD)
+        if($user_Role < Roles::MOD)
         {
             $where .= self::add_ClauseNoPermission($user_Role);
             array_push($count_toBind, $user_Watching);
@@ -459,8 +481,11 @@ class F_Photo extends \Foundation\F_Database
 
         $count = "photo";
         $from = "`likes` INNER JOIN `photo` ON likes.photo=photo.id";
-        $where = substr($noPermissions, 3); //Trims "AND"
-        $tot = parent::count($count, $from, $where);
+        if($noPermissions !== '')
+        {
+            $where = substr($noPermissions, 3); //Trims "AND"
+        }
+        $tot = parent::count($count, $from, $where, $toBind);
         $tot_photo = array("tot_photo" => $tot);
 
         return array_merge($mostLiked, $tot_photo);
@@ -477,7 +502,7 @@ class F_Photo extends \Foundation\F_Database
         $album_ID = self::check_LastOne($photo_ID);
         if($album_ID!==FALSE)
         {
-            \Foundation\F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
+            F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
         }
 
         $query = 'DELETE FROM `likes` '
@@ -501,7 +526,7 @@ class F_Photo extends \Foundation\F_Database
     public static function delete_ALL_fromAlbum($album_ID)
     {
         //Sets the default cover for the empty album
-        \Foundation\F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
+        F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
 
         //Deletes the album photos
         $query = 'DELETE FROM `likes` '
@@ -532,7 +557,7 @@ class F_Photo extends \Foundation\F_Database
         $album_ID = self::check_LastOne($photo_ID);
         if($album_ID!==FALSE) //It IS the last one
         {
-            \Foundation\F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
+            F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
         }
 
         $update = "photo_album";
@@ -561,7 +586,7 @@ class F_Photo extends \Foundation\F_Database
             $count = "photo";
             $where = '`album` = ?';
             $count = parent::count($count, $from, $where, $album_ID);
-            if($count===1)
+            if($count === 1)
             {
                 return $album_ID;
             }
@@ -591,7 +616,7 @@ class F_Photo extends \Foundation\F_Database
         }
         elseif(intval($photo["is_reserved"]) === 1)
         {
-            if($user_Role >= \Utilities\Roles::MOD)
+            if($user_Role >= Roles::MOD)
             {
                 return TRUE; //The user is a MOD or ADMIN
             }
@@ -608,7 +633,7 @@ class F_Photo extends \Foundation\F_Database
      */
     private function add_ClauseNoPermission($user_Role)
     {
-        if($user_Role < \Utilities\Roles::MOD)
+        if($user_Role < Roles::MOD)
         {
             return 'AND IF '
                     .'( '

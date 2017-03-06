@@ -8,9 +8,16 @@
 
 namespace Foundation;
 
-use \PDO;
+use Entity\E_Photo_Blob;
+use Entity\E_User_Banned;
+use Entity\E_User_MOD;
+use Entity\E_User_PRO;
+use Entity\E_User_Standard;
+use PDO;
+use Utilities\Roles;
+use const DEFAULT_PRO_PIC;
 
-class F_User extends \Foundation\F_Database
+class F_User extends F_Database
 {
 
     /**
@@ -48,25 +55,25 @@ class F_User extends \Foundation\F_Database
         $email = $details["email"];
         switch ($details["role"])
         {
-            case \Utilities\Roles::BANNED:
-                $user = new \Entity\E_User_Banned($username, $password, $email);
+            case Roles::BANNED:
+                $user = new E_User_Banned($username, $password, $email);
                 break;
 
-            case \Utilities\Roles::STANDARD:
+            case Roles::STANDARD:
                 $up_Count = $details["up_Count"];
                 $last_up = $details["last_Up"];
-                $user = new \Entity\E_User_Standard($username, $password, $email, $up_Count, $last_up);
+                $user = new E_User_Standard($username, $password, $email, $up_Count, $last_up);
                 break;
 
-            case \Utilities\Roles::PRO:
-                $user = new \Entity\E_User_PRO($username, $password, $email);
+            case Roles::PRO:
+                $user = new E_User_PRO($username, $password, $email);
                 break;
 
-            case \Utilities\Roles::MOD:
-                $user = new \Entity\E_User_MOD($username, $password, $email);
+            case Roles::MOD:
+                $user = new E_User_MOD($username, $password, $email);
                 break;
 
-            case \Utilities\Roles::ADMIN:
+            case Roles::ADMIN:
                 $user = new \Entity\E_User_ADMIN($username, $password, $email);
                 break;
         }
@@ -97,11 +104,7 @@ class F_User extends \Foundation\F_Database
         $pdo = NULL;
 
         $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
-        if($exists[0] == 1) // if($exists[0] === "1")
-        {
-            return TRUE;
-        }
-        return FALSE;
+        return boolval($exists[0]);
     }
 
 
@@ -169,7 +172,7 @@ class F_User extends \Foundation\F_Database
     {
         $update = "users";
         $new_username = $to_Update->get_Username();
-        $set = array( 
+        $set = array(
             "username" => $new_username,
             "password" => $to_Update->get_Password(),
             "email" => $to_Update->get_Email(),
@@ -210,7 +213,7 @@ class F_User extends \Foundation\F_Database
      * @param int $username The user to update
      * @param int $blob The new profile pic to upload for the user
      */
-    public static function upload_NewCover($username, \Entity\E_Photo_Blob $blob)
+    public static function upload_NewCover($username, E_Photo_Blob $blob)
     {
         $update = "profile_pic";
         $set = array("photo" => $blob->get_Thumbnail(),
