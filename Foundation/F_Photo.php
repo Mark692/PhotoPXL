@@ -499,11 +499,7 @@ class F_Photo extends F_Database
      */
     public static function delete($photo_ID)
     {
-        $album_ID = self::check_LastOne($photo_ID);
-        if($album_ID!==FALSE)
-        {
-            F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
-        }
+        self::setDefaultCoverIfLastOne($photo_ID);
 
         $query = 'DELETE FROM `likes` '
                     .'INNER JOIN `comment` '
@@ -554,11 +550,7 @@ class F_Photo extends F_Database
      */
     public static function move_To($album_ID, $photo_ID)
     {
-        $album_ID = self::check_LastOne($photo_ID);
-        if($album_ID!==FALSE) //It IS the last one
-        {
-            F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
-        }
+        self::setDefaultCoverIfLastOne($photo_ID);
 
         $update = "photo_album";
         $set = array("album" => $album_ID);
@@ -568,14 +560,11 @@ class F_Photo extends F_Database
 
 
     /**
-     * Checks whether this photo is the last photo of its album
+     * Sets a default album cover if this photo is the last one of its album
      *
      * @param int $photo_ID The photo to check
-     * @return mixed - "int": the album ID if the photo is the last one
-     *               - "boolean" FALSE: The photo is not the last one in the album
-     *                                  OR the photo is not in any album
      */
-    private static function check_LastOne($photo_ID)
+    private static function setDefaultCoverIfLastOne($photo_ID)
     {
         $select = array("album");
         $from = "photo_album";
@@ -588,10 +577,9 @@ class F_Photo extends F_Database
             $count = parent::count($count, $from, $where, $album_ID);
             if($count === 1)
             {
-                return $album_ID;
+                F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
             }
         }
-        return FALSE;
     }
 
 
