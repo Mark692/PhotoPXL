@@ -169,7 +169,7 @@ class F_User extends \Foundation\F_Database
     {
         $update = "users";
         $new_username = $to_Update->get_Username();
-        $set = array( //Array to pass at the parent::set() function to Bind the correct parameters
+        $set = array( 
             "username" => $new_username,
             "password" => $to_Update->get_Password(),
             "email" => $to_Update->get_Email(),

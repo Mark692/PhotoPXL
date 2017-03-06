@@ -107,10 +107,15 @@ class F_Photo extends \Foundation\F_Database
      */
     public static function get_By_ID($id)
     {
-        //Select ALL but ID, Thumbnail and Size
-        $select = array("title", "description", "is_reserved", "upload_date", "user", "fullsize", "type");
+        $check = array("is_reserved", "user");
         $from = "photo";
         $where = array("id" => $id);
+        $photo = parent::get_One($check, $from, $where);
+
+        ///////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+        //Select ALL but ID, Thumbnail and Size
+        $select = array("title", "description", "is_reserved", "upload_date", "user", "fullsize", "type");
         $photo = parent::get_One($select, $from, $where);
 
         if($photo === FALSE) //No photos match the query
@@ -523,6 +528,34 @@ class F_Photo extends \Foundation\F_Database
             if($count===1)
             {
                 return $album_ID;
+            }
+        }
+        return FALSE;
+    }
+
+
+    /**
+     * 
+     * @param type $photo_ID
+     * @param type $user
+     * @param type $user_Role
+     * @return boolean
+     */
+    private static function has_HighPrivileges($photo_ID, $user, $user_Role)
+    {
+        $check = array("is_reserved", "user");
+        $from = "photo";
+        $where = array("id" => $photo_ID);
+        $photo = parent::get_One($check, $from, $where);
+        if($photo["user"] === $user)
+        {
+            return TRUE; //The user is the uploader
+        }
+        elseif(intval($photo["is_reserved"]) === 1)
+        {
+            if($user_Role >= \Utilities\Roles::MOD)
+            {
+                return TRUE; //The user is a MOD or ADMIN
             }
         }
         return FALSE;
