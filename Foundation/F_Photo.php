@@ -89,15 +89,15 @@ class F_Photo extends F_Database
      */
     public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        $select = array("id", "thumbnail");
+        $select = array("id", "thumbnail", "type");
         $from = "photo";
         $where = array("user" => $uploader);
         if($user_Watching !== $uploader)
         {
             if($user_Role < Roles::MOD)
             {
-                $publicOnly = array("reserved" => 0);
-                array_push($where, $publicOnly);
+                $publicOnly = array("is_reserved" => 0);
+                $where = array_merge($where, $publicOnly);
             }
         }
         $limit = PHOTOS_PER_PAGE;
@@ -105,13 +105,14 @@ class F_Photo extends F_Database
         $orderBy = "id";
         $photos = parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
 
+
         $count = "id";
         $noPermissions = self::add_ClauseNoPermission($user_Role);
         $where = '`user`=\''.$uploader.'\''.$noPermissions;
         $toBind = [];
         if($noPermissions !== '')
         {
-            $toBind = $user_Watching;
+            $toBind = array($user_Watching);
         }
         $tot = parent::count($count, $from, $where, $toBind);
         $tot_photo = array("tot_photo" => $tot);
@@ -316,7 +317,7 @@ class F_Photo extends F_Database
         $query_ADD = self::query_addCats($to_add, $photo_ID);
         $query_DEL = self::query_removeCats($to_remove, $photo_ID);
         $query = $query_ADD.$query_DEL;
-         
+
         if($query_ADD!=='')
         {
             $toBind = array_values($to_add);

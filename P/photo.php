@@ -22,18 +22,15 @@ class photo extends prova
         $is_reserved = rand(0, 1);
         $i = 0;
         $cat = [];
-        for($i = 0; $i<6; $i++)
+        for($i = 0; $i < 6; $i++)
         {
             array_push($cat, rand(1, 8));
         }
         $cat = array_unique($cat);
         $up_Date = rand(1111, 6666);
-        $this->photo = new \Entity\E_Photo($title, $desc, $is_reserved, $cat, $up_Date);
-        echo("Foto creata: ");
-        var_dump($this->photo);
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
+        return $this->photo = new \Entity\E_Photo($title, $desc, $is_reserved, $cat, $up_Date);
     }
+
 
     public function INSERT($percorso, $uploader)
     {
@@ -51,5 +48,49 @@ class photo extends prova
         $this->photo->set_ID($id);
         \Foundation\F_Photo::update($this->photo);
     }
+
+
+    public function GET_BY_USER()
+    {
+        $separa = "_____________________________________________________________________";
+
+        $uploader = "AllUser";
+        $user_Watching = "UnAltroUtente"; //CAMBIA QUESTO
+        $B = \Utilities\Roles::BANNED; //E/O CAMBIA I RUOLI PER OTTENERE RISULTATI DIVERSI
+        $S = \Utilities\Roles::STANDARD;
+        $P = \Utilities\Roles::PRO;
+        $M = \Utilities\Roles::MOD;
+        $A = \Utilities\Roles::ADMIN;
+        $roles = array($B, $S, $P, $M, $A);
+        foreach($roles as $role)
+        {
+            $r = \Foundation\F_Photo::get_By_User($uploader, $user_Watching, $role);
+            echo("Ruolo: ".$role.nl2br("\r\n"));
+            echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
+
+            $i = 0;
+            foreach($r as $k => $thumb)
+            {
+                if($i % (PHOTOS_PER_ROW + 1) !== 0)
+                {
+                    if($k !== "tot_photo")
+                    {
+                        $mime = image_type_to_mime_type($thumb["type"]);
+                        $pic = $thumb["thumbnail"];
+                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                        echo(" ".$thumb["id"]);
+                        $i++;
+                    }
+                }
+                else
+                {
+                    echo(nl2br("\r\n"));
+                        $i++;
+                }
+            }
+            echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        }
+    }
+
 
 }
