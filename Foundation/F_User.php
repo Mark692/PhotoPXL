@@ -162,9 +162,9 @@ class F_User extends F_Database
 
         $array_users = parent::get_All($select, $from, $where, $limit, $offset);
         $username_only = [];
-        foreach($array_users as $u)
+        foreach(array_values($array_users) as $users)
         {
-            array_push($username_only, $u["username"]);
+            array_push($username_only, $users);
         }
         return $username_only;
     }
@@ -186,6 +186,52 @@ class F_User extends F_Database
             "role" => $to_Update->get_Role()
                 );
         $where = array("username" => $old_Username);
+
+        parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Changes the user's Username
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     * @param string $old The old username, stored in the DB
+     */
+    public static function change_Username($new_EUser, $old)
+    {
+        $update = "users";
+        $set = array("username" => $new_EUser->get_Username());
+        $where = array("username" => $old);
+
+        parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Changes the user's password
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     */
+    public static function change_Password($new_EUser)
+    {
+        $update = "users";
+        $set = array("password" => $new_EUser->get_Password());
+        $where = array("username" => $new_EUser->get_Username());
+
+        parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Changes an user's email
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     */
+    public static function change_Email($new_EUser)
+    {
+        $update = "users";
+        $set = array("email" => $new_EUser->get_Email());
+        $where = array("username" => $new_EUser->get_Username());
 
         parent::update($update, $set, $where);
     }

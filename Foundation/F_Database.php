@@ -222,7 +222,6 @@ class F_Database
             $set_values .= '`'.$key.'`=?,';
         }
 
-
         $where_clause = '';
         foreach(array_keys($where) as $key)
         {
@@ -234,7 +233,10 @@ class F_Database
                 ."SET $set_values "
                 ."WHERE $where_clause";
 
-        self::execute_Query($query, array_merge($set, $where));
+        $toBind = array_merge(array_values($set), array_values($where)); //Works even when the same
+        //key appears in both arrays. F_User::change_Username() is an example
+
+        self::execute_Query($query, $toBind);
     }
 
 

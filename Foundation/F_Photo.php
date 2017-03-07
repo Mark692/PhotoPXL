@@ -154,9 +154,9 @@ class F_Photo extends F_Database
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
         $cats = [];
-        foreach($array_categories as $v)
+        foreach(array_values($array_categories) as $c)
         {
-            array_push($cats, intval($v["category"]));
+            array_push($cats, intval($c));
         }
 
         //Retrieves the likes
@@ -397,9 +397,9 @@ class F_Photo extends F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach($cats_array as $sub_array)
+        foreach(array_values($cats_array) as $c)
         {
-            array_push($cats, $sub_array["category"]); //Keep only the values
+            array_push($cats, intval($c));
         }
         return $cats;
     }
@@ -418,9 +418,9 @@ class F_Photo extends F_Database
         $where = array("photo" => $photo_ID);
         $likes = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach($likes as $record)
+        foreach(array_values($likes) as $users)
         {
-            array_push($usernames_only, $record["user"]);
+            array_push($usernames_only, $users);
         }
         return $usernames_only;
     }
@@ -439,9 +439,9 @@ class F_Photo extends F_Database
         $where = array("photo" => $photo_ID);
         $comments = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach($comments as $record)
+        foreach(array_values($comments) as $users)
         {
-            array_push($usernames_only, $record["user"]);
+            array_push($usernames_only, $users);
         }
         return $usernames_only;
     }

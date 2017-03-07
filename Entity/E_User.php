@@ -247,21 +247,8 @@ class E_User
     }
 
 
-    /**
-     * Updates the user's state in the DB
-     *
-     * @param string $username The user's username
-     * @param string $password The user's password
-     * @param string $email The user's email
-     * @param enum $role The user's role
-     * @param type $old_Username The old user's username. Needed in case the user changed username
-     */
-    public static function update_Profile($username, $password, $email, $role, $old_Username)
-    {
-        $e_user2Save = new \Entity\E_User($username, $password, $email);
-        $e_user2Save->set_Role($role);
-        \Foundation\F_User::update_Profile($e_user2Save, $old_Username);
-    }
+    //RIMOSSA public static function update_Profile($to_Update, $old_Username)
+    //AGGIUNGI I NUOVI METODI
 
 
     /**

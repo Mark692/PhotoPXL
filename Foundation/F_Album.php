@@ -196,9 +196,9 @@ class F_Album extends F_Database
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
         $cats = [];
-        foreach($array_categories as $v)
+        foreach(array_values($array_categories) as $c)
         {
-            array_push($cats, intval($v["category"]));
+            array_push($cats, intval($c));
         }
 
         $e_album = new E_Album(
@@ -211,7 +211,7 @@ class F_Album extends F_Database
 
         return array(
             "album" => $e_album,
-            "cover" => $album["thumbnail"],
+            "cover" => $album["cover"],
             "username" => $album["user"]
             );
     }
@@ -370,9 +370,9 @@ class F_Album extends F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach($cats_array as $sub_array) //If $cats_array is empty the foreach will not run
+        foreach(array_values($cats_array) as $c)
         {
-            array_push($cats, $sub_array["category"]); //Keep only the values
+            array_push($cats, intval($c));
         }
         return $cats;
     }

@@ -14,8 +14,6 @@ require_once $path."U_Nonce.php";
 
 //------------------------------PROVE------------------------------//
 //phpinfo();
-
-
 //$bob = new \Entity\E_Photo_Blob();
 //$percorso = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."ccc.png";
 //$bob->on_Upload($percorso);
@@ -23,8 +21,17 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
-$t = new \P\user();
-$t->UPDATE_PROFILE();
+//$t = new \P\user();
+
+$vuoto = [];
+$vals = array_values($vuoto);
+foreach($vals as $v)
+{
+    echo("2bad!!");
+}
+echo("Eh...");
+var_dump(array_values([]));
+
 
 
 

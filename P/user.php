@@ -133,30 +133,44 @@ class user extends \P\prova
     }
 
 
-    /*
-     * Aggiorna un utente nella tabella "users"
-     */
-    public function UPDATE_PROFILE()
+    public function CHANGE_DETAILS($change_Function)
     {
-        $old = array("AllUser", "YkgoustH6r", "iZnMBrGUFz", "dAquwO1kDFW", "QuestoNonEsiste");
-        foreach($old as $n)
+        $username2 = "CambiatoUsername";
+        $password = "tanto viene hashata...";
+        $email = "update@pro.va";
+        $changed = new \Entity\E_User($username2, $password, $email);
+        $changed->set_Role(\Utilities\Roles::ADMIN);
+
+        $old = "we";
+
+        if($change_Function == 1)
         {
-            $username = parent::rnd_str(15);
-            $password = parent::rnd_str(15);
-            $email = "MOD@pro.va";
-            echo("Vecchio Username: $n");
+            echo("1. Change_Username:");
             echo(nl2br("\r\n"));
-            echo("Nuovo Username: $username");
+            echo("Vecchio: ".$old);
             echo(nl2br("\r\n"));
-            echo("Nuovo oggetto: ");
-            $user = new \Entity\E_User_MOD($username, $password, $email);
-            var_dump($user);
+            echo("Nuovo: ".$username2);
+            \Foundation\F_User::change_Username($changed, $old);
+        }
+        elseif($change_Function == 2)
+        {
+            echo("1. Change_Password:");
             echo(nl2br("\r\n"));
-            echo("Esito dell'update: ");
-            var_dump(\Foundation\F_User::update_Profile($user, $n));
+            echo("Nuova password: ".$password);
             echo(nl2br("\r\n"));
+            echo("Hashata: ".hash("sha512", $password));
             echo(nl2br("\r\n"));
+            echo("Username: ".$username2);
+            \Foundation\F_User::change_Password($changed);
+        }
+        elseif($change_Function == 3)
+        {
+            echo("1. Change_Email:");
             echo(nl2br("\r\n"));
+            echo("Nuova email: ".$email);
+            echo(nl2br("\r\n"));
+            echo("Username: ".$username2);
+            \Foundation\F_User::change_Email($changed);
         }
 
     }
@@ -187,4 +201,36 @@ class user extends \P\prova
 
 
 
-}
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
