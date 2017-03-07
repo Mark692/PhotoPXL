@@ -21,16 +21,8 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
-//$t = new \P\user();
-
-$vuoto = [];
-$vals = array_values($vuoto);
-foreach($vals as $v)
-{
-    echo("2bad!!");
-}
-echo("Eh...");
-var_dump(array_values([]));
+$t = new \P\user();
+$t->REMOVE_CURRENTPROPIC();
 
 
 

@@ -252,9 +252,9 @@ class F_User extends F_Database
                     .'WHERE `id` = ?'
                 .') photo '
                 .'SET '
-                    .'`photo` = photo.thumbnail '
-                    .'`type` = photo.type '
-                .'WHERE `user` = ?';
+                    .'profile_pic.photo = photo.thumbnail, '
+                    .'profile_pic.type = photo.type '
+                .'WHERE profile_pic.user = ?';
         $toBind = array($photo_ID, $username);
         parent::execute_Query($query, $toBind);
     }
@@ -293,29 +293,13 @@ class F_User extends F_Database
 
 
     /**
-     * Sets a default profile pic
-     *
-     * @param int $username The users'username to set the pic to
-     */
-    protected static function insert_DefaultProPic($username)
-    {
-        $query = 'INSERT INTO `profile_pic` (`user`, `photo`, `type` ) '
-                    .'SELECT ?, `thumbnail`, `type` '
-                    .'FROM `photo` '
-                    .'WHERE `id` = '.DEFAULT_PRO_PIC.' ';
-        $toBind = array($username);
-        parent::execute_Query($query, $toBind);
-    }
-
-
-    /**
      * Removes the user's profile pic and sets the default Profile Pic
      *
      * @param string $username The user that wants to remove the profile pic
      */
     public static function remove_CurrentProPic($username)
     {
-        self::insert_DefaultProPic($username);
+        self::set_ProfilePic($username, DEFAULT_PRO_PIC);
     }
 
 

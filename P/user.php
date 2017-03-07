@@ -12,6 +12,7 @@ class user extends \P\prova
 {
     private $user;
 
+
     /*
      * Crea un utente standard casuale
      */
@@ -113,11 +114,11 @@ class user extends \P\prova
     public function GET_BY_ROLE()
     {
         $ruolo = array(
-            "Bannato" => 0,
-            "STD" => 1,
-            "PRO" => 2,
-            "MOD" => 3,
-            "ADMIN" => 4,
+            "Bannato"   => 0,
+            "STD"       => 1,
+            "PRO"       => 2,
+            "MOD"       => 3,
+            "ADMIN"     => 4,
             "Non Usato" => 5);
         $pageToView = 1;
         foreach($ruolo as $k => $r)
@@ -133,15 +134,20 @@ class user extends \P\prova
     }
 
 
+    /*
+     * Cambia i dettagli di un utente. Alterna le funzioni con il parametro $change_Function
+     * Per cambiare il ruolo, ricorda che solo l'admin può farlo, quindi guarda F_Admin
+     */
     public function CHANGE_DETAILS($change_Function)
     {
-        $username2 = "CambiatoUsername";
+        $new_Username2Save = "CambiatoUsername"; //NUOVO USERNAME!!!
+        $old = "we"; //QUELLO SALVATO NEL DB!!!!
+
         $password = "tanto viene hashata...";
         $email = "update@pro.va";
-        $changed = new \Entity\E_User($username2, $password, $email);
+        $changed = new \Entity\E_User($new_Username2Save, $password, $email);
         $changed->set_Role(\Utilities\Roles::ADMIN);
 
-        $old = "we";
 
         if($change_Function == 1)
         {
@@ -149,7 +155,7 @@ class user extends \P\prova
             echo(nl2br("\r\n"));
             echo("Vecchio: ".$old);
             echo(nl2br("\r\n"));
-            echo("Nuovo: ".$username2);
+            echo("Nuovo: ".$new_Username2Save);
             \Foundation\F_User::change_Username($changed, $old);
         }
         elseif($change_Function == 2)
@@ -160,7 +166,7 @@ class user extends \P\prova
             echo(nl2br("\r\n"));
             echo("Hashata: ".hash("sha512", $password));
             echo(nl2br("\r\n"));
-            echo("Username: ".$username2);
+            echo("Vedi Username: ".$new_Username2Save);
             \Foundation\F_User::change_Password($changed);
         }
         elseif($change_Function == 3)
@@ -169,10 +175,44 @@ class user extends \P\prova
             echo(nl2br("\r\n"));
             echo("Nuova email: ".$email);
             echo(nl2br("\r\n"));
-            echo("Username: ".$username2);
+            echo("Vedi Username: ".$new_Username2Save);
             \Foundation\F_User::change_Email($changed);
         }
+    }
 
+
+    /*
+     * Aggiorna la foto profilo di un utente con una foto già presente nel DB
+     */
+    public function SET_PROFILEPIC()
+    {
+        $utente = "AllUser";
+        $pic = 14;
+        echo("L'utente ".$utente." cambia la sua ProfilePic in ".$pic);
+        \Foundation\F_User::set_ProfilePic($utente, $pic);
+    }
+
+
+    /*
+     * Carica una nuova foto da impostare SOLO nella tabella Profile_pic
+     */
+    public function UPLOAD_NEWCOVER()
+    {
+        $user = "AllUser";
+        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."logo.png";
+        $bob = new \Entity\E_Photo_Blob();
+        $bob->on_Upload($path);
+        \Foundation\F_User::upload_NewCover($user, $bob);
+    }
+
+
+    /*
+     * Toglie la ProPic corrente ed imposta quella di default
+     */
+    public function REMOVE_CURRENTPROPIC()
+    {
+        $user = "AllUser";
+        \Foundation\F_User::remove_CurrentProPic($user);
     }
 
 
@@ -207,7 +247,6 @@ class user extends \P\prova
 
 
 
-    }
 
 
 
@@ -228,9 +267,4 @@ class user extends \P\prova
 
 
 
-
-
-
-
-
-
+}

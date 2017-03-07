@@ -233,8 +233,9 @@ class F_Database
                 ."SET $set_values "
                 ."WHERE $where_clause";
 
-        $toBind = array_merge(array_values($set), array_values($where)); //Works even when the same
-        //key appears in both arrays. F_User::change_Username() is an example
+        $toBind = array_merge(array_values($set), array_values($where)); //Works
+        //even when the same key appears in both arrays
+        //F_User::change_Username() is an example
 
         self::execute_Query($query, $toBind);
     }
