@@ -21,7 +21,8 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
-$t = new \P\user();
+$t = new \P\PMAusers();
+$t->MOD_GET_USERSLIST();
 
 
 

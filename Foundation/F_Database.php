@@ -197,7 +197,7 @@ class F_Database
 
         if($limit !== 0)
         {
-            $query .= ' LIMIT '.$limit
+            $query .=' LIMIT '.$limit
                     .' OFFSET '.$offset;
         }
         $fetchAll = TRUE;

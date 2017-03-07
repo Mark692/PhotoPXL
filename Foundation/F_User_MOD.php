@@ -23,41 +23,39 @@ class F_User_MOD extends F_User_PRO
      * @param int $limit_PerPage The maximum number of records to show
      * @return array All the usernames that match the query and the total usernames stored in the DB
      */
-    public static function get_UsersList($pageToView, $starts_With = '', $limit_PerPage = 100)
+    public static function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 100)
     {
         $offset = ($pageToView - 1) * $limit_PerPage;
 
         $query = 'SELECT `username` '
                 .'FROM `users` ';
+        $where = '1 ';
 
         $len = strlen($starts_With);
         if($len > 0)
         {
-            $query .= 'WHERE LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
+            $where = 'LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
         }
-        else
-        {
-            $query .= 'WHERE 1 ';
-        }
-        $query .='LIMIT '.$limit_PerPage.' '
+        $query .= 'WHERE '.$where
+                .'ORDER BY `username` '
+                .'LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
 
         $toBind = [];
         $fetchAll = TRUE;
         $users_array = parent::fetch_Result($query, $toBind, $fetchAll);
-        $users = [];
-        foreach(array_values($users_array) as $u)
+        $usernames_only = [];
+        foreach($users_array as $u)
         {
-            array_push($users, $u);
+            array_push($usernames_only, $u["username"]);
         }
 
         $count = "username";
         $from = "users";
-        $where = "1";
         $tot = parent::count($count, $from, $where);
         $total = array("total_inDB" => $tot);
 
-        return array_merge($users, $total);
+        return array_merge($usernames_only, $total);
     }
 
 
