@@ -316,7 +316,7 @@ class F_Photo extends F_Database
         $query_ADD = self::query_addCats($to_add, $photo_ID);
         $query_DEL = self::query_removeCats($to_remove, $photo_ID);
         $query = $query_ADD.$query_DEL;
-        
+         
         if($query_ADD!=='')
         {
             $toBind = array_values($to_add);
