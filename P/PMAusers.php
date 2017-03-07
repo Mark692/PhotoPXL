@@ -63,7 +63,7 @@ class PMAusers extends prova
     {
         echo("Lista completa fino ai primi 100 utenti: ");
 //        \Foundation\F_User_MOD::get_UsersList();
-        var_dump(\Foundation\F_User_MOD::get_UsersList(1, 'A'));
+        var_dump(\Foundation\F_User_MOD::get_UsersList());
 
 
         echo(nl2br("\r\n"));
@@ -85,6 +85,18 @@ class PMAusers extends prova
         echo("Lista utenti: pagina 2, iniziano per 'C', max 4users/page: ");
 //        \Foundation\F_User_MOD::get_UsersList(2, 'C', 4);
         var_dump(\Foundation\F_User_MOD::get_UsersList(2, 'C', 4));
+    }
+
+
+    public function MOD_BAN()
+    {
+        $list = array("AllUser", "P1", "NonEsiste");
+        foreach($list as $v)
+        {
+            \Foundation\F_User_MOD::ban($v);
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        }
     }
 
 }

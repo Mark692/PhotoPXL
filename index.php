@@ -22,7 +22,7 @@ require_once $path."U_Nonce.php";
 
 
 $t = new \P\PMAusers();
-$t->MOD_GET_USERSLIST();
+$t->MOD_BAN();
 
 
 

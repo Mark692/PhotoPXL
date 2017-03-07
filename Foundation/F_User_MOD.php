@@ -36,7 +36,7 @@ class F_User_MOD extends F_User_PRO
         {
             $where = 'LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
         }
-        $query .= 'WHERE '.$where
+        $query .='WHERE '.$where
                 .'ORDER BY `username` '
                 .'LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
@@ -76,6 +76,10 @@ class F_User_MOD extends F_User_PRO
 
             parent::update($update, $set, $where);
         }
+
+        elseif($user_Role === FALSE)
+            {echo("We, questo tizio non esiste!".nl2br("\r\n").nl2br("\r\n"));}
+            elseif($user_Role !== Roles::ADMIN) {
     }
 
 
