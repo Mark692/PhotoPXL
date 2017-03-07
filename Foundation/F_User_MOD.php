@@ -27,35 +27,30 @@ class F_User_MOD extends F_User_PRO
     {
         $offset = ($pageToView - 1) * $limit_PerPage;
 
-        $query = 'SELECT `username` '
-                .'FROM `users` ';
+        $query = 'SELECT * '
+                .'FROM `profile_pic` ';
         $where = '1 ';
 
         $len = strlen($starts_With);
         if($len > 0)
         {
-            $where = 'LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
+            $where = 'LEFT(`user`, '.$len.') = \''.$starts_With.'\' ';
         }
-        $query .='WHERE '.$where
-                .'ORDER BY `username` '
+        $query .= 'WHERE '.$where
+                .'ORDER BY `user` '
                 .'LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
 
         $toBind = [];
         $fetchAll = TRUE;
-        $users_array = parent::fetch_Result($query, $toBind, $fetchAll);
-        $usernames_only = [];
-        foreach($users_array as $u)
-        {
-            array_push($usernames_only, $u["username"]);
-        }
+        $users = parent::fetch_Result($query, $toBind, $fetchAll);
 
-        $count = "username";
-        $from = "users";
+        $count = "user";
+        $from = "profile_pic";
         $tot = parent::count($count, $from, $where);
         $total = array("total_inDB" => $tot);
 
-        return array_merge($usernames_only, $total);
+        return array_merge($users, $total);
     }
 
 
@@ -76,10 +71,6 @@ class F_User_MOD extends F_User_PRO
 
             parent::update($update, $set, $where);
         }
-
-        elseif($user_Role === FALSE)
-            {echo("We, questo tizio non esiste!".nl2br("\r\n").nl2br("\r\n"));}
-            elseif($user_Role !== Roles::ADMIN) {
     }
 
 

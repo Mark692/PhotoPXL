@@ -21,34 +21,8 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
-$t = new \P\PMAusers();
-$t->MOD_BAN();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//$avvia = new \View\V_Home();
-//// prove federico
-//global $config;
-//$array_foto = [];
-//for($i=1; $i<=16; $i++)
-//{
-//    array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
-//
-//}
-//$avvia->assign('username',"UsernameLoggato");
-//$avvia->assign('thumbnail',array_chunk($array_foto, PHOTOS_PER_ROW));
-//$avvia->display('home_default.tpl');
+$t = new \P\photo();
+$t->UPDATE(16);
 
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));

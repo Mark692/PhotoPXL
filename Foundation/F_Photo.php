@@ -310,25 +310,28 @@ class F_Photo extends F_Database
     {
         $old_cats = self::get_Categories($photo_ID);
 
-        $to_add    = array_diff($new_cats, $old_cats);
+        $to_add = array_diff($new_cats, $old_cats);
         $to_remove = array_diff($old_cats, $new_cats);
 
         $query_ADD = self::query_addCats($to_add, $photo_ID);
         $query_DEL = self::query_removeCats($to_remove, $photo_ID);
         $query = $query_ADD.$query_DEL;
-
+        
         if($query_ADD!=='')
         {
-            $toBind = $to_add;
+            $toBind = array_values($to_add);
             if($query_DEL!=='')
             {
-                array_push($toBind, $to_remove);
+                foreach($to_remove as $c)
+                {
+                    array_push($toBind, $c);
+                }
             }
             parent::execute_Query($query, $toBind);
         }
         elseif($query_DEL!=='')
         {
-            $toBind = $to_remove;
+            $toBind = array_values($to_remove);
             parent::execute_Query($query, $toBind);
         }
     }
@@ -397,9 +400,9 @@ class F_Photo extends F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach(array_values($cats_array) as $c)
+        foreach($cats_array as $c)
         {
-            array_push($cats, intval($c));
+            array_push($cats, intval($c["category"]));
         }
         return $cats;
     }

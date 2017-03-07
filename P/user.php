@@ -214,8 +214,8 @@ class user extends \P\prova
      */
     public function SET_PROFILEPIC()
     {
-        $utente = "AllUser";
-        $pic = 5;
+        $utente = "VK6q7yMZDU";
+        $pic = 11;
         echo("L'utente ".$utente." cambia la sua ProfilePic in ".$pic);
         \Foundation\F_User::set_ProfilePic($utente, $pic);
     }
