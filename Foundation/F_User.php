@@ -330,7 +330,7 @@ class F_User extends F_Database
     public static function remove_Like($username, $photo_ID)
     {
         $query = "DELETE FROM `likes` "
-                ."WHERE (`username`=?) AND (`photo`=?)";
+                ."WHERE (`user`=?) AND (`photo`=?)";
 
         $toBind = array($username, $photo_ID);
         parent::execute_Query($query, $toBind);

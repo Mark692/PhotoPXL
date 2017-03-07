@@ -22,7 +22,7 @@ require_once $path."U_Nonce.php";
 
 
 $t = new \P\user();
-$t->REMOVE_CURRENTPROPIC();
+$t->REMOVE_LIKE();
 
 
 

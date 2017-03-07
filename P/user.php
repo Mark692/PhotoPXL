@@ -216,8 +216,26 @@ class user extends \P\prova
     }
 
 
+    /*
+     * Aggiunge la coppia USERNAME-PHOTO alla tabella "likes"
+     */
+    public function ADD_LIKE_TO()
+    {
+        $user = "CambiatoUsername";
+        $photo = 11;
+        \Foundation\F_User::add_Like_to($photo, $user);
+    }
 
 
+    /*
+     * Rimuove la coppia USERNAME-PHOTO dalla tabella "likes"
+     */
+    public function REMOVE_LIKE()
+    {
+        $user = "AllUser";
+        $photo = 6;
+        \Foundation\F_User::remove_Like($user, $photo);
+    }
 
 
 
