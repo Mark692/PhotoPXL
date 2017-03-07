@@ -85,7 +85,7 @@ class photo extends prova
                 else
                 {
                     echo(nl2br("\r\n"));
-                        $i++;
+                    $i++;
                 }
             }
             echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
