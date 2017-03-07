@@ -182,12 +182,40 @@ class user extends \P\prova
 
 
     /*
+     * Questa funzione ha il solo scopo di usare più volte le funzioni qui sotto
+     * per l'aggiornamento della foto profilo e far visualizzare le varie foto,
+     * come cambiano, quella di default, quella caricata ecc
+     */
+    public function CASODUSO_UPDATE_PRO_PIC()
+    {
+        echo("Default già presente: ");
+        $this->GET_PROFILEPIC();
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+
+        $this->SET_PROFILEPIC();
+        echo(nl2br("\r\n"));
+        echo("Cambiata con una già esistente nel DB: ");
+        $this->GET_PROFILEPIC();
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->UPLOAD_NEWCOVER();
+        echo("Caricata nuova foto solo come PROPIC: ");
+        $this->GET_PROFILEPIC();
+    }
+
+
+    /*
      * Aggiorna la foto profilo di un utente con una foto già presente nel DB
      */
     public function SET_PROFILEPIC()
     {
         $utente = "AllUser";
-        $pic = 14;
+        $pic = 5;
         echo("L'utente ".$utente." cambia la sua ProfilePic in ".$pic);
         \Foundation\F_User::set_ProfilePic($utente, $pic);
     }
@@ -199,10 +227,26 @@ class user extends \P\prova
     public function UPLOAD_NEWCOVER()
     {
         $user = "AllUser";
-        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."logo.png";
+        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."1.jpg";
+//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."2.jpg";
+//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."3.jpg";
+//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."4.jpg";
         $bob = new \Entity\E_Photo_Blob();
         $bob->on_Upload($path);
         \Foundation\F_User::upload_NewCover($user, $bob);
+    }
+
+
+    /*
+     * Riprende la foto profilo dell'utente
+     */
+    public function GET_PROFILEPIC()
+    {
+        $user = "AllUser";
+        $r = \Foundation\F_User::get_ProfilePic($user);
+        $mime = image_type_to_mime_type($r["type"]);
+        $pic = $r["photo"];
+        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
     }
 
 
@@ -236,53 +280,6 @@ class user extends \P\prova
         $photo = 6;
         \Foundation\F_User::remove_Like($user, $photo);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

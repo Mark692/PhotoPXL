@@ -280,7 +280,7 @@ class F_User extends F_Database
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return resource The profile pic, thumbnail style, and its type
+     * @return array The profile pic, thumbnail style, and its type
      */
     public static function get_ProfilePic($username)
     {
