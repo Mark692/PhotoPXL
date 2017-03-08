@@ -10,18 +10,139 @@ namespace Entity;
 
 class E_Photo_Blob
 {
+    private $fullsize;
+    private $thumbnail;
+    private $size;
+    private $type;
+
+
+    /**
+     * Checks the image, throws exceptions in case the type is not allowed or the
+     * size is too big, finally sets the attributes the the E_Photo_Blob object
+     *
+     * @param string $source_Path The path to the image to save
+     * @throws \Exceptions\uploads Whether size and/or type are not allowed
+     */
+    public function on_Upload($source_Path)
+    {
+        $type = $this->check_Type($source_Path);
+        if($type === FALSE)
+        {
+            throw new \Exceptions\uploads(0);
+        }
+        $this->set_Type($type);
+
+        $size = $this->check_Size($source_Path);
+        if($size === FALSE)
+        {
+            throw new \Exceptions\uploads(1);
+        }
+        $this->set_Size($size);
+        $this->set_Fullsize($source_Path);
+        $thumbnail = $this->generate_Thumbnail($source_Path);
+        $this->set_Thumbnail($thumbnail);
+    }
+
+
+    /**
+     * Sets the fullsize image from the path given as parameter
+     *
+     * @param string $path The path to the photo
+     */
+    private function set_Fullsize($path)
+    {
+        $this->fullsize = file_get_contents(realpath($path));
+    }
+
+
+    /**
+     * Returns the fullsize photo
+     *
+     * @return resource The fullsize photo
+     */
+    public function get_Fullsize()
+    {
+        return $this->fullsize;
+    }
+
+
+    /**
+     * Sets a thumbnail image
+     *
+     * @param resource $thumb_Image The thumbnail image
+     */
+    private function set_Thumbnail($thumb_Image)
+    {
+        $this->thumbnail = $thumb_Image;
+    }
+
+
+    /**
+     * Retrieves the thumbnail created for the photo
+     *
+     * @return resource The thumbnail of the photo
+     */
+    public function get_Thumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+
+    /**
+     * Sets the size of the photo
+     *
+     * @param int $size The size of the photo
+     */
+    private function set_Size($size)
+    {
+        $this->size = $size;
+    }
+
+
+    /**
+     * Retrieves the size of the photo
+     *
+     * @return int The size of the photo
+     */
+    public function get_Size()
+    {
+        return $this->size;
+    }
+
+
+    /**
+     * Sets the type of the photo
+     *
+     * @param string $type The type of the photo
+     */
+    private function set_Type($type)
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * Retrieves the type of the photo. To be used to show the correct HTML Header
+     *
+     * @return string The type of the photo
+     */
+    public function get_Type()
+    {
+        return $this->type;
+    }
+
 
     /**
      * Generates a Thumbnail image in order to be stored in the DB
      *
      * @param string $source_Path The path to the image to resize
-     * @param string $dest_Path The destination path of the thumbnail
+     * @return resource The resized image
      */
-    public function generate_Thumbnail($source_Path, $dest_Path)
+    private function generate_Thumbnail($source_Path)
     {
         $max_width = THUMB_WIDTH;
         $max_height = THUMB_HEIGHT;
-        $this->resize($source_Path, $dest_Path, $max_width, $max_height);
+        return $this->resize($source_Path, $max_width, $max_height);
     }
 
 
@@ -29,35 +150,57 @@ class E_Photo_Blob
      * Resizes an image. Used to generate Thumbnails and standardized Full Size images
      *
      * @param string $source_Path The source patht to get the image from
-     * @param string $dest_Path The destination path where to output the resized image
      * @param int $MAX_WIDTH The desired resize width
      * @param int $MAX_HEIGHT The desired resize height
-     * @return image The resized image
+     * @return resource The resized image
      */
-    function resize($source_Path, $dest_Path, $MAX_WIDTH, $MAX_HEIGHT)
+    private function resize($source_Path, $MAX_WIDTH, $MAX_HEIGHT)
     {
-        list($w, $h) = getImageSize($source_Path);
+        list($w, $h, $type) = getimagesize($source_Path);
         list($new_W, $new_H) = $this->adapt_Dimensions($w, $h, $MAX_WIDTH, $MAX_HEIGHT);
-        $outputImage = imageCreateTrueColor($new_W, $new_H);
 
-        //Note about exif_imagetype:
-        //"The return value is the same value that getimagesize() returns in index 2 but exif_imagetype() is much faster"
-        $type = exif_ImageType($source_Path);
         switch($type)
         {
             case IMAGETYPE_JPEG:
-                $img = imageCreateFromJPEG($source_Path);
-                imageCopyResampled($outputImage, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
-                imageJPEG($outputImage, $dest_Path);
+                $src = imagecreatefromjpeg($source_Path);
                 break;
 
             case IMAGETYPE_PNG:
-                $img = imageCreateFromPNG($source_Path);
-                imageCopyResampled($outputImage, $img, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
-                $this->preserve_PNG_Transparency($outputImage);
-                imagePNG($outputImage, $dest_Path);
+                $src = imagecreatefrompng($source_Path);
+                break;
+
+            default:
+                return '';
+        }
+
+        $tmp = imagecreatetruecolor($new_W, $new_H);
+
+        /* Check if this image is PNG, then set if Transparent */
+        if($type == IMAGETYPE_PNG)
+        {
+            $this->preserve_PNG_Transparency($tmp);
+        }
+
+        imagecopyresampled($tmp, $src, 0, 0, 0, 0, $new_W, $new_H, $w, $h);
+
+        ob_start();
+        switch($type)
+        {
+            case IMAGETYPE_JPEG:
+                imagejpeg($tmp, NULL); //Default quality: 75%
+                break;
+
+            case IMAGETYPE_PNG:
+                imagepng($tmp, NULL); //Default compression
+                break;
+
+            default: echo '';
                 break;
         }
+        $final_image = ob_get_contents();
+        ob_end_clean();
+
+        return $final_image;
     }
 
 
@@ -110,180 +253,48 @@ class E_Photo_Blob
         imageColorTransparent($image, imageColorAllocateAlpha($image, $red, $green, $blue, $fullyTransparent));
         imageAlphaBlending($image, FALSE);
         imageSaveAlpha($image, TRUE);
+
+    //----ALTERNATIVELY----\\
+
+//        imagealphablending($tmp, false);
+//        imagesavealpha($tmp, true);
+//        $transparent = imagecolorallocatealpha($image, 255, 255, 255, 127);
+//        imagefilledrectangle($image, 0, 0, $new_W, $new_H, $transparent);
+
+    //----ALTERNATIVELY----\\
     }
 
 
     /**
-     * Checks whether the uploaded image is JPG, JPEG, PNG and less than MAX_SIZE_FULL
+     * Checks whether the uploaded image has an allowed extention
      *
-     * @param string $source_Path The path where the image is actually stored
-     * @return bool Whether the uploaded image is of right type and size
+     * @param string $source_Path The path to the uploaded image
+     * @return mixed The int type of the image or FALSE in case it's not supported/allowed
      */
-    public function check_UploadedFile($source_Path)
+    private static function check_Type($source_Path)
     {
         $type = exif_ImageType($source_Path);
-        switch($type)
+        if($type === IMAGETYPE_JPEG || $type === IMAGETYPE_PNG)
         {
-            case IMAGETYPE_JPEG:
-            case IMAGETYPE_PNG:
-                $type_Ok = TRUE;
-
-            default:
-                $type_Ok = FALSE;
+            return $type;
         }
-
-        $size = filesize($source_Path);
-        if($size<MAX_SIZE_FULL)
-        {
-            $size_Ok = TRUE;
-        }
-        $size_Ok = FALSE;
-
-        return ($type_Ok && $size_Ok);
+        return FALSE;
     }
 
-    
 
-
-
-
-//
-//use \Imagick;
-//
-///**
-// * Handles basic functions to generate a thumbnail of a photo and checks whether
-// * the image is a valid image to be uploaded
-// */
-//class E_Photo_Blob
-//{
-//    private $fullsize;
-//    private $thumbnail;
-//    private $size;
-//    private $type;
-//
-//
-//    /**
-//     * Generates a photo blob object
-//     *
-//     * @param string $path The path to the photo uploaded
-//     * @param int $size The photo size
-//     * @param string $type The photo type
-//     */
-//    public function generate($path, $size, $type)
-//    {
-//        if(realpath($path) === FALSE)
-//        {
-//            throw new \Exceptions\photo_details(0, $path);
-//        }
-//        $this->set_Fullsize($path);
-//        $this->set_Thumbnail($path);
-//
-//        if($size > MAX_SIZE)
-//        {
-//            throw new \Exceptions\photo_details(1, $size);
-//        }
-//        $this->set_Size($size);
-//        $this->set_Type($type);
-//    }
-//
-//
-//    /**
-//     * Sets the fullsize image from the path given as parameter
-//     *
-//     * @param string $path The path to the photo
-//     * @throws \Exceptions\photo_details Whether the path to the photo is incorrect
-//     */
-//    public function set_Fullsize($path)
-//    {
-//        $this->fullsize = realpath($path);
-//    }
-//
-//
-//    /**
-//     * Returns the fullsize photo
-//     *
-//     * @return image The fullsize photo
-//     */
-//    public function get_Fullsize()
-//    {
-//        return $this->fullsize;
-//    }
-//
-//
-//    /**
-//     * Creates and sets a thumbnail image
-//     *
-//     * @param string $path The path to the photo
-//     */
-//    public function set_Thumbnail($path)
-//    {
-//        echo("Sono la set_Thumbnail".nl2br("\r\n"));
-//        $imagick = new \Imagick(realpath($path));
-//        echo("Ho instanziato l'oggetto Imagick".nl2br("\r\n"));
-//        $width = THUMBNAIL_WIDTH;
-//        $height = THUMBNAIL_HEIGHT;
-//        $best_Fit = TRUE;
-//        $fill = TRUE;
-//        $imagick->thumbnailImage($width, $height, $best_Fit, $fill);
-//        echo("Ho fatto la thumbnailImage".nl2br("\r\n"));
-//
-//        $this->thumbnail = $path;
-//        echo("L'ho assegnata a \$this->thumbnail".nl2br("\r\n"));
-//    }
-//
-//
-//    /**
-//     * Retrieves the thumbnail created for the photo
-//     *
-//     * @return image The thumbnail of the photo
-//     */
-//    public function get_Thumbnail()
-//    {
-//        return $this->thumbnail;
-//    }
-//
-//
-//    /**
-//     * Sets the size of the photo
-//     *
-//     * @param int $size The size of the photo
-//     */
-//    public function set_Size($size)
-//    {
-//        $this->size = $size;
-//    }
-//
-//
-//    /**
-//     * Retrieves the size of the photo
-//     *
-//     * @return int The size of the photo
-//     */
-//    public function get_Size()
-//    {
-//        return $this->size;
-//    }
-//
-//
-//    /**
-//     * Sets the type of the photo
-//     *
-//     * @param string $type The type of the photo
-//     */
-//    public function set_Type($type)
-//    {
-//        $this->type = $type;
-//    }
-//
-//
-//    /**
-//     * Retrieves the type of the photo. To be used to show the correct HTML Header
-//     *
-//     * @return string The type of the photo
-//     */
-//    public function get_Type()
-//    {
-//        return $this->type;
-//    }
-//
+    /**
+     * Checks whether the uploaded image is smaller than the max allowed size
+     *
+     * @param string $source_Path The path to the uploaded image
+     * @return mixed The size of the image or FALSE in case it's too big
+     */
+    private static function check_Size($source_Path)
+    {
+        $size = filesize($source_Path);
+        if($size < MAX_SIZE_FULL)
+        {
+            return $size;
+        }
+        return FALSE;
+    }
 }

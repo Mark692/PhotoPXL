@@ -28,7 +28,33 @@ class E_User_MOD extends E_User_PRO
         parent::__construct($username, $password, $email);
         parent::set_Role(Roles::MOD);
     }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Retrieves the list of all usernames that match the query
+     *
+     * @param int $pageToView The page to view. It influences the result offset
+     * @param string $starts_With A case INsensitive string to filtrate the results
+     * @param int $limit_PerPage The maximum number of records to show
+     * @return array All the usernames that match the query and the total usernames stored in the DB
+     */
+    public static function get_UsersList($pageToView, $starts_With = '', $limit_PerPage = 100)
+    {
+        return \Foundation\F_User_MOD::get_UsersList($pageToView, $starts_With, $limit_PerPage);
+    }
+
+
+    /**
+     * Bans a user if its not an Admin
+     *
+     * @param string $username The user's username to ban
+     */
+    public static function ban($username)
+    {
+        \Foundation\F_User_MOD::ban($username);
+    }
 }
-
-
-

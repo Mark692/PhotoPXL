@@ -8,18 +8,20 @@
 
 namespace Foundation;
 
+use Entity\E_Comment;
+
 /**
  * This class enables to save and load comments
  */
-class F_Comment extends \Foundation\F_Database
+class F_Comment extends F_Database
 {
 
     /**
      * Saves a comment in the DB
      *
-     * @param \Entity\E_Comment $comment The comment to save
+     * @param E_Comment $comment The comment to save
      */
-    public static function insert(\Entity\E_Comment $comment)
+    public static function insert(E_Comment $comment)
     {
         $insertInto = "comment";
 
@@ -40,9 +42,10 @@ class F_Comment extends \Foundation\F_Database
      * the latest one.
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The comments made for the photo
      */
-    public static function get_By_Photo($photo_ID)
+    public static function get_By_Photo($photo_ID, $order_DESC = FALSE)
     {
         $select = array("id", "text", "user");
         $from = "comment";
@@ -50,7 +53,22 @@ class F_Comment extends \Foundation\F_Database
         $limit = 0;
         $offset = 0;
         $orderBy = "id";
-        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy);
+        return parent::get_All($select, $from, $where, $limit, $offset, $orderBy, $order_DESC);
+    }
+
+
+    /**
+     * Updates the text of a comment
+     *
+     * @param E_Comment $comment The new comment to store in the DB
+     */
+    public static function update(E_Comment $comment)
+    {
+        $update = "comment";
+        $set = array("text" => $comment->get_Text());
+        $where = array("id" => $comment->get_ID());
+
+        parent::update($update, $set, $where);
     }
 
 

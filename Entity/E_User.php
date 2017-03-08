@@ -17,6 +17,7 @@ class E_User
     private $username;
     private $hashedPassword;
     private $email;
+
     /** @type enum The user role */
     private $role;
 
@@ -35,7 +36,7 @@ class E_User
             throw new \Exceptions\input_texts(0, $username);
         }
         $this->set_Username($username);
-        $this->set_hashedPassword($password);
+        $this->set_Password($password);
 
         if($this->check_Email($email) === FALSE)
         {
@@ -73,9 +74,10 @@ class E_User
      * @param string $username The username input
      * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
      */
-    public static function check_Username($username)
+    private function check_Username($username)
     {
-        if(strlen($username) >= MIN_USERNAME_CHARS && strlen($username) <= MAX_USERNAME_CHARS)
+        if(strlen($username) >= MIN_USERNAME_CHARS
+                && strlen($username) <= MAX_USERNAME_CHARS)
         {
             $allowed = array('-', '_', '.'); //Allows -_. inside a Username
             if(ctype_alnum(str_replace($allowed, '', $username))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -88,13 +90,13 @@ class E_User
 
 
     /**
-     * Sets an ALREADY HASHED password for the User
+     * Sets a password for the User
      *
-     * @param string $pass The user's hash('sha512', password)
+     * @param string $pass The user's hashed password
      */
-    public function set_hashedPassword($pass)
+    public function set_Password($pass)
     {
-        $this->hashedPassword = $pass;
+        $this->hashedPassword = $this->hash_of($pass);
     }
 
 
@@ -104,7 +106,7 @@ class E_User
      * @param string $pass2hash The password in clear text to hash before save it
      * @return string The hashed password
      */
-    public function hash_of($pass2hash)
+    private function hash_of($pass2hash)
     {
         return hash('sha512', $pass2hash);
     }
@@ -138,7 +140,7 @@ class E_User
      * @param string $email The email to check if valid
      * @return bool Whether the email is correctly written
      */
-    public static function check_Email($email)
+    private function check_Email($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -178,4 +180,144 @@ class E_User
     }
 
 
+    //---ENTITY -> FOUNDATION---\\
+
+
+
+    /**
+     * Retrieves the user's info from the DB
+     *
+     * @param string $username
+     * @return mixed \Entity\E_User_* The user searched
+     *               boolean FALSE if no user matchs the given username
+     */
+    public static function get_UserDetails($username)
+    {
+        return \Foundation\F_User::get_UserDetails($username);
+    }
+
+
+    /**
+     * Checks whether the username is available. Case Sensitive.
+     *
+     * @param string $username The username to check
+     * @return boolean Whether the username is already taken
+     */
+    public static function is_Available($username)
+    {
+        return \Foundation\F_User::is_Available($username);
+    }
+
+
+    /**
+     * Retrieves the user's password and role. Used to check login credentials
+     *
+     * @param string $username The user's username
+     * @return mixed An ARRAY with user's password and role IF the $username is
+     *               stored in the DB, FALSE otherwise
+     */
+    public static function get_LoginInfo($username)
+    {
+        return \Foundation\F_User::get_LoginInfo($username);
+    }
+
+
+    /**
+     * Retrieves the user's role only
+     *
+     * @param string $username The user's username
+     * @return mixed int The user's role
+     *               boolean FALSE if no username was found in the DB
+     */
+    public static function get_DB_Role($username)
+    {
+        return \Foundation\F_User::get_Role($username);
+    }
+
+
+    /**
+     * Returns a list of all users with the given role
+     *
+     * @param int $role The role to search the users for
+     * @return array All the users (usernames only) with the specified role
+     */
+    public static function get_By_Role($role)
+    {
+        return \Foundation\F_User::get_By_Role($role);
+    }
+
+
+    //RIMOSSA public static function update_Profile($to_Update, $old_Username)
+    //AGGIUNGI I NUOVI METODI
+
+
+    /**
+     * Sets a profile pic for the user
+     *
+     * @param string $username The user's username
+     * @param int $photo_ID The photo ID to save as profile pic
+     */
+    public static function set_ProfilePic($username, $photo_ID)
+    {
+        \Foundation\F_User::set_ProfilePic($username, $photo_ID);
+    }
+
+
+    /**
+     * Updates the profile pic by uploading a new photo to be used ONLY as ProPic
+     *
+     * @param int $username The user to update
+     * @param int $blob The new profile pic to upload for the user
+     */
+    public static function upload_NewCover($username, \Entity\E_Photo_Blob $blob)
+    {
+        \Foundation\F_User::upload_NewCover($username, $blob);
+    }
+
+
+    /**
+     * Retrieves the user's profile pic (thumbnail style)
+     *
+     * @param string $username The user owner of the profile pic to search
+     * @return image The profile pic, thumbnail style, and its type
+     */
+    public static function get_ProfilePic($username)
+    {
+        return \Foundation\F_User::get_ProfilePic($username);
+    }
+
+
+    /**
+     * Removes the user's profile pic
+     *
+     * @param string $username The user that wants to remove the profile pic
+     */
+    public static function remove_CurrentProPic($username)
+    {
+        \Foundation\F_User::remove_CurrentProPic($username);
+    }
+
+
+    /**
+     * Adds a like to the photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @param string $username The user's username
+     */
+    public static function add_Like_to($photo_ID, $username)
+    {
+        \Foundation\F_User::add_Like_to($photo_ID, $username);
+    }
+
+
+    /**
+     * Removes the user's like from the selected photo
+     *
+     * @param string $username The user that wants to remove the like
+     * @param int $photo_ID The target photo's ID
+     */
+    public static function remove_Like($username, $photo_ID)
+    {
+        \Foundation\F_User::remove_Like($username, $photo_ID);
+    }
 }

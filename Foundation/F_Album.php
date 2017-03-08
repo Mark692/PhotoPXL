@@ -8,16 +8,20 @@
 
 namespace Foundation;
 
-class F_Album extends \Foundation\F_Database
+use Entity\E_Album;
+use Foundation\F_Database;
+use Foundation\F_Photo;
+
+class F_Album extends F_Database
 {
 
     /**
-     * Creates an album in the DB
+     * Saves the album in the DB
      *
-     * @param \Entity\E_Album $album The album to save
+     * @param E_Album $album The album to save
      * @param string $owner The $owner's username
      */
-    public static function insert(\Entity\E_Album $album, $owner)
+    public static function insert(E_Album $album, $owner)
     {
         //Insert all album details but the categories
         $insertInto = "album";
@@ -41,41 +45,36 @@ class F_Album extends \Foundation\F_Database
         }
 
         //Sets a basic cover for the album
-        self::insert_Cover($album_ID);
+        self::insert_DefaultCover($album_ID);
     }
 
 
     /**
-     * Sets the album cover. If no photo has been selected, a default photo
-     * will be chosen
+     * Sets a default album cover
      *
      * @param int $album_ID The album ID to set the cover to
-     * @param int $photo_ID The photo ID
      */
-    private static function insert_Cover($album_ID, $photo_ID=1)
+    private static function insert_DefaultCover($album_ID)
     {
-        $insertInto = "album_cover";
-
-        $set = array(
-            "album" => $album_ID,
-            "photo" => $photo_ID
-                );
-
-        parent::insert_Query($insertInto, $set);
+        $query = 'INSERT INTO `album_cover` (`album`, `cover`, `type` ) '
+                    .'SELECT ?, `thumbnail`, `type` '
+                    .'FROM `photo` '
+                    .'WHERE `id` = '.NO_ALBUM_COVER.' ';
+        $toBind = array($album_ID);
+        parent::execute_Query($query, $toBind);
     }
 
 
     /**
      * Updates the album details
      *
-     * @param \Entity\E_Album $to_Update The new Album object to save
+     * @param E_Album $to_Update The new Album object to save
      */
-    public static function update_Details(\Entity\E_Album $to_Update)
+    public static function update_Details(E_Album $to_Update)
     {
         $id = $to_Update->get_ID();
         $update = "album";
         $set = array(
-            "id" => $id,
             "title" => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
             "creation_date" => $to_Update->get_Creation_Date()
@@ -89,18 +88,25 @@ class F_Album extends \Foundation\F_Database
 
 
     /**
-     * Updates the album cover
+     * Updates the album cover with an existing photo
      *
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
      */
-    public static function update_Cover($album_ID, $photo_ID=1)
+    public static function set_Cover($album_ID, $photo_ID)
     {
-        $update = "album_cover";
-        $set = array("photo" => $photo_ID);
-        $where = array("album" => $album_ID);
-
-        parent::update($update, $set, $where);
+        $query = 'UPDATE `album_cover`, '
+                .'('
+                    .'SELECT * '
+                    .'FROM `photo` '
+                    .'WHERE `id` = ?'
+                .') result '
+                .'SET '
+                    .'`album_cover`.`cover` = result.thumbnail, '
+                    .'`album_cover`.`type` = result.type '
+                .'WHERE `album` = ?';
+        $toBind = array($photo_ID, $album_ID);
+        parent::execute_Query($query, $toBind);
     }
 
 
@@ -112,28 +118,20 @@ class F_Album extends \Foundation\F_Database
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
      */
-    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($username, $page_toView = 1, $order_DESC = FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT album.id, album.title, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                .'WHERE photo.id IN '
+        $query = 'SELECT album.id, album.title, album_cover.cover, album_cover.type '
+                .'FROM `album_cover` '
+                    .'INNER JOIN `album` '
+                    .'ON album_cover.album=album.id '
+                .'WHERE album.id IN '
                 .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album IN '
-                    .'('
-                        .'SELECT album.id '
-                        .'FROM `album` '
-                        .'WHERE album.user=? '
-                    .') '
-                    .'GROUP BY photo_album.album '
+                    .'SELECT album.id '
+                    .'FROM `album` '
+                    .'WHERE album.user=? '
                 .') ';
         if($order_DESC===TRUE)
         {
@@ -165,31 +163,28 @@ class F_Album extends \Foundation\F_Database
     public static function get_By_ID($id)
     {
         //Retrieves album details and its Thumbnail
-        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                .'WHERE photo.id IN '
-                .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album=? '
-                .') ';
+        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, album_cover.cover, album_cover.type '
+                .'FROM `album` '
+                    .'INNER JOIN `album_cover` '
+                    .'ON album.id=album_cover.album '
+                .'WHERE album.id = ?';
 
         $toBind = array($id);
         $album = parent::fetch_Result($query, $toBind);
+        if($album === FALSE) //Only in case no album has the given ID
+        {
+            return [];
+        }
 
         //Retrieves the categories
         $array_categories = self::get_Categories($id);
         $cats = [];
-        foreach($array_categories as $v)
+        foreach(array_values($array_categories) as $c)
         {
-            array_push($cats, intval($v["category"]));
+            array_push($cats, intval($c));
         }
 
-        $e_album = new \Entity\E_Album(
+        $e_album = new E_Album(
                 $album["title"],
                 $album["description"],
                 $cats,
@@ -199,7 +194,7 @@ class F_Album extends \Foundation\F_Database
 
         return array(
             "album" => $e_album,
-            "cover" => $album["thumbnail"],
+            "cover" => $album["cover"],
             "username" => $album["user"]
             );
     }
@@ -213,7 +208,7 @@ class F_Album extends \Foundation\F_Database
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the albums matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $page_toView = 1, $order_DESC = FALSE)
     {
         $where = '';
         //Alternate $where = `category` IN ( foreach($cats as $c) );
@@ -227,25 +222,15 @@ class F_Album extends \Foundation\F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT DISTINCT album.id, album.title, photo.thumbnail '
-                .'FROM `photo` '
-                    .'INNER JOIN `photo_album` '
-                    .'ON photo.id=photo_album.photo '
-                        .'INNER JOIN `album` '
-                        .'ON photo_album.album=album.id '
-                            .'INNER JOIN `cat_album` '
-                            .'ON album.id=cat_album.album '
-                .'WHERE photo.id IN '
+        $query = 'SELECT DISTINCT album.id, album.title, album_cover.cover, album_cover.type '
+                .'FROM `album` '
+                    .'INNER JOIN `album_cover` '
+                    .'ON album.id=album_cover.album '
+                .'WHERE album.id IN '
                 .'('
-                    .'SELECT MIN(photo_album.photo) '
-                    .'FROM `photo_album` '
-                    .'WHERE photo_album.album IN '
-                    .'('
-                        .'SELECT cat_album.album '
-                        .'FROM `cat_album` '
-                        .'WHERE '.$where.' '
-                    .') '
-                    .'GROUP BY photo_album.album '
+                    .'SELECT DISTINCT cat_album.album '
+                    .'FROM `cat_album` '
+                    .'WHERE '.$where.' '
                 .') ';
         if($order_DESC===TRUE)
         {
@@ -293,11 +278,12 @@ class F_Album extends \Foundation\F_Database
             if($query_DEL!=='')
             {
                 array_push($toBind, $to_remove);
-                parent::execute_Query($query, $toBind);
             }
+            parent::execute_Query($query, $toBind);
         }
         elseif($query_DEL!=='')
         {
+            echo("3 :(");
             $toBind = $to_remove;
             parent::execute_Query($query, $toBind);
         }
@@ -367,17 +353,19 @@ class F_Album extends \Foundation\F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach($cats_array as $sub_array)
+        foreach(array_values($cats_array) as $c)
         {
-            array_push($cats, $sub_array["category"]); //Keep only the values
+            array_push($cats, intval($c));
         }
         return $cats;
     }
 
 
     /**
-     * Deletes an album from the DB. Its photos will be kept with no album association
-     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum
+     * Deletes an album from the DB.
+     * Its photos will be kept with no album association
+     * To delete all photos from an album use F_Photo::delete_ALL_fromAlbum()
+     * To delete an album and all its photos use F_Album::delete_Album_AND_Photos()
      *
      * @param int $album_ID The album ID to delete from the DB
      */
@@ -390,4 +378,15 @@ class F_Album extends \Foundation\F_Database
         parent::execute_Query($query, $toBind);
     }
 
+
+    /**
+     * Deletes an album and all its photos
+     *
+     * @param int $album_ID The album to delete with all its associated photos
+     */
+    public static function delete_Album_AND_Photos($album_ID)
+    {
+        F_Photo::delete_ALL_fromAlbum($album_ID);
+        self::delete($album_ID);
+    }
 }

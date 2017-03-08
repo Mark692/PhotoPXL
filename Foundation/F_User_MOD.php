@@ -8,12 +8,13 @@
 
 namespace Foundation;
 
+use Utilities\Roles;
+
 /**
  * Sets basic info for MOD users
  */
 class F_User_MOD extends F_User_PRO
 {
-
     /**
      * Retrieves the list of all usernames that match the query
      *
@@ -22,37 +23,30 @@ class F_User_MOD extends F_User_PRO
      * @param int $limit_PerPage The maximum number of records to show
      * @return array All the usernames that match the query and the total usernames stored in the DB
      */
-    public static function get_UsersList($pageToView, $starts_With = '', $limit_PerPage = 100)
+    public static function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 100)
     {
         $offset = ($pageToView - 1) * $limit_PerPage;
 
-        $query = 'SELECT `username` '
-                .'FROM `users` ';
+        $query = 'SELECT * '
+                .'FROM `profile_pic` ';
+        $where = '1 ';
 
         $len = strlen($starts_With);
-        if($len>0)
+        if($len > 0)
         {
-            $query .= 'WHERE LEFT(`username`, '.$len.') = \''.$starts_With.'\' ';
+            $where = 'LEFT(`user`, '.$len.') = \''.$starts_With.'\' ';
         }
-        else
-        {
-            $query .= 'WHERE 1 ';
-        }
-        $query .= 'LIMIT '.$limit_PerPage.' '
+        $query .= 'WHERE '.$where
+                .'ORDER BY `user` '
+                .'LIMIT '.$limit_PerPage.' '
                 .'OFFSET '.$offset;
-        
+
         $toBind = [];
         $fetchAll = TRUE;
-        $users_array = parent::fetch_Result($query, $toBind, $fetchAll);
-        $users = [];
-        foreach($users_array as $u)
-        {
-            array_push($users, $u["username"]); //Keeps only the usernames
-        }
+        $users = parent::fetch_Result($query, $toBind, $fetchAll);
 
-        $count = "username";
-        $from = "users";
-        $where = "1";
+        $count = "user";
+        $from = "profile_pic";
         $tot = parent::count($count, $from, $where);
         $total = array("total_inDB" => $tot);
 
@@ -68,14 +62,16 @@ class F_User_MOD extends F_User_PRO
     public static function ban($username)
     {
         $user_Role = parent::get_Role($username);
-        if($user_Role !== \Utilities\Roles::ADMIN)
+        if($user_Role !== FALSE //The username exists
+                && $user_Role !== Roles::ADMIN) //AND it's not an Admin
         {
             $update = "users";
-            $set = array("role" => \Utilities\Roles::BANNED);
+            $set = array("role" => Roles::BANNED);
             $where = array("username" => $username);
 
             parent::update($update, $set, $where);
         }
     }
-}
 
+
+}

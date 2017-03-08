@@ -24,10 +24,10 @@ $config['smarty']['compile_dir']  = $smarty_path.'template_c'.DIRECTORY_SEPARATO
 
 
 //----Database Connection Parameters----\\
-$config['mysql_host']     = 'localhost';
-$config['mysql_database'] = 'photopxl';
-$config['mysql_user']     = 'root';
-$config['mysql_password'] = 'FRIGO A LEGNA';
+$config['mysql_database'] = 'my_photopxl';
+$config['mysql_host']     = 'localhost';     //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
+$config['mysql_user']     = 'root';          //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
+$config['mysql_password'] = 'FRIGO A LEGNA'; //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
 
 
 
@@ -40,6 +40,12 @@ define("ASTRONOMIA", 5);
 define("STREET", 6);
 define("NATURAMORTA", 7);
 define("SPORT", 8);
+
+
+
+//----FIXED DB IDs----\\
+define("NO_ALBUM_COVER", 1);
+define("DEFAULT_PRO_PIC", 2);
 
 
 
@@ -67,15 +73,18 @@ define("PHOTOS_PER_PAGE", 16);
 define("MAX_SIZE_FULL", 16777215); //MEDIUMBLOB max size allowed
 define("MAX_SIZE_THUMB", 65535); //BLOB max size allowed
 
+
+define("FULL_WIDTH", 1600); //Lunghezza Fullsize
+define("FULL_HEIGHT", 1600); //Altezza Fullsize
 define("THUMB_WIDTH", 100); //Lunghezza miniatura
 define("THUMB_HEIGHT", 100); //Altezza miniatura
-define("FULL_WIDTH",1600);//Lunghezza Fullsize
-define("FULL_HEIGHT",1600);//Altezza Fullsize
 
 
 
 //-----Tempo di scadenza della sessione-----\\
-define("MAX_TIME_SESSION",2592000);
+define("MAX_TIME_SESSION", 2592000); //= 30 days
+
+
 
 //-----Username per pagina-----\\
 define("USER_PER_PAGE", 100);

@@ -6,10 +6,11 @@
  * and open the template in the editor.
  */
 
-namespace Foundation;
+namespace Foundation; //Both needed to avoid errors with the Autoloader
 
-use \PDO,
-    \PDOException; //Both needed to avoid errors with the Autoloader
+use PDO;
+use PDOException;
+use PDOStatement;
 
 /**
  * This class enables basic DB operations
@@ -22,15 +23,19 @@ class F_Database
      *
      * @global array $config Needed to set the connection parameters
      * @throws PDOException In case of connection errors
-     * @return PDO $connection The PDO connection to the DB
+     * @return PDO The PDO connection to the DB
      */
-    protected static function connettiti()
+    protected static function connect()
     {
         try
         {
             global $config;
             $connection = new PDO(
-                    'mysql:host='.$config['mysql_host'].'; dbname='.$config['mysql_database'], $config['mysql_user'], $config['mysql_password']);
+                    'mysql:host='.$config['mysql_host'].'; '
+                   .'dbname='.$config['mysql_database'],
+                    $config['mysql_user'],
+                    $config['mysql_password']
+                    );
 
             //Sostituzione di PDO::ERRMOD_SILENT
 //            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT); //Decommenta in Produzione
@@ -39,7 +44,7 @@ class F_Database
         }
         catch(PDOException $e)
         {
-            echo "Impossibile connettersi al database. Errore: ".$e;
+            echo "Impossibile connettersi al database.";
         }
     }
 
@@ -53,7 +58,7 @@ class F_Database
      */
     protected static function execute_Query($query, $toBind)
     {
-        $pdo = self::connettiti();
+        $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
@@ -71,7 +76,7 @@ class F_Database
      * @param array $set The values to insert
      * @return int The last inserted ID
      */
-    protected static function insert_Query($insertInto, $set)
+    public static function insert_Query($insertInto, $set)
     {
         $set_values = '';
         foreach(array_keys($set) as $key)
@@ -88,16 +93,19 @@ class F_Database
 
 
     /**
-     * Fetches the result/s of the query
+     * Fetches the results of the query
      *
      * @param string $query The query to execute
      * @param array $toBind The values to bind to the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
-     * @return array
+     * @return mixed array An associative array with a numeric keys.
+     *                     At each key corresponds another associative array with
+     *                     keys named as DB column and their values are the DB records
+     *               boolean FALSE in case $fetchAll=FALSE and no records were affected by the query
      */
-    public static function fetch_Result($query, $toBind, $fetchAll = FALSE)
+    protected static function fetch_Result($query, $toBind, $fetchAll = FALSE)
     {
-        $pdo = self::connettiti();
+        $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
         $pdo_stmt->execute();
@@ -112,14 +120,14 @@ class F_Database
 
 
     /**
-     * Returns a basic query from the given parameters
+     * Generates a basic query from the given parameters
      *
      * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in
      * @param array $where The associative array with the values to search for
      * @return string The complete query
      */
-    public static function basic_Query($select, $from, $where)
+    private static function basic_Query($select, $from, $where)
     {
         $select_columns = $select;
         if($select !== "*")
@@ -151,9 +159,10 @@ class F_Database
      * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in
      * @param array $where The associative array with the values to search for
-     * @return array The record matching the query
+     * @return mixed An array with the record matching the query
+     *               boolean FALSE in case no record matched the query
      */
-    public static function get_One($select, $from, $where)
+    protected static function get_One($select, $from, $where)
     {
         $query = self::basic_Query($select, $from, $where);
         return self::fetch_Result($query, $where);
@@ -171,6 +180,7 @@ class F_Database
      * @param string $orderBy_column The table column chosen to order the results
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
      * @return array The associative array with all the records that matched the query
+     *               An ampty array [] in case no record were affected by the query
      */
     protected static function get_All($select, $from, $where, $limit = 0, $offset = 0, $orderBy_column = '', $order_DESC = FALSE)
     {
@@ -187,7 +197,7 @@ class F_Database
 
         if($limit !== 0)
         {
-            $query .= ' LIMIT '.$limit
+            $query .=' LIMIT '.$limit
                     .' OFFSET '.$offset;
         }
         $fetchAll = TRUE;
@@ -212,7 +222,6 @@ class F_Database
             $set_values .= '`'.$key.'`=?,';
         }
 
-
         $where_clause = '';
         foreach(array_keys($where) as $key)
         {
@@ -224,7 +233,11 @@ class F_Database
                 ."SET $set_values "
                 ."WHERE $where_clause";
 
-        self::execute_Query($query, array_merge($set, $where));
+        $toBind = array_merge(array_values($set), array_values($where)); //Works
+        //even when the same key appears in both arrays
+        //F_User::change_Username() is an example
+
+        self::execute_Query($query, $toBind);
     }
 
 
@@ -237,26 +250,25 @@ class F_Database
      * @param array $toBind The values to bind at the query
      * @return int The number of affected rows
      */
-    public static function count($count, $from, $where, $toBind=[])
+    protected static function count($count, $from, $where, $toBind = [])
     {
-        $key = 'COUNT(DISTINCT `'.$count.'`)'; //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
-        $query = 'SELECT '.$key.' '
+        $query = 'SELECT COUNT(DISTINCT `'.$count.'`) AS total ' //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
                 .'FROM '.$from.' '
                 .'WHERE '.$where;
 
         $total = self::fetch_Result($query, $toBind);
-        return intval($total[$key]);
+        return intval($total["total"]);
     }
 
 
     /**
      * Binds an array of parameters to the query using Question Marks
      *
-     * @param \PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
+     * @param PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
      * @param array $toBind The array of parameters to bind
-     * @return \PDOStatement The object to execute()
+     * @return PDOStatement The object to execute()
      */
-    public static function bind_params(\PDOStatement $pdo_stmt, $toBind)
+    protected static function bind_params(PDOStatement $pdo_stmt, $toBind)
     {
         if(count($toBind) > 0)
         {

@@ -29,6 +29,22 @@ class E_User_Admin extends E_User_MOD
         parent::__construct($username, $password, $email);
         parent::set_Role(Roles::ADMIN);
     }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Changes an user's role
+     *
+     * @param string $username The user's username
+     * @param int $new_Role The user's new role
+     */
+    public static function change_role($username, $new_Role)
+    {
+        \Foundation\F_User_Admin::change_Role($username, $new_Role);
+    }
 }
 
 

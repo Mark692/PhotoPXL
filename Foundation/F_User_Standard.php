@@ -8,6 +8,10 @@
 
 namespace Foundation;
 
+use Entity\E_User_Standard;
+use Foundation\F_User;
+use Utilities\Roles;
+
 /**
  * Sets basic info for Standard users
  */
@@ -17,14 +21,15 @@ class F_User_Standard extends F_User
     /**
      * Inserts the user into "users" DB table
      *
-     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
+     * @param E_User_Standard $STD_user The new user to insert into the DB
      */
-    public static function insert(\Entity\E_User_Standard $STD_user)
+    public static function insert(E_User_Standard $STD_user)
     {
         $insertInto = "users";
+        $username = $STD_user->get_Username();
 
         $set = array(
-            "username" => $STD_user->get_Username(),
+            "username" => $username,
             "password" => $STD_user->get_Password(),
             "email" => $STD_user->get_Email(),
             "role" => $STD_user->get_Role(),
@@ -33,15 +38,18 @@ class F_User_Standard extends F_User
                 );
 
         parent::insert_Query($insertInto, $set);
+
+        //Inserts a default Profile Pic
+        self::insert_DefaultProPic($username);
     }
 
 
     /**
      * Updates the "last_Upload" and the "up_Count" of the user
      *
-     * @param \Entity\E_User_Standard $STD_user The user uploading a photo
+     * @param E_User_Standard $STD_user The user uploading a photo
      */
-    public static function update_Counters(\Entity\E_User_Standard $STD_user)
+    public static function update_Counters(E_User_Standard $STD_user)
     {
         $update = "users";
         $set = array(
@@ -53,7 +61,7 @@ class F_User_Standard extends F_User
         parent::update($update, $set, $where);
     }
 
-    
+
     /**
      * Upgrades the user's role to PRO
      *
@@ -62,9 +70,25 @@ class F_User_Standard extends F_User
     public static function becomePRO($username)
     {
         $update = "users";
-        $set = array("role" => \Utilities\Roles::PRO);
+        $set = array("role" => Roles::PRO);
         $where = array("username" => $username);
 
         parent::update($update, $set, $where);
+    }
+
+
+    /**
+     * Sets a default profile pic
+     *
+     * @param int $username The users'username to set the pic to
+     */
+    private static function insert_DefaultProPic($username)
+    {
+        $query = 'INSERT INTO `profile_pic` (`user`, `photo`, `type` ) '
+                    .'SELECT ?, `thumbnail`, `type` '
+                    .'FROM `photo` '
+                    .'WHERE `id` = '.DEFAULT_PRO_PIC.' ';
+        $toBind = array($username);
+        parent::execute_Query($query, $toBind);
     }
 }

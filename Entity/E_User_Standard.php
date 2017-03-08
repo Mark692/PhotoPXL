@@ -18,13 +18,10 @@ use Utilities\Roles;
  */
 class E_User_Standard extends E_User
 {
-    /**
-     * @type int The Date of the last uploaded photo in time() format
-     */
+    /** @type int The Date of the last uploaded photo in time() format */
     private $last_Upload;
-    /**
-     * @type int Daily counter of total uploaded photos
-     */
+
+    /** @type int Daily counter of total uploaded photos */
     private $up_Count;
 
 
@@ -58,7 +55,7 @@ class E_User_Standard extends E_User
      *
      * @param int $date The timestamp of this user's last upload
      */
-    private function set_Last_Upload($date)
+    public function set_Last_Upload($date)
     {
         $this->last_Upload = $date;
     }
@@ -76,6 +73,17 @@ class E_User_Standard extends E_User
 
 
     /**
+     * Sets the number of uploads done by the user
+     *
+     * @param int $upc The number of uploads done already
+     */
+    public function set_up_Count($upc)
+    {
+        $this->up_Count = $upc;
+    }
+
+
+    /**
      * Returns the total of Uploads done today.
      * Resets the Upload count to 0 if the date of the last upload is different from "today"'s date.
      *
@@ -84,17 +92,6 @@ class E_User_Standard extends E_User
     public function get_up_Count()
     {
         return $this->up_Count;
-    }
-
-
-    /**
-     * Sets the number of uploads done by the user
-     *
-     * @param int $upc The number of uploads done already
-     */
-    public function set_up_Count($upc)
-    {
-        $this->up_Count = $upc;
     }
 
 
@@ -128,11 +125,48 @@ class E_User_Standard extends E_User
             $this->set_Last_Upload(time());
             $this->reset_Up_Count();
         }
-        
+
         if($this->get_up_Count < UPLOAD_STD_LIMIT)
         {
             return TRUE;
         }
         return FALSE;
+    }
+
+
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Inserts the user into "users" DB table
+     *
+     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
+     */
+    public static function insert(\Entity\E_User_Standard $STD_user)
+    {
+        \Foundation\F_User_Standard::insert($STD_user);
+    }
+
+
+    /**
+     * Updates the "last_Upload" and the "up_Count" of the user
+     *
+     * @param \Entity\E_User_Standard $STD_user The user uploading a photo
+     */
+    public static function update_Counters(\Entity\E_User_Standard $STD_user)
+    {
+        \Foundation\F_User_Standard::update_Counters($STD_user);
+    }
+
+
+    /**
+     * Upgrades the user's role to PRO
+     *
+     * @param string $username The user's username
+     */
+    public static function becomePRO($username)
+    {
+        \Foundation\F_User_Standard::becomePRO($username);
     }
 }

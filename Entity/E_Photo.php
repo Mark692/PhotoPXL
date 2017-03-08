@@ -17,9 +17,10 @@ class E_Photo
     private $title;
     private $description;
     private $is_reserved;
-    private $categories; //Categorie della foto
-    private $likes;
+    private $categories = []; //Categorie della foto
     private $upload_date;
+    private $likes = [];
+    private $comments = [];
 
 
     /**
@@ -35,7 +36,7 @@ class E_Photo
      * @param array $likes The list of users that liked the photo
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $likes = [], $up_Date = 0)
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $up_Date = 0, $likes = [], $comments = [])
     {
         if($this->check_Title($title) === FALSE)
         {
@@ -50,8 +51,9 @@ class E_Photo
         $this->set_Description($desc);
         $this->set_Reserved($is_reserved);
         $this->set_Categories($cat);
-        $this->set_Likes($likes);
         $this->set_Upload_Date($up_Date);
+        $this->set_LikesList($likes);
+        $this->set_Comments($comments);
     }
 
 
@@ -235,31 +237,53 @@ class E_Photo
      *
      * @param array $total_likes The number of likes received on this photo
      */
-    public function set_Likes($total_likes)
+    public function set_LikesList($total_likes = [])
     {
         $this->likes = $total_likes;
     }
 
 
     /**
-     * Retrieves the number of likes received
+     * Retrieves the list of users that liked the photo
      *
-     * @return array The number of likes received
+     * @return array The list of users that liked the photo
      */
-    public function get_Likes()
+    public function get_LikesList()
     {
         return $this->likes;
     }
 
 
     /**
-     * Sets the number of comments for this photo
+     * Retrieves the number of likes received
      *
-     * @param int $comments The number of comments for this photo
+     * @return int The number of likes received
      */
-    public function set_Comments($comments)
+    public function get_NLikes()
     {
-        $this->total_comments = $comments;
+        return count($this->likes);
+    }
+
+
+    /**
+     * Sets the list of users that commented the photo
+     *
+     * @param array $comments The list of users that commented the photo
+     */
+    public function set_Comments($comments = [])
+    {
+        $this->comments = $comments;
+    }
+
+
+    /**
+     * Retrieves the list of users that commented the photo
+     *
+     * @return int The list of users that commented the photo
+     */
+    public function get_CommentsList()
+    {
+        return $this->comments;
     }
 
 
@@ -268,10 +292,164 @@ class E_Photo
      *
      * @return int The number of comments for this photo
      */
-    public function get_Comments()
+    public function get_NComments()
     {
-        return $this->total_comments;
+        return count($this->comments);
     }
 
 
+
+    //---ENTITY -> FOUNDATION---\\
+
+
+    /**
+     * Saves a photo object
+     *
+     * @param \Entity\E_Photo $photo The photo to save
+     * @param \Entity\E_Photo_Blob $photo_details The blob file, its size and type
+     * @param string $uploader The uploader's username
+     */
+    public static function insert(\Entity\E_Photo $photo, \Entity\E_Photo_Blob $photo_details, $uploader)
+    {
+        \Foundation\F_Photo::insert($photo, $photo_details, $uploader);
+    }
+
+
+    /**
+     * Updates a record from the "photo" table
+     *
+     * @param \Entity\E_Photo $to_Update The photo to update
+     */
+    public static function update(\Entity\E_Photo $to_Update)
+    {
+        \Foundation\F_Photo::update($to_Update);
+    }
+
+
+    /**
+     * Rethrives all the IDs and thumbnails of a user photos by passing its username
+     *
+     * @param string $username The user's username selected to get the photos from
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array The user's photos
+     */
+    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_User($username, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Rethrives the photo corresponding to the ID selected
+     *
+     * @param int $id The photo's ID
+     * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               A boolean FALSE if no photos match the query
+     */
+    public static function get_By_ID($id)
+    {
+        return \Foundation\F_Photo::get_By_ID($id);
+    }
+
+
+    /**
+     * Retrieves the IDs and thumbnails of all photos belonging to a specific album
+     *
+     * @param int $album_ID
+     * @param int $page_toView The page number to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with photo IDs and thumbnails
+     */
+    public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_Album($album_ID, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Rethrives all the photos with the selected categories
+     *
+     * @param array $cats The categories to search
+     * @param int $page_toView The number of page to view. It influences the offset
+     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @return array An array with the photos matching the categories selected.
+     */
+    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    {
+        return \Foundation\F_Photo::get_By_Categories($cats, $page_toView, $order_DESC);
+    }
+
+
+    /**
+     * Retrieves the list of all uses that liked the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return array The users that liked the selected photo
+     */
+    public static function get_DB_LikeList($photo_ID)
+    {
+        return \Foundation\F_Photo::get_LikeList($photo_ID);
+    }
+
+
+    /**
+     * Retrieves the list of all uses that commented the selected photo
+     *
+     * @param int $photo_ID The photo's ID
+     * @return array The users that commented the selected photo
+     */
+    public static function get_DB_CommentsList($photo_ID)
+    {
+        return \Foundation\F_Photo::get_CommentsList($photo_ID);
+    }
+
+
+    /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
+     */
+    public static function get_MostLiked($page_toView=1)
+    {
+        return \Foundation\F_Photo::get_MostLiked($page_toView);
+    }
+
+
+    /**
+     * Deletes a photo from the DB including its likes and comments
+     *
+     * @param int $photo_ID The photo ID to delete from the DB
+     */
+    public static function delete($photo_ID)
+    {
+        \Foundation\F_Photo::delete($photo_ID);
+    }
+
+
+    /**
+     * Deletes all photos within an album including their likes and comments
+     *
+     * @param int $album_ID The album from which we want to delete photos
+     */
+    public static function delete_ALL_fromAlbum($album_ID)
+    {
+        \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+    }
+
+
+    /**
+     * Moves a photo to another album and sets a default cover for the album if
+     * it would be empty after the move
+     *
+     * @param int $album_ID The new album ID to move to photo to
+     * @param int $photo_ID The photo to move
+     */
+    public static function move_To($album_ID, $photo_ID)
+    {
+        \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+    }
 }

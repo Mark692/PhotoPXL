@@ -13,24 +13,27 @@ require_once $path."U_Nonce.php";
 
 
 //------------------------------PROVE------------------------------//
-
 //phpinfo();
-$var = \Foundation\F_User::is_Available("allUser");
-var_dump($var);
+//$bob = new \Entity\E_Photo_Blob();
+//$percorso = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."ccc.png";
+//$bob->on_Upload($percorso);
+//
+//echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
+//
+$t = new \P\photo();
+$t->GET_MOSTLIKED();
+//$t2 = new P\user();
+//$t2->ADD_LIKE_TO();
 
-//-----------------------------FINE-PROVE--------------------------//
 
-$avvia = new \View\V_Home();
-// prove federico
-global $config;
-$array_foto = [];
-for($i=1; $i<=16; $i++)
-{
-    array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
+"
+(
+    photo.user = BINARY 'AllUser' , 1, photo.is_reserved = 0
+) ";
 
-}
-$avvia->assign('username',"testa di cazzo");
-$avvia->assign('thumbnail',array_chunk($array_foto, PHOTOS_PER_ROW));
-$avvia->display('home_default.tpl');
+
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
+echo(nl2br("\r\n"));
