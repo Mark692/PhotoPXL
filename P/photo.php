@@ -109,7 +109,7 @@ class photo extends prova
         $separa = "_____________________________________________________________________";
 
 
-        $PhotoID = array("Non Esiste" => 18, "Esiste, Pubblica" => 19, "Esiste, Privata" => 16);
+        $PhotoID = array("Non Esiste" => 18, "Esiste, Pubblica" => 19, "Esiste, Privata" => 26);
         $userWatching = array("UnAltroUtente", "AllUser");
         $B = \Utilities\Roles::BANNED;
         $S = \Utilities\Roles::STANDARD;
@@ -195,12 +195,13 @@ class photo extends prova
     {
         $separa = "_____________________________________________________________________";
         $pageToView = 1;
-        $cat = [];
-        for($i = 0; $i < 2; $i++)
-        {
-            array_push($cat, rand(1, 8));
-        }
-        $cat = array_unique($cat);
+//        $cat = [];
+//        for($i = 0; $i < 2; $i++)
+//        {
+//            array_push($cat, rand(1, 8));
+//        }
+//        $cat = array_unique($cat);
+        $cat = array(1, 2, 3, 4, 5, 6, 7, 8);
 
         $B = \Utilities\Roles::BANNED;
         $S = \Utilities\Roles::STANDARD;
@@ -327,7 +328,9 @@ class photo extends prova
 
     public function DELETE_ALL_FROMALBUM()
     {
-
+        $id = 6;
+        \Foundation\F_Photo::delete_ALL_fromAlbum($id);
+        echo("Ho eliminato TUTTE LE FOTO prese dall'album $id. Controlla in: ALBUM, LIKES, COMMENT, PHOTO");
     }
 
 

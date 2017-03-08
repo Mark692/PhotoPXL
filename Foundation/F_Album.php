@@ -11,6 +11,8 @@ namespace Foundation;
 use Entity\E_Album;
 use Foundation\F_Database;
 use Foundation\F_Photo;
+use const NO_ALBUM_COVER;
+use const PHOTOS_PER_PAGE;
 
 class F_Album extends F_Database
 {
@@ -158,7 +160,8 @@ class F_Album extends F_Database
      * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
      * @param int $id The album ID to search for
-     * @return array The \Entity\E_Album object searched, its thumbnail and its uploader
+     * @return mixed An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
+                     A boolean FALSE if no album matches the query
      */
     public static function get_By_ID($id)
     {
@@ -173,7 +176,7 @@ class F_Album extends F_Database
         $album = parent::fetch_Result($query, $toBind);
         if($album === FALSE) //Only in case no album has the given ID
         {
-            return [];
+            return FALSE;
         }
 
         //Retrieves the categories
@@ -210,15 +213,13 @@ class F_Album extends F_Database
      */
     public static function get_By_Categories($cats, $page_toView = 1, $order_DESC = FALSE)
     {
-        $where = '';
+        $where = '(';
         //Alternate $where = `category` IN ( foreach($cats as $c) );
         for($i=0; $i<count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
-        $where = substr($where, 0, -4); //Removes the " OR " at the end of the string
-
-
+        $where = substr($where, 0, -4).') '; //Removes the " OR " and adds a ') '
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
@@ -239,8 +240,6 @@ class F_Album extends F_Database
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
 
-        echo($query.nl2br("\r\n"));
-
         $fetchAll = TRUE;
         $toBind = $cats;
         $albums = parent::fetch_Result($query, $toBind, $fetchAll);
@@ -248,9 +247,8 @@ class F_Album extends F_Database
         $count = "album";
         $from = "cat_album";
         $tot = parent::count($count, $from, $where, $toBind);
-        $tot_photo = array("tot_album" => $tot);
 
-        return array_merge($albums, $tot_photo);
+        return array_merge($albums, array("tot_album" => $tot));
     }
 
 
@@ -274,17 +272,19 @@ class F_Album extends F_Database
 
         if($query_ADD!=='')
         {
-            $toBind = $to_add;
+            $toBind = array_values($to_add);
             if($query_DEL!=='')
             {
-                array_push($toBind, $to_remove);
+                foreach($to_remove as $c)
+                {
+                    array_push($toBind, $c);
+                }
             }
             parent::execute_Query($query, $toBind);
         }
         elseif($query_DEL!=='')
         {
-            echo("3 :(");
-            $toBind = $to_remove;
+            $toBind = array_values($to_remove);
             parent::execute_Query($query, $toBind);
         }
     }
@@ -353,9 +353,9 @@ class F_Album extends F_Database
         $cats_array = parent::get_All($select, $from, $where);
 
         $cats=[];
-        foreach(array_values($cats_array) as $c)
+        foreach($cats_array as $c)
         {
-            array_push($cats, intval($c));
+            array_push($cats, intval($c["category"]));
         }
         return $cats;
     }

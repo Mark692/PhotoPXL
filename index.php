@@ -21,9 +21,13 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
-//
-$t = new \P\photo();
-$t->DELETE();
+$n = array(1, 2, 3, 4, 8);
+$id = 19;
+\Foundation\F_Photo::update_Categories($n, $id);
+
+
+//$t = new \P\photo();
+//$t->GET_BY_CATEGORIES();
 
 //$t2 = new P\user();
 //$t2->ADD_LIKE_TO();
