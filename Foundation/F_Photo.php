@@ -556,10 +556,29 @@ class F_Photo extends F_Database
     {
         self::setDefaultCoverIfLastOne($photo_ID);
 
-        $update = "photo_album";
-        $set = array("album" => $album_ID);
-        $where = array("photo" => $photo_ID);
-        parent::update($update, $set, $where);
+        $query = "SELECT EXISTS"
+                ."( "
+                    ."SELECT 1 "
+                    ."FROM `photo_album` "
+                    ."WHERE `photo` = ?"
+                .")";
+
+        $toBind = array($photo_ID);
+        $exists = parent::fetch_Result($query, $toBind);
+        $key = key($exists);
+
+        $table = "photo_album";
+        if(boolval($exists[$key]) === TRUE)
+        {
+            $set = array("album" => $album_ID);
+            $where = array("photo" => $photo_ID);
+            parent::update($table, $set, $where);
+        }
+        else
+        {
+            $set = array("album" => $album_ID, "photo" => $photo_ID);
+            parent::insert_Query($table, $set);
+        }
     }
 
 

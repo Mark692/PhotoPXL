@@ -22,7 +22,7 @@ require_once $path."U_Nonce.php";
 
 
 $t = new \P\photo();
-$t->GET_BY_USER();
+$t->MOVE_TO();
 
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
