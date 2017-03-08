@@ -101,29 +101,13 @@ class F_Album extends F_Database
                     .'SELECT * '
                     .'FROM `photo` '
                     .'WHERE `id` = ?'
-                .') photo '
+                .') result '
                 .'SET '
-                    .'`cover` = photo.thumbnail '
-                    .'`type` = photo.type '
+                    .'`album_cover`.`cover` = result.thumbnail, '
+                    .'`album_cover`.`type` = result.type '
                 .'WHERE `album` = ?';
         $toBind = array($photo_ID, $album_ID);
         parent::execute_Query($query, $toBind);
-    }
-
-
-    /**
-     * Updates the album cover by uploading a new photo to be used ONLY as cover
-     *
-     * @param int $album_ID The album ID to update
-     * @param int $blob The new cover to upload for the album
-     */
-    public static function upload_NewCover($album_ID, E_Photo_Blob $blob)
-    {
-        $update = "album_cover";
-        $set = array("cover" => $blob->get_Thumbnail(),
-                     "type" => $blob->get_Type());
-        $where = array("album" => $album_ID);
-        parent::update($update, $set, $where);
     }
 
 

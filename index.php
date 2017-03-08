@@ -21,8 +21,11 @@ require_once $path."U_Nonce.php";
 //echo '<img src="data:image/png;base64,'.base64_encode( $bob->get_Thumbnail() ).'"/>';
 
 
+//
 $t = new \P\photo();
-$t->MOVE_TO();
+$t->GET_BY_ALBUM(1);
+
+
 
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));

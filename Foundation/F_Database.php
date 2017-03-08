@@ -252,17 +252,12 @@ class F_Database
      */
     protected static function count($count, $from, $where, $toBind = [])
     {
-        $key = 'COUNT(DISTINCT `'.$count.'`)'; //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
-        $query = 'SELECT '.$key.' '
+        $query = 'SELECT COUNT(DISTINCT `'.$count.'`) AS total ' //DISTINCT to avoid multiple entries. F_Photo->get_By_Categories is an example
                 .'FROM '.$from.' '
                 .'WHERE '.$where;
 
         $total = self::fetch_Result($query, $toBind);
-        if($total === FALSE)
-        {
-            return 0;
-        }
-        return intval($total[$key]);
+        return intval($total["total"]);
     }
 
 

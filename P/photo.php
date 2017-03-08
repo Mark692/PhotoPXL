@@ -146,9 +146,49 @@ class photo extends prova
     }
 
 
-    public function GET_BY_ALBUM()
+    public function GET_BY_ALBUM($album_ID)
     {
+        $separa = "_____________________________________________________________________";
+        $pageToView = 1; //Cambia la pagina per risultati diversi
 
+        $B = \Utilities\Roles::BANNED;
+        $S = \Utilities\Roles::STANDARD;
+        $P = \Utilities\Roles::PRO;
+        $M = \Utilities\Roles::MOD;
+        $A = \Utilities\Roles::ADMIN;
+        $roles = array($B, $S, $P, $M, $A);
+        $usersWatching = array("UnAltroUtente", "AllUser");
+        foreach($usersWatching as $uw)
+        {
+            echo("User watching: ".$uw);
+            echo(nl2br("\r\n"));
+            foreach($roles as $role)
+            {
+
+                $r = \Foundation\F_Photo::get_By_Album($album_ID, $uw, $role, $pageToView);
+                echo("Ruolo: ".$role.nl2br("\r\n"));
+                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
+
+                $i = 0;
+                foreach($r as $k => $thumb)
+                {
+                    if($i % (PHOTOS_PER_ROW + 1) === 0)
+                    { //va a capo ogni PHOTOS_PER_ROW foto
+                        echo(nl2br("\r\n"));
+                        $i++;
+                    }
+                    if($k !== "tot_photo")
+                    {
+                        $mime = image_type_to_mime_type($thumb["type"]);
+                        $pic = $thumb["thumbnail"];
+                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                        echo(" ".$thumb["id"]);
+                        $i++;
+                    }
+                }
+                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+            }
+        }
     }
 
 
@@ -191,16 +231,16 @@ class photo extends prova
     public function MOVE_TO()
     {
         $albums = array(1, 5, 6, 7);
-        $photos = array(16, 19, 21, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,38, 39);
-        while(count($photos)>0)
+        $photos = array(16, 19, 21, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39);
+        while(count($photos) > 0)
         {
-            $ak = rand(0, count($albums)-1);
-            $pk = rand(0, count($photos)-1);
-//            var_dump(\Foundation\F_Photo::move_To($albums[$ak], $photos[$pk]));
+            $ak = rand(0, count($albums) - 1);
+            $pk = rand(0, count($photos) - 1);
             \Foundation\F_Photo::move_To($albums[$ak], $photos[$pk]);
             echo("Foto $photos[$pk] mossa in $albums[$ak]".nl2br("\r\n"));
             unset($photos[$pk]);
-            $photos = array_values($photos);}
+            $photos = array_values($photos);
+        }
     }
 
 

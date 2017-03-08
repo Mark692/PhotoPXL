@@ -95,16 +95,11 @@ class F_User extends F_Database
                     .'FROM `users` '
                     .'WHERE `username`= BINARY ? '
                     .'LIMIT 1' //Can this speed the query up?
-                .')';
+                .') AS available';
         $toBind = array($username);
-        $pdo = parent::connect();
-        $pdo_stmt = $pdo->prepare($query);
-        parent::bind_params($pdo_stmt, $toBind);
-        $pdo_stmt->execute();
-        $pdo = NULL;
+        $exists = parent::fetch_Result($query, $toBind);
 
-        $exists = $pdo_stmt->fetch(PDO::FETCH_NUM);
-        return boolval(!$exists[0]);
+        return boolval(!$exists["available"]);
     }
 
 

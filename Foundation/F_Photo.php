@@ -204,7 +204,7 @@ class F_Photo extends F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT photo.id, photo.thumbnail '
+        $query = 'SELECT photo.id, photo.thumbnail, photo.type '
                 .'FROM `photo` '
                     .'INNER JOIN `users` '
                     .'ON photo.user=users.username '
@@ -215,7 +215,9 @@ class F_Photo extends F_Database
                     .'WHERE `album`=? ' //$album_ID
                 .') ';
 
-        $query .= self::add_ClauseNoPermission($user_Role).'ORDER BY `id` ';
+        $user_clause = self::add_ClauseNoPermission($user_Role);
+        $query .= $user_clause
+                .'ORDER BY `id` ';
         if ($order_DESC===TRUE)
         {
             $query .= 'DESC ';
@@ -223,20 +225,25 @@ class F_Photo extends F_Database
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
 
+        $toBind = array($album_ID);
+        if($user_clause !== '')
+        {
+            array_push($toBind, $user_Watching);
+        }
+
         $fetchAll = TRUE;
-        $toBind = array($album_ID, $user_Watching);
         $photos = parent::fetch_Result($query, $toBind, $fetchAll);
 
         $count = "photo";
-        $from = "photo_album";
+        $from = "`photo_album` "
+                ."INNER JOIN `photo` "
+                ."ON photo_album.photo=photo.id";
         $where = "`album`=? ";
-        $count_toBind = array($album_ID);
         if($user_Role < Roles::MOD)
         {
             $where .= self::add_ClauseNoPermission($user_Role);
-            array_push($count_toBind, $user_Watching);
         }
-        $tot = parent::count($count, $from, $where, $count_toBind);
+        $tot = parent::count($count, $from, $where, $toBind);
         $tot_photo = array("tot_photo" => $tot);
 
         return array_merge($photos, $tot_photo);
@@ -554,27 +561,18 @@ class F_Photo extends F_Database
      */
     public static function move_To($album_ID, $photo_ID)
     {
-        self::setDefaultCoverIfLastOne($photo_ID);
+        self::setDefaultCoverIfLastOne($photo_ID); //When moving a photo out of an album
 
-        $query = "SELECT EXISTS"
-                ."( "
-                    ."SELECT 1 "
-                    ."FROM `photo_album` "
-                    ."WHERE `photo` = ?"
-                .")";
-
-        $toBind = array($photo_ID);
-        $exists = parent::fetch_Result($query, $toBind);
-        $key = key($exists);
+        $has_anAlbum = self::has_anAlbum($photo_ID); //Whether the photo was already in an album
 
         $table = "photo_album";
-        if(boolval($exists[$key]) === TRUE)
+        if($has_anAlbum) //Already exists -> Update it
         {
             $set = array("album" => $album_ID);
             $where = array("photo" => $photo_ID);
             parent::update($table, $set, $where);
         }
-        else
+        else //Does not exists -> Insert it
         {
             $set = array("album" => $album_ID, "photo" => $photo_ID);
             parent::insert_Query($table, $set);
@@ -583,16 +581,40 @@ class F_Photo extends F_Database
 
 
     /**
+     * Checks whether the photo belongs to an album or not
+     *
+     * @param int $photo_ID The photo to check
+     * @return bool Whether the photo belongs to an album or not
+     */
+    private static function has_anAlbum($photo_ID)
+    {
+        $query = "SELECT EXISTS"
+                ."( "
+                    ."SELECT 1 "
+                    ."FROM `photo_album` "
+                    ."WHERE `photo` = ?"
+                .") AS photo_exists";
+
+        $toBind = array($photo_ID);
+        $exists = parent::fetch_Result($query, $toBind);
+        return boolval($exists["photo_exists"]);
+    }
+
+
+    /**
      * Sets a default album cover if this photo is the last one of its album
      *
      * @param int $photo_ID The photo to check
      */
-    private static function setDefaultCoverIfLastOne($photo_ID)
+    public static function setDefaultCoverIfLastOne($photo_ID)
     {
         $select = array("album");
         $from = "photo_album";
         $where = array("photo" => $photo_ID);
         $album_ID = parent::get_One($select, $from, $where);
+
+        var_dump($album_ID);
+
         if($album_ID !== FALSE) //if(the photo belongs to an album)
         {
             $count = "photo";
@@ -600,7 +622,7 @@ class F_Photo extends F_Database
             $count = parent::count($count, $from, $where, $album_ID);
             if($count === 1)
             {
-                F_Album::set_Cover($album_ID, NO_ALBUM_COVER);
+                F_Album::set_Cover($album_ID["album"], NO_ALBUM_COVER);
             }
         }
     }
