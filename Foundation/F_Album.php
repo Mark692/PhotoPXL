@@ -9,7 +9,6 @@
 namespace Foundation;
 
 use Entity\E_Album;
-use Entity\E_Photo_Blob;
 use Foundation\F_Database;
 use Foundation\F_Photo;
 

@@ -20,7 +20,6 @@ class photo extends prova
         $title = parent::rnd_str();
         $desc = parent::rnd_str();
         $is_reserved = rand(0, 1);
-        $i = 0;
         $cat = [];
         for($i = 0; $i < 6; $i++)
         {
@@ -194,23 +193,117 @@ class photo extends prova
 
     public function GET_BY_CATEGORIES()
     {
+        $separa = "_____________________________________________________________________";
+        $pageToView = 1;
+        $cat = [];
+        for($i = 0; $i < 2; $i++)
+        {
+            array_push($cat, rand(1, 8));
+        }
+        $cat = array_unique($cat);
 
+        $B = \Utilities\Roles::BANNED;
+        $S = \Utilities\Roles::STANDARD;
+        $P = \Utilities\Roles::PRO;
+        $M = \Utilities\Roles::MOD;
+        $A = \Utilities\Roles::ADMIN;
+        $roles = array($B, $S, $P, $M, $A);
+        $usersWatching = array("UnAltroUtente", "AllUser");
+        foreach($usersWatching as $uw)
+        {
+            echo("User watching: ".$uw);
+            echo(nl2br("\r\n"));
+            echo("categorie scelte: ");
+            foreach($cat as $c)
+            {
+                echo($c." ");
+            }
+            echo(nl2br("\r\n"));
+            foreach($roles as $role)
+            {
+
+                $r = \Foundation\F_Photo::get_By_Categories($cat, $uw, $role, $pageToView);
+                echo("Ruolo: ".$role.nl2br("\r\n"));
+                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
+
+                $i = 0;
+                foreach($r as $k => $thumb)
+                {
+                    if($i % (PHOTOS_PER_ROW + 1) === 0)
+                    { //va a capo ogni PHOTOS_PER_ROW foto
+                        echo(nl2br("\r\n"));
+                        $i++;
+                    }
+                    if($k !== "tot_photo")
+                    {
+                        $mime = image_type_to_mime_type($thumb["type"]);
+                        $pic = $thumb["thumbnail"];
+                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                        echo(" ".$thumb["id"]);
+                        $i++;
+                    }
+                }
+                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+            }
+        }
     }
 
 
     public function GET_LIKELIST()
     {
-
-    }
-
-
-    public function GET_COMMENTSLIST()
-    {
-
+        $foto = 39;
+        echo("Like per la foto ".$foto.": ");
+        var_dump(\Foundation\F_Photo::get_LikeList($foto));
     }
 
 
     public function GET_MOSTLIKED()
+    {
+        $separa = "_____________________________________________________________________";
+        $pageToView = 1;
+
+        $B = \Utilities\Roles::BANNED;
+        $S = \Utilities\Roles::STANDARD;
+        $P = \Utilities\Roles::PRO;
+        $M = \Utilities\Roles::MOD;
+        $A = \Utilities\Roles::ADMIN;
+        $roles = array($B, $S, $P, $M, $A);
+        $usersWatching = array("UnAltroUtente", "AllUser");
+        foreach($usersWatching as $uw)
+        {
+            echo("User watching: ".$uw);
+            echo(nl2br("\r\n"));
+            foreach($roles as $role)
+            {
+
+                $r = \Foundation\F_Photo::get_MostLiked($uw, $role, $pageToView);
+                echo("Ruolo: ".$role.nl2br("\r\n"));
+                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
+
+                $i = 0;
+                foreach($r as $k => $thumb)
+                {
+                    if($i % (PHOTOS_PER_ROW + 1) === 0)
+                    { //va a capo ogni PHOTOS_PER_ROW foto
+                        echo(nl2br("\r\n"));
+                        $i++;
+                    }
+                    if($k !== "tot_photo")
+                    {
+                        $mime = image_type_to_mime_type($thumb["type"]);
+                        $pic = $thumb["thumbnail"];
+                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                        echo(" ".$thumb["id"]);
+                        $i++;
+                    }
+                }
+                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+            }
+        }
+    }
+
+
+    public function GET_COMMENTSLIST()
     {
 
     }

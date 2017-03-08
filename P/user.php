@@ -265,9 +265,17 @@ class user extends \P\prova
      */
     public function ADD_LIKE_TO()
     {
-        $user = "CambiatoUsername";
-        $photo = 11;
-        \Foundation\F_User::add_Like_to($photo, $user);
+        $users = array("Ang3wIY4Qy", "N4sYKtHH84", "VK6q7yMZDU");
+
+        $photos = array(16, 25, 28, 32, 33, 39);
+
+        foreach($users as $u)
+        {
+            foreach($photos as $p)
+            {
+                \Foundation\F_User::add_Like_to($p, $u);
+            }
+        }
     }
 
 

@@ -13,7 +13,6 @@ use Entity\E_User_Banned;
 use Entity\E_User_MOD;
 use Entity\E_User_PRO;
 use Entity\E_User_Standard;
-use PDO;
 use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
 
@@ -306,13 +305,22 @@ class F_User extends F_Database
      */
     public static function add_Like_to($photo_ID, $username)
     {
-        $insertInto = "likes";
-        $set = array(
+        $query = "SELECT EXISTS"
+                ."( "
+                    ."SELECT * "
+                    ."FROM `likes` "
+                    ."WHERE `user`=? AND `photo`=? "
+                .") AS ex";
+        $toBind = array(
             "user" => $username,
             "photo" => $photo_ID
                 );
-
-        parent::insert_Query($insertInto, $set);
+        $likes_already = parent::fetch_Result($query, $toBind);
+        if(!$likes_already["ex"])
+        {
+            $insertInto = "likes";
+            parent::insert_Query($insertInto, $toBind);
+        }
     }
 
 

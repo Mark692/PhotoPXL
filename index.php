@@ -23,8 +23,15 @@ require_once $path."U_Nonce.php";
 
 //
 $t = new \P\photo();
-$t->GET_BY_ALBUM(1);
+$t->GET_MOSTLIKED();
+//$t2 = new P\user();
+//$t2->ADD_LIKE_TO();
 
+
+"
+(
+    photo.user = BINARY 'AllUser' , 1, photo.is_reserved = 0
+) ";
 
 
 echo(nl2br("\r\n"));

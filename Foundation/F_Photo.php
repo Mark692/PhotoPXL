@@ -272,7 +272,7 @@ class F_Photo extends F_Database
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
 
-        $query = 'SELECT `id`, `thumbnail` '
+        $query = 'SELECT `id`, `thumbnail`, `type` '
                 .'FROM `photo` '
                 .'WHERE `id` in ('
                     .'SELECT `photo` '
@@ -281,7 +281,8 @@ class F_Photo extends F_Database
                     .') ';
 
         $noPermissions = self::add_ClauseNoPermission($user_Role);
-        $query .= $noPermissions.'ORDER BY album.id ';
+        $query .= $noPermissions
+                .'ORDER BY photo.id ';
         if($order_DESC===TRUE)
         {
             $query .= 'DESC ';
@@ -297,7 +298,7 @@ class F_Photo extends F_Database
         }
         $photos = parent::fetch_Result($query, $toBind, $fetchAll);
 
-        $count = "cat_photo.photo";
+        $count = "photo";
         $from = "`cat_photo` INNER JOIN `photo` ON cat_photo.photo=photo.id";
         $where .= $noPermissions;
         $tot = parent::count($count, $from, $where, $toBind);
@@ -438,6 +439,48 @@ class F_Photo extends F_Database
 
 
     /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
+     */
+    public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
+    {
+        $limit = PHOTOS_PER_PAGE;
+        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
+
+        $query = 'SELECT `id`, `thumbnail`, `type` '
+                .'FROM `photo` '
+                    .'INNER JOIN `likes` '
+                    .'ON photo.id=likes.photo ';
+        $noPermissions = self::add_ClauseNoPermission($user_Role);
+        $toBind = [];
+        $where = "1";
+        if($noPermissions !== '')
+        {
+            $where = substr($noPermissions, 3); //Trims "AND"
+            $query .= "WHERE ".$where;
+            $toBind = array($user_Watching);
+        }
+        $query .='GROUP BY `photo` '
+                .'ORDER BY COUNT(*) DESC ' //From most liked to less liked
+                .'LIMIT '.$limit.' '
+                .'OFFSET '.$offset.' ';
+        $fetchAll = TRUE;
+        $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);
+
+        $count = "photo";
+        $from = "`likes` INNER JOIN `photo` ON likes.photo=photo.id";
+        $tot = parent::count($count, $from, $where, $toBind);
+        $tot_photo = array("tot_photo" => $tot);
+
+        return array_merge($mostLiked, $tot_photo);
+    }
+
+
+    /**
      * Retrieves the list of all uses that commented the selected photo
      *
      * @param int $photo_ID The photo's ID
@@ -459,58 +502,15 @@ class F_Photo extends F_Database
 
 
     /**
-     * Retrieves the most liked photos in DESCending style
-     *
-     * @param int $page_toView The page selected as offset to fetch the photos
-     * @return array An array with the IDs and Thumbnails of the most liked photos
-     *               and the number of rows affected by the query (to be used to
-     *               determine how many pages to show)
-     */
-    public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
-    {
-        $limit = PHOTOS_PER_PAGE;
-        $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
-
-        $query = 'SELECT `id`, `thumbnail` '
-                .'FROM `photo` '
-                    .'INNER JOIN `likes` '
-                    .'ON photo.id=likes.photo ';
-        $noPermissions = self::add_ClauseNoPermission($user_Role); //Trims "AND IF "
-        $toBind = [];
-        if($noPermissions !== '')
-        {
-            $query .= "WHERE ".substr($noPermissions, 6); //Trims "AND IF "
-            $toBind = array($user_Watching);
-        }
-        $query .='GROUP BY `photo` '
-                .'ORDER BY COUNT(*) DESC ' //From most liked to less liked
-                .'LIMIT '.$limit.' '
-                .'OFFSET '.$offset.' ';
-
-        $fetchAll = TRUE;
-        $mostLiked = parent::fetch_Result($query, $toBind, $fetchAll);
-
-        $count = "photo";
-        $from = "`likes` INNER JOIN `photo` ON likes.photo=photo.id";
-        if($noPermissions !== '')
-        {
-            $where = substr($noPermissions, 3); //Trims "AND"
-        }
-        $tot = parent::count($count, $from, $where, $toBind);
-        $tot_photo = array("tot_photo" => $tot);
-
-        return array_merge($mostLiked, $tot_photo);
-    }
-
-
-    /**
      * Deletes a photo from the DB including its likes and comments
      *
      * @param int $photo_ID The photo ID to delete from the DB
      */
     public static function delete($photo_ID)
     {
-        self::setDefaultCoverIfLastOne($photo_ID);
+//        self::setDefaultCoverIfLastOne($photo_ID);
+        //The user will manually update the album cover!
+        //The cover does not depend on the photos inside
 
         $query = 'DELETE FROM `likes` '
                     .'INNER JOIN `comment` '
@@ -561,7 +561,9 @@ class F_Photo extends F_Database
      */
     public static function move_To($album_ID, $photo_ID)
     {
-        self::setDefaultCoverIfLastOne($photo_ID); //When moving a photo out of an album
+//        self::setDefaultCoverIfLastOne($photo_ID); //When moving a photo out of an album
+        //The user will manually update the album cover!
+        //The cover does not depend on the photos inside
 
         $has_anAlbum = self::has_anAlbum($photo_ID); //Whether the photo was already in an album
 
@@ -606,26 +608,26 @@ class F_Photo extends F_Database
      *
      * @param int $photo_ID The photo to check
      */
-    public static function setDefaultCoverIfLastOne($photo_ID)
-    {
-        $select = array("album");
-        $from = "photo_album";
-        $where = array("photo" => $photo_ID);
-        $album_ID = parent::get_One($select, $from, $where);
-
-        var_dump($album_ID);
-
-        if($album_ID !== FALSE) //if(the photo belongs to an album)
-        {
-            $count = "photo";
-            $where = '`album` = ?';
-            $count = parent::count($count, $from, $where, $album_ID);
-            if($count === 1)
-            {
-                F_Album::set_Cover($album_ID["album"], NO_ALBUM_COVER);
-            }
-        }
-    }
+//    public static function setDefaultCoverIfLastOne($photo_ID)
+//    {
+//        $select = array("album");
+//        $from = "photo_album";
+//        $where = array("photo" => $photo_ID);
+//        $album_ID = parent::get_One($select, $from, $where);
+//
+//        var_dump($album_ID);
+//
+//        if($album_ID !== FALSE) //if(the photo belongs to an album)
+//        {
+//            $count = "photo";
+//            $where = '`album` = ?';
+//            $count = parent::count($count, $from, $where, $album_ID);
+//            if($count === 1)
+//            {
+//                F_Album::set_Cover($album_ID["album"], NO_ALBUM_COVER);
+//            }
+//        }
+//    }
 
 
     /**
