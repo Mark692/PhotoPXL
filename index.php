@@ -22,16 +22,12 @@ require_once $path."U_Nonce.php";
 
 
 //
-$t = new \P\photo();
-$t->GET_MOSTLIKED();
+//$t = new \P\comment();
+//$t->INSERT();
+
 //$t2 = new P\user();
 //$t2->ADD_LIKE_TO();
 
-
-"
-(
-    photo.user = BINARY 'AllUser' , 1, photo.is_reserved = 0
-) ";
 
 
 echo(nl2br("\r\n"));
