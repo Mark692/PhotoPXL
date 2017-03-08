@@ -164,7 +164,7 @@ class F_Photo extends F_Database
         $liked_By = self::get_LikeList($id);
 
         //Retrieves the comments
-        $commented_By = self::get_CommentsList($id);
+        $commented_By = self::get_UsernamesThatCommented($id);
 
 
         $e_photo = new E_Photo(
@@ -486,16 +486,16 @@ class F_Photo extends F_Database
      * @param int $photo_ID The photo's ID
      * @return array The users that commented the selected photo
      */
-    public static function get_CommentsList($photo_ID)
+    public static function get_UsernamesThatCommented($photo_ID)
     {
         $select = array("user");
         $from = "comment";
         $where = array("photo" => $photo_ID);
         $comments = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach(array_values($comments) as $users)
+        foreach($comments as $users)
         {
-            array_push($usernames_only, $users);
+            array_push($usernames_only, $users["user"]);
         }
         return $usernames_only;
     }
@@ -512,11 +512,7 @@ class F_Photo extends F_Database
         //The user will manually update the album cover!
         //The cover does not depend on the photos inside
 
-        $query = 'DELETE FROM `likes` '
-                    .'INNER JOIN `comment` '
-                    .'ON likes.photo = comment.photo '
-                        .'INNER JOIN `photo` '
-                        .'ON comment.photo = photo.id '
+        $query = 'DELETE FROM `photo` '
                 .'WHERE (photo.id = ?)';
 
         $toBind = array($photo_ID);

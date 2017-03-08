@@ -305,13 +305,23 @@ class photo extends prova
 
     public function GET_COMMENTSLIST()
     {
-
+        $fotos = array(16, 21, 23, 26, 27, 28, 31, 32, 33, 34);
+        foreach($fotos as $foto)
+        {
+            echo("Commenti per la foto: ".$foto);
+            echo(nl2br("\r\n"));
+            var_dump(\Foundation\F_Photo::get_UsernamesThatCommented($foto));
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
+        }
     }
 
 
     public function DELETE()
     {
-
+        $id = 16;
+        \Foundation\F_Photo::delete($id);
+        echo("Ho eliminato la foto $id. Controlla in: LIKES, COMMENT, PHOTO");
     }
 
 

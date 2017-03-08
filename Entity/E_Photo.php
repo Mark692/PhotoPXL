@@ -401,7 +401,7 @@ class E_Photo
      */
     public static function get_DB_CommentsList($photo_ID)
     {
-        return \Foundation\F_Photo::get_CommentsList($photo_ID);
+        return \Foundation\F_Photo::get_UsernamesThatCommented($photo_ID);
     }
 
 

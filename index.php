@@ -22,8 +22,8 @@ require_once $path."U_Nonce.php";
 
 
 //
-//$t = new \P\comment();
-//$t->INSERT();
+$t = new \P\photo();
+$t->DELETE();
 
 //$t2 = new P\user();
 //$t2->ADD_LIKE_TO();
