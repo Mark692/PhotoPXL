@@ -115,12 +115,12 @@ class F_Album extends F_Database
     /**
      * Rethrives the album IDs, Titles and Thumbnails of a user by passing its username.
      *
-     * @param string $username The user's username selected to get the albums from
+     * @param string $owner The user's username selected to get the albums from
      * @param int $page_toView The page number to view. It influences the offset
      * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
      */
-    public static function get_By_User($username, $page_toView = 1, $order_DESC = FALSE)
+    public static function get_By_User($owner, $page_toView = 1, $order_DESC = FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
@@ -142,17 +142,16 @@ class F_Album extends F_Database
         $query .= 'LIMIT '.$limit.' '
                  .'OFFSET '.$offset;
 
-        $toBind = array($username);
+        $toBind = array($owner);
         $fetchAll = TRUE;
         $albums = parent::fetch_Result($query, $toBind, $fetchAll);
 
         $count = "id";
         $from = "album";
-        $where = "`user`='$username'";
+        $where = "`user`='$owner'";
         $tot = parent::count($count, $from, $where);
-        $tot_photo = array("tot_album" => $tot);
 
-        return array_merge($albums, $tot_photo);
+        return array_merge($albums, array("tot_album" => $tot));
     }
 
 
