@@ -8,6 +8,8 @@
 
 namespace Foundation; //Both needed to avoid errors with the Autoloader
 
+
+use Exceptions\queries;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -22,10 +24,10 @@ class F_Database
      * Tries to connect to the DB
      *
      * @global array $config Needed to set the connection parameters
-     * @throws PDOException In case of connection errors
+     * @throws Exceptions\queries In case of connection errors
      * @return PDO The PDO connection to the DB
      */
-    protected static function connect()
+    private static function connect()
     {
         try
         {
@@ -44,7 +46,7 @@ class F_Database
         }
         catch(PDOException $e)
         {
-            echo "Impossibile connettersi al database.";
+            throw new queries(4, $e);
         }
     }
 
@@ -76,7 +78,7 @@ class F_Database
      * @param array $set The values to insert
      * @return int The last inserted ID
      */
-    public static function insert_Query($insertInto, $set)
+    protected static function insert_Query($insertInto, $set)
     {
         $set_values = '';
         foreach(array_keys($set) as $key)

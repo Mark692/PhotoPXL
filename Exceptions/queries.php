@@ -33,6 +33,10 @@ class queries extends \PDOException
                 $message = "Attenzione: trovata 'duplicate entry'!";
                 break;
 
+            case 4:
+                $message = "Impossibile connettersi al database";
+                break;
+
 
             default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }

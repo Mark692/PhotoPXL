@@ -1,0 +1,173 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE DATABASE IF NOT EXISTS `my_photopxl` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `my_photopxl`;
+
+DROP TABLE IF EXISTS `album`;
+CREATE TABLE IF NOT EXISTS `album` (
+  `id` int(11) unsigned NOT NULL,
+  `title` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creation_date` int(11) DEFAULT '0',
+  `user` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `album_cover`;
+CREATE TABLE IF NOT EXISTS `album_cover` (
+  `album` int(11) unsigned NOT NULL,
+  `cover` blob NOT NULL,
+  `type` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` enum('1','2','3','4','5','6','7','8') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `categories` (`id`) VALUES
+('1'),
+('2'),
+('3'),
+('4'),
+('5'),
+('6'),
+('7'),
+('8');
+
+DROP TABLE IF EXISTS `cat_album`;
+CREATE TABLE IF NOT EXISTS `cat_album` (
+  `album` int(11) unsigned NOT NULL,
+  `category` enum('1','2','3','4','5','6','7','8') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `cat_photo`;
+CREATE TABLE IF NOT EXISTS `cat_photo` (
+  `photo` int(11) unsigned NOT NULL,
+  `category` enum('1','2','3','4','5','6','7','8') COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int(11) unsigned NOT NULL,
+  `text` varchar(2000) COLLATE utf8_unicode_ci NOT NULL,
+  `user` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `photo` int(11) unsigned NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `likes`;
+CREATE TABLE IF NOT EXISTS `likes` (
+  `user` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `photo` int(11) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `photo`;
+CREATE TABLE IF NOT EXISTS `photo` (
+  `id` int(11) unsigned NOT NULL,
+  `title` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `upload_date` int(11) DEFAULT '0',
+  `is_reserved` tinyint(1) NOT NULL DEFAULT '0',
+  `user` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `fullsize` mediumblob NOT NULL,
+  `thumbnail` blob NOT NULL,
+  `size` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `type` tinyint(1) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `photo_album`;
+CREATE TABLE IF NOT EXISTS `photo_album` (
+  `photo` int(11) unsigned NOT NULL,
+  `album` int(11) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `profile_pic`;
+CREATE TABLE IF NOT EXISTS `profile_pic` (
+  `user` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `photo` blob NOT NULL,
+  `type` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `role` tinyint(4) NOT NULL DEFAULT '1',
+  `up_Count` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `last_Upload` int(10) unsigned NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `album`
+  ADD PRIMARY KEY (`id`), ADD KEY `user` (`user`);
+
+ALTER TABLE `album_cover`
+  ADD PRIMARY KEY (`album`);
+
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `cat_album`
+  ADD PRIMARY KEY (`category`,`album`), ADD KEY `category` (`category`), ADD KEY `album` (`album`);
+
+ALTER TABLE `cat_photo`
+  ADD PRIMARY KEY (`category`,`photo`), ADD KEY `category` (`category`), ADD KEY `photo` (`photo`);
+
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`), ADD KEY `user` (`user`), ADD KEY `photo` (`photo`);
+
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`user`,`photo`), ADD KEY `photo` (`photo`), ADD KEY `user` (`user`);
+
+ALTER TABLE `photo`
+  ADD PRIMARY KEY (`id`), ADD KEY `user` (`user`);
+
+ALTER TABLE `photo_album`
+  ADD PRIMARY KEY (`photo`,`album`), ADD UNIQUE KEY `photo_2` (`photo`), ADD KEY `photo` (`photo`), ADD KEY `album` (`album`);
+
+ALTER TABLE `profile_pic`
+  ADD PRIMARY KEY (`user`);
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`username`), ADD KEY `role` (`role`);
+
+ALTER TABLE `album`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `photo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `album`
+ADD CONSTRAINT `album_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `album_cover`
+ADD CONSTRAINT `album_cover_ibfk_1` FOREIGN KEY (`album`) REFERENCES `album` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `cat_album`
+ADD CONSTRAINT `cat_album_ibfk_1` FOREIGN KEY (`category`) REFERENCES `categories` (`id`),
+ADD CONSTRAINT `cat_album_ibfk_2` FOREIGN KEY (`album`) REFERENCES `album` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `cat_photo`
+ADD CONSTRAINT `cat_photo_ibfk_1` FOREIGN KEY (`category`) REFERENCES `categories` (`id`),
+ADD CONSTRAINT `cat_photo_ibfk_2` FOREIGN KEY (`photo`) REFERENCES `photo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `comment`
+ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`photo`) REFERENCES `photo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `likes`
+ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`photo`) REFERENCES `photo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `photo`
+ADD CONSTRAINT `photo_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `photo_album`
+ADD CONSTRAINT `photo_album_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `photo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `photo_album_ibfk_2` FOREIGN KEY (`album`) REFERENCES `album` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `profile_pic`
+ADD CONSTRAINT `profile_pic_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
