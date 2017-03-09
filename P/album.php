@@ -51,7 +51,7 @@ class album extends prova
     PUBLIC FUNCTION SET_COVER($id)
     {
         $photos = array(1, 2, 19, 26, 32, 33, 34);
-        $k = rand(0, count($photos)-1);
+        $k = rand(0, count($photos) - 1);
         \Foundation\F_Album::set_Cover($id, $photos[$k]);
 //        \Foundation\F_Album::set_Cover($id, 32);
         echo("Foto scelta: ".$photos[$k]);
@@ -60,13 +60,38 @@ class album extends prova
 
     public function GET_BY_USER()
     {
-        $uploader = "AllUser";
+        $uploaders = array("AllUser", "ABn3ftfzT8");
         $pageToView = 1; //Cambia la pagina per risultati diversi
 
+        foreach($uploaders as $uploader)
+        {
             echo("Uploader: ".$uploader);
             echo(nl2br("\r\n"));
-                $this->Guarda_Risultati___($uploader, $pageToView, TRUE);
 
+            $separa = "_____________________________________________________________________";
+
+            $r = \Foundation\F_Album::get_By_User($uploader, $pageToView);
+            echo("Risultati totali per la ricerca fatta: ".$r["tot_album"].nl2br("\r\n"));
+
+            $i = 0;
+            foreach($r as $k => $thumb)
+            {
+                if($i % (PHOTOS_PER_ROW + 1) === 0)
+                { //va a capo ogni PHOTOS_PER_ROW foto
+                    echo(nl2br("\r\n"));
+                    $i++;
+                }
+                if($k !== "tot_album")
+                {
+                    $mime = image_type_to_mime_type($thumb["type"]);
+                    $pic = $thumb["cover"];
+                    echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                    echo(" ".$thumb["id"]);
+                    $i++;
+                }
+            }
+            echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        }
     }
 
 
@@ -74,85 +99,23 @@ class album extends prova
     {
         $separa = "_____________________________________________________________________";
 
+        $albums = array("Non Esiste" => 1, "Esiste, di AllUser" => 7, "Esiste, di ABn3ftfzT8" => 8);
 
-        $PhotoID = array("Non Esiste" => 18, "Esiste, Pubblica" => 19, "Esiste, Privata" => 26);
-        $userWatching = array("UnAltroUtente", "AllUser");
-        $B = \Utilities\Roles::BANNED;
-        $S = \Utilities\Roles::STANDARD;
-        $P = \Utilities\Roles::PRO;
-        $M = \Utilities\Roles::MOD;
-        $A = \Utilities\Roles::ADMIN;
-        $roles = array($B, $S, $P, $M, $A);
-
-        foreach($userWatching as $uw)
+        foreach($albums as $k => $val)
         {
-            echo("Uploader: AllUser");
-            echo(nl2br("\r\n"));
-            echo("User watching: ".$uw);
-            echo(nl2br("\r\n"));
-            foreach($PhotoID as $k => $PID)
+            echo("ID: ".$val." Questo album: ".$k.nl2br("\r\n"));
+            $r = \Foundation\F_Album::get_By_ID($val);
+
+            if($r !== FALSE)
             {
-                foreach($roles as $role)
-                {
-
-                    echo("ID: ".$PID." Questa foto: ".$k.nl2br("\r\n"));
-                    $r = \Foundation\F_Photo::get_By_ID($PID, $uw, $role);
-                    echo("Ruolo: ".$role.nl2br("\r\n"));
-                    if($r !== FALSE)
-                    {
-                        $mime = image_type_to_mime_type($r["type"]);
-                        $pic = $r["fullsize"];
-                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                    }
-                    echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-                }
+                echo("Trovato l'album: ");
+                var_dump($r["album"]);
+                echo(nl2br("\r\n"));
+                $mime = image_type_to_mime_type($r["type"]);
+                $pic = $r["cover"];
+                echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
             }
-        }
-    }
-
-
-    public function GET_BY_ALBUM($album_ID)
-    {
-        $separa = "_____________________________________________________________________";
-        $pageToView = 1; //Cambia la pagina per risultati diversi
-
-        $B = \Utilities\Roles::BANNED;
-        $S = \Utilities\Roles::STANDARD;
-        $P = \Utilities\Roles::PRO;
-        $M = \Utilities\Roles::MOD;
-        $A = \Utilities\Roles::ADMIN;
-        $roles = array($B, $S, $P, $M, $A);
-        $usersWatching = array("UnAltroUtente", "AllUser");
-        foreach($usersWatching as $uw)
-        {
-            echo("User watching: ".$uw);
-            echo(nl2br("\r\n"));
-            foreach($roles as $role)
-            {
-
-                $r = \Foundation\F_Photo::get_By_Album($album_ID, $uw, $role, $pageToView);
-                echo("Ruolo: ".$role.nl2br("\r\n"));
-                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
-
-                $i = 0;
-                foreach($r as $k => $thumb)
-                {
-                    if($i % (PHOTOS_PER_ROW + 1) === 0)
-                    { //va a capo ogni PHOTOS_PER_ROW foto
-                        echo(nl2br("\r\n"));
-                        $i++;
-                    }
-                    if($k !== "tot_photo")
-                    {
-                        $mime = image_type_to_mime_type($thumb["type"]);
-                        $pic = $thumb["thumbnail"];
-                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                        echo(" ".$thumb["id"]);
-                        $i++;
-                    }
-                }
-                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-            }
+            echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
         }
     }
 
@@ -169,187 +132,19 @@ class album extends prova
 //        $cat = array_unique($cat);
         $cat = array(1, 2, 3, 4, 5, 6, 7, 8);
 
-        $B = \Utilities\Roles::BANNED;
-        $S = \Utilities\Roles::STANDARD;
-        $P = \Utilities\Roles::PRO;
-        $M = \Utilities\Roles::MOD;
-        $A = \Utilities\Roles::ADMIN;
-        $roles = array($B, $S, $P, $M, $A);
-        $usersWatching = array("UnAltroUtente", "AllUser");
-        foreach($usersWatching as $uw)
+        echo(nl2br("\r\n"));
+        echo("Categorie scelte: ");
+        foreach($cat as $c)
         {
-            echo("User watching: ".$uw);
-            echo(nl2br("\r\n"));
-            echo("categorie scelte: ");
-            foreach($cat as $c)
-            {
-                echo($c." ");
-            }
-            echo(nl2br("\r\n"));
-            foreach($roles as $role)
-            {
-
-                $r = \Foundation\F_Photo::get_By_Categories($cat, $uw, $role, $pageToView);
-                echo("Ruolo: ".$role.nl2br("\r\n"));
-                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
-
-                $i = 0;
-                foreach($r as $k => $thumb)
-                {
-                    if($i % (PHOTOS_PER_ROW + 1) === 0)
-                    { //va a capo ogni PHOTOS_PER_ROW foto
-                        echo(nl2br("\r\n"));
-                        $i++;
-                    }
-                    if($k !== "tot_photo")
-                    {
-                        $mime = image_type_to_mime_type($thumb["type"]);
-                        $pic = $thumb["thumbnail"];
-                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                        echo(" ".$thumb["id"]);
-                        $i++;
-                    }
-                }
-                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-            }
+            echo($c." ");
         }
-    }
-
-
-    public function GET_LIKELIST()
-    {
-        $foto = 39;
-        echo("Like per la foto ".$foto.": ");
-        var_dump(\Foundation\F_Photo::get_LikeList($foto));
-    }
-
-
-    public function GET_MOSTLIKED()
-    {
-        $separa = "_____________________________________________________________________";
-        $pageToView = 1;
-
-        $B = \Utilities\Roles::BANNED;
-        $S = \Utilities\Roles::STANDARD;
-        $P = \Utilities\Roles::PRO;
-        $M = \Utilities\Roles::MOD;
-        $A = \Utilities\Roles::ADMIN;
-        $roles = array($B, $S, $P, $M, $A);
-        $usersWatching = array("UnAltroUtente", "AllUser");
-        foreach($usersWatching as $uw)
-        {
-            echo("User watching: ".$uw);
-            echo(nl2br("\r\n"));
-            foreach($roles as $role)
-            {
-
-                $r = \Foundation\F_Photo::get_MostLiked($uw, $role, $pageToView);
-                echo("Ruolo: ".$role.nl2br("\r\n"));
-                echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
-
-                $i = 0;
-                foreach($r as $k => $thumb)
-                {
-                    if($i % (PHOTOS_PER_ROW + 1) === 0)
-                    { //va a capo ogni PHOTOS_PER_ROW foto
-                        echo(nl2br("\r\n"));
-                        $i++;
-                    }
-                    if($k !== "tot_photo")
-                    {
-                        $mime = image_type_to_mime_type($thumb["type"]);
-                        $pic = $thumb["thumbnail"];
-                        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                        echo(" ".$thumb["id"]);
-                        $i++;
-                    }
-                }
-                echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-            }
-        }
-    }
-
-
-    public function GET_COMMENTSLIST()
-    {
-        $fotos = array(16, 21, 23, 26, 27, 28, 31, 32, 33, 34);
-        foreach($fotos as $foto)
-        {
-            echo("Commenti per la foto: ".$foto);
-            echo(nl2br("\r\n"));
-            var_dump(\Foundation\F_Photo::get_UsernamesThatCommented($foto));
-            echo(nl2br("\r\n"));
-            echo(nl2br("\r\n"));
-        }
-    }
-
-
-    public function DELETE()
-    {
-        $id = 16;
-        \Foundation\F_Photo::delete($id);
-        echo("Ho eliminato la foto $id. Controlla in: LIKES, COMMENT, PHOTO");
-    }
-
-
-    public function DELETE_ALL_FROMALBUM()
-    {
-        $id = 6;
-        \Foundation\F_Photo::delete_ALL_fromAlbum($id);
-        echo("Ho eliminato TUTTE LE FOTO prese dall'album $id. Controlla in: ALBUM, LIKES, COMMENT, PHOTO");
-    }
-
-
-    public function MOVE_TO()
-    {
-        $albums = array(1, 5, 6, 7);
-        $photos = array(16, 19, 21, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39);
-        while(count($photos) > 0)
-        {
-            $ak = rand(0, count($albums) - 1);
-            $pk = rand(0, count($photos) - 1);
-            \Foundation\F_Photo::move_To($albums[$ak], $photos[$pk]);
-            echo("Foto $photos[$pk] mossa in $albums[$ak]".nl2br("\r\n"));
-            unset($photos[$pk]);
-            $photos = array_values($photos);
-        }
-    }
-
-
-    PRIVATE FUNCTION Guarda_Risultati___($uploader, $pageToView, $orderDESC = FALSE)
-    {
-        $separa = "_____________________________________________________________________";
-
-        $r = \Foundation\F_Album::get_By_User($uploader, $pageToView, $orderDESC);
+        echo(nl2br("\r\n"));
+        $r = \Foundation\F_Album::get_By_Categories($cat, $pageToView);
         echo("Risultati totali per la ricerca fatta: ".$r["tot_album"].nl2br("\r\n"));
-
-//            var_dump($r);
-
-
 
         $i = 0;
         foreach($r as $k => $thumb)
-        {echo(nl2br("\r\n"));
-            echo("Chiave: ");
-            print_r($k);
-            echo(nl2br("\r\n"));echo(nl2br("\r\n"));echo(nl2br("\r\n"));
-            echo("Valori: ");
-            print_r($thumb);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        {
             if($i % (PHOTOS_PER_ROW + 1) === 0)
             { //va a capo ogni PHOTOS_PER_ROW foto
                 echo(nl2br("\r\n"));
@@ -357,14 +152,32 @@ class album extends prova
             }
             if($k !== "tot_album")
             {
-                $mime = image_type_to_mime_type($k["type"]);
-                $pic = $k["cover"];
+                $mime = image_type_to_mime_type($thumb["type"]);
+                $pic = $thumb["cover"];
                 echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                echo(" ".$k["id"]);
+                echo(" ".$thumb["id"].": ".$thumb["title"]." ");
                 $i++;
             }
         }
         echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+    }
+
+
+    public function DELETE()
+    {
+        $id = 5;
+        \Foundation\F_Album::delete($id);
+        echo("Ho eliminato l'album $id. Controlla in: ALBUM, PHOTO_ALBUM.".nl2br("\r\n"));
+        echo("Verifica che le sue foto associate vengano preservate in PHOTO");
+    }
+
+
+    public function DELETE_ALBUM_AND_PHOTOS()
+    {
+        $id = 7;
+        \Foundation\F_Album::delete_Album_AND_Photos($id);
+        echo("Ho eliminato l'album $id e tutte le sue foto. Controlla in:".nl2br("\r\n"));
+        echo("- ALBUM".nl2br("\r\n")."- PHOTO_ALBUM".nl2br("\r\n")."- LIKES".nl2br("\r\n")."-  COMMENT".nl2br("\r\n")."- PHOTO".nl2br("\r\n")."- CAT_ALBUM".nl2br("\r\n")."- CAT_PHOTO");
     }
 
 }

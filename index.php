@@ -22,7 +22,7 @@ require_once $path."U_Nonce.php";
 
 
 $t = new \P\album();
-$t->GET_BY_USER();
+$t->DELETE_ALBUM_AND_PHOTOS();
 
 //$t2 = new P\user();
 //$t2->ADD_LIKE_TO();

@@ -165,7 +165,7 @@ class F_Album extends F_Database
     public static function get_By_ID($id)
     {
         //Retrieves album details and its Thumbnail
-        $query = 'SELECT album.id, album.title, album.description, album.creation_date, album.user, album_cover.cover, album_cover.type '
+        $query = 'SELECT album.title, album.description, album.creation_date, album.user, album_cover.cover, album_cover.type '
                 .'FROM `album` '
                     .'INNER JOIN `album_cover` '
                     .'ON album.id=album_cover.album '
@@ -173,18 +173,14 @@ class F_Album extends F_Database
 
         $toBind = array($id);
         $album = parent::fetch_Result($query, $toBind);
+
         if($album === FALSE) //Only in case no album has the given ID
         {
             return FALSE;
         }
 
         //Retrieves the categories
-        $array_categories = self::get_Categories($id);
-        $cats = [];
-        foreach(array_values($array_categories) as $c)
-        {
-            array_push($cats, intval($c));
-        }
+        $cats = self::get_Categories($id);
 
         $e_album = new E_Album(
                 $album["title"],
@@ -197,6 +193,7 @@ class F_Album extends F_Database
         return array(
             "album" => $e_album,
             "cover" => $album["cover"],
+            "type" => $album["type"],
             "username" => $album["user"]
             );
     }
