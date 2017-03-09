@@ -329,14 +329,16 @@ class E_Photo
     /**
      * Rethrives all the IDs and thumbnails of a user photos by passing its username
      *
-     * @param string $username The user's username selected to get the photos from
+     * @param string $uploader The user's username selected to get the photos from
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The watching user's role
      * @param int $page_toView The page number to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's photos
      */
-    public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_User($username, $page_toView, $order_DESC);
+        return \Foundation\F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -344,26 +346,32 @@ class E_Photo
      * Rethrives the photo corresponding to the ID selected
      *
      * @param int $id The photo's ID
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
-     *               A boolean FALSE if no photos match the query
+     *               A boolean FALSE if no photo matches the query
      */
-    public static function get_By_ID($id)
+    public static function get_By_ID($id, $user_Watching, $user_Role)
     {
-        return \Foundation\F_Photo::get_By_ID($id);
+        return \Foundation\F_Photo::get_By_ID($id, $user_Watching, $user_Role);
     }
 
 
     /**
-     * Retrieves the IDs and thumbnails of all photos belonging to a specific album
+     * Retrieves the IDs and thumbnails of the photos belonging to a specific album.
+     * The fetched photos are always the public ones but can also be the private
+     * ones if the user watching is the Uploader or a MOD/Admin
      *
-     * @param int $album_ID
+     * @param int $album_ID The album ID of which get the photos from
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with photo IDs and thumbnails
      */
-    public static function get_By_Album($album_ID, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_Album($album_ID, $page_toView, $order_DESC);
+        return \Foundation\F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -371,13 +379,15 @@ class E_Photo
      * Rethrives all the photos with the selected categories
      *
      * @param array $cats The categories to search
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
      * @param int $page_toView The number of page to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_Categories($cats, $page_toView, $order_DESC);
+        return \Foundation\F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -394,6 +404,20 @@ class E_Photo
 
 
     /**
+     * Retrieves the most liked photos in DESCending style
+     *
+     * @param int $page_toView The page selected as offset to fetch the photos
+     * @return array An array with the IDs and Thumbnails of the most liked photos
+     *               and the number of rows affected by the query (to be used to
+     *               determine how many pages to show)
+     */
+    public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
+    {
+        return \Foundation\F_Photo::get_MostLiked($user_Watching, $user_Role, $page_toView);
+    }
+
+
+    /**
      * Retrieves the list of all uses that commented the selected photo
      *
      * @param int $photo_ID The photo's ID
@@ -402,20 +426,6 @@ class E_Photo
     public static function get_DB_CommentsList($photo_ID)
     {
         return \Foundation\F_Photo::get_UsernamesThatCommented($photo_ID);
-    }
-
-
-    /**
-     * Retrieves the most liked photos in DESCending style
-     *
-     * @param int $page_toView The page selected as offset to fetch the photos
-     * @return array An array with the IDs and Thumbnails of the most liked photos
-     *               and the number of rows affected by the query (to be used to
-     *               determine how many pages to show)
-     */
-    public static function get_MostLiked($page_toView=1)
-    {
-        return \Foundation\F_Photo::get_MostLiked($page_toView);
     }
 
 

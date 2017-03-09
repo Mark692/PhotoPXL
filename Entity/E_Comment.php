@@ -8,6 +8,10 @@
 
 namespace Entity;
 
+use Exceptions\input_texts;
+use Foundation\F_Comment;
+use const MAX_COMMENT_CHARS;
+
 /**
  * This class represents the comments that users can write on photos
  */
@@ -32,7 +36,7 @@ class E_Comment
         if(trim($text) == ''
             && ($this->check_Text($text) === FALSE))
         {
-            throw new \Exceptions\input_texts(3, $text);
+            throw new input_texts(3, $text);
         }
         $this->set_Text($text);
         $this->set_User($user_ID);
@@ -151,11 +155,11 @@ class E_Comment
     /**
      * Saves a comment in the DB
      *
-     * @param \Entity\E_Comment $comment The comment to save
+     * @param E_Comment $comment The comment to save
      */
-    public static function insert(\Entity\E_Comment $comment)
+    public static function insert(E_Comment $comment)
     {
-        \Foundation\F_Comment::insert($comment);
+        F_Comment::insert($comment);
     }
 
 
@@ -165,11 +169,24 @@ class E_Comment
      * the latest one.
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The comments made for the photo
      */
-    public static function get_By_Photo($photo_ID)
+    public static function get_By_Photo($photo_ID, $order_DESC = FALSE)
     {
-        return \Foundation\F_Comment::get_By_Photo($photo_ID);
+        return F_Comment::get_By_Photo($photo_ID, $order_DESC);
+    }
+
+
+    /**
+     * Updates the text of a comment.
+     * NOTE that you need to set the comment's ID to get this work!
+     *
+     * @param E_Comment $comment The new comment to store in the DB
+     */
+    public static function update(E_Comment $comment)
+    {
+        F_Comment::update($comment);
     }
 
 
@@ -180,6 +197,6 @@ class E_Comment
      */
     public static function remove($comment_ID)
     {
-        \Foundation\F_Comment::remove($comment_ID);
+        F_Comment::remove($comment_ID);
     }
 }

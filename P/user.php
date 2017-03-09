@@ -141,7 +141,7 @@ class user extends \P\prova
     public function CHANGE_DETAILS($change_Function)
     {
         $new_Username2Save = "CambiatoUsername"; //NUOVO USERNAME!!!
-        $old = "we"; //QUELLO SALVATO NEL DB!!!!
+        $old = "AllUser"; //QUELLO SALVATO NEL DB!!!!
 
         $password = "tanto viene hashata...";
         $email = "update@pro.va";

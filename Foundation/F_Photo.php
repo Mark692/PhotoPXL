@@ -83,7 +83,7 @@ class F_Photo extends F_Database
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The watching user's role
      * @param int $page_toView The page number to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's photos
      */
     public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
@@ -186,7 +186,7 @@ class F_Photo extends F_Database
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with photo IDs and thumbnails
      */
     public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
@@ -247,7 +247,7 @@ class F_Photo extends F_Database
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
      * @param int $page_toView The number of page to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
     public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)

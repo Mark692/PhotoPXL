@@ -15,6 +15,7 @@ use Entity\E_User_PRO;
 use Entity\E_User_Standard;
 use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
+use const USER_PER_PAGE;
 
 class F_User extends F_Database
 {
@@ -165,27 +166,6 @@ class F_User extends F_Database
 
 
     /**
-     * Updates a record from the "users" table
-     *
-     * @param \Entity\E_User_* $to_Update The entity user with new details
-     * @param string $old_Username The DB username record to refer to
-     */
-    public static function update_Profile($to_Update, $old_Username)
-    {
-        $update = "users";
-        $set = array(
-//            "username" => $to_Update->get_Username(),
-            "password" => $to_Update->get_Password(),
-            "email" => $to_Update->get_Email(),
-            "role" => $to_Update->get_Role()
-                );
-        $where = array("username" => $old_Username);
-
-        parent::update($update, $set, $where);
-    }
-
-
-    /**
      * Changes the user's Username
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details
@@ -257,8 +237,8 @@ class F_User extends F_Database
     /**
      * Updates the profile pic by uploading a new photo to be used ONLY as ProPic
      *
-     * @param int $username The user to update
-     * @param int $blob The new profile pic to upload for the user
+     * @param string $username The user's username to update
+     * @param E_Photo_Blob $blob The new profile pic to upload for the user
      */
     public static function upload_NewCover($username, E_Photo_Blob $blob)
     {

@@ -35,9 +35,20 @@ class E_User_Banned extends E_User
 
 
     /**
+     * Negates the user to login in the app
+     *
+     * @return boolean FALSE
+     */
+    public function canLogin()
+    {
+        return FALSE;
+    }
+
+
+    /**
      * Negates the user to upload any photo
      *
-     * @return boolean FALSE 
+     * @return boolean FALSE
      */
     public function canUpload()
     {

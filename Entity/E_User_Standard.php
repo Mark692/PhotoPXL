@@ -8,7 +8,9 @@
 
 namespace Entity;
 
+use Foundation\F_User_Standard;
 use Utilities\Roles;
+use const UPLOAD_STD_LIMIT;
 
 /**
  * This class represents a Standard User which has some limitation in its functions.
@@ -141,22 +143,22 @@ class E_User_Standard extends E_User
     /**
      * Inserts the user into "users" DB table
      *
-     * @param \Entity\E_User_Standard $STD_user The new user to insert into the DB
+     * @param E_User_Standard $STD_user The new user to insert into the DB
      */
-    public static function insert(\Entity\E_User_Standard $STD_user)
+    public static function insert(E_User_Standard $STD_user)
     {
-        \Foundation\F_User_Standard::insert($STD_user);
+        F_User_Standard::insert($STD_user);
     }
 
 
     /**
      * Updates the "last_Upload" and the "up_Count" of the user
      *
-     * @param \Entity\E_User_Standard $STD_user The user uploading a photo
+     * @param E_User_Standard $STD_user The user uploading a photo
      */
-    public static function update_Counters(\Entity\E_User_Standard $STD_user)
+    public static function update_Counters(E_User_Standard $STD_user)
     {
-        \Foundation\F_User_Standard::update_Counters($STD_user);
+        F_User_Standard::update_Counters($STD_user);
     }
 
 
@@ -167,6 +169,6 @@ class E_User_Standard extends E_User
      */
     public static function becomePRO($username)
     {
-        \Foundation\F_User_Standard::becomePRO($username);
+        F_User_Standard::becomePRO($username);
     }
 }

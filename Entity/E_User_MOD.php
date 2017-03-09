@@ -8,6 +8,7 @@
 
 namespace Entity;
 
+use Foundation\F_User_MOD;
 use Utilities\Roles;
 
 /**
@@ -42,9 +43,9 @@ class E_User_MOD extends E_User_PRO
      * @param int $limit_PerPage The maximum number of records to show
      * @return array All the usernames that match the query and the total usernames stored in the DB
      */
-    public static function get_UsersList($pageToView, $starts_With = '', $limit_PerPage = 100)
+    public static function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 100)
     {
-        return \Foundation\F_User_MOD::get_UsersList($pageToView, $starts_With, $limit_PerPage);
+        return F_User_MOD::get_UsersList($pageToView, $starts_With, $limit_PerPage);
     }
 
 
@@ -55,6 +56,6 @@ class E_User_MOD extends E_User_PRO
      */
     public static function ban($username)
     {
-        \Foundation\F_User_MOD::ban($username);
+        F_User_MOD::ban($username);
     }
 }

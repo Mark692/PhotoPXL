@@ -42,7 +42,7 @@ class F_Comment extends F_Database
      * the latest one.
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The comments made for the photo
      */
     public static function get_By_Photo($photo_ID, $order_DESC = FALSE)
@@ -59,6 +59,7 @@ class F_Comment extends F_Database
 
     /**
      * Updates the text of a comment
+     * NOTE that you need to set the comment's ID to get this work!
      *
      * @param E_Comment $comment The new comment to store in the DB
      */

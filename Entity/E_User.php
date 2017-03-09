@@ -8,6 +8,11 @@
 
 namespace Entity;
 
+use Exceptions\input_texts;
+use Foundation\F_User;
+use const MAX_USERNAME_CHARS;
+use const MIN_USERNAME_CHARS;
+
 /**
  * This class implements basic User functions related to login credentials
  * Also it implements functions about Users Roles to be used in children implementations
@@ -33,14 +38,14 @@ class E_User
     {
         if($this->check_Username($username) === FALSE)
         {
-            throw new \Exceptions\input_texts(0, $username);
+            throw new input_texts(0, $username);
         }
         $this->set_Username($username);
         $this->set_Password($password);
 
-        if($this->check_Email($email) === FALSE)
+        if($email !== '' && $this->check_Email($email) === FALSE)
         {
-            throw new \Exceptions\input_texts(1, $email);
+            throw new input_texts(1, $email);
         }
         $this->set_Email($email);
     }
@@ -180,6 +185,17 @@ class E_User
     }
 
 
+    /**
+     * Permits the user to login in the app
+     *
+     * @return boolean TRUE
+     */
+    public function canLogin()
+    {
+        return TRUE;
+    }
+
+
     //---ENTITY -> FOUNDATION---\\
 
 
@@ -193,7 +209,7 @@ class E_User
      */
     public static function get_UserDetails($username)
     {
-        return \Foundation\F_User::get_UserDetails($username);
+        return F_User::get_UserDetails($username);
     }
 
 
@@ -205,7 +221,7 @@ class E_User
      */
     public static function is_Available($username)
     {
-        return \Foundation\F_User::is_Available($username);
+        return F_User::is_Available($username);
     }
 
 
@@ -218,7 +234,7 @@ class E_User
      */
     public static function get_LoginInfo($username)
     {
-        return \Foundation\F_User::get_LoginInfo($username);
+        return F_User::get_LoginInfo($username);
     }
 
 
@@ -231,7 +247,7 @@ class E_User
      */
     public static function get_DB_Role($username)
     {
-        return \Foundation\F_User::get_Role($username);
+        return F_User::get_Role($username);
     }
 
 
@@ -241,37 +257,67 @@ class E_User
      * @param int $role The role to search the users for
      * @return array All the users (usernames only) with the specified role
      */
-    public static function get_By_Role($role)
+    public static function get_By_Role($role, $page_toView = 1)
     {
-        return \Foundation\F_User::get_By_Role($role);
+        return F_User::get_By_Role($role, $page_toView);
     }
 
 
-    //RIMOSSA public static function update_Profile($to_Update, $old_Username)
-    //AGGIUNGI I NUOVI METODI
+    /**
+     * Changes the user's Username
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     * @param string $old The old username, stored in the DB
+     */
+    public static function change_Username($new_EUser, $old)
+    {
+        F_User::change_Username($new_EUser, $old);
+    }
 
 
     /**
-     * Sets a profile pic for the user
+     * Changes the user's password
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     */
+    public static function change_Password($new_EUser)
+    {
+        F_User::change_Password($new_EUser);
+    }
+
+
+    /**
+     * Changes an user's email
+     *
+     * @param \Entity\E_User_* $new_EUser The entity user with new details
+     */
+    public static function change_Email($new_EUser)
+    {
+        F_User::change_Email($new_EUser);
+    }
+
+
+    /**
+     * Updates the profile pic with an existing photo
      *
      * @param string $username The user's username
      * @param int $photo_ID The photo ID to save as profile pic
      */
     public static function set_ProfilePic($username, $photo_ID)
     {
-        \Foundation\F_User::set_ProfilePic($username, $photo_ID);
+        F_User::set_ProfilePic($username, $photo_ID);
     }
 
 
     /**
      * Updates the profile pic by uploading a new photo to be used ONLY as ProPic
      *
-     * @param int $username The user to update
-     * @param int $blob The new profile pic to upload for the user
+     * @param string $username The user's username to update
+     * @param E_Photo_Blob $blob The new profile pic to upload for the user
      */
-    public static function upload_NewCover($username, \Entity\E_Photo_Blob $blob)
+    public static function upload_NewCover($username, E_Photo_Blob $blob)
     {
-        \Foundation\F_User::upload_NewCover($username, $blob);
+        F_User::upload_NewCover($username, $blob);
     }
 
 
@@ -279,11 +325,11 @@ class E_User
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return image The profile pic, thumbnail style, and its type
+     * @return array The profile pic, thumbnail style, and its type
      */
     public static function get_ProfilePic($username)
     {
-        return \Foundation\F_User::get_ProfilePic($username);
+        return F_User::get_ProfilePic($username);
     }
 
 
@@ -294,7 +340,7 @@ class E_User
      */
     public static function remove_CurrentProPic($username)
     {
-        \Foundation\F_User::remove_CurrentProPic($username);
+        F_User::remove_CurrentProPic($username);
     }
 
 
@@ -306,7 +352,7 @@ class E_User
      */
     public static function add_Like_to($photo_ID, $username)
     {
-        \Foundation\F_User::add_Like_to($photo_ID, $username);
+        F_User::add_Like_to($photo_ID, $username);
     }
 
 
@@ -318,6 +364,6 @@ class E_User
      */
     public static function remove_Like($username, $photo_ID)
     {
-        \Foundation\F_User::remove_Like($username, $photo_ID);
+        F_User::remove_Like($username, $photo_ID);
     }
 }

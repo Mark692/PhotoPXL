@@ -8,7 +8,6 @@
 
 namespace Foundation; //Both needed to avoid errors with the Autoloader
 
-
 use Exceptions\queries;
 use PDO;
 use PDOException;
@@ -24,7 +23,7 @@ class F_Database
      * Tries to connect to the DB
      *
      * @global array $config Needed to set the connection parameters
-     * @throws Exceptions\queries In case of connection errors
+     * @throws queries In case of connection errors
      * @return PDO The PDO connection to the DB
      */
     private static function connect()

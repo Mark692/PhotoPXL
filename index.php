@@ -23,6 +23,7 @@ require_once $path."config.inc.php";
 $i = new Utilities\installer();
 $i->DB_FirstInstallation();
 
+
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));

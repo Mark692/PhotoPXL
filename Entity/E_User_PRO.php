@@ -8,6 +8,7 @@
 
 namespace Entity;
 
+use Foundation\F_User_PRO;
 use Utilities\Roles;
 
 /**
@@ -46,13 +47,14 @@ class E_User_PRO extends E_User
 
 
     /**
-     * Updates a photo privacy
+     * Updates a photo privacy.
+     * This function does NOT checks if the actual user is the uploader of the photo
      *
      * @param int $photo_ID The photo ID
-     * @param bool $privacy The new privacy for the photo
+     * @param int $privacy The new privacy for the photo
      */
     public static function set_PhotoPrivacy($photo_ID, $privacy)
     {
-        \Foundation\F_User_PRO::set_PhotoPrivacy($photo_ID, $privacy);
+        F_User_PRO::set_PhotoPrivacy($photo_ID, $privacy);
     }
 }

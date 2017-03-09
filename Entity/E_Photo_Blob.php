@@ -8,6 +8,11 @@
 
 namespace Entity;
 
+use Exceptions\uploads;
+use const MAX_SIZE_FULL;
+use const THUMB_HEIGHT;
+use const THUMB_WIDTH;
+
 class E_Photo_Blob
 {
     private $fullsize;
@@ -21,21 +26,21 @@ class E_Photo_Blob
      * size is too big, finally sets the attributes the the E_Photo_Blob object
      *
      * @param string $source_Path The path to the image to save
-     * @throws \Exceptions\uploads Whether size and/or type are not allowed
+     * @throws uploads Whether size and/or type are not allowed
      */
     public function on_Upload($source_Path)
     {
         $type = $this->check_Type($source_Path);
         if($type === FALSE)
         {
-            throw new \Exceptions\uploads(0);
+            throw new uploads(0);
         }
         $this->set_Type($type);
 
         $size = $this->check_Size($source_Path);
         if($size === FALSE)
         {
-            throw new \Exceptions\uploads(1);
+            throw new uploads(1);
         }
         $this->set_Size($size);
         $this->set_Fullsize($source_Path);

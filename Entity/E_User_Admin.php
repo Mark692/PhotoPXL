@@ -8,6 +8,7 @@
 
 namespace Entity;
 
+use Foundation\F_User_Admin;
 use Utilities\Roles;
 
 /**
@@ -43,7 +44,7 @@ class E_User_Admin extends E_User_MOD
      */
     public static function change_role($username, $new_Role)
     {
-        \Foundation\F_User_Admin::change_Role($username, $new_Role);
+        F_User_Admin::change_Role($username, $new_Role);
     }
 }
 

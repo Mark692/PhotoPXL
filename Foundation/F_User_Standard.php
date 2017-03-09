@@ -11,6 +11,7 @@ namespace Foundation;
 use Entity\E_User_Standard;
 use Foundation\F_User;
 use Utilities\Roles;
+use const DEFAULT_PRO_PIC;
 
 /**
  * Sets basic info for Standard users

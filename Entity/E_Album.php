@@ -8,6 +8,12 @@
 
 namespace Entity;
 
+use Exceptions\input_texts;
+use Foundation\F_Album;
+use const MAX_DESCRIPTION_CHARS;
+use const MAX_TITLE_CHARS;
+use const MIN_TITLE_CHARS;
+
 /**
  * This class allows the creation of photo albums.
  */
@@ -34,13 +40,13 @@ class E_Album
     {
         if($this->check_Title($title) === FALSE)
         {
-            throw new \Exceptions\input_texts(2, $title);
+            throw new input_texts(2, $title);
         }
         $this->set_Title($title);
 
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
-            throw new \Exceptions\input_texts(3, $desc);
+            throw new input_texts(3, $desc);
         }
         $this->set_Description($desc);
         $this->set_Categories($categories);
@@ -85,7 +91,7 @@ class E_Album
      * Checks whether the title is a valid entry
      *
      * @param string $title The title input
-     * @throws \Exceptions\input_texts Whether the title contains invalid chars
+     * @throws input_texts Whether the title contains invalid chars
      * @return bool Whether the title has only a-zA-z0-9, the $allowed chars and a length of [3, 30] chars
      */
     private function check_Title($title)
@@ -210,23 +216,23 @@ class E_Album
     /**
      * Saves the album in the DB
      *
-     * @param \Entity\E_Album $album The album to save
+     * @param E_Album $album The album to save
      * @param string $owner The $owner's username
      */
-    public static function insert(\Entity\E_Album $album, $owner)
+    public static function insert(E_Album $album, $owner)
     {
-        \Foundation\F_Album::insert($album, $owner);
+        F_Album::insert($album, $owner);
     }
 
 
     /**
      * Updates the album details
      *
-     * @param \Entity\E_Album $to_Update The new Album object to save
+     * @param E_Album $to_Update The new Album object to save
      */
-    public static function update_Details(\Entity\E_Album $to_Update)
+    public static function update_Details(E_Album $to_Update)
     {
-        \Foundation\F_Album::update_Details($to_Update);
+        F_Album::update_Details($to_Update);
     }
 
 
@@ -238,19 +244,7 @@ class E_Album
      */
     public static function set_Cover($album_ID, $photo_ID)
     {
-        \Foundation\F_Album::set_Cover($album_ID, $photo_ID);
-    }
-
-
-    /**
-     * Updates the album cover by uploading a new photo to be used ONLY as cover
-     *
-     * @param int $album_ID The album ID to update
-     * @param int $blob The new cover to upload for the album
-     */
-    public static function upload_NewCover($album_ID, \Entity\E_Photo_Blob $blob)
-    {
-        \Foundation\F_Album::upload_NewCover($album_ID, $blob);
+        F_Album::set_Cover($album_ID, $photo_ID);
     }
 
 
@@ -259,12 +253,12 @@ class E_Album
      *
      * @param string $username The user's username selected to get the albums from
      * @param int $page_toView The page number to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
      */
     public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Album::get_By_User($username, $page_toView=1, $order_DESC=FALSE);
+        return F_Album::get_By_User($username, $page_toView=1, $order_DESC=FALSE);
     }
 
 
@@ -272,11 +266,12 @@ class E_Album
      * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
      * @param int $id The album ID to search for
-     * @return array The \Entity\E_Album object searched, its thumbnail and its uploader
+     * @return mixed An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
+                     A boolean FALSE if no album matches the query
      */
     public static function get_By_ID($id)
     {
-        return \Foundation\F_Album::get_By_ID($id);
+        return F_Album::get_By_ID($id);
     }
 
 
@@ -285,12 +280,12 @@ class E_Album
      *
      * @param array $cats The categories to search
      * @param int $page_toView The number of page to view. It influences the offset
-     * @param $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the albums matching the categories selected.
      */
     public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Album::get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE);
+        return F_Album::get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE);
     }
 
 
@@ -304,7 +299,7 @@ class E_Album
      */
     public static function delete($album_ID)
     {
-        \Foundation\F_Album::delete($album_ID);
+        F_Album::delete($album_ID);
     }
 
 
@@ -315,6 +310,6 @@ class E_Album
      */
     public static function delete_Album_AND_Photos($album_ID)
     {
-        \Foundation\F_Album::delete_Album_AND_Photos($album_ID);
+        F_Album::delete_Album_AND_Photos($album_ID);
     }
 }
