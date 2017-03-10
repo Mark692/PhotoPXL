@@ -18,7 +18,7 @@ class F_Album extends F_Database
 {
 
     /**
-     * Saves the album in the DB
+     * Saves the album in the DB and sets its ID into the $album object
      *
      * @param E_Album $album The album to save
      * @param string $owner The $owner's username

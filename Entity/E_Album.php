@@ -29,7 +29,7 @@ class E_Album
     /**
      * Instantiates an Album object taken from the DB or just uploaded.
      * In case the Album has just been created use the short-construct in order
-     * to set the $up_date to NOW automatically
+     * to set the $up_date to NOW automatically.
      *
      * @param string $title The  title of the album
      * @param string $desc The description of the album
@@ -214,7 +214,7 @@ class E_Album
 
 
     /**
-     * Saves the album in the DB
+     * Saves the album in the DB and sets its ID into the $album object
      *
      * @param E_Album $album The album to save
      * @param string $owner The $owner's username

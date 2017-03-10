@@ -153,7 +153,7 @@ class E_Comment
 
 
     /**
-     * Saves a comment in the DB
+     * Saves a comment in the DB and sets its ID into the $comment object
      *
      * @param E_Comment $comment The comment to save
      */

@@ -309,7 +309,7 @@ class E_Photo
 
 
     /**
-     * Saves a photo object
+     * Saves a photo object and sets its ID into the $photo object
      *
      * @param E_Photo $photo The photo to save
      * @param E_Photo_Blob $photo_details The blob file, its size and type
