@@ -53,6 +53,7 @@ class C_LoginRegistration
         if(U_Nonce::pass_isValid($userInfo["password"], $nonce, $hash))
         {
             $this->createSession($keepLogged);
+            $_SESSION['username'] = $username;
         }
         else
         {
@@ -83,6 +84,7 @@ class C_LoginRegistration
             $STD_user = new E_User_Standard($username, $password, $email);
             E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
+            $_SESSION['username'] = $username;
         }
         catch(input_texts $e)
         {
