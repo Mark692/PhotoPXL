@@ -216,6 +216,14 @@ class V_Basic extends Smarty
         }
         return $cost;
     }
+    /**
+     * imposta i dati nel template identificati da una chiave ed il relativo valore
+     * @param type $key
+     * @param type $valore
+     */
+    public function impostaDati($key,$valore) {
+        $this->assign($key,$valore);
+    }
 
 
 }
