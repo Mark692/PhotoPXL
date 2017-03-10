@@ -50,14 +50,26 @@ class E_Photo
         }
         $this->set_Title($title);
 
+        
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
             throw new input_texts(3, $desc);
         }
         $this->set_Description($desc);
-        $this->set_Reserved($is_reserved);
+
+
+        if($this->check_Categories($cat) === FALSE)
+        {
+            throw new input_texts(4, $desc);
+        }
         $this->set_Categories($cat);
-        $this->set_Upload_Date($up_Date);
+
+
+        $date = $this->set_TrueUploadDate($up_Date);
+        $this->set_Upload_Date($date);
+
+
+        $this->set_Reserved($is_reserved);
         $this->set_LikesList($likes);
         $this->set_Comments($comments);
     }
@@ -193,14 +205,10 @@ class E_Photo
     /**
      * Sets the date in Timestamp format of the Photo's upload
      *
-     * @param int The timestamp of uploading
+     * @param int $up_date The timestamp of uploading
      */
-    public function set_Upload_Date($up_date = 0)
+    private function set_Upload_Date($up_date)
     {
-        if($up_date <= 0)
-        {
-            $up_date = time();
-        }
         $this->upload_date = $up_date;
     }
 
@@ -213,6 +221,25 @@ class E_Photo
     public function get_Upload_Date()
     {
         return $this->upload_date;
+    }
+
+
+    /**
+     * Used to check whether the creation date is correct
+     *
+     * @param int $date The creation date
+     * @return int The correct date of creation
+     */
+    private function set_TrueUploadDate($date)
+    {
+        if ($date <= 0)
+        {
+            return time();
+        }
+        else
+        {
+            return $date;
+        }
     }
 
 
@@ -239,11 +266,30 @@ class E_Photo
 
 
     /**
+     * Used to check whether the input categories are all valid entry
+     *
+     * @param array $cats The categories to evaluate
+     * @return bool Whether the categories are all valid entry
+     */
+    private function check_Categories($cats)
+    {
+        foreach($cats as $c)
+        {
+            if($c < PAESAGGI || $c > SPORT)
+            {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+
+    /**
      * Sets the number of likes received
      *
      * @param array $total_likes The number of likes received on this photo
      */
-    public function set_LikesList($total_likes = [])
+    public function set_LikesList($total_likes)
     {
         $this->likes = $total_likes;
     }
@@ -276,7 +322,7 @@ class E_Photo
      *
      * @param array $comments The list of users that commented the photo
      */
-    public function set_Comments($comments = [])
+    public function set_Comments($comments)
     {
         $this->comments = $comments;
     }

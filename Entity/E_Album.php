@@ -36,7 +36,7 @@ class E_Album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album
      */
-    public function __construct($title, $desc='', $categories=[], $creation_date='')
+    public function __construct($title, $desc='', $categories=[], $creation_date = 0)
     {
         if($this->check_Title($title) === FALSE)
         {
@@ -44,13 +44,22 @@ class E_Album
         }
         $this->set_Title($title);
 
+
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
             throw new input_texts(3, $desc);
         }
         $this->set_Description($desc);
+
+
+        if($this->check_Categories($categories) === FALSE)
+        {
+            throw new input_texts(4, $desc);
+        }
         $this->set_Categories($categories);
-        $this->set_Creation_Date($creation_date);
+
+        $date = $this->check_Creation_Date($creation_date);
+        $this->set_Creation_Date($date);
     }
 
 
@@ -163,7 +172,7 @@ class E_Album
      *
      * @param array $cat The array of categories to set for the album
      */
-    public function set_Categories($cat=[])
+    public function set_Categories($cat)
     {
         $this->categories = $cat;
     }
@@ -181,20 +190,32 @@ class E_Album
 
 
     /**
+     * Used to check whether the input categories are all valid entry
+     *
+     * @param array $cats The categories to evaluate
+     * @return bool Whether the categories are all valid entry
+     */
+    private function check_Categories($cats)
+    {
+        foreach($cats as $c)
+        {
+            if($c < PAESAGGI || $c > SPORT)
+            {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
+
+    /**
      * Sets a creation date for the Album
      *
      * @param int $date The timestamp of the Album's creation
      */
-    private function set_Creation_Date($date='')
+    private function set_Creation_Date($date)
     {
-        if ($date==='' || $date<=0)
-        {
-            $this->creation_date = time();
-        }
-        else
-        {
             $this->creation_date = $date;
-        }
     }
 
 
@@ -207,6 +228,26 @@ class E_Album
     {
         return $this->creation_date;
     }
+
+
+    /**
+     * Used to check whether the creation date is correct
+     *
+     * @param int $date The creation date
+     * @return int The date of creation
+     */
+    private function check_Creation_Date($date)
+    {
+        if ($date <= 0)
+        {
+            return time();
+        }
+        else
+        {
+            return $date;
+        }
+    }
+
 
 
 

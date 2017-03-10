@@ -21,25 +21,31 @@ class input_texts extends Exception
         {
             case 0:
                 //E_User->__construct() - Username check
-                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: -_.";
+                $message = "Il testo contiene Caratteri Speciali non ammessi. Permessi: -_.";
                 break;
 
             case 1:
                 //E_User->__construct() - Email check
-                $message ="L'email inserita non è valida. Immessa: $exc";
+                $message = "L'email inserita non è valida. Immessa: $exc";
                 break;
 
             case 2:
                 //E_Photo->__construct() - Title check
                 //E_Album->__construct() - Title check
-                $message ="Il testo contiene Caratteri Speciali non ammessi. Permessi: '-_.!? e lo spazio";
+                $message = "Il testo contiene Caratteri Speciali non ammessi. Permessi: '-_.!? e lo spazio";
                 break;
 
             case 3:
                 //E_Photo->__construct() - Description check
                 //E_Album->__construct() - Description check
                 //E_Comment->__construct() - Text check
-                $message ="Il testo immesso non è un testo valido!";
+                $message = "Il testo immesso non è un testo valido!";
+                break;
+
+            case 4:
+                //E_Photo->__construct() - Categories check
+                //E_Album->__construct() - Categories check
+                $message = "Le categorie immesse non sono valide! $exc";
                 break;
 
             default: $message = "ATTENZIONE! Parametro non valido: $exc";
