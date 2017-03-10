@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +17,13 @@ use Foundation\F_Database;
 use Foundation\F_Photo;
 use Foundation\F_User_Admin;
 use Foundation\F_User_Standard;
-use PDOException;
+use P\album;
+use P\comment;
+use P\photo;
+use P\PMAusers;
+use P\std_user;
+use P\user;
+use Utilities\Roles;
 
 class installer extends F_Database
 {
@@ -191,6 +198,319 @@ class installer extends F_Database
         }
         echo("Fatto!");
     }
+
+
+
+    public function try_Functions()
+    {
+        $separa = "_____________________________________________________________________";
+
+        $user = new user();
+        $comment = new comment();
+
+        echo("Aggiungo 3 utenti standard...");
+        echo("1: ");
+        $std_user = new std_user();
+        $std_user->INSERT();
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo("UPDATECOUNTERS: ".nl2br("\r\n"));
+        echo("2: ");
+        $std_user = new std_user();
+        $std_user->INSERT();
+        $std_user->UPDATECOUNTERS();
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo("BECOMEPRO: ".nl2br("\r\n"));
+        echo("3: ");
+        $std_user = new std_user();
+        $std_user->INSERT();
+        $std_user->BECOMEPRO();
+
+
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+        echo("GET_USERDETAILS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->GET_USERDETAILS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("IS_AVAILABLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->IS_AVAILABLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_LOGININFO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->GET_LOGININFO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_ROLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->GET_ROLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_ROLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->GET_BY_ROLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("CHANGE_DETAILS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->CHANGE_DETAILS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+        echo("Per poter proseguire devo inserire delle foto...");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        for($i = 1; $i<18; $i++)
+        {
+            $photo = new photo();
+            $photo->INSERT($i);
+        }
+        echo("Modifico i dettagli di alcune foto con UPDATE()");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        for($i = 1; $i<4; $i++)
+        {
+            $photo = new photo();
+            $photo->UPDATE(rand(3, 19));
+        }
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo("Alcuni utenti decidono di cambiare la privacy alle loro foto:");
+        $PMAusers = new PMAusers();
+
+        echo("PRO_SET_PHOTOPRIVACY():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $PMAusers->PRO_SET_PHOTOPRIVACY();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("MOD_GET_USERSLIST():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $PMAusers->MOD_GET_USERSLIST();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("MOD_BAN():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $PMAusers->MOD_BAN();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("ADMIN_CHANGE_ROLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $PMAusers->ADMIN_CHANGE_ROLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("FOTO: ");
+        echo(nl2br("\r\n"));
+
+        echo("GET_BY_USER():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_USER();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_ID():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_ID();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_CATEGORIES():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_CATEGORIES();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("Ora che ci sono delle foto gli utenti cambiano le loro foto profilo");
+        echo(nl2br("\r\n"));
+        $user->CASODUSO_UPDATE_PRO_PIC();
+
+
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+
+        echo("ADD_LIKE_TO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->ADD_LIKE_TO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("REMOVE_LIKE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $user->REMOVE_LIKE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+        echo("Ora gli utenti decidono di commentare le foto");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $comment->INSERT();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_PHOTO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $comment->GET_BY_PHOTO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("UPDATE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $comment->UPDATE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("REMOVE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $comment->REMOVE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+        echo("Vengono creati degli album: ");
+
+        for($i = 1; $i<9; $i++)
+        {
+            $album = new album();
+            $album->INSERT();
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo("Aggiornamento dei dettagli:");
+        echo(nl2br("\r\n"));
+        $album->UPDATE_DETAILS($i);
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo("Cambio cover:");
+        echo(nl2br("\r\n"));
+        $album->SET_COVER($i);
+        }
+
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        echo("Bisogna ora popolare gli album con delle foto");
+
+        echo(nl2br("\r\n"));
+        $photo->MOVE_TO();
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_LIKELIST():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_LIKELIST();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_MOSTLIKED():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_MOSTLIKED();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_COMMENTSLIST():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_COMMENTSLIST();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+
+        echo("TORNIAMO AGLI ALBUM: ");
+        echo(nl2br("\r\n"));
+
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        echo("GET_BY_USER():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $album->GET_BY_USER();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_ID():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $album->GET_BY_ID();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_CATEGORIES():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $album->GET_BY_CATEGORIES();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("DELETE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $album->DELETE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("DELETE_ALBUM_AND_PHOTOS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $album->DELETE_ALBUM_AND_PHOTOS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("Infine, facciamo le ultime operazioni con le foto: ");
+
+        echo(nl2br("\r\n"));
+
+        echo("GET_BY_ALBUM():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_ALBUM(1);
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        echo("GET_BY_ALBUM():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_ALBUM(2);
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+        echo("GET_BY_ALBUM():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->GET_BY_ALBUM(3);
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("DELETE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->DELETE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("DELETE_ALL_FROMALBUM():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $photo->DELETE_ALL_FROMALBUM();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+    }
+
+
+
+
+
 
 
     /**

@@ -34,62 +34,6 @@ class album extends prova
     }
 
 
-    public function try_Palbum()
-    {
-        $separa = "_____________________________________________________________________";
-
-        echo("Eccoci, sono la prova per le funzioni degli album");
-        echo(nl2br("\r\n"));
-        echo("INSERT():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->INSERT();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("UPDATE_DETAILS():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->UPDATE_DETAILS();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("SET_COVER():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->SET_COVER();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_USER():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_USER();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_ID():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_ID();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_CATEGORIES():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_CATEGORIES();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("DELETE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->DELETE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("DELETE_ALBUM_AND_PHOTOS():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->DELETE_ALBUM_AND_PHOTOS();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-    }
-
-
     public function INSERT($uploader = "Marco")
     {
         F_Album::insert($this->album, $uploader);
@@ -123,7 +67,7 @@ class album extends prova
 
     PUBLIC FUNCTION SET_COVER($id = 1)
     {
-        $photos = array(1, 2, 19, 26, 32, 33, 34);
+        $photos = array(3, 4, 5, 6, 7, 8, 9, 11, 12, 14);
         $k = rand(0, count($photos) - 1);
         F_Album::set_Cover($id, $photos[$k]);
 //        \Foundation\F_Album::set_Cover($id, 32);
@@ -172,12 +116,13 @@ class album extends prova
     {
         $separa = "_____________________________________________________________________";
 
-        $albums = array("Non Esiste" => 1, "Esiste, di AllUser" => 7, "Esiste, di ABn3ftfzT8" => 8);
+        $albums = array("Non Esiste" => 177, "Esiste!! " => 1, "Esiste, appartiene a " => 8);
 
         foreach($albums as $k => $val)
         {
-            echo("ID: ".$val." Questo album: ".$k.nl2br("\r\n"));
+            echo("ID: ".$val." Questo album: ".$k);
             $r = F_Album::get_By_ID($val);
+            echo($r["username"].nl2br("\r\n"));
 
             if($r !== FALSE)
             {
@@ -197,13 +142,13 @@ class album extends prova
     {
         $separa = "_____________________________________________________________________";
         $pageToView = 1;
-//        $cat = [];
-//        for($i = 0; $i < 2; $i++)
-//        {
-//            array_push($cat, rand(1, 8));
-//        }
-//        $cat = array_unique($cat);
-        $cat = array(1, 2, 3, 4, 5, 6, 7, 8);
+        $cat = [];
+        for($i = 0; $i < 2; $i++)
+        {
+            array_push($cat, rand(1, 8));
+        }
+        $cat = array_unique($cat);
+//        $cat = array(1, 2, 3, 4, 5, 6, 7, 8);
 
         echo(nl2br("\r\n"));
         echo("Categorie scelte: ");
@@ -238,7 +183,7 @@ class album extends prova
 
     public function DELETE()
     {
-        $id = 5;
+        $id = 7;
         F_Album::delete($id);
         echo("Ho eliminato l'album $id. Controlla in: ALBUM, PHOTO_ALBUM.".nl2br("\r\n"));
         echo("Verifica che le sue foto associate vengano preservate in PHOTO");
@@ -247,7 +192,7 @@ class album extends prova
 
     public function DELETE_ALBUM_AND_PHOTOS()
     {
-        $id = 7;
+        $id = 1;
         F_Album::delete_Album_AND_Photos($id);
         echo("Ho eliminato l'album $id e tutte le sue foto. Controlla in:".nl2br("\r\n"));
         echo("- ALBUM".nl2br("\r\n")."- PHOTO_ALBUM".nl2br("\r\n")."- LIKES".nl2br("\r\n")."-  COMMENT".nl2br("\r\n")."- PHOTO".nl2br("\r\n")."- CAT_ALBUM".nl2br("\r\n")."- CAT_PHOTO");

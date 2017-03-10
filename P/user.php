@@ -32,69 +32,6 @@ class user extends prova
     }
 
 
-    public function try_Puser()
-    {
-        $separa = "_____________________________________________________________________";
-
-        echo("Eccoci, sono la prova per le funzioni degli utenti");
-        echo(nl2br("\r\n"));
-        echo("GET_USERDETAILS():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_USERDETAILS();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("IS_AVAILABLE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->IS_AVAILABLE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_LOGININFO():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_LOGININFO();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_ROLE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_ROLE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_ROLE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_ROLE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("CHANGE_DETAILS():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->CHANGE_DETAILS();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("CASODUSO_UPDATE_PRO_PIC():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->CASODUSO_UPDATE_PRO_PIC();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("ADD_LIKE_TO():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->ADD_LIKE_TO();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("REMOVE_LIKE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->REMOVE_LIKE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-    }
-
-
     /*
      * Istanzia un oggetto E_User_* in base al ruolo.
      */
@@ -209,7 +146,7 @@ class user extends prova
     public function CHANGE_DETAILS()
     {
         $new_Username2Save = "CambiatoUsername"; //NUOVO USERNAME!!!
-        $old = "AllUser"; //QUELLO SALVATO NEL DB!!!!
+        $old = "Bene"; //QUELLO SALVATO NEL DB!!!!
 
         $password = "tanto viene hashata...";
         $email = "update@pro.va";
@@ -343,7 +280,7 @@ class user extends prova
      */
     public function ADD_LIKE_TO()
     {
-        $users = array("Marco", "Bene", "Fede", "AllUser");
+        $users = array("Marco", "Fede", "AllUser");
 
         $photos = array(3, 4, 5, 6, 7, 8, 9);
 
@@ -353,6 +290,7 @@ class user extends prova
             {
                 F_User::add_Like_to($p, $u);
                 echo("Utente $u likes $p");
+                echo(nl2br("\r\n"));
             }
         }
     }
@@ -367,6 +305,7 @@ class user extends prova
         $photo = 6;
         F_User::remove_Like($user, $photo);
         echo("User $user remove like from $photo");
+        echo(nl2br("\r\n"));
     }
 
 

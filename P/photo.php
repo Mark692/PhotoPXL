@@ -34,109 +34,10 @@ class photo extends prova
         return $this->photo = new E_Photo($title, $desc, $is_reserved, $cat, $up_Date);
     }
 
-
-    public function try_Pphoto()
+    public function INSERT($i)
     {
-        $separa = "_____________________________________________________________________";
-
-        echo("Eccoci, sono la prova per le funzioni delle foto");
-        echo(nl2br("\r\n"));
-        echo("INSERT():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->INSERT();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("UPDATE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->UPDATE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_USER():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_USER();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_ID():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_ID();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_ALBUM():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_ALBUM();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_CATEGORIES():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_CATEGORIES();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_LIKELIST():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_LIKELIST();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_MOSTLIKED():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_MOSTLIKED();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_COMMENTSLIST():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_COMMENTSLIST();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("DELETE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->DELETE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("DELETE_ALL_FROMALBUM():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->DELETE_ALL_FROMALBUM();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("MOVE_TO():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->MOVE_TO();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-    }
-
-
-    /**
-     *
-     * @param bool $example Regulates the photos to insert. Set to TRUE to insert
-     * basic photos to check with other functions. Set to FALSE to insert all the
-     * other photos at once
-     */
-    public function INSERT($example = FALSE)
-    {
-        if($example)
-        {
-            $start = 1;
-            $end = 4;
-        }
-        else
-        {
-        $start = rand(5, 12);
-        $end = $start + 4;
-        }
         $uploader = "AllUser";
 
-        for($i = $start; $i<=$end; $i++)
-        {
         $install_dir = ".".DIRECTORY_SEPARATOR
                 ."Utilities".DIRECTORY_SEPARATOR
                 ."Install".DIRECTORY_SEPARATOR;
@@ -147,7 +48,6 @@ class photo extends prova
         $id = F_Photo::insert($this->photo, $bob, $uploader);
         echo("Inserita la foto: $i con ID = $id");
         echo(nl2br("\r\n"));
-        }
         echo("Fatto. Controlla nelle tabelle 'photo', 'cat_photo'");
     }
 
@@ -183,7 +83,6 @@ class photo extends prova
 
     public function UPDATE($id)
     {
-        echo("Sono la update");
         echo(nl2br("\r\n"));
         $title = parent::rnd_str();
         $desc = parent::rnd_str();
@@ -294,6 +193,7 @@ class photo extends prova
             {
 
                 $r = F_Photo::get_By_Album($album_ID, $uw, $role, $pageToView);
+                echo("Album: $album_ID".nl2br("\r\n"));
                 echo("Ruolo: ".$role.nl2br("\r\n"));
                 echo("Risultati totali per la ricerca fatta: ".$r["tot_photo"].nl2br("\r\n"));
 
@@ -469,7 +369,7 @@ class photo extends prova
 
     public function MOVE_TO()
     {
-        $albums = array(1, 5, 6, 7);
+        $albums = array(1, 2, 3, 4, 5);
         $photos = array(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
         while(count($photos) > 0)
         {

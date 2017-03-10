@@ -30,41 +30,9 @@ class comment extends prova
     }
 
 
-    public function try_Pcomment()
-    {
-        $separa = "_____________________________________________________________________";
-
-        echo("Eccoci, sono la prova per le funzioni dei commenti");
-        echo(nl2br("\r\n"));
-        echo("INSERT():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->INSERT();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("GET_BY_PHOTO():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->GET_BY_PHOTO();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("UPDATE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->UPDATE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-
-        echo("REMOVE():");
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        $this->REMOVE();
-        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
-    }
-
-
     public function INSERT()
     {
-        $users = array("AllUser", "Marco", "Bene", "Fede");
+        $users = array("AllUser", "Marco", "Fede");
         $photos = array(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         for($i = 1; $i < 26; $i++)
         {
@@ -74,7 +42,7 @@ class comment extends prova
 
             $this->com = new E_Comment($text, $users[$ku], $photos[$kp]);
             F_Comment::insert($this->com);
-            echo("Aggiunto commento con ID: ".$this->com->get_ID());
+            echo("Commento ID: ".$this->com->get_ID()." - Aggiunto commento di $users[$ku] sulla foto $photos[$kp].");
             echo(nl2br("\r\n"));
         }
     }
@@ -96,13 +64,16 @@ class comment extends prova
 
     public function UPDATE()
     {
-        $text = "Questa EST la prova UPDATE";
+        $text = "Questa è la prova UPDATE";
+            echo(nl2br("\r\n"));
 
         for($i = 1; $i < 26; $i++)
         {
             $newcom = new E_Comment($text, 1, 1);
             $newcom->set_ID($i);
             F_Comment::update($newcom);
+            echo("Modificato il commento $i");
+            echo(nl2br("\r\n"));
         }
     }
 
