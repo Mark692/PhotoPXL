@@ -114,10 +114,25 @@ class photo extends prova
         echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
     }
 
-    public function INSERT()
+
+    /**
+     *
+     * @param bool $example Regulates the photos to insert. Set to TRUE to insert
+     * basic photos to check with other functions. Set to FALSE to insert all the
+     * other photos at once
+     */
+    public function INSERT($example = FALSE)
     {
-        $start = rand(7, 12);
+        if($example)
+        {
+            $start = 1;
+            $end = 4;
+        }
+        else
+        {
+        $start = rand(5, 12);
         $end = $start + 4;
+        }
         $uploader = "AllUser";
 
         for($i = $start; $i<=$end; $i++)
@@ -129,8 +144,8 @@ class photo extends prova
         $bob = new E_Photo_Blob();
         $bob->on_Upload($source_Path);
 
-        F_Photo::insert($this->photo, $bob, $uploader);
-        echo("Inserita la foto: $i");
+        $id = F_Photo::insert($this->photo, $bob, $uploader);
+        echo("Inserita la foto: $i con ID = $id");
         echo(nl2br("\r\n"));
         }
         echo("Fatto. Controlla nelle tabelle 'photo', 'cat_photo'");
