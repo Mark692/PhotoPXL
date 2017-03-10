@@ -1,13 +1,13 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 namespace View;
 
-class V_Users extends \View\V_Basic
+class V_Users extends V_Basic
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati viene
@@ -26,6 +26,6 @@ class V_Users extends \View\V_Basic
 //        return parent::get_Dati($keys);
         return parent::get_Dati($keys);
     }
-    
+
 }
 

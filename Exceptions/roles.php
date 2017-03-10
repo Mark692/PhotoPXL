@@ -8,15 +8,18 @@
 
 namespace Exceptions;
 
+use Exception;
+use Utilities\Roles;
+
 /**
  * This class handles exception about the User Role and related functions
  */
-class roles extends \Exception
+class roles extends Exception
 {
     public function __construct($code, $exc='')
     {
-        $max_role = \Utilities\Roles::ADMIN;
-        $min_role = \Utilities\Roles::BANNED;
+        $max_role = Roles::ADMIN;
+        $min_role = Roles::BANNED;
 
         switch ($code) {
             case 0:
