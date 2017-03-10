@@ -85,6 +85,7 @@ class C_LoginRegistration
             E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
+            $_SESSION['role'] = \Utilities\Roles::STANDARD;
         }
         catch(input_texts $e)
         {
