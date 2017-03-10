@@ -398,7 +398,7 @@ class E_Photo
 
 
     /**
-     * Retrieves the list of all uses that liked the selected photo
+     * Retrieves the list of all users that liked the selected photo
      *
      * @param int $photo_ID The photo's ID
      * @return array The users that liked the selected photo
