@@ -54,16 +54,6 @@ class installer extends F_Database
         {
             return $this->debug_Connection($e);
         }
-        echo(nl2br("\r\n"));
-        echo("Inserisco degli utenti base... ");
-        try
-        {
-            $this->DB_Users();
-        }
-        catch(queries $e)
-        {
-            return $this->debug_Connection($e);
-        }
 
         echo(nl2br("\r\n"));
         echo("Inserisco delle foto base. Può richiedere del tempo... ");
@@ -82,6 +72,18 @@ class installer extends F_Database
         {
             return $this->debug_Connection($e2);
         }
+
+        echo(nl2br("\r\n"));
+        echo("Inserisco degli utenti base... ");
+        try
+        {
+            $this->DB_Users();
+        }
+        catch(queries $e)
+        {
+            return $this->debug_Connection($e);
+        }
+
         echo(nl2br("\r\n"));
         echo("Ora puoi procedere nell'uso dell'applicazione :)");
     }
@@ -129,12 +131,11 @@ class installer extends F_Database
      */
     private function DB_Users()
     {
-        $AllUser = new E_User_Standard($this->default_DBuser, "password0", "email@pro.va");
         $Marco = new E_User_Standard("Marco", "password1", "email@pro.va");
         $Bene = new E_User_Standard("Bene", "password2", "email@pro.va");
         $Fede = new E_User_Standard("Fede", "password3", "email@pro.va");
 
-        $set = array($AllUser, $Marco, $Bene, $Fede);
+        $set = array($Marco, $Bene, $Fede);
         foreach($set as $user)
         {
             F_User_Standard::insert($user);
@@ -149,6 +150,13 @@ class installer extends F_Database
      */
     private function DB_Photos()
     {
+        //NEED to create this user and let him upload the standard photos
+        //so the other users can have a default pic
+        $AllUser = new E_User_Standard($this->default_DBuser, "password0", "email@pro.va");
+        F_User_Standard::insert($AllUser);
+        F_User_Admin::change_Role($AllUser->get_Username(), Roles::ADMIN);
+
+
         $title = "NO ALBUM COVER";
         $desc = "In case no cover has been selected for the album";
         $is_Reserved = TRUE;

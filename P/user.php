@@ -8,7 +8,12 @@
 
 namespace P;
 
-class user extends \P\prova
+use Entity\E_Photo_Blob;
+use Entity\E_User;
+use Foundation\F_User;
+use Utilities\Roles;
+
+class user extends prova
 {
     private $user;
 
@@ -23,7 +28,70 @@ class user extends \P\prova
         $email = "std@ita.it";
 
         $this->username = $username;
-        $this->user = new \Entity\E_User($username, $password, $email);
+        $this->user = new E_User($username, $password, $email);
+    }
+
+
+    public function try_Puser()
+    {
+        $separa = "_____________________________________________________________________";
+
+        echo("Eccoci, sono la prova per le funzioni degli utenti");
+        echo(nl2br("\r\n"));
+        echo("GET_USERDETAILS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->GET_USERDETAILS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("IS_AVAILABLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->IS_AVAILABLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_LOGININFO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->GET_LOGININFO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_ROLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->GET_ROLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("GET_BY_ROLE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->GET_BY_ROLE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("CHANGE_DETAILS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->CHANGE_DETAILS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("CASODUSO_UPDATE_PRO_PIC():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->CASODUSO_UPDATE_PRO_PIC();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("ADD_LIKE_TO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->ADD_LIKE_TO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("REMOVE_LIKE():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->REMOVE_LIKE();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
     }
 
 
@@ -32,13 +100,13 @@ class user extends \P\prova
      */
     public function GET_USERDETAILS()
     {
-        $nomi = array("GGWGsxkMDs", "dAquwO1kDF", "AllUser", "NonEsisteNelDB");
+        $nomi = array("Marco", "Bene", "AllUser", "NonEsisteNelDB");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Dettagli: ");
-            var_dump(\Foundation\F_User::get_UserDetails($n));
+            var_dump(F_User::get_UserDetails($n));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
@@ -52,13 +120,13 @@ class user extends \P\prova
      */
     public function IS_AVAILABLE()
     {
-        $nomi = array("AllUser", "allusers", "NonEsiste", "DisponibileEeEe", "ChissàSeQuestoVaBene", "dAquwO1kDF");
+        $nomi = array("AllUser", "allusers", "NonEsiste", "Marco", "ChissàSeQuestoVaBene", "dAquwO1kDF");
         foreach($nomi as $n)
         {
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("E' disponibile: ");
-            var_dump(\Foundation\F_User::is_Available($n));
+            var_dump(F_User::is_Available($n));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
@@ -78,7 +146,7 @@ class user extends \P\prova
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Login Info: ");
-            var_dump(\Foundation\F_User::get_LoginInfo($n));
+            var_dump(F_User::get_LoginInfo($n));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
@@ -98,7 +166,7 @@ class user extends \P\prova
             echo("Nome: $n");
             echo(nl2br("\r\n"));
             echo("Ruolo: ");
-            var_dump(\Foundation\F_User::get_Role($n));
+            var_dump(F_User::get_Role($n));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
@@ -126,7 +194,7 @@ class user extends \P\prova
             echo("Ruolo: $k");
             echo(nl2br("\r\n"));
             echo("Utenti trovati: ");
-            var_dump(\Foundation\F_User::get_By_Role($r, $pageToView));
+            var_dump(F_User::get_By_Role($r, $pageToView));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
             echo(nl2br("\r\n"));
@@ -138,45 +206,49 @@ class user extends \P\prova
      * Cambia i dettagli di un utente. Alterna le funzioni con il parametro $change_Function
      * Per cambiare il ruolo, ricorda che solo l'admin può farlo, quindi guarda F_Admin
      */
-    public function CHANGE_DETAILS($change_Function)
+    public function CHANGE_DETAILS()
     {
         $new_Username2Save = "CambiatoUsername"; //NUOVO USERNAME!!!
         $old = "AllUser"; //QUELLO SALVATO NEL DB!!!!
 
         $password = "tanto viene hashata...";
         $email = "update@pro.va";
-        $changed = new \Entity\E_User($new_Username2Save, $password, $email);
-        $changed->set_Role(\Utilities\Roles::ADMIN);
+        $changed = new E_User($new_Username2Save, $password, $email);
+        $changed->set_Role(Roles::ADMIN);
 
-
-        if($change_Function == 1)
+        for($i = 1; $i < 4; $i++)
         {
-            echo("1. Change_Username:");
+            if($i == 1)
+            {
+                echo("1. Change_Username:");
+                echo(nl2br("\r\n"));
+                echo("Vecchio: ".$old);
+                echo(nl2br("\r\n"));
+                echo("Nuovo: ".$new_Username2Save);
+                F_User::change_Username($changed, $old);
+            }
+            elseif($i == 2)
+            {
+                echo("2. Change_Password:");
+                echo(nl2br("\r\n"));
+                echo("Nuova password: ".$password);
+                echo(nl2br("\r\n"));
+                echo("Hashata: ".hash("sha512", $password));
+                echo(nl2br("\r\n"));
+                echo("Vedi Username: ".$new_Username2Save);
+                F_User::change_Password($changed);
+            }
+            elseif($i == 3)
+            {
+                echo("3. Change_Email:");
+                echo(nl2br("\r\n"));
+                echo("Nuova email: ".$email);
+                echo(nl2br("\r\n"));
+                echo("Vedi Username: ".$new_Username2Save);
+                F_User::change_Email($changed);
+            }
             echo(nl2br("\r\n"));
-            echo("Vecchio: ".$old);
             echo(nl2br("\r\n"));
-            echo("Nuovo: ".$new_Username2Save);
-            \Foundation\F_User::change_Username($changed, $old);
-        }
-        elseif($change_Function == 2)
-        {
-            echo("1. Change_Password:");
-            echo(nl2br("\r\n"));
-            echo("Nuova password: ".$password);
-            echo(nl2br("\r\n"));
-            echo("Hashata: ".hash("sha512", $password));
-            echo(nl2br("\r\n"));
-            echo("Vedi Username: ".$new_Username2Save);
-            \Foundation\F_User::change_Password($changed);
-        }
-        elseif($change_Function == 3)
-        {
-            echo("1. Change_Email:");
-            echo(nl2br("\r\n"));
-            echo("Nuova email: ".$email);
-            echo(nl2br("\r\n"));
-            echo("Vedi Username: ".$new_Username2Save);
-            \Foundation\F_User::change_Email($changed);
         }
     }
 
@@ -194,10 +266,15 @@ class user extends \P\prova
         echo(nl2br("\r\n"));
         echo(nl2br("\r\n"));
         echo(nl2br("\r\n"));
-
         $this->SET_PROFILEPIC();
-        echo(nl2br("\r\n"));
         echo("Cambiata con una già esistente nel DB: ");
+        $this->GET_PROFILEPIC();
+
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->REMOVE_CURRENTPROPIC();
+        echo("Rimossa la foto ed impostata quella di default: ");
         $this->GET_PROFILEPIC();
 
         echo(nl2br("\r\n"));
@@ -214,10 +291,11 @@ class user extends \P\prova
      */
     public function SET_PROFILEPIC()
     {
-        $utente = "VK6q7yMZDU";
-        $pic = 11;
-        echo("L'utente ".$utente." cambia la sua ProfilePic in ".$pic);
-        \Foundation\F_User::set_ProfilePic($utente, $pic);
+        $user = "Marco";
+        $pic = 3;
+        F_User::set_ProfilePic($user, $pic);
+        echo("L'utente ".$user." cambia la sua ProfilePic in ".$pic);
+        echo(nl2br("\r\n"));
     }
 
 
@@ -226,14 +304,14 @@ class user extends \P\prova
      */
     public function UPLOAD_NEWCOVER()
     {
-        $user = "AllUser";
-        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."1.jpg";
-//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."2.jpg";
-//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."3.jpg";
-//        $path = ".".DIRECTORY_SEPARATOR."zzzImmagini".DIRECTORY_SEPARATOR."Bungo".DIRECTORY_SEPARATOR."4.jpg";
-        $bob = new \Entity\E_Photo_Blob();
-        $bob->on_Upload($path);
-        \Foundation\F_User::upload_NewCover($user, $bob);
+        $user = "Marco";
+        $install_dir = ".".DIRECTORY_SEPARATOR
+                ."Utilities".DIRECTORY_SEPARATOR
+                ."Install".DIRECTORY_SEPARATOR;
+        $my_propic = $install_dir."marco.png";
+        $bob = new E_Photo_Blob();
+        $bob->on_Upload($my_propic);
+        F_User::upload_NewCover($user, $bob);
     }
 
 
@@ -242,8 +320,8 @@ class user extends \P\prova
      */
     public function GET_PROFILEPIC()
     {
-        $user = "AllUser";
-        $r = \Foundation\F_User::get_ProfilePic($user);
+        $user = "Marco";
+        $r = F_User::get_ProfilePic($user);
         $mime = image_type_to_mime_type($r["type"]);
         $pic = $r["photo"];
         echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
@@ -255,8 +333,8 @@ class user extends \P\prova
      */
     public function REMOVE_CURRENTPROPIC()
     {
-        $user = "AllUser";
-        \Foundation\F_User::remove_CurrentProPic($user);
+        $user = "Marco";
+        F_User::remove_CurrentProPic($user);
     }
 
 
@@ -265,15 +343,16 @@ class user extends \P\prova
      */
     public function ADD_LIKE_TO()
     {
-        $users = array("Ang3wIY4Qy", "N4sYKtHH84", "VK6q7yMZDU");
+        $users = array("Marco", "Bene", "Fede", "AllUser");
 
-        $photos = array(16, 25, 28, 32, 33, 39);
+        $photos = array(3, 4, 5, 6, 7, 8, 9);
 
         foreach($users as $u)
         {
             foreach($photos as $p)
             {
-                \Foundation\F_User::add_Like_to($p, $u);
+                F_User::add_Like_to($p, $u);
+                echo("Utente $u likes $p");
             }
         }
     }
@@ -286,7 +365,8 @@ class user extends \P\prova
     {
         $user = "AllUser";
         $photo = 6;
-        \Foundation\F_User::remove_Like($user, $photo);
+        F_User::remove_Like($user, $photo);
+        echo("User $user remove like from $photo");
     }
 
 

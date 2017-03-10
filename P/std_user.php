@@ -31,6 +31,32 @@ class std_user extends prova
         $this->std = new E_User_Standard($username, $password, $email);
     }
 
+
+    public function try_Pstd_user()
+    {
+        $separa = "_____________________________________________________________________";
+
+        echo("Eccoci, sono la prova per le funzioni degli utenti standard");
+        echo(nl2br("\r\n"));
+        echo("INSERT():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->INSERT();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("UPDATECOUNTERS():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->UPDATECOUNTERS();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+
+        echo("BECOMEPRO():");
+        echo(nl2br("\r\n"));
+        echo(nl2br("\r\n"));
+        $this->BECOMEPRO();
+        echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
+    }
+
     /*
      * Inserisce l'utente nel DB
      */

@@ -20,8 +20,43 @@ require_once $path."config.inc.php";
 //PER CONTROLLARE LE VARIE FUNZIONI, COME AGISCONO, CHE DATI PRENDONO IN INPUT ECC
 //VAI IN \P\ e SCEGLI UN FILE. SONO CONTENUTE PROVE PER TUTTE LE FUNZIONI DI FOUNDATION
 //UTILIZZANDO OGGETTI ENTITY E PRESI DAL DB.
-$i = new Utilities\installer();
-$i->DB_FirstInstallation();
+//$i = new Utilities\installer();
+//$i->DB_FirstInstallation();
+
+
+//Prove funzioni
+/*
+$t = new P\user();
+$t->try_Puser();
+
+
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 echo(nl2br("\r\n"));
