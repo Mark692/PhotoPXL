@@ -67,8 +67,6 @@ class installer extends F_Database
 
         echo(nl2br("\r\n"));
         echo("Inserisco delle foto base. Può richiedere del tempo... ");
-        $this->DB_Photos();
-
         try
         {
             try
