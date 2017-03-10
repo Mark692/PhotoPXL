@@ -16,9 +16,9 @@ namespace Control;
 class C_Photo {
 
     public function see($photoId) {
-        \View\V_Foto::showPhotoPage(\Entity\E_User::get_UserDetails($_SESSION["username"]), 
-                \Entity\E_Photo::get_By_ID($photoId, $_SESSION["username"], 
-                        \Entity\E_User::getRole($_SESSION["username"])));
+        \View\V_Foto::showPhotoPage(\Entity\E_User::get_UserDetails($_SESSION["username"]),
+                \Entity\E_Photo::get_By_ID($photoId, $_SESSION["username"],
+                        \Entity\E_User::get_DB_Role($_SESSION["username"])));
         //per Federico
     }
 
@@ -31,8 +31,8 @@ class C_Photo {
             }
         }
 
-        $photo = \Entity\E_Photo::get_By_ID($photoId, $_SESSION['username'], 
-                $role = \Entity\E_User::getRole($username));
+        $photo = \Entity\E_Photo::get_By_ID($photoId, $_SESSION['username'],
+                $role = \Entity\E_User::get_DB_Role($_SESSION["username"]));
         /* @var $photo \Entity\E_Photo */
         $photo->set_Title($title);
         $photo->set_Categories($categories);
@@ -58,7 +58,7 @@ class C_Photo {
     }
 
     public function likeUnlike($photoId) {
-        
+
     }
 
     public function delete($photoId) {
@@ -66,23 +66,23 @@ class C_Photo {
     }
 
     public function privacy($photoId) {
-        
+
     }
 
     public function searchByCategory($category) {
-        
+
     }
 
     public function seeComments($photoId) {
-        
+
     }
 
     public function seeLikes($photoId) {
-        
+
     }
 
     public function changeAlbum($photoId, $oldAlbumId, $newAlbumId) {
-        
+
     }
 
 }
