@@ -8,18 +8,18 @@
 
 namespace View;
 
-class V_Home extends \View\V_Basic
+class V_Home extends V_Basic
 {
     private $mainContent;
     /**
-     * 
+     *
      * Mostra il tamplete della Home di default in base al tipo di utente
      */
     public function set_home($tipo)
     {
         $this->display('home_default.tpl');
     }
-    
+
     /**
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
@@ -32,7 +32,7 @@ class V_Home extends \View\V_Basic
 
 
     /**
-     * 
+     *
      * Mostra il tamplete per un utente bannato
      */
     public function set_ban()

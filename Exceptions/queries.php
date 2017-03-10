@@ -8,10 +8,12 @@
 
 namespace Exceptions;
 
+use PDOException;
+
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class queries extends \PDOException
+class queries extends PDOException
 {
     public function __construct($code, $exc)
     {

@@ -8,6 +8,12 @@
 
 namespace Entity;
 
+use Exceptions\input_texts;
+use Foundation\F_Photo;
+use const MAX_DESCRIPTION_CHARS;
+use const MAX_TITLE_CHARS;
+use const MIN_TITLE_CHARS;
+
 /**
  * This class allows to set detailed informations about photos
  */
@@ -40,13 +46,13 @@ class E_Photo
     {
         if($this->check_Title($title) === FALSE)
         {
-            throw new \Exceptions\input_texts(2, $title);
+            throw new input_texts(2, $title);
         }
         $this->set_Title($title);
 
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
-            throw new \Exceptions\input_texts(3, $desc);
+            throw new input_texts(3, $desc);
         }
         $this->set_Description($desc);
         $this->set_Reserved($is_reserved);
@@ -305,24 +311,24 @@ class E_Photo
     /**
      * Saves a photo object
      *
-     * @param \Entity\E_Photo $photo The photo to save
-     * @param \Entity\E_Photo_Blob $photo_details The blob file, its size and type
+     * @param E_Photo $photo The photo to save
+     * @param E_Photo_Blob $photo_details The blob file, its size and type
      * @param string $uploader The uploader's username
      */
-    public static function insert(\Entity\E_Photo $photo, \Entity\E_Photo_Blob $photo_details, $uploader)
+    public static function insert(E_Photo $photo, E_Photo_Blob $photo_details, $uploader)
     {
-        \Foundation\F_Photo::insert($photo, $photo_details, $uploader);
+        F_Photo::insert($photo, $photo_details, $uploader);
     }
 
 
     /**
      * Updates a record from the "photo" table
      *
-     * @param \Entity\E_Photo $to_Update The photo to update
+     * @param E_Photo $to_Update The photo to update
      */
-    public static function update(\Entity\E_Photo $to_Update)
+    public static function update(E_Photo $to_Update)
     {
-        \Foundation\F_Photo::update($to_Update);
+        F_Photo::update($to_Update);
     }
 
 
@@ -338,7 +344,7 @@ class E_Photo
      */
     public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
+        return F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -353,7 +359,7 @@ class E_Photo
      */
     public static function get_By_ID($id, $user_Watching, $user_Role)
     {
-        return \Foundation\F_Photo::get_By_ID($id, $user_Watching, $user_Role);
+        return F_Photo::get_By_ID($id, $user_Watching, $user_Role);
     }
 
 
@@ -371,7 +377,7 @@ class E_Photo
      */
     public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView, $order_DESC);
+        return F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -387,7 +393,7 @@ class E_Photo
      */
     public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
     {
-        return \Foundation\F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
+        return F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
 
 
@@ -399,7 +405,7 @@ class E_Photo
      */
     public static function get_DB_LikeList($photo_ID)
     {
-        return \Foundation\F_Photo::get_LikeList($photo_ID);
+        return F_Photo::get_LikeList($photo_ID);
     }
 
 
@@ -413,7 +419,7 @@ class E_Photo
      */
     public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
     {
-        return \Foundation\F_Photo::get_MostLiked($user_Watching, $user_Role, $page_toView);
+        return F_Photo::get_MostLiked($user_Watching, $user_Role, $page_toView);
     }
 
 
@@ -425,7 +431,7 @@ class E_Photo
      */
     public static function get_DB_CommentsList($photo_ID)
     {
-        return \Foundation\F_Photo::get_UsernamesThatCommented($photo_ID);
+        return F_Photo::get_UsernamesThatCommented($photo_ID);
     }
 
 
@@ -436,7 +442,7 @@ class E_Photo
      */
     public static function delete($photo_ID)
     {
-        \Foundation\F_Photo::delete($photo_ID);
+        F_Photo::delete($photo_ID);
     }
 
 
@@ -447,7 +453,7 @@ class E_Photo
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
-        \Foundation\F_Photo::delete_ALL_fromAlbum($album_ID);
+        F_Photo::delete_ALL_fromAlbum($album_ID);
     }
 
 
@@ -460,6 +466,6 @@ class E_Photo
      */
     public static function move_To($album_ID, $photo_ID)
     {
-        \Foundation\F_Photo::move_To($album_ID, $photo_ID);
+        F_Photo::move_To($album_ID, $photo_ID);
     }
 }

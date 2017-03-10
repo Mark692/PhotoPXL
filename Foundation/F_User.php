@@ -9,6 +9,7 @@
 namespace Foundation;
 
 use Entity\E_Photo_Blob;
+use Entity\E_User_Admin;
 use Entity\E_User_Banned;
 use Entity\E_User_MOD;
 use Entity\E_User_PRO;
@@ -74,7 +75,7 @@ class F_User extends F_Database
                 break;
 
             case Roles::ADMIN:
-                $user = new \Entity\E_User_ADMIN($username, $password, $email);
+                $user = new E_User_Admin($username, $password, $email);
                 break;
         }
         return $user;

@@ -8,7 +8,7 @@
 
 namespace View;
 
-class V_Ricerca extends \View\V_Basic
+class V_Ricerca extends V_Basic
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati_log vengono

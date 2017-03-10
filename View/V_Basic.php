@@ -8,9 +8,12 @@
 
 namespace View;
 
+use Smarty;
+use Utilities\Roles;
+
 require('libs/Smarty.class.php');
 
-class V_Basic extends \Smarty
+class V_Basic extends Smarty
 {
     /**
      * Costruttore della classe
@@ -109,23 +112,23 @@ class V_Basic extends \Smarty
         {
             switch ($valore)
             {
-                case \Utilities\Roles::BANNED:
+                case Roles::BANNED:
                     $ruolo = "bannato";
                     break;
 
-                case \Utilities\Roles::STANDARD:
+                case Roles::STANDARD:
                     $ruolo = "standard";
                     break;
 
-                case \Utilities\Roles::PRO:
+                case Roles::PRO:
                     $ruolo = "pro";
                     break;
 
-                case \Utilities\Roles::MOD:
+                case Roles::MOD:
                     $ruolo = "mod";
                     break;
 
-                case \Utilities\Roles::ADMIN:
+                case Roles::ADMIN:
                     $ruolo = "admin";
                     break;
                 default :
@@ -139,7 +142,7 @@ class V_Basic extends \Smarty
 
     /**
      * trasforma le stringe in numeri per i ruoli
-     * @param array $role 
+     * @param array $role
      * @return array
      */
     public function reimposta_ruolo($role)
@@ -166,32 +169,32 @@ class V_Basic extends \Smarty
 
             switch ($valore)
             {
-                case \Utilities\Roles::BANNED:
+                case Roles::BANNED:
                     $categoria = "Paesaggi";
                     break;
 
-                case \Utilities\Roles::STANDARD:
+                case Roles::STANDARD:
                     $categoria = "Ritratti";
                     break;
 
-                case \Utilities\Roles::PRO:
+                case Roles::PRO:
                     $categoria = "Fauna";
                     break;
 
-                case \Utilities\Roles::MOD:
+                case Roles::MOD:
                     $categoria = "Bianco e Nero";
                     break;
 
-                case \Utilities\Roles::ADMIN:
+                case Roles::ADMIN:
                     $categoria = "Astronomia";
                     break;
-                case \Utilities\Roles::ADMIN:
+                case Roles::ADMIN:
                     $categoria = "Street";
                     break;
-                case \Utilities\Roles::ADMIN:
+                case Roles::ADMIN:
                     $categoria = "Natura Morta";
                     break;
-                case \Utilities\Roles::ADMIN:
+                case Roles::ADMIN:
                     $categoria = "Sport";
                     break;
             }

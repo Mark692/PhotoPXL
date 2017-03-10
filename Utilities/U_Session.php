@@ -8,10 +8,12 @@
 
 namespace Utilities;
 
+use const MAX_TIME_SESSION;
+
 class U_Session
 {
     /**
-     * Il metodo, crea la sessione. Il tempo di scadenza dei dati server e del cookie di sessione è di 30 giorni 
+     * Il metodo, crea la sessione. Il tempo di scadenza dei dati server e del cookie di sessione è di 30 giorni
      */
     public function __construct()
     {

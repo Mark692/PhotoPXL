@@ -8,10 +8,12 @@
 
 namespace Exceptions;
 
+use Exception;
+
 /**
  * Thrown when invalid input is received at the E_User object
  */
-class photo_details extends \Exception
+class photo_details extends Exception
 {
     public function __construct($code, $exc)
     {

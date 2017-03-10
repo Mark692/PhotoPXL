@@ -23,6 +23,7 @@ use P\photo;
 use P\PMAusers;
 use P\std_user;
 use P\user;
+use PDOException;
 use Utilities\Roles;
 
 class installer extends F_Database
