@@ -51,7 +51,6 @@ require_once $path."config.inc.php";
 
 
 
-
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));
 echo(nl2br("\r\n"));

@@ -644,12 +644,4 @@ class F_Photo extends F_Database
         }
         return FALSE;
     }
-
-
-
-
-
-
-
-
 }

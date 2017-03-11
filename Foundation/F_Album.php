@@ -385,4 +385,26 @@ class F_Album extends F_Database
         F_Photo::delete_ALL_fromAlbum($album_ID);
         self::delete($album_ID);
     }
+
+
+    /**
+     * Checks whether the user is the creator of the album.
+     * This will enable/disable the update for the album
+     *
+     * @param string $username The user to check with the album's creator
+     * @param int $album_ID The album's ID to get the creator from
+     * @return boolean Whether the user is the creator of the album
+     */
+    public static function is_TheCreator($username, $album_ID)
+    {
+        $select = array("user");
+        $from = "album";
+        $where = array("id" => $album_ID);
+        $uploader = parent::get_One($select, $from, $where);
+        if($username === $uploader["user"])
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
 }

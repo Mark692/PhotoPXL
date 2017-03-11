@@ -354,4 +354,18 @@ class E_Album
     {
         F_Album::delete_Album_AND_Photos($album_ID);
     }
+
+
+    /**
+     * Checks whether the user is the creator of the album.
+     * This will enable/disable the update for the album
+     *
+     * @param string $username The user to check with the album's creator
+     * @param int $album_ID The album's ID to get the creator from
+     * @return boolean Whether the user is the creator of the album
+     */
+    public static function is_TheCreator($username, $album_ID)
+    {
+        return F_Album::is_TheCreator($username, $album_ID);
+    }
 }

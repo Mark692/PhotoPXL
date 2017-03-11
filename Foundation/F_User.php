@@ -328,7 +328,7 @@ class F_User extends F_Database
         $pdo_stmt->execute();
         $pdo = NULL;
 
-        return boolvar($pdo_stmt->rowCount());
+        return boolval($pdo_stmt->rowCount());
 
 //        parent::execute_Query($query, $toBind);
     }
