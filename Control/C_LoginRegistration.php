@@ -9,9 +9,8 @@
 namespace Control;
 
 use Entity\E_User_Standard;
-//use Foundation\F_User; //Can use its methods from the related E_ class
-//use Foundation\F_User_Standard; //Can use its methods from the related E_ class
 use Utilities\U_Nonce;
+use Utilities\Roles;
 use Exceptions\input_texts;
 
 /**
@@ -85,7 +84,7 @@ class C_LoginRegistration
             E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
-            $_SESSION['role'] = \Utilities\Roles::STANDARD;
+            $_SESSION['role'] = Roles::STANDARD;
         }
         catch(input_texts $e)
         {
