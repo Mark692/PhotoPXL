@@ -21,7 +21,6 @@ class E_Album
 {
     private $ID;
     private $title;
-    private $creator;
     private $description;
     private $categories = [];
     private $creation_date;
@@ -38,15 +37,13 @@ class E_Album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album
      */
-    public function __construct($title, $creator, $desc='', $categories=[], $creation_date = 0)
+    public function __construct($title, $desc='', $categories=[], $creation_date = 0)
     {
         if($this->check_Title($title) === FALSE)
         {
             throw new input_texts(2, $title);
         }
         $this->set_Title($title);
-
-        $this->set_Creator($creator);
 
 
         if($desc !== '' && $this->check_Description($desc) === FALSE)
@@ -130,28 +127,6 @@ class E_Album
     public function get_Title()
     {
         return $this->title;
-    }
-
-
-    /**
-     * Sets the creator for this album
-     *
-     * @param string $creator The creator of this album
-     */
-    private function set_Creator($creator)
-    {
-        $this->creator = $creator;
-    }
-
-
-    /**
-     * Retrieves the creator of this album
-     *
-     * @return string The creator of this album
-     */
-    public function get_Creator()
-    {
-        return $this->creator;
     }
 
 

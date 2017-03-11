@@ -21,7 +21,6 @@ class E_Photo
 {
     private $ID;
     private $title;
-    private $uploader;
     private $description;
     private $is_reserved;
     private $categories = [];
@@ -37,22 +36,19 @@ class E_Photo
      * - $up_date = time()
      *
      * @param string $title The title given by the user
-     * @param string $uploader The user that uploaded this photo
      * @param string $desc The description given by the user
      * @param bool $is_reserved Whether the photo is reserved or public
      * @param array $cat The categories of this photo
      * @param array $likes The list of users that liked the photo
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
      */
-    public function __construct($title, $uploader, $desc = '', $is_reserved = FALSE, $cat = [], $up_Date = 0, $likes = [], $comments = [])
+    public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $up_Date = 0, $likes = [], $comments = [])
     {
         if($this->check_Title($title) === FALSE)
         {
             throw new input_texts(2, $title);
         }
         $this->set_Title($title);
-
-        $this->set_Uploader($uploader);
 
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
@@ -140,28 +136,6 @@ class E_Photo
             }
         }
         return FALSE;
-    }
-
-
-    /**
-     * Sets the uploader for this photo
-     *
-     * @param string $uploader The uploader of this photo
-     */
-    private function set_Uploader($uploader)
-    {
-        $this->uploader = $uploader;
-    }
-
-
-    /**
-     * Retrieves the uploader of this photo
-     *
-     * @return string The uploader of this photo
-     */
-    public function get_Uploader()
-    {
-        return $this->uploader;
     }
 
 

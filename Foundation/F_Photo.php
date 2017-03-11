@@ -23,17 +23,17 @@ class F_Photo extends F_Database
      * @param E_Photo_Blob $photo_details The blob file, its size and type
      * @param string $uploader The uploader's username
      */
-    public static function insert(E_Photo $photo, E_Photo_Blob $photo_details)
+    public static function insert(E_Photo $photo, E_Photo_Blob $photo_details, $uploader)
     {
         //Insert all photo details but the categories
         $insertInto = "photo";
 
         $set = array(
             "title" => $photo->get_Title(),
-            "user" => $photo->get_Uploader(),
             "description" => $photo->get_Description(),
             "upload_date" => $photo->get_Upload_Date(),
             "is_reserved" => $photo->get_Reserved(),
+            "user" => $uploader,
             "fullsize" => $photo_details->get_Fullsize(),
             "thumbnail" => $photo_details->get_Thumbnail(),
             "size" => $photo_details->get_Size(),
