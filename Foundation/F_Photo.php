@@ -241,7 +241,7 @@ class F_Photo extends F_Database
 
 
     /**
-     * Rethrives all the photos with the selected categories
+     * Retrives all the photos with the selected categories
      *
      * @param array $cats The categories to search
      * @param string $user_Watching The user trying to look at the photo

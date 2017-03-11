@@ -366,9 +366,4 @@ class E_User
     {
         F_User::remove_Like($username, $photo_ID);
     }
-    
-    public static function getRole($username)
-    {
-        return F_User::get_Role($username);
-    }
 }
