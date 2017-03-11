@@ -349,10 +349,11 @@ class E_User
      *
      * @param int $photo_ID The photo's ID
      * @param string $username The user's username
+     * @return bool Whether the like has been added or not (case when already present)
      */
     public static function add_Like_to($photo_ID, $username)
     {
-        F_User::add_Like_to($photo_ID, $username);
+        return F_User::add_Like_to($photo_ID, $username);
     }
 
 
@@ -361,9 +362,10 @@ class E_User
      *
      * @param string $username The user that wants to remove the like
      * @param int $photo_ID The target photo's ID
+     * @return bool Whether the like was removed successfully or not
      */
     public static function remove_Like($username, $photo_ID)
     {
-        F_User::remove_Like($username, $photo_ID);
+        return F_User::remove_Like($username, $photo_ID);
     }
 }

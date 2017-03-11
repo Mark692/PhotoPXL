@@ -26,7 +26,7 @@ class F_Database
      * @throws queries In case of connection errors
      * @return PDO The PDO connection to the DB
      */
-    private static function connect()
+    protected static function connect()
     {
         try
         {

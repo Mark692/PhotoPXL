@@ -283,6 +283,7 @@ class F_User extends F_Database
      *
      * @param int $photo_ID The photo's ID
      * @param string $username The user's username
+     * @return bool Whether the like has been added or not (case when already present)
      */
     public static function add_Like_to($photo_ID, $username)
     {
@@ -312,6 +313,7 @@ class F_User extends F_Database
      *
      * @param string $username The user that wants to remove the like
      * @param int $photo_ID The target photo's ID
+     * @return bool Whether the like was removed successfully or not
      */
     public static function remove_Like($username, $photo_ID)
     {
@@ -319,6 +321,15 @@ class F_User extends F_Database
                 ."WHERE (`user`=?) AND (`photo`=?)";
 
         $toBind = array($username, $photo_ID);
-        parent::execute_Query($query, $toBind);
+
+        $pdo = parent::connect();
+        $pdo_stmt = $pdo->prepare($query);
+        parent::bind_params($pdo_stmt, $toBind);
+        $pdo_stmt->execute();
+        $pdo = NULL;
+
+        return boolvar($pdo_stmt->rowCount());
+
+//        parent::execute_Query($query, $toBind);
     }
 }
