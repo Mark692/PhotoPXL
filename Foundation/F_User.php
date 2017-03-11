@@ -301,7 +301,9 @@ class F_User extends F_Database
         {
             $insertInto = "likes";
             parent::insert_Query($insertInto, $toBind);
+            return TRUE;
         }
+        return FALSE;
     }
 
 
