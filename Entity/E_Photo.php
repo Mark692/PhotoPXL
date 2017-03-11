@@ -50,7 +50,7 @@ class E_Photo
         }
         $this->set_Title($title);
 
-        
+
         if($desc !== '' && $this->check_Description($desc) === FALSE)
         {
             throw new input_texts(3, $desc);
@@ -513,5 +513,19 @@ class E_Photo
     public static function move_To($album_ID, $photo_ID)
     {
         F_Photo::move_To($album_ID, $photo_ID);
+    }
+
+
+    /**
+     * Checks whether the user is the uploader of the photo.
+     * This will enable/disable the update for the photo
+     *
+     * @param string $username The user to check with the photo's uploader
+     * @param int $photo_ID The photo's ID to get the uploader from
+     * @return boolean Whether the user is the uploader
+     */
+    public static function is_TheUploader($username, $photo_ID)
+    {
+        return F_Photo::is_TheUploader($username, $photo_ID);
     }
 }

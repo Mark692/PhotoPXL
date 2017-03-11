@@ -622,4 +622,34 @@ class F_Photo extends F_Database
         }
         return '';
     }
+
+
+    /**
+     * Checks whether the user is the uploader of the photo.
+     * This will enable/disable the update for the photo
+     *
+     * @param string $username The user to check with the photo's uploader
+     * @param int $photo_ID The photo's ID to get the uploader from
+     * @return boolean Whether the user is the uploader
+     */
+    public static function is_TheUploader($username, $photo_ID)
+    {
+        $select = array("user");
+        $from = "photo";
+        $where = array("id" => $photo_ID);
+        $uploader = parent::get_One($select, $from, $where);
+        if($username === $uploader["user"])
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+
+
+
+
+
+
+
 }
