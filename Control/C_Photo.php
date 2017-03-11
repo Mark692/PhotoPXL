@@ -31,8 +31,8 @@ class C_Photo {
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
         /* @var $photo \Entity\E_Photo */
-        if ($role != Roles::MOD and $role != Roles::ADMIN and 
-                ( $photo->get_Reserved() and 
+        if ($role != Roles::MOD and $role != Roles::ADMIN and
+                ( $photo->get_Reserved() and
                 ! E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
             V_Home::notAllowed();
             //per federico: richiama la home e scrive "non consentito" al posto delle anteprime foto
@@ -130,7 +130,7 @@ class C_Photo {
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
         /* @var $photo \Entity\E_Photo */
         if ($role != Roles::MOD and $role != Roles::ADMIN
-                and ( $photo->get_Reserved() and 
+                and ( $photo->get_Reserved() and
                 ! E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
             V_Home::notAllowed();
         }
@@ -195,8 +195,8 @@ class C_Photo {
             return false;
         }
         if (!is_null($newAlbumId)) {
-            E_Photo::move_To($newAlbumId, $photoId);
-        } 
+            E_Photo::move_To($photoId, $newAlbumId);
+        }
             else;
     }
 

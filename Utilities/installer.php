@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -53,6 +52,11 @@ class installer extends F_Database
      */
     public function DB_FirstInstallation()
     {
+        echo("Elimino le tabelle se già esistenti...");
+        echo(nl2br("\r\n"));
+        $this->drop_it();
+
+
         echo("Procedo alla creazione del DB... ");
         try
         {
@@ -94,6 +98,34 @@ class installer extends F_Database
 
         echo(nl2br("\r\n"));
         echo("Ora puoi procedere nell'uso dell'applicazione :)");
+    }
+
+
+    /**
+     * Drops every table in the DB to enable a correct installation
+     */
+    private function drop_it()
+    {
+        $query = "DROP TABLE `profile_pic`; "
+                ."DROP TABLE `comment`; "
+                ."DROP TABLE `likes`; "
+                ."DROP TABLE `photo_album`; "
+                ."DROP TABLE `album_cover`; "
+                ."DROP TABLE `cat_photo`; "
+                ."DROP TABLE `cat_album`; "
+                ."DROP TABLE `categories`; "
+                ."DROP TABLE `album`; "
+                ."DROP TABLE `photo`; "
+                ."DROP TABLE `users`;";
+        $toBind = [];
+        try
+        {
+            parent::execute_Query($query, $toBind);
+        }
+        catch(PDOException $e)
+        {
+            return FALSE;
+        }
     }
 
 
@@ -201,7 +233,6 @@ class installer extends F_Database
     }
 
 
-
     public function try_Functions()
     {
         $separa = "_____________________________________________________________________";
@@ -279,7 +310,7 @@ class installer extends F_Database
         echo("Per poter proseguire devo inserire delle foto...");
         echo(nl2br("\r\n"));
         echo(nl2br("\r\n"));
-        for($i = 1; $i<18; $i++)
+        for($i = 1; $i < 18; $i++)
         {
             $photo = new photo();
             $photo->INSERT($i);
@@ -287,7 +318,7 @@ class installer extends F_Database
         echo("Modifico i dettagli di alcune foto con UPDATE()");
         echo(nl2br("\r\n"));
         echo(nl2br("\r\n"));
-        for($i = 1; $i<4; $i++)
+        for($i = 1; $i < 4; $i++)
         {
             $photo = new photo();
             $photo->UPDATE(rand(3, 19));
@@ -397,20 +428,20 @@ class installer extends F_Database
 
         echo("Vengono creati degli album: ");
 
-        for($i = 1; $i<9; $i++)
+        for($i = 1; $i < 9; $i++)
         {
             $album = new album();
             $album->INSERT();
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        echo("Aggiornamento dei dettagli:");
-        echo(nl2br("\r\n"));
-        $album->UPDATE_DETAILS($i);
-        echo(nl2br("\r\n"));
-        echo(nl2br("\r\n"));
-        echo("Cambio cover:");
-        echo(nl2br("\r\n"));
-        $album->SET_COVER($i);
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
+            echo("Aggiornamento dei dettagli:");
+            echo(nl2br("\r\n"));
+            $album->UPDATE_DETAILS($i);
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
+            echo("Cambio cover:");
+            echo(nl2br("\r\n"));
+            $album->SET_COVER($i);
         }
 
 
@@ -507,11 +538,6 @@ class installer extends F_Database
         $photo->DELETE_ALL_FROMALBUM();
         echo(nl2br("\r\n").$separa.nl2br("\r\n").nl2br("\r\n"));
     }
-
-
-
-
-
 
 
     /**

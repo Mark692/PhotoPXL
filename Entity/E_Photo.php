@@ -506,12 +506,12 @@ class E_Photo
      * Moves a photo to another album and sets a default cover for the album if
      * it would be empty after the move
      *
-     * @param int $album_ID The new album ID to move to photo to
      * @param int $photo_ID The photo to move
+     * @param int $album_ID The new album ID to move to photo to
      */
-    public static function move_To($album_ID, $photo_ID)
+    public static function move_To($photo_ID, $album_ID = '')
     {
-        F_Photo::move_To($album_ID, $photo_ID);
+        F_Photo::move_To($photo_ID, $album_ID);
     }
 
 
