@@ -8,7 +8,7 @@
 
 namespace Control;
 
-use Foundation\F_User;
+use Entity\E_User;
 use Utilities\Roles;
 
 /**
@@ -25,18 +25,20 @@ class C_Administration {
      * @return boolean
      */
     public static function changeRole($username, $role) {
-        if ($role == Roles::BANNED or $role == Roles::STANDARD or $role == Roles::PRO
-                or $role == Roles::MOD or $role == Roles::ADMIN) {
-            if (F_User::is_Available($username)) {
-                $userInfo = F_User::get_UserDetails($username);
-                /* @var $userInfo \Entity\E_User */
-                $userInfo->set_Role($role);
-            } else {
-                return false;
-            }
-        } else {
+        if ($role != Roles::BANNED and $role != Roles::STANDARD and $role != Roles::PRO
+                and $role != Roles::MOD and $role != Roles::ADMIN) {
             return false;
         }
+        $uRole = E_User::get_DB_Role($_SESSION["username"]);
+        if ($uRole != Roles::ADMIN and $uRole != Roles::MOD) {
+            return false;
+        }
+        if (!E_User::is_Available($username)) {
+            return false;
+        }
+        $userInfo = E_User::get_UserDetails($username);
+        /* @var $userInfo \Entity\E_User */
+        $userInfo->set_Role($role);
         return true;
     }
 

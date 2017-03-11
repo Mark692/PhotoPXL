@@ -23,17 +23,35 @@ use View\V_Foto;
  */
 class C_Photo {
 
-    public function see($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
+    private $role;
+
+    public function __construct() {
+        $this->role = E_User::get_DB_Role($_SESSION["username"]);
+    }
+
+    private function isBanned() {
+        if ($this->role == Roles::BANNED) {
             V_Home::bannedHome(); //per federico
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @param \Entity\E_Photo $photo 
+     */
+    private function checkPrivacyOwner($photo){
+        return $photo->get_Reserved() and ! E_Photo::is_TheUploader($_SESSION["username"], $photo->get_ID());
+    }
+
+    public function see($photoId) {
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
-        if ($role != Roles::MOD and $role != Roles::ADMIN and
-                ( $photo->get_Reserved() and
-                ! E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
+        if ($this->role != Roles::MOD and $this->role != Roles::ADMIN and $this->checkPrivacyOwner($photo)) {
             V_Home::notAllowed();
             //per federico: richiama la home e scrive "non consentito" al posto delle anteprime foto
             return false;
@@ -52,16 +70,14 @@ class C_Photo {
                 return false;
             }
         }
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
             V_Home::error();
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION['username'], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION['username'], $this->role);
         /* @var $photo \Entity\E_Photo */
         $photo->set_Title($title);
         $photo->set_Categories($categories);
@@ -72,8 +88,7 @@ class C_Photo {
     }
 
     public function upload($photoPath, $title, $categories, $description, $albumId = null) {
-        if (E_User::get_DB_Role($_SESSION["username"]) == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
         $photo_blob = new E_Photo_Blob();
@@ -89,14 +104,12 @@ class C_Photo {
     }
 
     public function comment($photoId, $text) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
-        if ($photo->get_Reserved() and ! E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
+        if ($this->checkPrivacyOwner($photo)) {
             V_Home::notAllowed();
             return false;
         }
@@ -104,14 +117,12 @@ class C_Photo {
     }
 
     public function likeUnlike($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
-        if ($photo->get_Reserved() and ! E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
+        if ($this->checkPrivacyOwner($photo)) {
             V_Home::notAllowed();
             return false;
         }
@@ -122,68 +133,55 @@ class C_Photo {
     }
 
     public function delete($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
-        if ($role != Roles::MOD and $role != Roles::ADMIN
-                and ( $photo->get_Reserved() and
-                ! E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
+        if ($this->role != Roles::MOD and $this->role != Roles::ADMIN
+                and $this->checkPrivacyOwner($photo)) {
             V_Home::notAllowed();
         }
         E_Photo::delete($photoId);
     }
 
     public function privacy($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        if ($role == Roles::STANDARD or ( !E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
+        if ($this->role == Roles::STANDARD or ( !E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
             V_Home::notAllowed();
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         $photo->set_Reserved(!$photo->get_Reserved());
         E_Photo::update($photoId);
     }
 
     public function searchByCategory($category) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
-        E_Photo::get_By_Categories($category, $_SESSION["username"], $role);
+        E_Photo::get_By_Categories($category, $_SESSION["username"], $this->role);
     }
 
     public function seeComments($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
         E_Photo::get_DB_CommentsList($photoId);
     }
 
     public function seeLikes($photoId) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
         E_Photo::get_DB_LikeList($photoId);
     }
 
     public function changeAlbum($photoId, $newAlbumId = null) {
-        $role = E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+        if ($this->isBanned($this->role)) {
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
@@ -194,10 +192,7 @@ class C_Photo {
             V_Home::notAllowed();
             return false;
         }
-        if (!is_null($newAlbumId)) {
-            E_Photo::move_To($photoId, $newAlbumId);
-        }
-            else;
+        E_Photo::move_To($photoId, $newAlbumId);
     }
 
 }
