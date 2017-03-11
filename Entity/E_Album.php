@@ -53,7 +53,7 @@ class E_Album
         $this->set_Description($desc);
 
 
-        if($this->check_Categories($categories) === FALSE)
+        if(self::check_Categories($categories) === FALSE)
         {
             throw new input_texts(4, $desc);
         }

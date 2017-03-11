@@ -57,7 +57,7 @@ class E_Photo
         $this->set_Description($desc);
 
 
-        if($this->check_Categories($cat) === FALSE)
+        if(self::check_Categories($cat) === FALSE)
         {
             throw new input_texts(4, $desc);
         }
