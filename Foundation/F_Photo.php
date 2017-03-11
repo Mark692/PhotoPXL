@@ -15,7 +15,6 @@ use const PHOTOS_PER_PAGE;
 
 class F_Photo extends F_Database
 {
-
     /**
      * Saves a photo object and sets its ID into the $photo object
      *
@@ -29,23 +28,23 @@ class F_Photo extends F_Database
         $insertInto = "photo";
 
         $set = array(
-            "title" => $photo->get_Title(),
+            "title"       => $photo->get_Title(),
             "description" => $photo->get_Description(),
             "upload_date" => $photo->get_Upload_Date(),
             "is_reserved" => $photo->get_Reserved(),
-            "user" => $uploader,
-            "fullsize" => $photo_details->get_Fullsize(),
-            "thumbnail" => $photo_details->get_Thumbnail(),
-            "size" => $photo_details->get_Size(),
-            "type" => $photo_details->get_Type()
-                );
+            "user"        => $uploader,
+            "fullsize"    => $photo_details->get_Fullsize(),
+            "thumbnail"   => $photo_details->get_Thumbnail(),
+            "size"        => $photo_details->get_Size(),
+            "type"        => $photo_details->get_Type()
+        );
 
         $photo_ID = parent::insert_Query($insertInto, $set);
         $photo->set_ID($photo_ID);
 
         //Finally inserts categories
         $cats = $photo->get_Categories();
-        if($cats!==[])
+        if($cats !== [])
         {
             $query = self::query_addCats($cats, $photo_ID);
             parent::execute_Query($query, $cats);
@@ -63,11 +62,11 @@ class F_Photo extends F_Database
         $id = $to_Update->get_ID();
         $update = "photo";
         $set = array(
-            "title" => $to_Update->get_Title(),
+            "title"       => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
             "upload_date" => $to_Update->get_Upload_Date(),
             "is_reserved" => $to_Update->get_Reserved()
-                );
+        );
         $where = array("id" => $id);
         parent::update($update, $set, $where);
 
@@ -86,7 +85,7 @@ class F_Photo extends F_Database
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array The user's photos
      */
-    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         $select = array("id", "thumbnail", "type");
         $from = "photo";
@@ -158,22 +157,16 @@ class F_Photo extends F_Database
 
 
         $e_photo = new E_Photo(
-                $photo["title"],
-                $photo["description"],
-                $photo["is_reserved"],
-                $cats,
-                $photo["upload_date"],
-                $liked_By,
-                $commented_By
-                );
+                $photo["title"], $photo["description"], $photo["is_reserved"], $cats, $photo["upload_date"], $liked_By, $commented_By
+        );
         $e_photo->set_ID($id);
 
         return array(
-            "photo" => $e_photo,
+            "photo"    => $e_photo,
             "uploader" => $photo["user"],
             "fullsize" => $photo["fullsize"],
-            "type" => $photo["type"]
-            );
+            "type"     => $photo["type"]
+        );
     }
 
 
@@ -189,7 +182,7 @@ class F_Photo extends F_Database
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with photo IDs and thumbnails
      */
-    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         $limit = PHOTOS_PER_PAGE;
         $offset = PHOTOS_PER_PAGE * ($page_toView - 1);
@@ -208,12 +201,12 @@ class F_Photo extends F_Database
         $user_clause = self::add_ClauseNoPermission($user_Role);
         $query .= $user_clause
                 .'ORDER BY `id` ';
-        if ($order_DESC===TRUE)
+        if($order_DESC === TRUE)
         {
             $query .= 'DESC ';
         }
         $query .= 'LIMIT '.$limit.' '
-                 .'OFFSET '.$offset;
+                .'OFFSET '.$offset;
 
         $toBind = array($album_ID);
         if($user_clause !== '')
@@ -250,11 +243,11 @@ class F_Photo extends F_Database
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the photos matching the categories selected.
      */
-    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         $where = '(';
         //Alternate $where = `category` IN ( foreach($cats as $c) );
-        for($i=0; $i<count($cats); $i++)
+        for($i = 0; $i < count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
         }
@@ -264,21 +257,22 @@ class F_Photo extends F_Database
 
         $query = 'SELECT DISTINCT `id`, `thumbnail`, `type` '
                 .'FROM `photo` '
-                .'WHERE `id` in ('
+                .'WHERE `id` in '
+                .'( '
                     .'SELECT DISTINCT `photo` '
                     .'FROM `cat_photo` '
                     .'WHERE '.$where
-                    .') ';
+                .') ';
 
         $noPermissions = self::add_ClauseNoPermission($user_Role);
         $query .= $noPermissions
                 .'ORDER BY photo.id ';
-        if($order_DESC===TRUE)
+        if($order_DESC === TRUE)
         {
             $query .= 'DESC ';
         }
         $query .= 'LIMIT '.$limit.' '
-                 .'OFFSET '.$offset;
+                .'OFFSET '.$offset;
 
         $fetchAll = TRUE;
         $toBind = $cats;
@@ -315,10 +309,10 @@ class F_Photo extends F_Database
         $query_DEL = self::query_removeCats($to_remove, $photo_ID);
         $query = $query_ADD.$query_DEL;
 
-        if($query_ADD!=='')
+        if($query_ADD !== '')
         {
             $toBind = array_values($to_add);
-            if($query_DEL!=='')
+            if($query_DEL !== '')
             {
                 foreach($to_remove as $c)
                 {
@@ -327,7 +321,7 @@ class F_Photo extends F_Database
             }
             parent::execute_Query($query, $toBind);
         }
-        elseif($query_DEL!=='')
+        elseif($query_DEL !== '')
         {
             $toBind = array_values($to_remove);
             parent::execute_Query($query, $toBind);
@@ -345,13 +339,13 @@ class F_Photo extends F_Database
     private static function query_addCats($cats, $photo_ID)
     {
         $tot_cats = count($cats);
-        if($tot_cats===0)
+        if($tot_cats === 0)
         {
             return '';
         }
         $query = "INSERT INTO `cat_photo` (`photo`, `category`) "
                 ."VALUES ";
-        for($i=0; $i<$tot_cats; $i++)
+        for($i = 0; $i < $tot_cats; $i++)
         {
             $query .= "('$photo_ID', ?),";
         }
@@ -369,14 +363,14 @@ class F_Photo extends F_Database
     private static function query_removeCats($cats, $photo_ID)
     {
         $tot_cats = count($cats);
-        if($tot_cats===0)
+        if($tot_cats === 0)
         {
             return '';
         }
         $query = "DELETE FROM `cat_photo` "
                 ."WHERE (`photo`=$photo_ID) "
                 ."AND (";
-        for($i=0; $i<$tot_cats; $i++)
+        for($i = 0; $i < $tot_cats; $i++)
         {
             $query .= "(`category`=?) OR ";
         }
@@ -397,7 +391,7 @@ class F_Photo extends F_Database
         $where = array("photo" => $photo_ID);
         $cats_array = parent::get_All($select, $from, $where);
 
-        $cats=[];
+        $cats = [];
         foreach($cats_array as $c)
         {
             array_push($cats, intval($c["category"]));
@@ -515,11 +509,12 @@ class F_Photo extends F_Database
     {
         //Deletes the album photos
         $query = 'DELETE FROM `photo` '
-                ."WHERE id IN ("
+                ."WHERE id IN "
+                ."( "
                     ."SELECT `photo` "
                     ."FROM `photo_album` "
                     ."WHERE `album`=?" //$album_ID
-                    .")";
+                .")";
 
         $toBind = array("id" => $album_ID);
         parent::execute_Query($query, $toBind);
@@ -527,27 +522,38 @@ class F_Photo extends F_Database
 
 
     /**
-     * Moves a photo to another album and sets a default cover for the album if
-     * it would be empty after the move
+     * Moves a photo to another album.
+     * Use $album='' to move the photo out of the album
      *
      * @param int $photo_ID The photo to move
      * @param int $album_ID The new album ID to move to photo to
      */
-    public static function move_To($photo_ID, $album_ID)
+    public static function move_To($photo_ID, $album_ID = '')
     {
-        $has_anAlbum = self::has_anAlbum($photo_ID); //Whether the photo was already in an album
+        if($album_ID !== '') //The photo will be moved to an existing album
+        {
+            $has_anAlbum = self::has_anAlbum($photo_ID); //Whether the photo was already in an album
 
-        $table = "photo_album";
-        if($has_anAlbum) //Already exists -> Update it
-        {
-            $set = array("album" => $album_ID);
-            $where = array("photo" => $photo_ID);
-            parent::update($table, $set, $where);
+            $table = "photo_album";
+            if($has_anAlbum) //Already exists -> Update it
+            {
+                $set = array("album" => $album_ID);
+                $where = array("photo" => $photo_ID);
+                parent::update($table, $set, $where);
+            }
+            else //Does not exists -> Insert it
+            {
+                $set = array("album" => $album_ID, "photo" => $photo_ID);
+                parent::insert_Query($table, $set);
+            }
         }
-        else //Does not exists -> Insert it
+        else //Removes the photo from the current album
         {
-            $set = array("album" => $album_ID, "photo" => $photo_ID);
-            parent::insert_Query($table, $set);
+            $query = 'DELETE FROM `photo_album` '
+                    .'WHERE (photo.id = ?)'; //$photo_ID
+
+            $toBind = array($photo_ID);
+            parent::execute_Query($query, $toBind);
         }
     }
 
@@ -644,4 +650,6 @@ class F_Photo extends F_Database
         }
         return FALSE;
     }
+
+
 }

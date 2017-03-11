@@ -503,8 +503,8 @@ class E_Photo
 
 
     /**
-     * Moves a photo to another album and sets a default cover for the album if
-     * it would be empty after the move
+     * Moves a photo to another album.
+     * Use $album='' to move the photo out of the album
      *
      * @param int $photo_ID The photo to move
      * @param int $album_ID The new album ID to move to photo to
