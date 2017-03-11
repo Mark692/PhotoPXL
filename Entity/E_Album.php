@@ -196,7 +196,7 @@ class E_Album
      * @param array $cats The categories to evaluate
      * @return bool Whether the categories are all valid entry
      */
-    private function check_Categories($cats)
+    public static function check_Categories($cats)
     {
         foreach($cats as $c)
         {
