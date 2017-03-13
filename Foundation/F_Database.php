@@ -16,7 +16,6 @@ use PDOStatement;
 /**
  * This class enables basic DB operations
  */
-
 class F_Database
 {
     /**
@@ -33,10 +32,10 @@ class F_Database
             global $config;
             $connection = new PDO(
                     'mysql:host='.$config['mysql_host'].'; '
-                   .'dbname='.$config['mysql_database'],
+                    .'dbname='.$config['mysql_database'],
                     $config['mysql_user'],
                     $config['mysql_password']
-                    );
+            );
 
             //Sostituzione di PDO::ERRMOD_SILENT
 //            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT); //Decommenta in Produzione
@@ -55,14 +54,23 @@ class F_Database
      *
      * @param string $query The query used to save a record on the DB
      * @param array $toBind The array of values to bind at the query
-     * @return string The last inserted (primary key, auto_incremental) ID. It will show 0 if no ID column exists in the table
+     * @throws queries In case of connection errors
+     * @return string The last inserted (primary key, auto_incremental) ID.
+     *                It will return 0 if no ID column exists in the table
      */
     protected static function execute_Query($query, $toBind)
     {
         $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
-        $pdo_stmt->execute();
+        try
+        {
+            $pdo_stmt->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new queries(5, $e);
+        }
 
         $last_id = $pdo->lastInsertId();
         $pdo = NULL; //Closes DB connection
@@ -75,6 +83,7 @@ class F_Database
      *
      * @param string $insertInto The table to put the record in
      * @param array $set The values to insert
+     * @throws queries In case of connection errors
      * @return int The last inserted ID
      */
     protected static function insert_Query($insertInto, $set)
@@ -99,6 +108,7 @@ class F_Database
      * @param string $query The query to execute
      * @param array $toBind The values to bind to the query
      * @param bool $fetchAll Whether to return one (FALSE) or all (TRUE) the records that match the query
+     * @throws queries In case of connection errors
      * @return mixed array An associative array with a numeric keys.
      *                     At each key corresponds another associative array with
      *                     keys named as DB column and their values are the DB records
@@ -109,7 +119,14 @@ class F_Database
         $pdo = self::connect();
         $pdo_stmt = $pdo->prepare($query);
         self::bind_params($pdo_stmt, $toBind);
-        $pdo_stmt->execute();
+        try
+        {
+            $pdo_stmt->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new queries(5, $e);
+        }
 
         $pdo = NULL; //Closes DB connection
         if($fetchAll === TRUE)
@@ -149,8 +166,8 @@ class F_Database
         $where_clause = substr($where_clause, 0, -5); //Removes the " AND " at the end of the string
 
         return $query = 'SELECT '.$select_columns.' '
-                       .'FROM `'.$from.'` '
-                       .'WHERE '.$where_clause;
+                .'FROM `'.$from.'` '
+                .'WHERE '.$where_clause;
     }
 
 
@@ -160,6 +177,7 @@ class F_Database
      * @param array $select The columns to select. Use a string "*" to select all
      * @param string $from The DB table to search in
      * @param array $where The associative array with the values to search for
+     * @throws queries In case of connection errors
      * @return mixed An array with the record matching the query
      *               boolean FALSE in case no record matched the query
      */
@@ -180,6 +198,7 @@ class F_Database
      * @param int $offset Sets how many records skip before fetching the results
      * @param string $orderBy_column The table column chosen to order the results
      * @param bool $order_DESC Whether to return results in ASCendent or DESCendent style
+     * @throws queries In case of connection errors
      * @return array The associative array with all the records that matched the query
      *               An ampty array [] in case no record were affected by the query
      */
@@ -198,7 +217,7 @@ class F_Database
 
         if($limit !== 0)
         {
-            $query .=' LIMIT '.$limit
+            $query .= ' LIMIT '.$limit
                     .' OFFSET '.$offset;
         }
         $fetchAll = TRUE;
@@ -214,6 +233,7 @@ class F_Database
      * @param string $update The DB table into execute the query
      * @param array $set An ARRAY containing new details got from "View"
      * @param array $where The array with information about the column and its value to search for the update
+     * @throws queries In case of connection errors
      */
     protected static function update($update, $set, $where)
     {
@@ -249,6 +269,7 @@ class F_Database
      * @param string $from The table to count in
      * @param string $where The clauses to be matched for the count
      * @param array $toBind The values to bind at the query
+     * @throws queries In case of connection errors
      * @return int The number of affected rows
      */
     protected static function count($count, $from, $where, $toBind = [])
@@ -267,6 +288,7 @@ class F_Database
      *
      * @param PDOStatement $pdo_stmt The PDOStatement object to bind the parameters to
      * @param array $toBind The array of parameters to bind
+     * @throws queries In case of invalid parameters to bind
      * @return PDOStatement The object to execute()
      */
     protected static function bind_params(PDOStatement $pdo_stmt, $toBind)
@@ -276,11 +298,20 @@ class F_Database
             $i = 1; //Needed to specify which placeholder to bind
             foreach($toBind as $k => $v)
             {
-                //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
-                $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
+                try
+                {
+                    //$pdo_stmt->bindParam($i, $v); //THIS IS INCORRECT!! IT WILL APPLY THE LAST VALUE TO ALL RECORDS!
+                    $pdo_stmt->bindParam($i, $toBind[$k]); //Correctly binds parameters
+                }
+                catch(PDOException $e)
+                {
+                    throw new queries(6, $e);
+                }
                 $i++;
             }
             return $pdo_stmt;
         }
     }
+
+
 }

@@ -134,7 +134,7 @@ class C_Photo {
         $photo->set_Description($description);
         $photoId = E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
         if (!is_null($albumId)) {
-            E_Photo::move_To($albumId, $photoId);
+            E_Photo::move_To($photoId, $albumId);
         }
         return true;
     }

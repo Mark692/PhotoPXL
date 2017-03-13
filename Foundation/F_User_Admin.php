@@ -19,6 +19,7 @@ class F_User_Admin extends F_User_MOD
      *
      * @param string $username The user's username
      * @param int $new_Role The user's new role
+     * @throws queries In case of connection errors
      */
     public static function change_Role($username, $new_Role)
     {

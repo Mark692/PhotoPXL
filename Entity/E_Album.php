@@ -260,6 +260,7 @@ class E_Album
      *
      * @param E_Album $album The album to save
      * @param string $owner The $owner's username
+     * @throws queries In case of connection errors
      */
     public static function insert(E_Album $album, $owner)
     {
@@ -271,6 +272,7 @@ class E_Album
      * Updates the album details
      *
      * @param E_Album $to_Update The new Album object to save
+     * @throws queries In case of connection errors
      */
     public static function update_Details(E_Album $to_Update)
     {
@@ -283,6 +285,7 @@ class E_Album
      *
      * @param int $album_ID The album ID to update
      * @param int $photo_ID The new cover chosen for the album
+     * @throws queries In case of connection errors
      */
     public static function set_Cover($album_ID, $photo_ID)
     {
@@ -296,7 +299,14 @@ class E_Album
      * @param string $username The user's username selected to get the albums from
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
-     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
+     * @throws queries In case of connection errors
+     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created.
+     *               How to access to the array:
+     *               - "id" => the album's ID
+     *               - "title" => the album's title
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "tot_album" => The number of albums matching the query
      */
     public static function get_By_User($username, $page_toView=1, $order_DESC=FALSE)
     {
@@ -308,8 +318,14 @@ class E_Album
      * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
      * @param int $id The album ID to search for
-     * @return mixed An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
-                     A boolean FALSE if no album matches the query
+     * @throws queries In case of connection errors
+     * @return mixed A boolean FALSE if no album matches the query.
+     *               An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
+                     How to access to the array:
+     *               - "album" => the \Entity\E_Album object
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "username" => The user's username that created the album
      */
     public static function get_By_ID($id)
     {
@@ -323,7 +339,14 @@ class E_Album
      * @param array $cats The categories to search
      * @param int $page_toView The number of page to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array An array with the albums matching the categories selected.
+     *               How to access to the array:
+     *               - "id" => the album's ID
+     *               - "title" => the album's title
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "tot_album" => The number of albums matching the query
      */
     public static function get_By_Categories($cats, $page_toView=1, $order_DESC=FALSE)
     {
@@ -338,6 +361,7 @@ class E_Album
      * To delete an album and all its photos use F_Album::delete_Album_AND_Photos()
      *
      * @param int $album_ID The album ID to delete from the DB
+     * @throws queries In case of connection errors
      */
     public static function delete($album_ID)
     {
@@ -349,6 +373,7 @@ class E_Album
      * Deletes an album and all its photos
      *
      * @param int $album_ID The album to delete with all its associated photos
+     * @throws queries In case of connection errors
      */
     public static function delete_Album_AND_Photos($album_ID)
     {
@@ -362,6 +387,7 @@ class E_Album
      *
      * @param string $username The user to check with the album's creator
      * @param int $album_ID The album's ID to get the creator from
+     * @throws queries In case of connection errors
      * @return boolean Whether the user is the creator of the album
      */
     public static function is_TheCreator($username, $album_ID)

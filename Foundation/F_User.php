@@ -14,6 +14,8 @@ use Entity\E_User_Banned;
 use Entity\E_User_MOD;
 use Entity\E_User_PRO;
 use Entity\E_User_Standard;
+use Exceptions\queries;
+use PDOException;
 use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
 use const USER_PER_PAGE;
@@ -25,6 +27,7 @@ class F_User extends F_Database
      * Retrieves the user details matching the given $username
      *
      * @param string $username The user's username to search
+     * @throws queries In case of connection errors
      * @return mixed \Entity\E_User_* The user searched
      *               boolean FALSE if no user matchs the given username
      */
@@ -86,6 +89,7 @@ class F_User extends F_Database
      * Checks whether the username is available. Case Sensitive.
      *
      * @param string $username The username to check
+     * @throws queries In case of connection errors
      * @return boolean Whether the username is already taken
      */
     public static function is_Available($username)
@@ -108,12 +112,12 @@ class F_User extends F_Database
      * Retrieves the user's password and role. Used to check login credentials
      *
      * @param string $username The user's username
+     * @throws queries In case of connection errors
      * @return mixed An ARRAY with user's password and role IF the $username is
      *               stored in the DB, FALSE otherwise.
      *               How to access to the array:
      *               - "password" => the user password
      *               - "role" => the user role
-     *
      */
     public static function get_LoginInfo($username)
     {
@@ -128,6 +132,7 @@ class F_User extends F_Database
      * Retrieves the user's role only
      *
      * @param string $username The user's username
+     * @throws queries In case of connection errors
      * @return mixed int The user's role
      *               boolean FALSE if no username was found in the DB.
      *               How to access to the array:
@@ -151,6 +156,7 @@ class F_User extends F_Database
      * Returns a list of all users with the given role
      *
      * @param int $role The role to search the users for
+     * @throws queries In case of connection errors
      * @return array All the users (usernames only) with the specified role.
      *               How to access to the array:
      *               - Numeric Keys => the usernames matching the query
@@ -179,6 +185,7 @@ class F_User extends F_Database
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details
      * @param string $old The old username, stored in the DB
+     * @throws queries In case of connection errors
      */
     public static function change_Username($new_EUser, $old)
     {
@@ -194,6 +201,7 @@ class F_User extends F_Database
      * Changes the user's password
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details
+     * @throws queries In case of connection errors
      */
     public static function change_Password($new_EUser)
     {
@@ -209,6 +217,7 @@ class F_User extends F_Database
      * Changes an user's email
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details
+     * @throws queries In case of connection errors
      */
     public static function change_Email($new_EUser)
     {
@@ -225,6 +234,7 @@ class F_User extends F_Database
      *
      * @param string $username The user's username
      * @param int $photo_ID The photo ID to save as profile pic
+     * @throws queries In case of connection errors
      */
     public static function set_ProfilePic($username, $photo_ID)
     {
@@ -248,6 +258,7 @@ class F_User extends F_Database
      *
      * @param string $username The user's username to update
      * @param E_Photo_Blob $blob The new profile pic to upload for the user
+     * @throws queries In case of connection errors
      */
     public static function upload_NewCover($username, E_Photo_Blob $blob)
     {
@@ -263,8 +274,9 @@ class F_User extends F_Database
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
+     * @throws queries In case of connection errors
      * @return array The profile pic, thumbnail style, and its type.
-     *               How to access to the array:
+     *               How to access the array:
      *               - "photo" => the profil pic (thumbnail)
      *               - "type" => the image type
      */
@@ -282,6 +294,7 @@ class F_User extends F_Database
      * Removes the user's profile pic and sets the default Profile Pic
      *
      * @param string $username The user that wants to remove the profile pic
+     * @throws queries In case of connection errors
      */
     public static function remove_CurrentProPic($username)
     {
@@ -294,6 +307,7 @@ class F_User extends F_Database
      *
      * @param int $photo_ID The photo's ID
      * @param string $username The user's username
+     * @throws queries In case of connection errors
      * @return bool Whether the like has been added or not (case when already present)
      */
     public static function add_Like_to($photo_ID, $username)
@@ -324,6 +338,7 @@ class F_User extends F_Database
      *
      * @param string $username The user that wants to remove the like
      * @param int $photo_ID The target photo's ID
+     * @throws queries In case of connection errors
      * @return bool Whether the like was removed successfully or not
      */
     public static function remove_Like($username, $photo_ID)
@@ -336,11 +351,16 @@ class F_User extends F_Database
         $pdo = parent::connect();
         $pdo_stmt = $pdo->prepare($query);
         parent::bind_params($pdo_stmt, $toBind);
-        $pdo_stmt->execute();
+        try
+        {
+            $pdo_stmt->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new queries(5, $e);
+        }
         $pdo = NULL;
 
         return boolval($pdo_stmt->rowCount());
-
-//        parent::execute_Query($query, $toBind);
     }
 }

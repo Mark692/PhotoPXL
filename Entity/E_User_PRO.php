@@ -52,6 +52,7 @@ class E_User_PRO extends E_User
      *
      * @param int $photo_ID The photo ID
      * @param int $privacy The new privacy for the photo
+     * @throws queries In case of connection errors
      */
     public static function set_PhotoPrivacy($photo_ID, $privacy)
     {

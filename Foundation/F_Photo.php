@@ -19,8 +19,9 @@ class F_Photo extends F_Database
      * Saves a photo object and sets its ID into the $photo object
      *
      * @param E_Photo $photo The photo to save
-     * @param E_Photo_Blob $photo_details The blob file, its size and type
+     * @param E_Photo_Blob $photo_details The blob file that includes its size and type
      * @param string $uploader The uploader's username
+     * @throws queries In case of connection errors
      */
     public static function insert(E_Photo $photo, E_Photo_Blob $photo_details, $uploader)
     {
@@ -56,6 +57,7 @@ class F_Photo extends F_Database
      * Updates a record from the "photo" table
      *
      * @param E_Photo $to_Update The photo to update
+     * @throws queries In case of connection errors
      */
     public static function update(E_Photo $to_Update)
     {
@@ -83,7 +85,13 @@ class F_Photo extends F_Database
      * @param enum $user_Role The watching user's role
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
-     * @return array The user's photos
+     * @throws queries In case of connection errors
+     * @return array The user's photos.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => its type
+     *               - "tot_photo" => the number of photos matching the query
      */
     public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
@@ -126,8 +134,14 @@ class F_Photo extends F_Database
      * @param int $id The photo's ID
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
-     * @return mixed An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
-     *               A boolean FALSE if no photo matches the query
+     * @throws queries In case of connection errors
+     * @return mixed A boolean FALSE if no photo matches the query.
+     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               How to access the array:
+     *               - "photo" => the photo's ID
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
      */
     public static function get_By_ID($id, $user_Watching, $user_Role)
     {
@@ -180,7 +194,13 @@ class F_Photo extends F_Database
      * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
-     * @return array An array with photo IDs and thumbnails
+     * @throws queries In case of connection errors
+     * @return array An array with photo IDs and thumbnails.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
@@ -241,7 +261,13 @@ class F_Photo extends F_Database
      * @param enum $user_Role The user role
      * @param int $page_toView The number of page to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array An array with the photos matching the categories selected.
+     *               How to access to the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
@@ -297,6 +323,7 @@ class F_Photo extends F_Database
      *
      * @param array $new_cats The new categories chosen for the photo
      * @param int $photo_ID The photo's ID to whom set/remove the categories
+     * @throws queries In case of connection errors
      */
     private static function update_Categories($new_cats, $photo_ID)
     {
@@ -333,7 +360,7 @@ class F_Photo extends F_Database
      * Sets the photo categories
      *
      * @param array $cats The categories chosen for the album
-     * @param int $photo_ID The photo's ID to whom set the categories
+     * @param int $photo_ID The photo's ID to which set the categories
      * @return string The query used to add categories to the photo
      */
     private static function query_addCats($cats, $photo_ID)
@@ -382,6 +409,7 @@ class F_Photo extends F_Database
      * Retrieves the photo's categories
      *
      * @param int $photo_ID The photo ID to look for categories
+     * @throws queries In case of connection errors
      * @return array The photo's categories
      */
     private static function get_Categories($photo_ID)
@@ -404,7 +432,10 @@ class F_Photo extends F_Database
      * Retrieves the list of all uses that liked the selected photo
      *
      * @param int $photo_ID The photo's ID
-     * @return array The users that liked the selected photo
+     * @throws queries In case of connection errors
+     * @return array The users that liked the selected photo.
+     *               How to access the array:
+     *               - Numeric Key => The usernames
      */
     public static function get_LikeList($photo_ID)
     {
@@ -424,10 +455,16 @@ class F_Photo extends F_Database
     /**
      * Retrieves the most liked photos in DESCending style
      *
-     * @param int $page_toView The page selected as offset to fetch the photos
-     * @return array An array with the IDs and Thumbnails of the most liked photos
-     *               and the number of rows affected by the query (to be used to
-     *               determine how many pages to show)
+     * @param string $user_Watching The user trying to look at the photo
+     * @param enum $user_Role The user role
+     * @param int $page_toView The page number to view. It influences the offset
+     * @throws queries In case of connection errors
+     * @return array An array with the IDs and Thumbnails of the most liked photos.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public static function get_MostLiked($user_Watching, $user_Role, $page_toView = 1)
     {
@@ -467,7 +504,10 @@ class F_Photo extends F_Database
      * Retrieves the list of all uses that commented the selected photo
      *
      * @param int $photo_ID The photo's ID
-     * @return array The users that commented the selected photo
+     * @throws queries In case of connection errors
+     * @return array The users that commented the selected photo.
+     *               How to access the array:
+     *               - "Numeric Key" => The usernames
      */
     public static function get_UsernamesThatCommented($photo_ID)
     {
@@ -488,6 +528,7 @@ class F_Photo extends F_Database
      * Deletes a photo from the DB including its likes and comments
      *
      * @param int $photo_ID The photo ID to delete from the DB
+     * @throws queries In case of connection errors
      */
     public static function delete($photo_ID)
     {
@@ -504,6 +545,7 @@ class F_Photo extends F_Database
      * Deletes all photos within an album including their likes and comments
      *
      * @param int $album_ID The album from which we want to delete photos
+     * @throws queries In case of connection errors
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
@@ -523,14 +565,15 @@ class F_Photo extends F_Database
 
     /**
      * Moves a photo to another album.
-     * Use $album='' to move the photo out of the album
+     * Use $album=0 to move the photo out of the album
      *
      * @param int $photo_ID The photo to move
-     * @param int $album_ID The new album ID to move to photo to
+     * @param int $album_ID The new album ID to move to photo to. Use $album=0 to move the photo out of the album
+     * @throws queries In case of connection errors
      */
-    public static function move_To($photo_ID, $album_ID = '')
+    public static function move_To($photo_ID, $album_ID = 0)
     {
-        if($album_ID !== '') //The photo will be moved to an existing album
+        if($album_ID != 0) //The photo will be moved to an existing album
         {
             $has_anAlbum = self::has_anAlbum($photo_ID); //Whether the photo was already in an album
 
@@ -562,6 +605,7 @@ class F_Photo extends F_Database
      * Checks whether the photo belongs to an album or not
      *
      * @param int $photo_ID The photo to check
+     * @throws queries In case of connection errors
      * @return bool Whether the photo belongs to an album or not
      */
     private static function has_anAlbum($photo_ID)
@@ -586,6 +630,7 @@ class F_Photo extends F_Database
      * @param int $photo_ID The photo to check if public or reserved
      * @param string $user The user trying to look at the photo
      * @param enum $user_Role The user role
+     * @throws queries In case of connection errors
      * @return boolean Whether the user can look at the specific photo
      */
     private static function can_beShowed($photo_ID, $user, $user_Role)
