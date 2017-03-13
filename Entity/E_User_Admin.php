@@ -41,6 +41,7 @@ class E_User_Admin extends E_User_MOD
      *
      * @param string $username The user's username
      * @param int $new_Role The user's new role
+     * @throws queries In case of connection errors
      */
     public static function change_role($username, $new_Role)
     {

@@ -359,6 +359,7 @@ class E_Photo
      * @param E_Photo $photo The photo to save
      * @param E_Photo_Blob $photo_details The blob file that includes its size and type
      * @param string $uploader The uploader's username
+     * @throws queries In case of connection errors
      */
     public static function insert(E_Photo $photo, E_Photo_Blob $photo_details, $uploader)
     {
@@ -370,6 +371,7 @@ class E_Photo
      * Updates a record from the "photo" table
      *
      * @param E_Photo $to_Update The photo to update
+     * @throws queries In case of connection errors
      */
     public static function update(E_Photo $to_Update)
     {
@@ -385,6 +387,7 @@ class E_Photo
      * @param enum $user_Role The watching user's role
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array The user's photos.
      *               How to access the array:
      *               - "id" => the photo's ID
@@ -404,6 +407,7 @@ class E_Photo
      * @param int $id The photo's ID
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
+     * @throws queries In case of connection errors
      * @return mixed A boolean FALSE if no photo matches the query.
      *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
      *               How to access the array:
@@ -428,6 +432,7 @@ class E_Photo
      * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array An array with photo IDs and thumbnails.
      *               How to access the array:
      *               - "id" => the photo's ID
@@ -449,6 +454,7 @@ class E_Photo
      * @param enum $user_Role The user role
      * @param int $page_toView The number of page to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array An array with the photos matching the categories selected.
      *               How to access the array:
      *               - "id" => the photo's ID
@@ -466,6 +472,7 @@ class E_Photo
      * Retrieves the list of all uses that liked the selected photo
      *
      * @param int $photo_ID The photo's ID
+     * @throws queries In case of connection errors
      * @return array The users that liked the selected photo.
      *               How to access the array:
      *               - Numeric Key => The usernames
@@ -482,6 +489,7 @@ class E_Photo
      * @param string $user_Watching The user trying to look at the photo
      * @param enum $user_Role The user role
      * @param int $page_toView The page number to view. It influences the offset
+     * @throws queries In case of connection errors
      * @return array An array with the IDs and Thumbnails of the most liked photos.
      *               How to access the array:
      *               - "id" => the photo's ID
@@ -499,6 +507,7 @@ class E_Photo
      * Retrieves the list of all uses that commented the selected photo
      *
      * @param int $photo_ID The photo's ID
+     * @throws queries In case of connection errors
      * @return array The users that commented the selected photo.
      *               How to access the array:
      *               - "Numeric Key" => The usernames
@@ -513,6 +522,7 @@ class E_Photo
      * Deletes a photo from the DB including its likes and comments
      *
      * @param int $photo_ID The photo ID to delete from the DB
+     * @throws queries In case of connection errors
      */
     public static function delete($photo_ID)
     {
@@ -524,6 +534,7 @@ class E_Photo
      * Deletes all photos within an album including their likes and comments
      *
      * @param int $album_ID The album from which we want to delete photos
+     * @throws queries In case of connection errors
      */
     public static function delete_ALL_fromAlbum($album_ID)
     {
@@ -533,10 +544,11 @@ class E_Photo
 
     /**
      * Moves a photo to another album.
-     * Use $album=0 to move the photo out of the album
+     * Use $album_ID=0 to move the photo out of the album
      *
      * @param int $photo_ID The photo to move
-     * @param int $album_ID The new album ID to move to photo to. Use $album=0 to move the photo out of the album
+     * @param int $album_ID The new album ID to move to photo to. Use $album_ID=0 to move the photo out of the album
+     * @throws queries In case of connection errors
      */
     public static function move_To($photo_ID, $album_ID = 0)
     {
@@ -550,6 +562,7 @@ class E_Photo
      *
      * @param string $username The user to check with the photo's uploader
      * @param int $photo_ID The photo's ID to get the uploader from
+     * @throws queries In case of connection errors
      * @return boolean Whether the user is the uploader
      */
     public static function is_TheUploader($username, $photo_ID)

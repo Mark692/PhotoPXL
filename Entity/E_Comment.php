@@ -156,6 +156,7 @@ class E_Comment
      * Saves a comment in the DB and sets its ID into the $comment object
      *
      * @param E_Comment $comment The comment to save
+     * @throws queries In case of connection errors
      */
     public static function insert(E_Comment $comment)
     {
@@ -170,6 +171,7 @@ class E_Comment
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
+     * @throws queries In case of connection errors
      * @return array The comments made for the photo.
      *               How to access the array:
      *               - "id" => the comment's ID
@@ -187,6 +189,7 @@ class E_Comment
      * NOTE that you need to set the comment's ID to get this work!
      *
      * @param E_Comment $comment The new comment to store in the DB
+     * @throws queries In case of connection errors
      */
     public static function update(E_Comment $comment)
     {
@@ -198,6 +201,7 @@ class E_Comment
      * Deletes a comment
      *
      * @param int $comment_ID The ID of the comment to remove
+     * @throws queries In case of connection errors
      */
     public static function remove($comment_ID)
     {

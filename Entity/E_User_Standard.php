@@ -144,6 +144,7 @@ class E_User_Standard extends E_User
      * Inserts the user into "users" DB table
      *
      * @param E_User_Standard $STD_user The new user to insert into the DB
+     * @throws queries In case of connection errors
      */
     public static function insert(E_User_Standard $STD_user)
     {
@@ -155,6 +156,7 @@ class E_User_Standard extends E_User
      * Updates the "last_Upload" and the "up_Count" of the user
      *
      * @param E_User_Standard $STD_user The user uploading a photo
+     * @throws queries In case of connection errors
      */
     public static function update_Counters(E_User_Standard $STD_user)
     {
@@ -166,6 +168,7 @@ class E_User_Standard extends E_User
      * Upgrades the user's role to PRO
      *
      * @param string $username The user's username
+     * @throws queries In case of connection errors
      */
     public static function becomePRO($username)
     {
