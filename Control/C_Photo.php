@@ -74,7 +74,6 @@ class C_Photo {
         }
         V_Foto::showPhotoPage(E_User::get_UserDetails($_SESSION["username"]), $photo);
         //per Federico
-        return true;
     }
 
     /**

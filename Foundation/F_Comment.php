@@ -43,7 +43,11 @@ class F_Comment extends F_Database
      *
      * @param int $photo_ID The photo's ID selected to get the comments from
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
-     * @return array The comments made for the photo
+     * @return array The comments made for the photo.
+     *               How to access to the array:
+     *               - "id" => the comment's ID
+     *               - "text" => the text of the comment
+     *               - "user" => the user's username that wrote the comment
      */
     public static function get_By_Photo($photo_ID, $order_DESC = FALSE)
     {

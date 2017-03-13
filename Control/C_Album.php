@@ -9,15 +9,21 @@
 namespace Control;
 
 /**
- * Description of C_Album
+ * This class menage the actions a user can do about the albums.
  *
  * @author Benedetta
  */
 class C_Album {
 
     public function see($albumId) {
-        // Un utente accede alla sua pagina profilo, clicca su un album e lo
-        // apre
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if($role == \Utilities\Roles::BANNED){
+            \View\V_Home::bannedHome();
+            return false;
+        }
+        $album = \Entity\E_Album::get_By_ID($albumId);
+        \View\V_Album::album($album, 
+                \Entity\E_Photo::get_By_Album($albumId, $_SESSION["username"], $role)); // Per Federico
     }
 
     public function edit($albumId, $title, $categories, $description) {

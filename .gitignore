@@ -1,1 +1,11 @@
-/nbproject/private/
+core
+nbproject/*
+!nbproject/project.properties
+!nbproject/project.xml
+*.so
+*.log
+*.out
+*~
+*.swp
+*.DS_Store
+*.lock

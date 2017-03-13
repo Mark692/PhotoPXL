@@ -21,7 +21,10 @@ class F_User_MOD extends F_User_PRO
      * @param int $pageToView The page to view. It influences the result offset
      * @param string $starts_With A case INsensitive string to filtrate the results
      * @param int $limit_PerPage The maximum number of records to show
-     * @return array All the usernames that match the query and the total usernames stored in the DB
+     * @return array All the usernames that match the query and the total usernames stored in the DB.
+     *               How to access:
+     *               - Numeric Keys => usernames
+     *               - "total_inDB" => the number of total users matching the query
      */
     public static function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 100)
     {

@@ -230,7 +230,10 @@ class E_User
      *
      * @param string $username The user's username
      * @return mixed An ARRAY with user's password and role IF the $username is
-     *               stored in the DB, FALSE otherwise
+     *               stored in the DB, FALSE otherwise.
+     *               How to access to the array:
+     *               - "password" => the user password
+     *               - "role" => the user role
      */
     public static function get_LoginInfo($username)
     {
@@ -243,7 +246,9 @@ class E_User
      *
      * @param string $username The user's username
      * @return mixed int The user's role
-     *               boolean FALSE if no username was found in the DB
+     *               boolean FALSE if no username was found in the DB.
+     *               How to access to the array:
+     *               - "role" => the user role
      */
     public static function get_DB_Role($username)
     {
@@ -255,7 +260,9 @@ class E_User
      * Returns a list of all users with the given role
      *
      * @param int $role The role to search the users for
-     * @return array All the users (usernames only) with the specified role
+     * @return array All the users (usernames only) with the specified role.
+     *               How to access to the array:
+     *               - Numeric Keys => the usernames matching the query
      */
     public static function get_By_Role($role, $page_toView = 1)
     {
@@ -325,7 +332,10 @@ class E_User
      * Retrieves the user's profile pic (thumbnail style)
      *
      * @param string $username The user owner of the profile pic to search
-     * @return array The profile pic, thumbnail style, and its type
+     * @return array The profile pic, thumbnail style, and its type.
+     *               How to access to the array:
+     *               - "photo" => the profil pic (thumbnail)
+     *               - "type" => the image type
      */
     public static function get_ProfilePic($username)
     {
