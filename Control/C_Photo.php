@@ -36,10 +36,10 @@ class C_Photo {
         }
         return false;
     }
-    
+
     /**
-     * 
-     * @param \Entity\E_Photo $photo 
+     *
+     * @param \Entity\E_Photo $photo
      */
     private function checkPrivacyOwner($photo){
         return $photo->get_Reserved() and ! E_Photo::is_TheUploader($_SESSION["username"], $photo->get_ID());
@@ -98,7 +98,7 @@ class C_Photo {
         $photo->set_Description($description);
         $photoId = E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
         if (!is_null($albumId)) {
-            E_Photo::move_To($albumId, $photoId);
+            E_Photo::move_To($photoId, $albumId);
         }
         return true;
     }

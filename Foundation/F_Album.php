@@ -118,7 +118,13 @@ class F_Album extends F_Database
      * @param string $owner The user's username selected to get the albums from
      * @param int $page_toView The page number to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
-     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created
+     * @return array The user's albums (IDs, Titles, Thumbnails) and the total of albums created.
+     *               How to access to the array:
+     *               - "id" => the album's ID
+     *               - "title" => the album's title
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "tot_album" => The number of albums matching the query
      */
     public static function get_By_User($owner, $page_toView = 1, $order_DESC = FALSE)
     {
@@ -159,8 +165,13 @@ class F_Album extends F_Database
      * Rethrives an album (info, Thumbnail, owner) by passing its ID.
      *
      * @param int $id The album ID to search for
-     * @return mixed An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
-                     A boolean FALSE if no album matches the query
+     * @return mixed A boolean FALSE if no album matches the query.
+     *               An array containing the \Entity\E_Album object searched, its thumbnail and its uploader
+                     How to access to the array:
+     *               - "album" => the \Entity\E_Album object
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "username" => The user's username that created the album
      */
     public static function get_By_ID($id)
     {
@@ -206,6 +217,12 @@ class F_Album extends F_Database
      * @param int $page_toView The number of page to view. It influences the offset
      * @param bool $order_DESC Whether to order result in DESCendent order. Default: ASCendent
      * @return array An array with the albums matching the categories selected.
+     *               How to access to the array:
+     *               - "id" => the album's ID
+     *               - "title" => the album's title
+     *               - "cover" => its cover
+     *               - "type" => its type
+     *               - "tot_album" => The number of albums matching the query
      */
     public static function get_By_Categories($cats, $page_toView = 1, $order_DESC = FALSE)
     {

@@ -247,8 +247,6 @@ class E_User
      * @param string $username The user's username
      * @return mixed int The user's role
      *               boolean FALSE if no username was found in the DB.
-     *               How to access to the array:
-     *               - "role" => the user role
      */
     public static function get_DB_Role($username)
     {
@@ -333,7 +331,7 @@ class E_User
      *
      * @param string $username The user owner of the profile pic to search
      * @return array The profile pic, thumbnail style, and its type.
-     *               How to access to the array:
+     *               How to access the array:
      *               - "photo" => the profil pic (thumbnail)
      *               - "type" => the image type
      */

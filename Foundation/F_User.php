@@ -14,6 +14,8 @@ use Entity\E_User_Banned;
 use Entity\E_User_MOD;
 use Entity\E_User_PRO;
 use Entity\E_User_Standard;
+use Exceptions\queries;
+use PDOException;
 use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
 use const USER_PER_PAGE;
@@ -113,7 +115,6 @@ class F_User extends F_Database
      *               How to access to the array:
      *               - "password" => the user password
      *               - "role" => the user role
-     *
      */
     public static function get_LoginInfo($username)
     {
@@ -130,8 +131,6 @@ class F_User extends F_Database
      * @param string $username The user's username
      * @return mixed int The user's role
      *               boolean FALSE if no username was found in the DB.
-     *               How to access to the array:
-     *               - "role" => the user role
      */
     public static function get_Role($username)
     {
@@ -264,7 +263,7 @@ class F_User extends F_Database
      *
      * @param string $username The user owner of the profile pic to search
      * @return array The profile pic, thumbnail style, and its type.
-     *               How to access to the array:
+     *               How to access the array:
      *               - "photo" => the profil pic (thumbnail)
      *               - "type" => the image type
      */
@@ -324,6 +323,7 @@ class F_User extends F_Database
      *
      * @param string $username The user that wants to remove the like
      * @param int $photo_ID The target photo's ID
+     * @throws queries In case of query execution errors
      * @return bool Whether the like was removed successfully or not
      */
     public static function remove_Like($username, $photo_ID)
@@ -336,11 +336,16 @@ class F_User extends F_Database
         $pdo = parent::connect();
         $pdo_stmt = $pdo->prepare($query);
         parent::bind_params($pdo_stmt, $toBind);
-        $pdo_stmt->execute();
+        try
+        {
+            $pdo_stmt->execute();
+        }
+        catch(PDOException $e)
+        {
+            throw new queries(5, $e);
+        }
         $pdo = NULL;
 
         return boolval($pdo_stmt->rowCount());
-
-//        parent::execute_Query($query, $toBind);
     }
 }

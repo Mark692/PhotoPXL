@@ -22,7 +22,7 @@ class F_User_MOD extends F_User_PRO
      * @param string $starts_With A case INsensitive string to filtrate the results
      * @param int $limit_PerPage The maximum number of records to show
      * @return array All the usernames that match the query and the total usernames stored in the DB.
-     *               How to access:
+     *               How to access the array:
      *               - Numeric Keys => usernames
      *               - "total_inDB" => the number of total users matching the query
      */

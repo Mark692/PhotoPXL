@@ -39,6 +39,14 @@ class queries extends PDOException
                 $message = "Impossibile connettersi al database";
                 break;
 
+            case 5:
+                $message = "Impossibile completare la richiesta verso il database";
+                break;
+
+            case 6:
+                $message = "Parametri inseriti non corretti";
+                break;
+
 
             default: $message = "ATTENZIONE! Richiesta mal formulata: $exc";
         }

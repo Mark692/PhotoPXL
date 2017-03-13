@@ -5,21 +5,8 @@
         <group>
             <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Album.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_Photo.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User_Banned.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User_Standard.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_Comment.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User_Admin.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User_Admin.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User_Standard.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User_PRO.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Photo.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User_PRO.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_Album.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_User_MOD.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User_MOD.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Comment.php</file>
-            <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_User.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Foundation/F_Photo.php</file>
         </group>
     </open-files>
 </project-private>
