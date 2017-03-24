@@ -17,7 +17,7 @@ use View\V_Home;
 use View\V_Foto;
 
 /**
- * This class menage the actions a user can do about the photos.
+ * This class menages the actions a user can do about the photos.
  *
  * @author Benedetta
  */
@@ -26,7 +26,7 @@ class C_Photo {
     private $role;
 
     /**
-     * The constructor create an obect photo containing the role of the user in session.
+     * The constructor create an object photo containing the role of the user in session.
      */
     public function __construct() {
         $this->role = E_User::get_DB_Role($_SESSION["username"]);
@@ -47,6 +47,7 @@ class C_Photo {
 
     /**
      * This method checks the photo's privacy and if the user in session is the owner.
+     * 
      * @param \Entity\E_Photo $photo
      * @return true if the photo is private and the current user is the owner.
      */
@@ -285,6 +286,19 @@ class C_Photo {
             return false;
         }
         E_Photo::move_To($photoId, $newAlbumId);
+        return true;
+    }
+    
+    /**
+     * This method is used to show the homepage with the thumbnails of the most liked photos.
+     * 
+     * @return boolean true is the homepage was correctly view.
+     */
+    public function mostLiked(){
+        if ($this->isBanned($this->role)) {
+            return false;
+        }
+        V_Home::standardHome(E_Photo::get_MostLiked($_SESSION["username"], $this->role));
         return true;
     }
 

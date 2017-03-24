@@ -14,7 +14,7 @@ use Utilities\Roles;
 use Exceptions\input_texts;
 
 /**
- * This class manage a user's registration, login and logout.
+ * This class manages a user's registration, login and logout.
  *
  * @author Benedetta
  */
