@@ -32,7 +32,7 @@ class C_Album {
     }
     
     /**
-     * This method is used to see the content of the album when some of the photos are private
+     * This method is used to see more content of an album if the element are more than 16.
      * 
      * @param int $albumId the album id
      * @param int $pageToView the next page to view

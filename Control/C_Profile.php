@@ -14,17 +14,17 @@ namespace Control;
  * @author Benedetta
  */
 class C_Profile {
-    
+
     /**
      * This method is used to upload a new profile picture
      * 
      * @param string $photoPath the photo's path
      * @return boolean true if the photo was correctly uploaded
      */
-    public function uploadProPic($photoPath){
-        $role=  \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role== \Utilities\Roles::BANNED) {
-        \View\V_Home::bannedHome();
+    public function uploadProPic($photoPath) {
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == \Utilities\Roles::BANNED) {
+            \View\V_Home::bannedHome();
             return false;
         }
         $photo_blob = new E_Photo_Blob();
@@ -33,24 +33,24 @@ class C_Profile {
         \View\V_Users::showProfile(); //per Federico
         return true;
     }
-    
+
     /**
      * This method is used to update the current profile picture with a new one
      * 
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly updated.
      */
-    public function updateProPic($photoId){
-      $role=  \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role== \Utilities\Roles::BANNED) {
-        \View\V_Home::bannedHome();
+    public function updateProPic($photoId) {
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == \Utilities\Roles::BANNED) {
+            \View\V_Home::bannedHome();
             return false;
         }
-        if(!\Entity\E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)){
+        if (!\Entity\E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)) {
             \View\V_Home::error();
             return false;
         }
-        if(!\Entity\E_Photo::is_TheUploader($_SESSION["username"], $photoId)){
+        if (!\Entity\E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
             \View\V_Home::notAllowed();
             return false;
         }
@@ -58,20 +58,20 @@ class C_Profile {
         \View\V_Users::showProfile();
         return true;
     }
-    
+
     /**
      * This method is used to remove the current profil picture.
      * 
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly removed.
      */
-    public function removeProPic($photoId){
-        $role=  \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role== \Utilities\Roles::BANNED) {
-        \View\V_Home::bannedHome();
+    public function removeProPic($photoId) {
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == \Utilities\Roles::BANNED) {
+            \View\V_Home::bannedHome();
             return false;
         }
-        if(!\Entity\E_Photo::is_TheUploader($_SESSION["username"], $photoId)){
+        if (!\Entity\E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
             \View\V_Home::notAllowed();
             return false;
         }
@@ -79,4 +79,49 @@ class C_Profile {
         \View\V_Users::showProfile();
         return true;
     }
+
+    /**
+     * This method is used to change the current password with a new one
+     * 
+     * @param user $user the user who's changing the password
+     * @return boolean true if the password was correctly change.
+     */
+    public function changePassowrd($user) {
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == \Utilities\Roles::BANNED) {
+            \View\V_Home::bannedHome();
+            return false;
+        }
+        try {
+            \Entity\E_User::change_Password($user);
+            \View\V_Profile::banner(); //per Fede, appare un banner del tipo "password cambiata correttamente"
+            return true;
+        } catch (\Exceptions\input_texts $e) {
+            \View\V_Home::error();
+            return false;
+        }
+    }
+
+    /**
+     * This method is used to change the current email with a new one
+     * 
+     * @param user $user the user who's changing the email
+     * @return boolean true if the email was correctly change.
+     */
+    public function changeEmail($user) {
+        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == \Utilities\Roles::BANNED) {
+            \View\V_Home::bannedHome();
+            return false;
+        }
+        try {
+            \Entity\E_User::change_Email($user);
+            \View\V_Profile::banner(); //per Fede, appare un banner del tipo "email cambiata correttamente"
+            return true;
+        } catch (\Exceptions\input_texts $e) {
+            \View\V_Home::error();
+            return false;
+        }
+    }
+
 }

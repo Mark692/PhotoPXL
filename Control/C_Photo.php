@@ -301,5 +301,19 @@ class C_Photo {
         V_Home::standardHome(E_Photo::get_MostLiked($_SESSION["username"], $this->role));
         return true;
     }
+    
+    /**
+     * Returns most liked photos in the homepage, which must be encoded in a 
+     * specific format (e.g. JSON) and then send to client
+     * 
+     * @param int $pageToView the next page to view
+     * @return boolean true 
+     */
+    public function mostLikedAsync($pageToView){
+         if ($this->isBanned($this->role)) {
+            return false;
+        }
+        return E_Photo::get_MostLiked($_SESSION["username"], $this->role, $pageToView);
+    }
 
 }
