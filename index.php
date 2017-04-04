@@ -31,8 +31,7 @@ require_once $path."config.inc.php";
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
 
-
-var_dump(\Foundation\F_User::check_Token("AllUser", "014b0c8b902b075cdaa4a0f8b4849bc3d6dda66a56910e92a8f54ca628d02f961491336368"));
+var_dump(\Foundation\F_User::check_Token("AllUser", "014b0c8b902b075cdaa4a0f8b4849bc3d6dda66a56910e92a8f54ca628d02f96"));
 
 
 
