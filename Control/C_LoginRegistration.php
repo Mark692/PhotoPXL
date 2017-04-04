@@ -14,7 +14,7 @@ use Utilities\Roles;
 use Exceptions\input_texts;
 
 /**
- * This class manage a user's registration, login and logout.
+ * This class manages a user's registration, login and logout.
  *
  * @author Benedetta
  */
@@ -33,7 +33,7 @@ class C_LoginRegistration
 
     /**
      * This method is used to check the username and the password that the
-     * client sent when the user wants to enter to the site.
+     * client sent when the user wants to log into the site.
      *
      * @param string $username user's name.
      * @param string $nonce
@@ -105,7 +105,7 @@ class C_LoginRegistration
 
 
     /**
-     * This method is used to start a neew session.
+     * This method is used to start a new session.
      *
      * @param boolean $keepLogged if the user wants to keep the session active.
      */
