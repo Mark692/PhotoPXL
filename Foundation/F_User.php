@@ -259,17 +259,18 @@ class F_User extends F_Database
         $token = parent::get_One($select, $from, $where);
         $token_val = $token["token"];
 
+
         if(is_null($token_val)) //The token does not exists
         {
             return FALSE;
         }
 
-        $DB_Token = substr($token_val, -10); //Removes the timestamp
+        $DB_Token = substr($token_val, 0, -10); //Removes the timestamp
         $token_timestamp = substr($token_val, 2 * TOKEN_BIN_LENGHT); //Removes the token, leaves its timestamp only
         if(time() <= $token_timestamp + TOKEN_LIFETIME) //The token is still valid
         {
             //Compare the tokens - Built-in function
-            if(!function_exists('hash_equals'))
+            if(function_exists('hash_equals'))
             {
                 return hash_equals($DB_Token, $user_Token);
             }
