@@ -301,6 +301,29 @@ class E_User
 
 
     /**
+     * Generates a random string token to be used for password changes purposes.
+     *
+     * @param string $username The user who wants to change its own password
+     */
+    public static function generate_Token($username)
+    {
+        F_User::generate_Token($username);
+    }
+
+    /**
+     * Verifies whether the user token is valid
+     *
+     * @param string $username The user trying to change its password
+     * @param string $user_Token The user token
+     * @return boolean Whether everything is correct
+     */
+    public static function check_Token($username, $user_Token)
+    {
+        F_User::check_Token($username, $user_Token);
+    }
+
+
+    /**
      * Changes an user's email
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details
