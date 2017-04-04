@@ -212,6 +212,89 @@ class F_User extends F_Database
 
 
     /**
+     * Generates a random string token to be used for password changes purposes.
+     *
+     * @param string $username The user who wants to change its own password
+     */
+    public static function generate_Token($username)
+    {
+        //Generates a token
+        if(function_exists('mcrypt_create_iv')) //It exists, but you never know...
+        {
+            $seed = bin2hex(mcrypt_create_iv(TOKEN_BIN_LENGHT)); //Converts a seed to HEX
+        }
+        else
+        {
+            $seed = bin2hex(openssl_random_pseudo_bytes(TOKEN_BIN_LENGHT));
+        }
+
+        $token = $seed.time(); //Add timestamp to the seed
+
+        //Saves into Users DB table
+        $update = "users";
+        $set = array("token" => $token);
+        $where = array("username" => $username);
+
+        parent::update($update, $set, $where);
+
+        //DON'T return the token. It can still be used after some time.
+        //Simply rethrieve it from the "users" DB table
+        return $token; //TEST ONLY PURPOSES!!!
+    }
+
+
+    /**
+     * Verifies whether the user token is valid
+     *
+     * @param string $username The user trying to change its password
+     * @param string $user_Token The user token
+     * @return boolean Whether everything is correct
+     */
+    public static function check_Token($username, $user_Token)
+    {
+        //Rethrieve the token bound to the user
+        $select = array("token");
+        $from = "users";
+        $where = array("username" => $username);
+        $token = parent::get_One($select, $from, $where);
+        $token_val = $token["token"];
+
+        if(is_null($token_val)) //The token does not exists
+        {
+            return FALSE;
+        }
+
+        $DB_Token = substr($token_val, -10); //Removes the timestamp
+        $token_timestamp = substr($token_val, 2 * TOKEN_BIN_LENGHT); //Removes the token, leaves its timestamp only
+        if(time() <= $token_timestamp + TOKEN_LIFETIME) //The token is still valid
+        {
+            //Compare the tokens - Built-in function
+            if(!function_exists('hash_equals'))
+            {
+                return hash_equals($DB_Token, $user_Token);
+            }
+
+            //Compare the tokens - Home-made function
+            if(strlen($DB_Token) === strlen($user_Token))
+            {
+                $check = 0;
+                $XOR_Tokens = $DB_Token ^ $user_Token;
+                //XOR = compares bit against bit.
+                //      Sets 1 if the current bits have different values (0 XOR 1, 1 XOR 0)
+                //      Sets 0 if both bits have the same value (0 XOR 0, 1 XOR 1)
+
+                for($i = strlen($XOR_Tokens) - 1; $i >= 0; $i--)
+                {
+                    $check |= ord($XOR_Tokens[$i]); //bitwise OR with each ASCII character of $XOR_Tokens
+                }
+                return !$check;
+            }
+        }
+        return FALSE;
+    }
+
+
+    /**
      * Changes an user's email
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details

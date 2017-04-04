@@ -49,9 +49,10 @@ define("DEFAULT_PRO_PIC", 2);
 
 
 
-//----Standard User Limits----\\
+//----User constants----\\
 define("UPLOAD_STD_LIMIT", 10);
-
+define("TOKEN_BIN_LENGHT", 32); //This has to be converted to HEX and then saved to DB
+define("TOKEN_LIFETIME", 172800); //Two days lifetime
 
 
 //----Input important text----\\

@@ -32,9 +32,7 @@ require_once $path."config.inc.php";
 //$test_it->try_Functions();
 
 
-
-
-
+var_dump(\Foundation\F_User::generate_Token("AllUser"));
 
 
 
