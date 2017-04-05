@@ -25,13 +25,23 @@ class V_Album extends V_Basic
         $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
         return parent::get_Dati($keys);
     }
-
-
+    
+    /**
+     * mostra il profilo dell'untete
+     */
     public function showProfile()
     {
-        
+        $this->assign('utente',$array_user);
+        $this->display('profilo.tpl');
         
     }
 
+    /**
+     * mostra un tpl che che da un messaggio di password cambiata correttamente
+     */
+    public function banner()
+    {
+        $this->display('password_cambiata_ok.tpl');
+    }
 
 }
