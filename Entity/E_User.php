@@ -324,6 +324,18 @@ class E_User
 
 
     /**
+     * Resets the token for the user. This may occur when the user successfully logs in
+     * or when he succedes to reset his password
+     *
+     * @param string $username The username whose token has to be resetted
+     */
+    public static function nullify_Token($username)
+    {
+        F_User::nullify_Token($username);
+    }
+
+
+    /**
      * Changes an user's email
      *
      * @param \Entity\E_User_* $new_EUser The entity user with new details

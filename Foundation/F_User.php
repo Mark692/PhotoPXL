@@ -259,7 +259,6 @@ class F_User extends F_Database
         $token = parent::get_One($select, $from, $where);
         $token_val = $token["token"];
 
-
         if(is_null($token_val)) //The token does not exists
         {
             return FALSE;
@@ -292,6 +291,22 @@ class F_User extends F_Database
             }
         }
         return FALSE;
+    }
+
+
+    /**
+     * Resets the token for the user. This may occur when the user successfully logs in
+     * or when he succedes to reset his password
+     * 
+     * @param string $username The username whose token has to be resetted
+     */
+    public static function nullify_Token($username)
+    {
+        $update = "users";
+        $set = array("token" => NULL);
+        $where = array("username" => $username);
+
+        parent::update($update, $set, $where);
     }
 
 
