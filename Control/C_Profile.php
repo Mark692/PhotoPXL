@@ -83,17 +83,17 @@ class C_Profile {
     /**
      * This method is used to change the current password with a new one
      * 
-     * @param user $user the user who's changing the password
+     * @param user $username the user who's changing the password
      * @return boolean true if the password was correctly change.
      */
-    public function changePassowrd($user) {
+    public static function changePassword($newPassword) {
         $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
         if ($role == \Utilities\Roles::BANNED) {
             \View\V_Home::bannedHome();
             return false;
         }
         try {
-            \Entity\E_User::change_Password($user);
+            \Entity\E_User::change_Password($newPassword);
             \View\V_Profile::banner(); //per Fede, appare un banner del tipo "password cambiata correttamente"
             return true;
         } catch (\Exceptions\input_texts $e) {
@@ -108,14 +108,14 @@ class C_Profile {
      * @param user $user the user who's changing the email
      * @return boolean true if the email was correctly change.
      */
-    public function changeEmail($user) {
+    public function changeEmail($newEmail) {
         $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
         if ($role == \Utilities\Roles::BANNED) {
             \View\V_Home::bannedHome();
             return false;
         }
         try {
-            \Entity\E_User::change_Email($user);
+            \Entity\E_User::change_Email($newEmail);
             \View\V_Profile::banner(); //per Fede, appare un banner del tipo "email cambiata correttamente"
             return true;
         } catch (\Exceptions\input_texts $e) {

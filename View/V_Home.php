@@ -13,12 +13,33 @@ class V_Home extends V_Basic
     private $mainContent;
     /**
      *
-     * Mostra il tamplete della Home di default in base al tipo di utente
+     * Mostra il tamplete della Home di default
      */
-    public function set_home($tipo)
+    public function standardHome()
     {
         $this->display('home_default.tpl');
     }
+
+
+    /**
+     * mostra la home page con messsaggio di errore 
+     */
+    public function notAllowed()
+    {
+        $this->assign('messagio_errore', 'non consentito');
+        $this->standardHome();
+    }
+
+
+    /**
+     *
+     * Mostra il tamplete per dire ad un utemte che è stato bannato
+     */
+    public function bannedHome()
+    {
+        $this->display('banned.tpl');
+    }
+
 
     /**
      * imposta il contenuto principale alla variabile privata della classe
@@ -30,26 +51,23 @@ class V_Home extends V_Basic
         $this->assign('content', $this->mainContent);
     }
 
-
-    /**
-     *
-     * Mostra il tamplete per un utente bannato
-     */
-    public function set_ban()
-    {
-
-        $this->display('bannato.tpl');
-    }
-
-
     /**
      * setta la barra in base all'utente
      */
     public function set_Bar($role)
     {
-        $ruolo=$this->imposta_ruolo($role);
+        $ruolo = $this->imposta_ruolo($role);
         return $this->fetch('topbar_'.$ruolo.'.tpl');
     }
+    /**
+     * visualizza una pagina di errore per caricamento foto 
+     * @param type $messaggio
+     */
 
+    public function error($messaggio)
+    {
+        $this->assign('messaggio',$messaggio);
+        $this->display('pagina_errore.tpl');
+    }
 
 }

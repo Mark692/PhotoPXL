@@ -36,4 +36,17 @@ class V_Foto extends V_Basic
     }
 
 
+    /**
+     * Questo metodo viene utilizzato per vedere una foto, assegna a smarty i dati dell'utente e il percorso della foto
+     * @param type $array_user
+     * @param type $photo
+     */
+    public function showPhotoPage($array_user, $photo)
+    {
+        $this->assign('utente', $array_user);
+        $this->assign('utente', $photo);
+        $this->display('foto_user.tpl');
+    }
+
+
 }

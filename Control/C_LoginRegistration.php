@@ -53,11 +53,11 @@ class C_LoginRegistration
         {
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
+            \View\V_Home::standardHome();    //Per Fede
+            return true;
         }
-        else
-        {
-            return false;
-        }
+        \View\V_Login::error();
+        return false;
     }
 
 
@@ -84,10 +84,12 @@ class C_LoginRegistration
             E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
-            $_SESSION['role'] = Roles::STANDARD;
+            \View\V_Home::standardHome(); //Per Fede
+            return true;
         }
         catch(input_texts $e)
         {
+            \View\V_Registration::error();   //Per Fede
             return false;
         }
     }
@@ -123,5 +125,29 @@ class C_LoginRegistration
         header("Location: index.php");
     }
 
+    public function forgottenPassword($username){
+         $userInfo = E_User::get_LoginInfo($username);
+         if(empty($userInfo))
+        {
+            return false;
+        }
+        return E_User::generate_Token($username);
+    }
+    
+    public function resetPassword($username, $userToken, $keepLogged, $newPassword){
+        if(!E_User::check_Token($username, $userToken)){
+            \View\V_Login::error();       // Per Fede
+            return false;
+        }
+        $this->createSession($keepLogged);
+        $_SESSION['username'] = $username;
+        if(!C_Profile::changePassword($newPassword)){
+            \View\V_Login::error();
+            $this->logout();
+            return false;
+        }
+        \View\V_Home::standardHome();
+        return true;
+    }
 
 }
