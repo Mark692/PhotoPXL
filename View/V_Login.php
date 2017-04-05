@@ -22,5 +22,14 @@ class V_Login extends V_Basic
         return parent::get_Dati($keys);
     }
 
+    /**
+     * visualizza una pagina di errore per login
+     * @param type $messaggio
+     */
+    public function error($messaggio)
+    {
+        $this->assign('messaggio',$messaggio);
+        $this->display('pagina_errore.tpl');
+    }
 
 }
