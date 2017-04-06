@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2017-02-22 13:25:51
+<?php /* Smarty version 2.6.30, created on 2017-04-06 10:46:24
          compiled from home_default.tpl */ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
@@ -19,18 +19,20 @@ Released   : 20080208
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>PhotoPXL</title>
 
-<link rel="stylesheet" type="text/css" media="screen,projection,print"  href="templates/main/template/default.css" />
+<link rel="stylesheet" type="text/css" media="screen,projection,print"  href="templates/main/template/style.css" />
 
 </head>
 <body>
         <!-- start header -->
-<table>
-<tr>
-    <td>
-        
-	<div id="menu">
-            <img src="templates/main/template/img/logo.png" width="150" height="100" align="top"></img>
-		
+
+        <div id="header">
+        <div id="logo">
+        <img src="templates/main/template/img/logo.png" width="250" height="150" align="top"></img>
+        </div>	
+	<div id="nav">
+            <table>
+                <tr>
+                    <td>
 				<ul>
                                  
                                         <li><a href="<?php echo $this->_tpl_vars['url']; ?>
@@ -42,13 +44,22 @@ index.php?controller=upload&task=dadefinere">Carica Foto</a></li>
 					<li><a href="<?php echo $this->_tpl_vars['url']; ?>
 index.php?controller=registrazione&task=logout">Logout</a></li>	
 					<li><a href="fare una function per questo">Diventa Pro</a></li>
-                                        <li><a href="Profilo url"><?php echo $this->_tpl_vars['username']; ?>
+                                        <li align="right"><a href="Profilo url"><?php echo 'federico'; ?>
 </a></li>
                                 </ul>
+                    </td>
+                                <td>
+                                <ul>
+                                    <li align="right"><a href="Profilo url"><?php echo 'federico'; ?>
+</a></li>
+                                </ul>
+                                </td>
+                </tr>
+            </table>
         </div>
-    </td>
-</tr>
-<!-- end header -->
+        </div>
+        <!-- end header -->
+<table>
 <tr>
     <td>
 <div id="page">
@@ -80,7 +91,7 @@ index.php?controller=registrazione&task=logout">Logout</a></li>
         </td>
         <td width="750px" align="center">
             <div class="modulo">
-                <h1>Registrazione</h1>
+                <h2>Registrazione</h2>
                 <form method="post" action="prova.php">
                       <p><label for="username" class="top">Nome utente:</label><br />
                           <input type="text" name="username" class="input" tabindex="15" class="field" value="" /></p>
@@ -92,6 +103,7 @@ index.php?controller=registrazione&task=logout">Logout</a></li>
                           <input type="hidden" name="task" value="salva" />
                           <input type="submit" name="registrazione" class="button" value="Registrazione"  /></p>
                 </form>
+                <h2>Login</h2>
                 <form method="post" action="index.php">
                       <p><label for="username" class="top">Nome utente:</label><br />
                           <input type="text" name="username" class="input" tabindex="15" class="field" value="" /></p>

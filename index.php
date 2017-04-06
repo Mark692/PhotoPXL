@@ -30,9 +30,9 @@ require_once $path."config.inc.php";
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
-
-
-\Foundation\F_User::nullify_Token("AllUser");
+global $config;
+$avvia = new \View\V_Basic();
+$avvia ->display('home_default.tpl');
 
 //var_dump(\Foundation\F_User::check_Token("AllUser", "014b0c8b902b075cdaa4a0f8b4849bc3d6dda66a56910e92a8f54ca628d02f96"));
 
