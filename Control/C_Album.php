@@ -8,6 +8,13 @@
 
 namespace Control;
 
+use Entity\E_User;
+use Entity\E_Album;
+use Entity\E_Photo;
+use View\V_Home;
+use View\V_Album;
+use Utilities\Roles;
+
 /**
  * This class menages the actions a user can do about the albums.
  *
@@ -22,13 +29,13 @@ class C_Album {
      * @return boolean true if the user's allowed to see the album
      */
     public function see($albumId) {
-        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == \Utilities\Roles::BANNED) {
-            \View\V_Home::bannedHome();
+        $role = E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == Roles::BANNED) {
+            V_Home::bannedHome();
             return false;
         }
-        $album = \Entity\E_Album::get_By_ID($albumId);
-        \View\V_Album::album($album, \Entity\E_Photo::get_By_Album($albumId, $_SESSION["username"], $role)); // Per Federico
+        $album = E_Album::get_By_ID($albumId);
+        V_Album::album($album, E_Photo::get_By_Album($albumId, $_SESSION["username"], $role)); // Per Federico
     }
     
     /**
@@ -39,12 +46,12 @@ class C_Album {
      * @return boolean true if the user's allowed to see the album
      */
     public function seeAsync($albumId, $pageToView){
-        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == \Utilities\Roles::BANNED) {
+        $role = E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == Roles::BANNED) {
             return false;
         }
-        $album = \Entity\E_Album::get_By_ID($albumId);
-        return \Entity\E_Photo::get_By_Album($album, $_SESSION["username"], $role, $pageToView);
+        $album = E_Album::get_By_ID($albumId);
+        return E_Photo::get_By_Album($album, $_SESSION["username"], $role, $pageToView);
     }
 
     /**
@@ -65,21 +72,21 @@ class C_Album {
                 return false;
             }
         }
-        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == \Utilities\Roles::BANNED) {
-            \View\V_Home::bannedHome();
+        $role = E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == Roles::BANNED) {
+            V_Home::bannedHome();
             return false;
         }
-        if(!\Entity\E_Album::is_TheCreator($_SESSION["username"], $albumId)){
-            \View\V_Home::notAllowed();
+        if(!E_Album::is_TheCreator($_SESSION["username"], $albumId)){
+            V_Home::notAllowed();
             return false;
         }
-        $album = \Entity\E_Album::get_By_ID($albumId);
+        $album = E_Album::get_By_ID($albumId);
         /* @var $album \Entity\E_Album */
         $album->set_Title($title);
         $album->set_Categories($categories);
         $album->set_Description($description);
-        \Entity\E_Album::update_Details($album);
+        E_Album::update_Details($album);
         return true;
     }
 
@@ -91,19 +98,19 @@ class C_Album {
      * @return boolean true if the album was correctly deleted
      */
     public function delete($albumId, $withPhotos) {
-        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
-        if ($role == \Utilities\Roles::BANNED) {
-            \View\V_Home::bannedHome();
+        $role = E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == Roles::BANNED) {
+            V_Home::bannedHome();
             return false;
         }
-        if(!\Entity\E_Album::is_TheCreator($_SESSION["username"], $albumId)){
-            \View\V_Home::notAllowed();
+        if(!E_Album::is_TheCreator($_SESSION["username"], $albumId)){
+            V_Home::notAllowed();
             return false;
         }
         if ($withPhotos) {
-            \Entity\E_Album::delete_Album_AND_Photos($albumId);
+            E_Album::delete_Album_AND_Photos($albumId);
         } else {
-            \Entity\E_Album::delete($albumId);
+            E_Album::delete($albumId);
         }
         return true;
     }
@@ -117,13 +124,13 @@ class C_Album {
      * @return boolean true if the album was correctly created
      */
     public function create($title, $categories, $description) {
-        $role = \Entity\E_User::get_DB_Role($_SESSION["username"]);
+        $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == \Utilities\Roles::BANNED) {
-            \View\V_Home::bannedHome();
+            V_Home::bannedHome();
             return false;
         }
-        $album = new \Entity\E_Album($title, $description, $categories, time());
-        \Entity\E_Album::insert($album, $_SESSION["username"]);
+        $album = new E_Album($title, $description, $categories, time());
+        E_Album::insert($album, $_SESSION["username"]);
     }
 
 }

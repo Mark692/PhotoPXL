@@ -7,7 +7,7 @@
 
 namespace View;
 
-class V_Registazione extends V_Basic
+class V_Registration extends V_Basic
 {
 
     /**

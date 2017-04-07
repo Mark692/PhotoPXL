@@ -10,8 +10,10 @@ namespace Control;
 
 use Entity\E_User_Standard;
 use Utilities\U_Nonce;
-use Utilities\Roles;
 use Exceptions\input_texts;
+use View\V_Home;
+use View\V_Login;
+use View\V_Registration;
 
 /**
  * This class manages a user's registration, login and logout.
@@ -53,10 +55,10 @@ class C_LoginRegistration
         {
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
-            \View\V_Home::standardHome();    //Per Fede
+            V_Home::standardHome();    //Per Fede
             return true;
         }
-        \View\V_Login::error();
+        V_Login::error();  // Per Fede
         return false;
     }
 
@@ -84,12 +86,12 @@ class C_LoginRegistration
             E_User_Standard::insert($STD_user);
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
-            \View\V_Home::standardHome(); //Per Fede
+            V_Home::standardHome(); //Per Fede
             return true;
         }
         catch(input_texts $e)
         {
-            \View\V_Registration::error();   //Per Fede
+            V_Registration::error();   //Per Fede
             return false;
         }
     }
@@ -136,17 +138,17 @@ class C_LoginRegistration
     
     public function resetPassword($username, $userToken, $keepLogged, $newPassword){
         if(!E_User::check_Token($username, $userToken)){
-            \View\V_Login::error();       // Per Fede
+            V_Login::error();       // Per Fede
             return false;
         }
         $this->createSession($keepLogged);
         $_SESSION['username'] = $username;
         if(!C_Profile::changePassword($newPassword)){
-            \View\V_Login::error();
+            V_Login::error();
             $this->logout();
             return false;
         }
-        \View\V_Home::standardHome();
+        V_Home::standardHome();
         return true;
     }
 
