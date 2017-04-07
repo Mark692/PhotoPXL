@@ -8,6 +8,7 @@
 
 namespace Control;
 
+use Entity\E_User;
 use Entity\E_User_Standard;
 use Utilities\U_Nonce;
 use Exceptions\input_texts;
@@ -55,6 +56,7 @@ class C_LoginRegistration
         {
             $this->createSession($keepLogged);
             $_SESSION['username'] = $username;
+            E_User::nullify_Token($username);
             V_Home::standardHome();    //Per Fede
             return true;
         }
@@ -127,6 +129,12 @@ class C_LoginRegistration
         header("Location: index.php");
     }
 
+    /**
+     * This method is used when a user forget his password and wants to generate a new one.
+     * 
+     * @param string $username the user's name
+     * @return boolean true if the token was generated.
+     */
     public function forgottenPassword($username){
          $userInfo = E_User::get_LoginInfo($username);
          if(empty($userInfo))
@@ -136,6 +144,16 @@ class C_LoginRegistration
         return E_User::generate_Token($username);
     }
     
+    /**
+     * This method is used when a user tries to log with a previously generated token.
+     * If the login happens, the user has to set up a new password.
+     * 
+     * @param string $username the user's name
+     * @param string $userToken the user's token
+     * @param boolean $keepLogged true if the user wants to keep the session active.
+     * @param string $newPassword the new password to set up
+     * @return boolean true if the password was successfully resetted.
+     */
     public function resetPassword($username, $userToken, $keepLogged, $newPassword){
         if(!E_User::check_Token($username, $userToken)){
             V_Login::error();       // Per Fede
@@ -148,6 +166,7 @@ class C_LoginRegistration
             $this->logout();
             return false;
         }
+        E_User::nullify_Token($username);
         V_Home::standardHome();
         return true;
     }
