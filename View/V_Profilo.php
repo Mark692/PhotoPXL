@@ -12,7 +12,7 @@
 
 namespace View;
 
-class V_Album extends V_Basic
+class V_Profilo extends V_Basic
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono
@@ -29,19 +29,29 @@ class V_Album extends V_Basic
     /**
      * mostra il profilo dell'untete
      */
-    public function showProfile()
+    public function showProfile($array_user)
     {
         $this->assign('utente',$array_user);
-        $this->display('profilo.tpl');
+        $contenuto=$this->fetch('profilo.tpl');
+        return $contenuto;
         
     }
 
     /**
-     * mostra un tpl che che da un messaggio di password cambiata correttamente
+     * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
      */
-    public function banner()
+    public function banner_password()
     {
-        $this->display('password_cambiata_ok.tpl');
+        $contenuto = $this->fetch('password_cambiata_ok.tpl');
+        return $contenuto;
+    }
+    /**
+     * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente
+     */
+    public function banner_email()
+    {
+        $contenuto = $this->fetch('email_cambiata_ok.tpl');
+        return $contenuto;
     }
 
 }

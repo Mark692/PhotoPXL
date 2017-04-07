@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2017-04-06 10:46:24
+<?php /* Smarty version 2.6.30, created on 2017-04-07 13:50:21
          compiled from home_default.tpl */ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
@@ -59,6 +59,9 @@ index.php?controller=registrazione&task=logout">Logout</a></li>
         </div>
         </div>
         <!-- end header -->
+        <div id="banner">
+            <label id="banner_write">ciao</label>
+        </div>
 <table>
 <tr>
     <td>

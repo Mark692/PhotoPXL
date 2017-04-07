@@ -1,4 +1,4 @@
-<div id="menu">
+<div id="nav">
 		
 				<ul>
                                     <li><a href="{$url}index.php">Home</a></li>		

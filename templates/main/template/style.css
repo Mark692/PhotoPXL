@@ -36,6 +36,28 @@ body {
 br.clear {
 	clear: both;
 }
+form {
+	margin: 0;
+	padding: 0;
+}
+
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+input, textarea, select {
+	font: normal 1em "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+label{
+    letter-spacing: -1px;
+	font-size: 1.2em;
+        font-weight: normal;
+	color: #2a3332;
+}
+
 h1 {
     color: #117848;
 }
@@ -82,10 +104,16 @@ ul {
 #banner {
 	position: relative;
 	padding: 24px;
-	height: 172px;
-	width: 932px;
-	margin: 0 0 0 0;
-	background: #fff;
+	height: auto;
+	width: auto;
+	margin: auto;
+	background: #FF0000;
+}
+#banner_write{
+       letter-spacing: -1px;
+	font-size: 1.2em;
+        font-weight: normal;
+	color: #FFFFFF;
 }
 
 #box1 {
@@ -363,4 +391,8 @@ ul {
   -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
   -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
   transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.contain{
+    width: 750px;
 }

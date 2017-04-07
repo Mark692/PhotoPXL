@@ -1,6 +1,6 @@
-<table class="tabella"  align="center" border="3" cellpadding="5" cellspacing="0"
+<table align="center" border="3" cellpadding="5" cellspacing="0"
     <tr>
-	<td class="colonna foto">
+	<td>
 		<table>
                     {foreach from=$ultime_foto item=array1}
                         <tr>
@@ -13,8 +13,7 @@
                     {/foreach}
                 </table> 
 	</td>
-	<td class="colonna ricerca" width="900px">
-            <div class="metodo">
+	<td width="900px">
 		<form method="POST" action="index.php">
                     <h1 class="title">Diventa Pro Adesso!!!</h1>
                         <p><label for="Categories" class="top">I vantaggi nel diventare PRO:</label></ br>
