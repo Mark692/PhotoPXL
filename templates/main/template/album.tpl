@@ -1,23 +1,22 @@
-<div class="table">
-    <table class="tabella"  align="center" border="3" cellpadding="5" cellspacing="0">
-	<tr class="contenuto">
-			<td>
-			<table class="colonna foto" cellpadding="5" cellspacing="2">
+<table>
+        <tr>
+			<td class="colonna" align="center">
+			<table cellpadding="5" cellspacing="2">
                             {foreach from=$thumbnail item=array1}
                                 <tr>
                                 {foreach from=$array1 item=valore}
                                     <td>
-                                <img src={$valore} width="100" height="100" > 
+                                <img src="{$valore}" class="thumbnail" > 
                                     </td>
                                 {/foreach}
                                 </tr>
                             {/foreach}
-                </table> 
+                        </table> 
 			</td>
-		<td class="colonna dati album" width="900px">
-			<p><label for="Title" class="top">Titolo:</ br> {$dati_album.title}</label></p>
-                        <p><label for="Title" class="top">Descrizione</ br> {$dati_album.description}</label></p>
-                        <p><label for="categories" class="top">Categoria</ b>
+		<td class="colonna" align="center">
+                    <p><label for="Title"><h2>Titolo:</h2></ br> {$dati_album.title}</label></p>
+                    <p><label for="descrption"><h2>Descrizione</h2></ br> {$dati_album.description}</label></p>
+                    <p><label for="categories"><h2>Categoria</h2></ b>
                               {foreach from=$dati_album.categories item=cat}
                                   <label>{$cat}</label>
                               {/foreach}
@@ -37,12 +36,8 @@
                                 <input type="hidden" name="task" value="elimina album" />
                                 <input type="submit" name="Aggiungi" class="button" value="Aggiungi Foto"  /></p>
                             </form>
-                            
-                            
-                               
-		</td>
+                </td>
 	</tr>
-
-    </table>
+</table>
 </div>
 

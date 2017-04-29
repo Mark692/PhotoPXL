@@ -1,40 +1,49 @@
-<table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
-    <tr class="contenuto">
-        <td class="colonna1" width="900px" align="center">
-            <div class="ultime foto">
-                <p>Foto del momento<br/></p>
-                        <table class="colonna foto" cellpadding="5" cellspacing="2">
-                            {foreach from=$ultime_foto item=array1}
+ <table>
+        <tr>
+            <td class="colonna" align="center">
+        <div class="foto">
+            <h3>Foto da mostrare</h3><br/>
+                 <table>
+                            {foreach from=$thumbnail item=array1}
                                 <tr>
                                 {foreach from=$array1 item=valore}
                                     <td>
-                                <img src={$valore} width="100" height="100" > 
+                                <img src="{$valore}" class="thumbnail" > 
                                     </td>
                                 {/foreach}
                                 </tr>
                             {/foreach}
-                    </table>
-                <p><label for="descrizione" class="top">descrizione del sito</label><br />
+                </table>           
+        </div>
+            <div class="descrizione">
+                <p><label for="descrizione">descrizione del sito</label><br />
             </div>
         </td>
-        <td class="colonna" width="900px" align="center">
-            <h1 class="title">Registrazione</h1>
-                <div class="modulo">
-                    <form method="post" action="prova.php">
-                          <p><label for="username" class="top">Nome utente:</label><br />
-                              <input type="text" name="username" tabindex="15" class="field" value="" /></p>
-                          <p><label for="password" class="top">Password:</label><br />
-                              <input type="password" name="password" tabindex="15" class="field" value="" /></p>
-                          <p><label for="email" class="top">Email:</label><br />
-                              <input type="text" name="email"  tabindex="15" class="field" value="" /></p>
-                          {*<p><label for="foto_profilo" class="top">Inserisci una foto profilo:</label><br />
-                              <input type="file" name="foto_profilo" id="foto_profilo" class="field" value=""></p>*}
-                          <p><input type="hidden" name="controller" value="registrazione" />
-                          <p><input type="hidden" name="task" value="salva" />
-                          <p><input type="submit" name="registrazione" class="button" value="Registrazione"  /></p>
-              </form>
-        </div>
+        <td class="colonna" align="center">
+            <div class="modulo">
+                <h2>Registrazione</h2>
+                <form method="post" action="prova.php">
+                      <p><label for="username">Nome utente:</label><br />
+                          <input type="text" name="username" class="input" tabindex="1" value="" /></p>
+                      <p><label for="password">Password:</label><br />
+                          <input type="password" name="password" class="input" tabindex="2" value="" /></p>
+                      <p><label for="email">Email:</label><br />
+                          <input type="text" name="email" class="input" tabindex="3" value="" /></p>
+                      <p><input type="hidden" name="controller" value="registrazione" />
+                          <input type="hidden" name="task" value="salva" />
+                          <input type="submit" name="registrazione" class="button" value="Registrazione"  /></p>
+                </form>
+                <h2>Login</h2>
+                <form method="post" action="index.php">
+                      <p><label for="username">Nome utente:</label><br />
+                          <input type="text" name="username" class="input" tabindex="4" value="" /></p>
+                      <p><label for="password" class="top">Password:</label><br />
+                          <input type="password" name="password" class="input" tabindex="5" value="" /></p>
+                      <p><input type="hidden" name="controller" value="login" />
+                         <input type="hidden" name="task" value="autentica" />
+                         <input type="submit" name="login" class="button" value="Login"  /></p>
+                </form>
+            </div>
         </td>
     </tr>
 </table>
-v

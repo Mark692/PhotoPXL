@@ -52,7 +52,6 @@ input, textarea, select {
 }
 
 label{
-    letter-spacing: -1px;
 	font-size: 1.2em;
         font-weight: normal;
 	color: #2a3332;
@@ -395,4 +394,11 @@ ul {
 
 .contain{
     width: 750px;
+}
+.colonna{
+    width: 750px;
+}
+.thumbnail{
+    width: 100px;
+    height: 100px;
 }

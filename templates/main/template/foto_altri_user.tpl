@@ -1,14 +1,13 @@
-<table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
-<tr class="contenuto">
-<td class="colonna1" width="900px" align="center">
+<table>
+<tr>
+<td class="colonna" align="center">
 <fieldset>
-<div class="foto">
-                <p><label for="Title" class="top">Titolo:</label><br /></p>
-                <p><label for="Title" class="top">{$dati_foto.title}</label></p> </br>
-                <p><img src={$dati_foto.fullsize}></p>
-                <p><label for="like" class="top">like:{$total_like}><br /></p>
+    <p><label for="Title" class="top"><h2>Titolo:</h2></label><br /></p>
+                <p><label for="Title">{$dati_foto.title}</label></p> </br>
+                <p><img src=""{$dati_foto.fullsize}" width="300px" height="300px"></p>
+                <p><label for="like"><h2>like:</h2>{$dati_foto.total_like}<br /></label></p>
                 <form class="modulo" action="index.php">
-                    {if {$attiva}=='TRUE'}
+                    {if $attiva eq "TRUE"}
                     <p><input type="hidden" name="controller" value="Like" />
                        <input type="hidden" name="task" value="Add_like" />
                        <input type="submit" name="like" class="button" value="Mi Piace"  /></p>
@@ -18,32 +17,24 @@
                        <input type="submit" name="like" class="button" value="Non Mi Piace Pi&ugrave;"  /></p>
                     {/if}
                 </form>
-                <p><label for="date" class="top">Data di pubblicazione:{$upload_date}><br /></p>
-                <p><label for="date" class="top">Album di appartenenza:{$name_album}><br /></p>
+                <p><label for="date"><h2>Data di pubblicazione:</h2>{$dati_foto.upload_date}<br /></label></p>
+                <p><label for="album"><h2>Album di appartenenza:</h2>{$dati_foto.name_album}<br /></label></p>
                 
 </fieldset>
-</p><br />
-</fieldset>
-</div>
 </td>
-<td class="colonna login" width="900px" align="center">
-<h3 class="title">Dati foto </h3>
-<div class="dati">
-              <p><label for="Description" class="top">Descrizione</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.description}</label></p>
-              <p><label for="is_reserved" class="top">Riservata</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.is_reserved}</label></p>   
-              <p><label for="Categories" class="top">Categoria</label><br />
-              <p><label for="Description" class="top"><{$dati_foto.categories}</label></p>
-              <form method="post" action="deve andare alla pagina di modifca">
-                  <p><label for="commento" class="top">Commento:</label><br />
+<td class="colonna" align="center">
+    <p><label for="Description"><h2>Descrizione:</h2><br />{$dati_foto.description}</label></p>
+              <p><label for="is_reserved"><h2>Riservata:</h2></label><br />{$dati_foto.is_reserved}</label></p>   
+              <p><label for="Categories" ><h2>Categoria:</h2></label><br />{$dati_foto.categories}</label></p>
+              <form method="post" action="index.php">
+                  <p><label for="commento"><h2>Commento:</h2></label><br />
                   <textarea name="commento"rows="4" cols="50">.....</textarea>
       
                     <p><input type="hidden" name="controller" value="commento" />
                     <p><input type="hidden" name="task" value="inserisci" />
                     <p><input type="submit" name="modifica" class="button" value="Commenta"  /></p>
               </form>
-</div>
 </td>
 </tr>
+<!-- come mettere i commenti già esistenti -->
 </table>

@@ -32,6 +32,23 @@ require_once $path."config.inc.php";
 //$test_it->try_Functions();
 global $config;
 $avvia = new \View\V_Basic();
+$thumbnail = [];
+for($i=1; $i<=16; $i++)
+{
+    array_push($thumbnail, "templates/main/template/img/logo.png");
+    
+}
+$commento=["ciao cazzo","porco qua","porco la"];
+$utente=["io","tu","egli"];
+$commenti=["utente"=>$utente,"commenti"=>$commento];
+$array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
+$array_foto=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
+    "is_reserved"=>"TRUE","categories"=>"fauna","total_like"=>"10","upload_date"=>"3 dicembre",
+    "name_album"=>"fregno", "fullsize"=>$thumbnail[0]];
+$avvia->assign('thumbnail',array_chunk($thumbnail, PHOTOS_PER_ROW));
+$avvia->assign('dati_foto',$array_foto);
+$avvia->assign('commenti',$commenti);
+$avvia->assign('attiva','FALSE');
 $avvia ->display('home_default.tpl');
 
 //var_dump(\Foundation\F_User::check_Token("AllUser", "014b0c8b902b075cdaa4a0f8b4849bc3d6dda66a56910e92a8f54ca628d02f96"));

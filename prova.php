@@ -22,7 +22,7 @@ $array_dati=$avvia->get_Dati($keys);
 $array_foto = [];
 for($i=1; $i<=16; $i++)
 {
-    array_push($array_foto, "templates/main/template/img/NoPhoto.jpg");
+    array_push($array_foto, "templates/main/template/img/img01.jpg");
     
 }
 $array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
