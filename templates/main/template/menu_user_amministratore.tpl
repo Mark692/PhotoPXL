@@ -1,4 +1,4 @@
-<div id="nav">
+<div id="navadmin">
 		
 				<ul>
                                     <li><a href="{$url}index.php">Home</a></li>		
@@ -7,5 +7,6 @@
 					<li><a href="{$url}index.php?controller=amministratore&task=modulo_banna">Banna Utenti</a></li>
                                         <li><a href="{$url}index.php?controller=amministratore&task=modulo_cambia_ruolo">Cambia Ruoli</a></li>
                                         <li><a href="{$url}index.php?controller=Profilo&task=riepilogo">{$username}</a></li>
+                                        <li><img src="immagine con scritto admin"></li>
                                 </ul>
 </div>

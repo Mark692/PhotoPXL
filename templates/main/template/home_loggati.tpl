@@ -1,26 +1,26 @@
 <table>
     <tr>
-	<td width="750px" align="center">
+	<td class="colonna" align="center">
 		<table>
                     {foreach from=$foto_home item=array1}
                         <tr>
                             {foreach from=$array1 item=valore}
                                 <td>
-                            {$valore}  
+                                    <img src="{$valore}" class="thumbnail" > </img>
                                 </td>
                             {/foreach}
                         </tr>
                     {/foreach}
                 </table> 
 	</td>
-	<td width="750px" align="center">
+	<td class="colonna" align="center">
             <div class="metodo">
 		<form method="POST" action="index.php">
                     <h3 class="title">Ricerca per categoria</h3>
                         <p><label for="Categories" class="top">Categoria</label><br />
                         <select name="Categories" multiple>
-                            {foreach from=$Array_categories item=$categories}
-                                <option value="$categories" checked>$catgories</option>
+                            {foreach from=$array_categories item=categories}
+                                <option value="$categories" checked>{$categories}</option>
                             {/foreach}
                         </select></p>
                         <p><input type="hidden" name="controller" value="cerca" />
@@ -31,3 +31,6 @@
 	</td>
     </tr>
 </table>
+    
+    
+    

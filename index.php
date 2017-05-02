@@ -38,16 +38,18 @@ for($i=1; $i<=16; $i++)
     array_push($thumbnail, "templates/main/template/img/logo.png");
     
 }
+$fotoprofilo="templates/main/template/img/logo.png";
 $commento=["ciao cazzo","porco qua","porco la"];
-$utente=["io","tu","egli"];
-$commenti=["utente"=>$utente,"commenti"=>$commento];
+$dati_utente=["username"=>"federico","email"=>"santom@gmail.com","role"=>"pro"];
 $array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
 $array_foto=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",
     "is_reserved"=>"TRUE","categories"=>"fauna","total_like"=>"10","upload_date"=>"3 dicembre",
     "name_album"=>"fregno", "fullsize"=>$thumbnail[0]];
-$avvia->assign('thumbnail',array_chunk($thumbnail, PHOTOS_PER_ROW));
+$avvia->assign('utente',$dati_utente);
+$avvia->assign('immagine_profilo',$fotoprofilo);
+$avvia->assign('ultime_foto',array_chunk($thumbnail, PHOTOS_PER_ROW));
+$avvia->assign('Array_categories',$array_categories);
 $avvia->assign('dati_foto',$array_foto);
-$avvia->assign('commenti',$commenti);
 $avvia->assign('attiva','FALSE');
 $avvia ->display('home_default.tpl');
 

@@ -27,10 +27,7 @@ Released   : 20080208
         <div id="logo">
         <img src="templates/main/template/img/logo.png" width="250" height="150" align="top"></img>
         </div>	
-	<div id="nav">
-            <table>
-                <tr>
-                    <td>
+                        <div id="navadmin">
 				<ul>
                                  
                                         <li><a href="{$url}index.php">Home</a></li>		
@@ -38,22 +35,15 @@ Released   : 20080208
 					<li><a href="{$url}index.php?controller=upload&task=dadefinere">Carica Foto</a></li>
 					<li><a href="{$url}index.php?controller=registrazione&task=logout">Logout</a></li>	
 					<li><a href="fare una function per questo">Diventa Pro</a></li>
-                                        <li align="right"><a href="Profilo url">{'federico'}</a></li>
+                                        <li><img src="templates/main/template/img/img08.jpg"></img>
                                 </ul>
-                    </td>
-                                <td>
-                                <ul>
-                                    <li align="right"><a href="Profilo url">{'federico'}</a></li>
-                                </ul>
-                                </td>
-                </tr>
-            </table>
-        </div>
+                        </div>
+                    
+   
         </div>
         <!-- end header -->
-        <div id="banner">
-            <label id="banner_write">ciao</label>
-        </div>
+        
+        
 <table>
 <tr>
 <td>
@@ -63,10 +53,40 @@ Released   : 20080208
     
     
 
-    
-    
-    
-    
+<table>
+	<tr>
+            <td class="colonna" align="center">
+			<table>
+                            {foreach from=$ultime_foto item=array1}
+                                <tr>
+                                    {foreach from=$array1 item=valore}
+                                        <td>
+                                        <img src="{$valore}" class="thumbnail" > 
+                                        </td>
+                                    {/foreach}
+                                </tr>
+                            {/foreach}
+                        </table> 
+            </td>
+		 <td class="colonna" align="center">
+			<img src=""{$immagine_profilo}" class="thumbnail">
+			<p><label for="Title"><h2>Username:</h2><br />{$utente.username}</label></p>
+                        <p><label for="Title"><h2>Email:</h2><br />{$utente.email}</label></p>
+                        <p><label for="Title"><h2>Ruolo:</h2><br />{$utente.role}</label></p>
+			
+                        <form method="post" action="index.php">  
+                            <p><input type="hidden" name="controller" value="profilo" />
+                         <input type="hidden"  name="username" value="{$utente.username}">
+                         <input type="hidden" name="email" value"{$utente.email}">
+                         <input type="hidden" name="role" value"{$utente.role}">
+                         <input type="hidden" name="task" value="modifica" />
+                         <input type="submit" name="Modifica" class="button" value="Modifica Profilo"/></p>
+                        </form>	
+                 </td>
+		
+	</tr>
+
+</table>
     
     
     

@@ -1,10 +1,14 @@
+
+<!-- può essere fatto un solo template sfruttando foto altri user -->
+
+
 <table>
 <tr>
 <td class="colonna" align="center">
 <fieldset>
     <p><label for="Title" class="top"><h2>Titolo:</h2></label><br /></p>
                 <p><label for="Title">{$dati_foto.title}</label></p> </br>
-                <p><img src=""{$dati_foto.fullsize}" width="300px" height="300px"></p>
+                <p><img src="{$dati_foto.fullsize}" width="300px" height="300px"></p>
                 <p><label for="like"><h2>like:</h2>{$dati_foto.total_like}<br /></label></p>
                 <form class="modulo" action="index.php">
                     {if $attiva eq "TRUE"}
