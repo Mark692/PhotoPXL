@@ -16,7 +16,7 @@ class V_Registration extends V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('username', 'password', 'email');
         return parent::get_Dati($keys);

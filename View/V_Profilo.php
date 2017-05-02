@@ -29,7 +29,7 @@ class V_Profilo extends V_Basic
     /**
      * mostra il profilo dell'untete
      */
-    public function showProfile($array_user)
+    public static function showProfile($array_user)
     {
         $this->assign('utente',$array_user);
         $contenuto=$this->fetch('profilo.tpl');
@@ -40,7 +40,7 @@ class V_Profilo extends V_Basic
     /**
      * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
      */
-    public function banner_password()
+    public static function banner_password()
     {
         $contenuto = $this->fetch('password_cambiata_ok.tpl');
         return $contenuto;
@@ -48,7 +48,7 @@ class V_Profilo extends V_Basic
     /**
      * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente
      */
-    public function banner_email()
+    public static function banner_email()
     {
         $contenuto = $this->fetch('email_cambiata_ok.tpl');
         return $contenuto;

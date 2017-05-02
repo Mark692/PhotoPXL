@@ -15,7 +15,7 @@ class V_Users extends V_Basic
      *
      * @return array
      */
-    public function get_Dati_commento()
+    public static function get_Dati_commento()
     {
         $keys = array ('commento','id','id_commento');
         return parent::get_Dati($keys);

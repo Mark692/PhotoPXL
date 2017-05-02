@@ -15,7 +15,7 @@ class V_Album extends V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('title', 'description','categories');
         return parent::get_Dati($keys);
@@ -26,7 +26,7 @@ class V_Album extends V_Basic
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public function get_ID_Album()
+    public static function get_ID_Album()
     {
         if(isset($_REQUEST['id_album']))
         {

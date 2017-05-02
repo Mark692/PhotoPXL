@@ -16,7 +16,7 @@ class V_Foto extends V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
         return parent::get_Dati($keys);
@@ -27,7 +27,7 @@ class V_Foto extends V_Basic
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public function getID()
+    public static function getID()
     {
         if(isset($_REQUEST['id']))
         {
@@ -41,7 +41,7 @@ class V_Foto extends V_Basic
      * @param type $array_user
      * @param type $photo
      */
-    public function showPhotoPage($array_user, $photo)
+    public static function showPhotoPage($array_user, $photo)
     {
         $this->assign('utente', $array_user);
         $this->assign('utente', $photo);

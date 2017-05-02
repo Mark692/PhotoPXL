@@ -16,7 +16,7 @@ class V_Login extends V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('username', 'nonce');
         return parent::get_Dati($keys);
@@ -26,7 +26,7 @@ class V_Login extends V_Basic
      * visualizza una pagina di errore per login
      * @param type $messaggio
      */
-    public function error($messaggio)
+    public static function  error($messaggio)
     {
         $this->assign('messaggio',$messaggio);
         $this->display('pagina_errore.tpl');
