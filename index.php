@@ -11,7 +11,10 @@ require_once $path."Autoloader.php";
 require_once $path."config.inc.php";
 //require_once $path."U_Nonce.php";
 
+session_start();
+\Control\C_LoginRegistration::showHome();
 
+/*
 //------------------------------PROVE------------------------------//
 
 //NOTA: QUESTA FUNZIONE CERCHERA' DI POPOLARE IL DATABASE "my_photopxl"
