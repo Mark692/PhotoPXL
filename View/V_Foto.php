@@ -8,7 +8,7 @@
 
 namespace View;
 
-class V_Foto extends V_Basic
+class V_Foto extends V_Home
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
