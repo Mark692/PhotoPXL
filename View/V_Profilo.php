@@ -12,7 +12,7 @@
 
 namespace View;
 
-class V_Profilo extends V_Basic
+class V_Profilo extends V_Home
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono
@@ -20,6 +20,7 @@ class V_Profilo extends V_Basic
      *
      * @return array
      */
+    
     public function get_Dati()
     {
         $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
@@ -29,21 +30,33 @@ class V_Profilo extends V_Basic
     /**
      * mostra il profilo dell'untete
      */
-    public static function showProfile($array_user)
+    public function showProfile($array_user,$immagine_profilo)
     {
+       
         $this->assign('utente',$array_user);
-        $contenuto=$this->fetch('profilo.tpl');
-        return $contenuto;
-        
+        $this->assign('immagine_profilo',$immagine_profilo);
+        $role=$array_user['role'];
+        $this->home($role, $tpl='profilo');    
     }
 
+    
+    //da sistemare perchè non mi legge i banner
+    
+    
     /**
      * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
      */
-    public static function banner_password()
+    public function banner_password($username,$role)
     {
-        $contenuto = $this->fetch('password_cambiata_ok.tpl');
-        return $contenuto;
+        $banner = $this->fetch_banner($tpl='banner_password_cambiata');
+        $this->standardHome($username, $role, $banner);
+    }
+    
+    public function fetch_banner($tpl)
+    {
+        //$ruolo = $this->imposta_ruolo($role);
+        $banner = $this->fetch($tpl.'.tpl');
+        return $banner;
     }
     /**
      * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente

@@ -80,7 +80,7 @@ class V_Basic extends Smarty
      *
      * @return tpl content
      */
-    public function processa_Template($nome_template)
+    public function fetch_Template($nome_template)
     {
         $contenuto = $this->fetch($nome_template.'.tpl');
         return $contenuto;

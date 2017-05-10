@@ -43,9 +43,16 @@ class V_Foto extends V_Basic
      */
     public static function showPhotoPage($array_user, $photo)
     {
+        $this->assign('foto_deteils', $photo);
+        $this->assign('foto', $photo);
+        $categories = $this->imposta_categoria($photo['categories']);
+        $this->assign('categories', $categories);
         $this->assign('utente', $array_user);
-        $this->assign('utente', $photo);
-        $this->display('foto_user.tpl');
+         if($photo['username'] != $array_user['username']);
+        {
+            $this->home($role, $tpl='foto_altri_user');;
+        }
+        $this->home($role, $tpl='foto_user');
     }
 
 
