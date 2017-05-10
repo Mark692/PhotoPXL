@@ -102,13 +102,13 @@ class V_Basic extends Smarty
 
     /**
      * dal valore numerico mi ritorna un array con stringhe
-     * @param type $role
+     * @param type $ruolo
      * @return array
      */
     public function imposta_ruolo($role = [0, 1, 2, 3, 4])
     {
         $cost = [];
-        foreach($role as $valore)
+        foreach($ruolo as $valore)
         {
             switch ($valore)
             {
@@ -169,32 +169,32 @@ class V_Basic extends Smarty
 
             switch ($valore)
             {
-                case Roles::BANNED:
+                case \Utilities\Categories::PAESAGGI:
                     $categoria = "Paesaggi";
                     break;
 
-                case Roles::STANDARD:
+                case \Utilities\Categories::RITRATTI:
                     $categoria = "Ritratti";
                     break;
 
-                case Roles::PRO:
+                case \Utilities\Categories::FAUNA:
                     $categoria = "Fauna";
                     break;
 
-                case Roles::MOD:
+                case \Utilities\Categories::BIANCONERO:
                     $categoria = "Bianco e Nero";
                     break;
 
-                case Roles::ADMIN:
+                case \Utilities\Categories::ASTRONOMIA:
                     $categoria = "Astronomia";
                     break;
-                case Roles::ADMIN:
+                case \Utilities\Categories::STREET:
                     $categoria = "Street";
                     break;
-                case Roles::ADMIN:
+                case \Utilities\Categories::NATURAMORTA:
                     $categoria = "Natura Morta";
                     break;
-                case Roles::ADMIN:
+                case \Utilities\Categories::SPORT:
                     $categoria = "Sport";
                     break;
             }

@@ -11,6 +11,14 @@ require_once $path."Autoloader.php";
 require_once $path."config.inc.php";
 //require_once $path."U_Nonce.php";
 //session_start();
+$avvia = new \View\V_Foto();
+$role=  Utilities\Roles::ADMIN;
+$cat=$avvia->imposta_ruolo($role);
+foreach ($cat as $colore)
+{
+    echo $colore , '<br>';
+}
+        
 
 
 

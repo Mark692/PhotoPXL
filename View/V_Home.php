@@ -101,7 +101,7 @@ class V_Home extends V_Basic
     public function fetch_Bar($role)
     {
         //$ruolo = $this->imposta_ruolo($role);
-        $contenuto = $this->fetch('menu_user_'.$role.'.tpl');
+        $contenuto = $this->fetch('menu_user_'.$ruolo.'.tpl');
         return $contenuto;
     }
     

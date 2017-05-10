@@ -16,7 +16,7 @@ class V_Foto extends V_Home
      *
      * @return array
      */
-    public static function get_Dati()
+    public function get_Dati()
     {
         $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
         return parent::get_Dati($keys);
@@ -27,7 +27,7 @@ class V_Foto extends V_Home
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public static function getID()
+    public function getID()
     {
         if(isset($_REQUEST['id']))
         {
@@ -41,18 +41,39 @@ class V_Foto extends V_Home
      * @param type $array_user
      * @param type $photo
      */
-    public static function showPhotoPage($array_user, $photo)
+    public function showPhotoPage($array_user, $photo)
     {
         $this->assign('foto_deteils', $photo);
         $this->assign('foto', $photo);
         $categories = $this->imposta_categoria($photo['categories']);
         $this->assign('categories', $categories);
         $this->assign('utente', $array_user);
+        $role=$array_user['role'];
          if($photo['username'] != $array_user['username']);
         {
-            $this->home($role, $tpl='foto_altri_user');;
+            $this->home($role, $tpl='foto_altri_user');
         }
         $this->home($role, $tpl='foto_user');
+        
+    }
+    
+    /**
+     * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
+     * @param type $array_user
+     * @param type $photo
+     */
+    public function showUploadPhoto($role)
+    {
+        $array_categories = $this->imposta_categoria();
+        $this->assign('array_categories', $array_categories);
+        if($role == \Utilities\Roles::STANDARD)
+        {
+        $this->home($role, $tpl='upload_standard');
+        }
+        else{
+            $this->home($role, $tpl='upload');
+        }
+        
     }
 
 

@@ -1,3 +1,5 @@
+<?php /* Smarty version 2.6.30, created on 2017-05-10 20:33:43
+         compiled from upload_standard.tpl */ ?>
 <form method="post" action="index.php">
     <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
     
@@ -17,9 +19,12 @@
                     <textarea type="text" name="Description" cols="20" rows="5">inserisci...</textarea></p>
                 <p><label for="Categories" class="top">Categoria</label><br />
                    <select name="Categories" multiple>
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
-                            {/foreach}
+                            <?php $_from = $this->_tpl_vars['array_categories']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['categories']):
+?>
+                                <option value="$categories" checked><?php echo $this->_tpl_vars['categories']; ?>
+</option>
+                            <?php endforeach; endif; unset($_from); ?>
                    </select> 
                 </div>
             </td>

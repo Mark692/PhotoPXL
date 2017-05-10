@@ -1,3 +1,5 @@
+<?php /* Smarty version 2.6.30, created on 2017-05-10 20:25:54
+         compiled from upload.tpl */ ?>
 <form method="post" action="index.php">
 <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
         <tr class="contenuto">
@@ -20,9 +22,12 @@
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br />
                         <select name="Categories" multiple>
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
-                            {/foreach}
+                            <?php $_from = $this->_tpl_vars['array_categories']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['categories']):
+?>
+                                <option value="$categories" checked><?php echo $this->_tpl_vars['categories']; ?>
+</option>
+                            <?php endforeach; endif; unset($_from); ?>
                         </select></p> 
                         </div>
                    </td>
@@ -47,9 +52,12 @@
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br /></p>
                                 <select name="Categories" multiple>
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
-                            {/foreach}
+                            <?php $_from = $this->_tpl_vars['array_categories']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['categories']):
+?>
+                                <option value="$categories" checked><?php echo $this->_tpl_vars['categories']; ?>
+</option>
+                            <?php endforeach; endif; unset($_from); ?>
                             </select>
                     </div>
                   </td>
@@ -75,9 +83,12 @@
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br />
                             <select name="Categories" multiple>
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
-                            {/foreach}
+                            <?php $_from = $this->_tpl_vars['array_categories']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['categories']):
+?>
+                                <option value="$categories" checked><?php echo $this->_tpl_vars['categories']; ?>
+</option>
+                            <?php endforeach; endif; unset($_from); ?>
                             </select>
                         </div>
                     </td>
@@ -96,4 +107,3 @@
         </tr>             
 </table>
 </form>
-
