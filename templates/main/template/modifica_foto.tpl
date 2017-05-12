@@ -18,12 +18,12 @@
                 <h3 class="title">Dati foto </h3>
                 <div class="modulo">
                 <form method="post" action="index.php">
-                      <p><label for="Title" class="top">Titolo:</label><br />
-                          <input type="text" name="title" id="username" class="field" value="{$dati_foto.title}"/></p>
-                      <p><label for="Description" class="top">Descrizione</label><br />
+                      <p><label for="Title">Titolo:</label><br />
+                          <input type="text" name="title" id="username" value="{$dati_foto.title}"/></p>
+                      <p><label for="Description" >Descrizione</label><br />
                       <textarea type="text" name="Description" cols="20" rows="5">{$dati_foto.description}</textarea></p>
                       {*{if dati_utente.roles gt 1}*}
-                          <p><label for="is_reserved" class="top">Riservata:</label><br />
+                          <p><label for="is_reserved">Riservata:</label><br />
                                 {if "TRUE" eq $dati_foto.is_reserved}
                                     Si<input type="radio" name="is_reserved" value="TRUE" checked="checked"/>
                                     No<input type="radio" name="is_reserved" value="FALSE"/>
@@ -32,7 +32,7 @@
                                     No<input type="radio" name="is_reserved" value="FALSE" checked="checked"/>
                                 {/if}
                       {*{/if}*}
-                      <p><label for="Categories" class="top">Categoria</label><br />
+                      <p><label for="Categories">Categoria</label><br />
                           <select name="Categories" multiple>
                             {foreach from=$array_categories item=categories}
                                 {if $categories eq $dati_foto.categories}

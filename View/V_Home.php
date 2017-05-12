@@ -15,12 +15,11 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete della Home di default
      */
-    public function standardHome($username, $role,$banner='')
+    public function standardHome($username, $role, $banner = '')
     {
         $tpl = $this->set_home($username);
         $this->set_Cont_menu_user($role);
         $this->set_Contenuto_Home($tpl);
-        $this->assign($banner);
         $this->display('home_default.tpl');
     }
 
@@ -66,9 +65,13 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per dire ad un utemte che è stato bannato
      */
-    public function bannedHome()
+    public function bannedHome($username)
     {
-        $this->display('banned.tpl');
+        $this->assign('username',$username);
+        $tpl = 'banned';
+        $this->set_Cont_menu_user($role = 'banned');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
     }
 
 
@@ -101,10 +104,11 @@ class V_Home extends V_Basic
     public function fetch_Bar($role)
     {
         //$ruolo = $this->imposta_ruolo($role);
-        $contenuto = $this->fetch('menu_user_'.$ruolo.'.tpl');
+        $contenuto = $this->fetch('menu_user_'.$role.'.tpl');
         return $contenuto;
     }
-    
+
+
     /**
      * restituisce il contnto del tpl in base all'utente
      */
@@ -115,6 +119,7 @@ class V_Home extends V_Basic
         return $contenuto;
     }
 
+
     /**
      * setta il contenuto della homepage in base al fatto l'utente sia loggato oppure no
      * @param type $username prende il valore da session
@@ -124,15 +129,26 @@ class V_Home extends V_Basic
     {
         if($username === FALSE)
         {
-            return $tpl='home_ospite';
+            return $tpl = 'home_ospite';
         }
         else
         {
-            return $tpl='home_loggati';
+            return $tpl = 'home_loggati';
         }
     }
 
 
+    /*
+     * fa il fetch del tpl che gli viene passato come parametro 
+    */
+    public function fetch_banner($tpl)
+    {
+        //$ruolo = $this->imposta_ruolo($role);
+        $banner = $this->fetch($tpl.'.tpl');
+        return $banner;
+    }
+
+//questa è da vedere
     /**
      * visualizza una pagina di errore per caricamento foto 
      * @param type $messaggio

@@ -102,41 +102,36 @@ class V_Basic extends Smarty
 
     /**
      * dal valore numerico mi ritorna un array con stringhe
-     * @param type $ruolo
+     * @param type $role
      * @return array
      */
-    public function imposta_ruolo($role = [0, 1, 2, 3, 4])
+    public function imposta_ruolo($role)
     {
-        $cost = [];
-        foreach($ruolo as $valore)
+        switch ($role)
         {
-            switch ($valore)
-            {
-                case Roles::BANNED:
-                    $ruolo = "bannato";
-                    break;
+            case Roles::BANNED:
+                $role = "bannato";
+                break;
 
-                case Roles::STANDARD:
-                    $ruolo = "standard";
-                    break;
+            case Roles::STANDARD:
+                $role = "standard";
+                break;
 
-                case Roles::PRO:
-                    $ruolo = "pro";
-                    break;
+            case Roles::PRO:
+                $role = "pro";
+                break;
 
-                case Roles::MOD:
-                    $ruolo = "mod";
-                    break;
+            case Roles::MOD:
+                $role = "mod";
+                break;
 
-                case Roles::ADMIN:
-                    $ruolo = "admin";
-                    break;
-                default :
-                    $ruolo= "ospite";
-            }
-            array_push($cost, $ruolo);
+            case Roles::ADMIN:
+                $role = "admin";
+                break;
+            default :
+                $role = "ospite";
         }
-        return $cost;
+        return $role;
     }
 
 
@@ -216,13 +211,16 @@ class V_Basic extends Smarty
         }
         return $cost;
     }
+
+
     /**
      * imposta i dati nel template identificati da una chiave ed il relativo valore
      * @param type $key
      * @param type $valore
      */
-    public function impostaDati($key,$valore) {
-        $this->assign($key,$valore);
+    public function impostaDati($key, $valore)
+    {
+        $this->assign($key, $valore);
     }
 
 

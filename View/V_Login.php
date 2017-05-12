@@ -8,7 +8,7 @@
 
 namespace View;
 
-class V_Login extends V_Basic
+class V_Login extends V_Home
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati_log vengono
@@ -22,14 +22,20 @@ class V_Login extends V_Basic
         return parent::get_Dati($keys);
     }
 
+
     /**
      * visualizza una pagina di errore per login
      * @param type $messaggio
      */
-    public static function  error($messaggio)
+    public static function error($messaggio)
     {
-        $this->assign('messaggio',$messaggio);
+        $tpl = 'login';
+        $this->set_Cont_menu_user($role = 'ospite');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
+        $this->assign('messaggio', $messaggio);
         $this->display('pagina_errore.tpl');
     }
+
 
 }

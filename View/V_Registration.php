@@ -7,7 +7,7 @@
 
 namespace View;
 
-class V_Registration extends V_Basic
+class V_Registration extends V_Home
 {
 
     /**
@@ -20,6 +20,20 @@ class V_Registration extends V_Basic
     {
         $keys = array ('username', 'password', 'email');
         return parent::get_Dati($keys);
+    }
+    
+    /**
+     * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
+     */
+    
+    //da vedere il messaggio da inserire nel banner per errore login
+    
+    public function error($username, $role)
+    {
+        $banner = $this->fetch_banner($tpl = 'banner_login_errato');
+        $this->assign('banner', $banner);
+        $role = $this->imposta_ruolo($role);
+        $this->standardHome($username, $role);
     }
 
 }

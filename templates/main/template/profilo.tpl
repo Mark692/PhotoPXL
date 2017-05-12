@@ -2,7 +2,7 @@
 	<tr>
             <td class="colonna" align="center">
 			<table>
-                            {foreach from=$ultime_foto item=array1}
+                            {foreach from=$thumbnail item=array1}
                                 <tr>
                                     {foreach from=$array1 item=valore}
                                         <td>
@@ -14,7 +14,7 @@
                         </table> 
             </td>
 		 <td class="colonna" align="center">
-			<img src=""{$immagine_profilo}" class="thumbnail">
+			<img src="{$immagine_profilo}" class="thumbnail">
 			<p><label for="Title"><h2>Username:</h2><br />{$utente.username}</label></p>
                         <p><label for="Title"><h2>Email:</h2><br />{$utente.email}</label></p>
                         <p><label for="Title"><h2>Ruolo:</h2><br />{$utente.role}</label></p>

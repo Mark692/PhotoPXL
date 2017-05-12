@@ -11,14 +11,25 @@ require_once $path."Autoloader.php";
 require_once $path."config.inc.php";
 //require_once $path."U_Nonce.php";
 //session_start();
-$avvia = new \View\V_Foto();
-$role=  Utilities\Roles::ADMIN;
-$cat=$avvia->imposta_ruolo($role);
-foreach ($cat as $colore)
+$avvia = new \View\V_Home();
+$role= \Utilities\Roles::ADMIN;
+$username="cazzo fritto";
+$array_user=["username" => "cazzofritto", "password" => "tuozio",
+"email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::STANDARD];
+$array_foto = [];
+for($i=1; $i<=16; $i++)
 {
-    echo $colore , '<br>';
+    array_push($array_foto, "templates/main/template/img/img01.jpg");
+    
 }
-        
+$thumbnail=array_chunk($array_foto, PHOTOS_PER_ROW);
+$immagine_profilo="templates/main/template/img/img01.jpg";
+$avvia->bannedHome($username);
+/*
+ * $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
+ */
+
+
 
 
 
@@ -46,3 +57,4 @@ foreach ($cat as $colore)
 //$test_it->try_Functions();
 
 //var_dump(\Foundation\F_User::check_Token("AllUser", "014b0c8b902b075cdaa4a0f8b4849bc3d6dda66a56910e92a8f54ca628d02f96"));
+        ?>

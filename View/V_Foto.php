@@ -48,15 +48,18 @@ class V_Foto extends V_Home
         $categories = $this->imposta_categoria($photo['categories']);
         $this->assign('categories', $categories);
         $this->assign('utente', $array_user);
-        $role=$array_user['role'];
-         if($photo['username'] != $array_user['username']);
+        $role = $this->imposta_ruolo($array_user['role']);
+        if($photo['username'] != $array_user['username'])
         {
-            $this->home($role, $tpl='foto_altri_user');
+            $this->home($role, $tpl = 'foto_altri_user');
         }
-        $this->home($role, $tpl='foto_user');
-        
+        else
+        {
+            $this->home($role, $tpl = 'foto_user');
+        }
     }
-    
+
+
     /**
      * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
      * @param type $array_user
@@ -65,15 +68,16 @@ class V_Foto extends V_Home
     public function showUploadPhoto($role)
     {
         $array_categories = $this->imposta_categoria();
+        $role = $this->imposta_ruolo($role);
         $this->assign('array_categories', $array_categories);
         if($role == \Utilities\Roles::STANDARD)
         {
-        $this->home($role, $tpl='upload_standard');
+            $this->home($role, $tpl = 'upload_standard');
         }
-        else{
-            $this->home($role, $tpl='upload');
+        else
+        {
+            $this->home($role, $tpl = 'upload');
         }
-        
     }
 
 
