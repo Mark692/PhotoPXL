@@ -148,7 +148,7 @@ class C_Photo {
      * @param string $text the user's comment.
      * @return boolean true if the comment was correctly added.
      */
-    public function comment($photoId, $text) {
+    public static function comment($photoId, $text) {
         if ($this->isBanned($this->role)) {
             return false;
         }
@@ -168,7 +168,7 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the action went right.
      */
-    public function likeUnlike($photoId) {
+    public static function likeUnlike($photoId) {
         if ($this->isBanned($this->role)) {
             return false;
         }
@@ -245,7 +245,7 @@ class C_Photo {
      * @param int $photoId the photo's ID
      * @return boolean true if the action went right.
      */
-    public function seeComments($photoId) {
+    public static function seeComments($photoId) {
         if ($this->isBanned($this->role)) {
             return false;
         }
@@ -258,7 +258,7 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the action went right.
      */
-    public function seeLikes($photoId) {
+    public static function seeLikes($photoId) {
         if ($this->isBanned($this->role)) {
             return false;
         }
@@ -309,7 +309,7 @@ class C_Photo {
      * @param int $pageToView the next page to view
      * @return boolean true 
      */
-    public function mostLikedAsync($pageToView){
+    public static function mostLikedAsync($pageToView){
          if ($this->isBanned($this->role)) {
             return false;
         }

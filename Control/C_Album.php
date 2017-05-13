@@ -45,7 +45,7 @@ class C_Album {
      * @param int $pageToView the next page to view
      * @return boolean true if the user's allowed to see the album
      */
-    public function seeAsync($albumId, $pageToView){
+    public static function seeAsync($albumId, $pageToView){
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             return false;
