@@ -13,6 +13,7 @@ use Entity\E_Album;
 use Entity\E_Photo;
 use View\V_Home;
 use View\V_Album;
+use View\V_Profilo;
 use Utilities\Roles;
 
 /**
@@ -28,7 +29,7 @@ class C_Album {
      * @param int $albumId the album id
      * @return boolean true if the user's allowed to see the album
      */
-    public function see($albumId) {
+    public static function see($albumId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
@@ -64,7 +65,7 @@ class C_Album {
      * @param string $description the album description
      * @return boolean true if the album was correctly edit
      */
-    public function edit($albumId, $title, $categories, $description) {
+    public static function edit($albumId, $title, $categories, $description) {
         foreach ($categories as $category) {
             if ($category != PAESAGGI and $category != RITRATTI and $category != FAUNA
                     and $category != BIANCONERO and $category != ASTRONOMIA and
@@ -87,6 +88,7 @@ class C_Album {
         $album->set_Categories($categories);
         $album->set_Description($description);
         E_Album::update_Details($album);
+        V_Album::album();
         return true;
     }
 
@@ -97,7 +99,7 @@ class C_Album {
      * @param boolean $withPhotos true if also the photos have to be deleted
      * @return boolean true if the album was correctly deleted
      */
-    public function delete($albumId, $withPhotos) {
+    public static function delete($albumId, $withPhotos) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
@@ -112,6 +114,7 @@ class C_Album {
         } else {
             E_Album::delete($albumId);
         }
+        V_Profilo::home();
         return true;
     }
 
@@ -123,7 +126,7 @@ class C_Album {
      * @param string $description the album description
      * @return boolean true if the album was correctly created
      */
-    public function create($title, $categories, $description) {
+    public static function create($title, $categories, $description) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == \Utilities\Roles::BANNED) {
             V_Home::bannedHome();
@@ -131,6 +134,7 @@ class C_Album {
         }
         $album = new E_Album($title, $description, $categories, time());
         E_Album::insert($album, $_SESSION["username"]);
+        V_Album::album();
     }
 
 }

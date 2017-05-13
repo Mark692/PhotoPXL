@@ -160,6 +160,12 @@ class C_LoginRegistration {
         }
     }
     
+    /**
+     * check if a username is already taken.
+     * 
+     * @param string $username
+     * @return boolean true if the username is available.
+     */
     public static function isAvailable($username){
         return E_User::is_Available($username);
     }
