@@ -15,11 +15,13 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete della Home di default
      */
-    public function standardHome($username, $role, $banner = '')
-    {
+    public function standardHome($username, $role, $thumbanil,$banner = '')
+    {   
+        $role=$this->imposta_ruolo($role);
         $tpl = $this->set_home($username);
         $this->set_Cont_menu_user($role);
         $this->set_Contenuto_Home($tpl);
+        $this->assign('thumbanil',$thumbanil);
         $this->display('home_default.tpl');
     }
 

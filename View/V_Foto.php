@@ -43,20 +43,12 @@ class V_Foto extends V_Home
      */
     public function showPhotoPage($array_user, $photo)
     {
-        $this->assign('foto_deteils', $photo);
-        $this->assign('foto', $photo);
-        $categories = $this->imposta_categoria($photo['categories']);
-        $this->assign('categories', $categories);
+        $this->assign('photo_deteils', $photo);
+        //$categories = $this->imposta_categoria($photo['categories']);
+        //$this->assign('categories', $categories);
         $this->assign('utente', $array_user);
         $role = $this->imposta_ruolo($array_user['role']);
-        if($photo['username'] != $array_user['username'])
-        {
-            $this->home($role, $tpl = 'foto_altri_user');
-        }
-        else
-        {
-            $this->home($role, $tpl = 'foto_user');
-        }
+        $this->home($role, $tpl = 'ShowPhotoUser');
     }
 
 

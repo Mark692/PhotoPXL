@@ -11,7 +11,7 @@ require_once $path."Autoloader.php";
 require_once $path."config.inc.php";
 //require_once $path."U_Nonce.php";
 //session_start();
-$avvia = new \View\V_Home();
+$avvia = new \View\V_Foto();
 $role= \Utilities\Roles::ADMIN;
 $username="cazzo fritto";
 $array_user=["username" => "cazzofritto", "password" => "tuozio",
@@ -22,9 +22,10 @@ for($i=1; $i<=16; $i++)
     array_push($array_foto, "templates/main/template/img/img01.jpg");
     
 }
-$thumbnail=array_chunk($array_foto, PHOTOS_PER_ROW);
-$immagine_profilo="templates/main/template/img/img01.jpg";
-$avvia->bannedHome($username);
+$photo=["username"=>"cazz","photo"=>"templates/main/template/img/img01.jpg", "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
+$thumbanil=array_chunk($array_foto, PHOTOS_PER_ROW);
+$avvia->showPhotoPage($array_user, $photo);
+
 /*
  * $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
  */

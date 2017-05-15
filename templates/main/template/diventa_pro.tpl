@@ -1,4 +1,4 @@
-<table align="center" border="3" cellpadding="5" cellspacing="0"
+<table align="center">
     <tr>
 	<td>
 		<table>
@@ -13,19 +13,20 @@
                     {/foreach}
                 </table> 
 	</td>
-	<td width="900px">
-		<form method="POST" action="index.php">
-                    <h1 class="title">Diventa Pro Adesso!!!</h1>
-                        <p><label for="Categories" class="top">I vantaggi nel diventare PRO:</label></ br>
-                        <ul>
+    <td width="900px">
+		
+                    <h1>Diventa Pro Adesso!!!</h1>
+                    <p><label>I vantaggi nel diventare PRO:</label></ br>
+                    <ul>
                             <li>Potrai caricare foto illimitate</li>
                             <li>Potrai impostare la visibilità delle tue foto e album</li>
                             <li>Potrai caricare fino a 3 foto contemporaneamente</li>
-                        </ul>
-                        <p><input type="hidden" name="controller" value="Profilo" />
+                    </ul>
+                    <form method="POST" action="index.php">
+                            <p><input type="hidden" name="controller" value="Profilo" />
                             <input type="hidden" name="task" value="Cambia_ruolo" />
                             <input type="submit" name="cerca" class="button" value="Diventa Pro"  /></p>
-                </form>
+                    </form>
             </div>
 	</td>
     </tr>

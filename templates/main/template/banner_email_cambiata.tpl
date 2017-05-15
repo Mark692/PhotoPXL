@@ -1,3 +1,5 @@
-<div id="banner">
-            <label id="banner_write">L'Email è stata cambiata corretamente</label>
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4>Well done!</h4>
+  <p>L'Email è stata cambiata corretamente</p>
 </div>
