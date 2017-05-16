@@ -30,28 +30,30 @@ class V_Profilo extends V_Home
     /**
      * mostra il profilo dell'utente
      */
-    public function showProfile($array_user, $immagine_profilo, $thumbnail)
+    public function showProfile($array_user, $pic_profile, $thumbnail)
     {
 
-        $this->assign('utente', $array_user);
-        $this->assign('immagine_profilo', $immagine_profilo);
+        $this->assign('user_details', $array_user);
+        $this->assign('pic_profile', $pic_profile);
         $this->assign('thumbnail', $thumbnail);
         $role = $this->imposta_ruolo($array_user['role']);
-        $this->home($role, $tpl = 'profilo');
+        $this->assign('role', $role);
+        $this->home($role, $tpl = 'showProfile');
     }
 
 
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      */
-    public function showModificaProfile($array_user, $immagine_profilo, $thumbnail)
+    public function showEditProfile($array_user, $pic_profile, $thumbnail)
     {
 
-        $this->assign('utente', $array_user);
-        $this->assign('immagine_profilo', $immagine_profilo);
+        $this->assign('user_details', $array_user);
+        $this->assign('pic_profile', $pic_profile);
         $this->assign('thumbnail', $thumbnail);
         $role = $this->imposta_ruolo($array_user['role']);
-        $this->home($role, $tpl = 'modifica_profilo');
+        $this->assign('role', $role);
+        $this->home($role, $tpl = 'EditProfile');
     }
 
 

@@ -37,7 +37,18 @@ class V_Home extends V_Basic
         $this->set_Contenuto_Home($tpl);
         $this->display('home_default.tpl');
     }
-
+    
+    /**
+     *
+     * Mostra il tamplete della Home di utenti per la registrazione
+     */
+    public function registration()
+    {
+        $tpl = 'registration';
+        $this->set_Cont_menu_user($role = 'ospite');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
+    }
 
     /**
      * questa funzione serve per impostare qualsiasi pagina del sito
@@ -131,7 +142,7 @@ class V_Home extends V_Basic
     {
         if($username === FALSE)
         {
-            return $tpl = 'home_ospite';
+            return $tpl = 'home_guest';
         }
         else
         {

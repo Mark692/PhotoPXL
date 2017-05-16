@@ -1,16 +1,14 @@
-<table>
-                    <tr>
-			<td class="colonna" align="center">
-			<img src="{immagine bann da trovare}" class="thumbnail" > 
-                        </td>
-                <td class="colonna" align="center">
-		
-                    <p><label for="Title"><h2>Caro utente {$utente} sei stato bannato fino a nuovo ordine
+<div class="container">
+    <div class="row">
+    <div class="col-md-6">
+		<img src="{immagine bann da trovare}" class="thumbnail" > 
+    </div>
+    <div class="col-md-6">
+		<h3 class="text-success">Caro utente {$utente} sei stato bannato fino a nuovo ordine
                             per comportamento scorretto!!!
-                            Ci dispiace ma la prossima volta comportati bene!!!</h2>
-                    </ br></label></p>
+                            Ci dispiace ma la prossima volta comportati bene!!!</h3>
+                    </ br>
 			
-                </td>
-	</tr>
-
-</table>
+    </div>
+    </div>
+</div>

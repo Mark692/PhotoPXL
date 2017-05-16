@@ -14,12 +14,12 @@
                 <form method="POST" action="index.php">
                         <p><h3 class="text-success">Titolo:</h3><br />
                         <div class="form-group">
-                                <input class="form-control" id="focusedInput" type="text" value="{$photo_deteils.title}">
+                                <input name="title" class="form-control" id="focusedInput" type="text" value="{$photo_deteils.title}">
                         </div>
                         <p><h3 class="text-success">Descrizione</h3>><br />
                         <div class="form-group">
                             <div class="col-lg-10">
-                            <textarea class="form-control" rows="3" id="textArea"></textarea>
+                            <textarea name="description" class="form-control" rows="3" id="textArea"></textarea>
                             <span class="help-block">{$photo_deteils.description}</span>
                             </div>
                          </div>
@@ -30,14 +30,14 @@
                                         <div class="col-lg-10">
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="TRUE" checked="">
+                                                    <input name="is_reserved" type="radio" name="optionsRadios" id="optionsRadios1" value="TRUE" checked="">
                                                     Si
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="FALSE">
-                                                    Si
+                                                    <input name="is_reserved" type="radio" name="optionsRadios" id="optionsRadios2" value="FALSE">
+                                                    No
                                                 </label>
                                             </div>
                                           </div>
@@ -47,14 +47,14 @@
                                         <div class="col-lg-10">
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="TRUE">
+                                                    <input name="is_reserved" type="radio" name="optionsRadios" id="optionsRadios1" value="TRUE">
                                                     Si
                                                 </label>
                                             </div>
                                             <div class="radio">
                                                 <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="FALSE"  checked="">
-                                                    Si
+                                                    <input name="is_reserved" type="radio" name="optionsRadios" id="optionsRadios2" value="FALSE"  checked="">
+                                                    No
                                                 </label>
                                             </div>
                                           </div>
@@ -63,7 +63,7 @@
                         {/if}
                         <h3 class="text-success">Categoria</h3><br />
                         <div class="col-lg-10">
-                            <select multiple="" class="form-control">
+                            <select name="categories" multiple="" class="form-control">
                                 {foreach from=$array_categories item=categories}
                                     {if $categories eq $dati_foto.categories}
                                             <option value="$categories" selected="selected">{$categories}</option>

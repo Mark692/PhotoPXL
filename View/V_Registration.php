@@ -23,17 +23,13 @@ class V_Registration extends V_Home
     }
     
     /**
-     * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
+     * ritorna il contunuto del tpl che da un messaggio di per il login errato
      */
-    
-    //da vedere il messaggio da inserire nel banner per errore login
-    
     public function error($username, $role)
     {
-        $banner = $this->fetch_banner($tpl = 'banner_login_errato');
+        $banner = $this->fetch_banner($tpl = 'banner_login_incorrect');
         $this->assign('banner', $banner);
         $role = $this->imposta_ruolo($role);
         $this->standardHome($username, $role);
     }
-
 }
