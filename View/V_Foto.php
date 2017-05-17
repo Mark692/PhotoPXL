@@ -46,7 +46,7 @@ class V_Foto extends V_Home
         $this->assign('photo_deteils', $photo);
         //$categories = $this->imposta_categoria($photo['categories']);
         //$this->assign('categories', $categories);
-        $this->assign('utente', $array_user);
+        $this->assign('user_details', $array_user);
         $role = $this->imposta_ruolo($array_user['role']);
         $this->home($role, $tpl = 'ShowPhotoUser');
     }
@@ -70,6 +70,20 @@ class V_Foto extends V_Home
         {
             $this->home($role, $tpl = 'upload');
         }
+    }
+
+
+    /**
+     * mostra il modulo tpl per la modifica dei dati di una foto
+     */
+    public function showEditProfile($array_user, $photo)
+    {
+
+        $this->assign('user_details', $array_user);
+        $this->assign('photo_deteils', $photo);
+        $role = $this->imposta_ruolo($array_user['role']);
+        $this->assign('role', $role);
+        $this->home($role, $tpl = 'EditPhoto');
     }
 
 

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2017-05-15 16:03:49
+<?php /* Smarty version 2.6.30, created on 2017-05-17 13:06:48
          compiled from home_default.tpl */ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
@@ -24,14 +24,8 @@ Released   : 20080208
 
     <!-- Bootstrap -->
     <link href="templates/main/template/css/bootstrap.min.css" rel="stylesheet">
-    <link href="templates/main/template/css/Custom.css" rel="stylesheet"
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="templates/main/template/css/Custom.css" rel="stylesheet">
+   
   </head>
 <body>
         <!-- start header -->
@@ -52,9 +46,7 @@ Released   : 20080208
 
             
         
-<table>
-<tr>
-<td>
+
 <div id="page">
     
     <?php echo $this->_tpl_vars['content']; ?>
@@ -62,7 +54,12 @@ Released   : 20080208
     
     <!--fine -->
 </div>
-    </td>
-</tr>
-</table>
+
+  <!-- JS -->
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="templates/main/template/js/bootstrap.min.js"></script>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <!-- JS -->
 </body>

@@ -23,7 +23,7 @@
                             <span class="help-block">{$photo_deteils.description}</span>
                             </div>
                          </div>
-                        {if $userdetails.role gt "Standard"}
+                        {if $user_details.role gt "Standard"}
                           <p><label for="is_reserved">Riservata:</label><br />
                                 {if "TRUE" eq $photo_deteils.is_reserved}
                                     <div class="form-group">
@@ -65,7 +65,7 @@
                         <div class="col-lg-10">
                             <select name="categories" multiple="" class="form-control">
                                 {foreach from=$array_categories item=categories}
-                                    {if $categories eq $dati_foto.categories}
+                                    {if $categories eq $photo_deteils.categories}
                                             <option value="$categories" selected="selected">{$categories}</option>
                                     {else}  <option value="$categories">{$categories}</option>
                                     {/if}

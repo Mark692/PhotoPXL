@@ -6,7 +6,7 @@
                                 <tr>
                                     {foreach from=$array1 item=valore}
                                         <td>
-                                        <img src="{$valore}" class="thumbnail" > 
+                                        <img src="{$valore}" width="114" height="75" class="img-responsive" > 
                                         </td>
                                     {/foreach}
                                 </tr>

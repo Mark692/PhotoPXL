@@ -22,14 +22,8 @@ Released   : 20080208
 
     <!-- Bootstrap -->
     <link href="templates/main/template/css/bootstrap.min.css" rel="stylesheet">
-    <link href="templates/main/template/css/Custom.css" rel="stylesheet"
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="templates/main/template/css/Custom.css" rel="stylesheet">
+   
   </head>
 <body>
         <!-- start header -->
@@ -48,16 +42,19 @@ Released   : 20080208
             {$banner}
             
         
-<table>
-<tr>
-<td>
+
 <div id="page">
     
     {$content}
     
     <!--fine -->
 </div>
-    </td>
-</tr>
-</table>
+
+  <!-- JS -->
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="templates/main/template/js/bootstrap.min.js"></script>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <!-- JS -->
 </body>

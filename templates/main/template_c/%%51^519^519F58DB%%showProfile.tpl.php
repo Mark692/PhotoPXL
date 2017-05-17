@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.30, created on 2017-05-16 13:11:59
+<?php /* Smarty version 2.6.30, created on 2017-05-17 13:03:21
          compiled from showProfile.tpl */ ?>
 <div class="container">
     <div class="row">
@@ -13,7 +13,7 @@
 ?>
                                         <td>
                                         <img src="<?php echo $this->_tpl_vars['valore']; ?>
-" class="thumbnail" > 
+" width="114" height="75" class="img-responsive" > 
                                         </td>
                                     <?php endforeach; endif; unset($_from); ?>
                                 </tr>

@@ -15,11 +15,11 @@ $avvia = new \View\V_Profilo();
 $role= \Utilities\Roles::ADMIN;
 $username="cazzo fritto";
 $array_user=["username" => "cazzofritto", "password" => "tuozio",
-"email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::STANDARD];
+"email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
 $array_foto = [];
 for($i=1; $i<=16; $i++)
 {
-    array_push($array_foto, "templates/main/template/img/img01.jpg");
+    array_push($array_foto, "templates/main/template/img/noimagefound.jpg");
     
 }
 $photo=["username"=>"cazz","photo"=>"templates/main/template/img/img01.jpg", "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
