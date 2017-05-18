@@ -1,15 +1,15 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-$$smarty_path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
-require_once $$smarty_path."Autoloader.php";
-require_once $$smarty_path."config.inc.php";
-require_once $$smarty_path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPETENTE
+$smarty_path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
+require_once $smarty_path."Autoloader.php";
+require_once $smarty_path."config.inc.php";
+require_once $smarty_path."U_Nonce.php"; //SISTEMA QUESTE FUNZIONI IN UNA CLASSE COMPETENTE
 
 
 
@@ -23,7 +23,7 @@ $array_foto = [];
 for($i=1; $i<=16; $i++)
 {
     array_push($array_foto, "templates/main/template/img/img01.jpg");
-    
+
 }
 $array_categories=["PAESAGGI", "STREET", "FAUNA","RITRATTI"];
 $array_album=["title" => "le foto + belle", "description" => "ciaooooooooooooooooo",

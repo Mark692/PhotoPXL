@@ -7,7 +7,7 @@
  */
 
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
-require_once $path."Autoloader.php";
+require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
