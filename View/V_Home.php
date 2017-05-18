@@ -17,12 +17,13 @@ class V_Home extends V_Basic
      */
     public function standardHome($username, $role, $thumbanil,$banner = '')
     {   
+        $smarty = new \Smarty();
         $role=$this->imposta_ruolo($role);
         $tpl = $this->set_home($username);
         $this->set_Cont_menu_user($role);
         $this->set_Contenuto_Home($tpl);
-        $this->assign('thumbanil',$thumbanil);
-        $this->display('home_default.tpl');
+        $smarty->assign('thumbanil',$thumbanil);
+        $smarty->display('home_default.tpl');
     }
 
 
@@ -32,10 +33,11 @@ class V_Home extends V_Basic
      */
     public function login()
     {
+        $smarty = new \Smarty();
         $tpl = 'login';
         $this->set_Cont_menu_user($role = 'ospite');
         $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
+        $smarty->display('home_default.tpl');
     }
     
     /**
@@ -44,10 +46,11 @@ class V_Home extends V_Basic
      */
     public function registration()
     {
+        $smarty = new \Smarty();
         $tpl = 'registration';
         $this->set_Cont_menu_user($role = 'ospite');
         $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
+        $smarty->display('home_default.tpl');
     }
 
     /**
@@ -58,9 +61,10 @@ class V_Home extends V_Basic
      */
     public function home($role, $tpl)
     {
+        $smarty = new \Smarty();
         $this->set_Cont_menu_user($role);
         $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
+        $smarty->display('home_default.tpl');
     }
 
 
@@ -69,7 +73,8 @@ class V_Home extends V_Basic
      */
     public function notAllowed()
     {
-        $this->assign('messagio_errore', 'non consentito');
+        $smarty = new \Smarty();
+        $smarty->assign('messagio_errore', 'non consentito');
         $this->standardHome();
     }
 
@@ -80,11 +85,12 @@ class V_Home extends V_Basic
      */
     public function bannedHome($username)
     {
-        $this->assign('username',$username);
+        $smarty = new \Smarty();
+        $smarty->assign('username',$username);
         $tpl = 'banned';
         $this->set_Cont_menu_user($role = 'banned');
         $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
+        $smarty->display('home_default.tpl');
     }
 
 
@@ -95,19 +101,20 @@ class V_Home extends V_Basic
      */
     public function set_Contenuto_Home($tpl)
     {
+        $smarty = new \Smarty();
         $mainContent = $this->fetch_home($tpl);
-        $this->assign('content', $mainContent);
+        $smarty->assign('content', $mainContent);
     }
-
 
     /**
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
      */
     public function set_Cont_menu_user($role)
-    {
+    {   
+        $smarty = new \Smarty();
         $cont = $this->fetch_Bar($role);
-        $this->assign('menu_user', $cont);
+        $smarty->assign('menu_user', $cont);
     }
 
 
@@ -116,8 +123,8 @@ class V_Home extends V_Basic
      */
     public function fetch_Bar($role)
     {
-        //$ruolo = $this->imposta_ruolo($role);
-        $contenuto = $this->fetch('menu_user_'.$role.'.tpl');
+        $smarty = new \Smarty();
+        $contenuto = $smarty->fetch('menu_user_'.$role.'.tpl');
         return $contenuto;
     }
 
@@ -127,8 +134,8 @@ class V_Home extends V_Basic
      */
     public function fetch_home($tpl)
     {
-        //$ruolo = $this->imposta_ruolo($role);
-        $contenuto = $this->fetch($tpl.'.tpl');
+        $smarty = new \Smarty();
+        $contenuto = $smarty->fetch($tpl.'.tpl');
         return $contenuto;
     }
 
@@ -156,8 +163,8 @@ class V_Home extends V_Basic
     */
     public function fetch_banner($tpl)
     {
-        //$ruolo = $this->imposta_ruolo($role);
-        $banner = $this->fetch($tpl.'.tpl');
+        $smarty = new \Smarty();
+        $banner = $smarty->fetch($tpl.'.tpl');
         return $banner;
     }
 
@@ -168,8 +175,9 @@ class V_Home extends V_Basic
      */
     public function error($messaggio)
     {
+        $smarty = new \Smarty();
         $this->assign('messaggio', $messaggio);
-        $contenuto = $this->fetch('pagina_errore.tpl');
+        $contenuto = $smarty->fetch('pagina_errore.tpl');
         return $contenuto;
     }
 

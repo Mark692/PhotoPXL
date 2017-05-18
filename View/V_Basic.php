@@ -8,26 +8,34 @@
 
 namespace View;
 
-use Smarty;
 use Utilities\Roles;
 
-require('libs/Smarty.class.php');
 
-class V_Basic extends Smarty
+require_once ('./libs/Smarty.class.php');
+
+
+class V_Basic Extends \Smarty
 {
     /**
      * Costruttore della classe
      */
     public function __construct()
     {
-//        $this->smarty();
         global $config;
-//        $this->Smarty();
-        $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
-        $this->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
-        $this->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
-        $this->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
-        $this->caching = false;
+        parent::__construct();
+        $this->setTemplateDir($config['smarty']['template_dir']);
+        $this->setCompileDir($config['smarty']['compile_dir']);
+        $this->setCacheDir($config['smarty']['config_dir']);
+        $this->setConfigDir($config['smarty']['cache_dir']);
+        /** $smarty->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
+        $smarty->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
+        $smarty->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
+        $smarty->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
+        
+        $smarty->caching = false;
+         *
+         * 
+         */
     }
 
 
@@ -82,7 +90,8 @@ class V_Basic extends Smarty
      */
     public function fetch_Template($nome_template)
     {
-        $contenuto = $this->fetch($nome_template.'.tpl');
+        $smarty = new \Smarty();
+        $contenuto = $smarty->fetch($nome_template.'.tpl');
         return $contenuto;
     }
 
@@ -95,8 +104,9 @@ class V_Basic extends Smarty
      */
     public function set_Dati($dati)
     {
-        $this->assign('username', $dati['username']);
-        $this->assign('email', $dati['email']);
+        $smarty = new \Smarty();    
+        $smarty->assign('username', $dati['username']);
+        $smarty->assign('email', $dati['email']);
     }
 
 
@@ -220,7 +230,13 @@ class V_Basic extends Smarty
      */
     public function impostaDati($key, $valore)
     {
-        $this->assign($key, $valore);
+        $smarty = new \Smarty();
+        $smarty->assign($key, $valore);
+    }
+    
+    public function homecazzo()
+    { 
+        $this->display('home_loggati.tpl');
     }
 
 

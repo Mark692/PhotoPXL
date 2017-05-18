@@ -39,17 +39,20 @@ class V_Album extends V_Home
     /*
      * restituisce il contento del tpl in base all'utente
      */
-    public function set_album_tpl($album, $thumbnail)
+    public function set_album_tpl($album, $thumbnail,$array_user)
     {
+        $smarty = new \Smarty();
         $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
-        $this->assign('id', $thumbnail['id']);
-        $this->assign('thumbnail', $thumbnail['thumbnail']);
-        $this->assign('page_tot', $page_tot);
-        $this->assign('title', $album['title']);
-        $this->assign('description', $album['description']);
+        $smarty->assign('id', $thumbnail['id']);
+        $smarty->assign('thumbnail', $thumbnail['thumbnail']);
+        $smarty->assign('page_tot', $page_tot);
+        $smarty->assign('title', $album['title']);
+        $smarty->assign('description', $album['description']);
         $categorie = $this->imposta_categoria($album['categories']); //dal numero alla stringa
-        $this->assign('categories', $categorie);
+        $smarty->assign('categories', $categorie);
+        $smarty->assign('user_details',$array_user);
         $role=$array_user['role'];
+        $role=$this->imposta_ruolo($role);
         $this->home($role, $tpl='album'); 
     }
 
