@@ -10,9 +10,10 @@ namespace Utilities;
 
 global $config;
 
-$smarty_path = ".".DIRECTORY_SEPARATOR
-                    ."templates".DIRECTORY_SEPARATOR
-                        ."main".DIRECTORY_SEPARATOR;
+
+$smarty_path = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR
+                ."templates".DIRECTORY_SEPARATOR
+                    ."main".DIRECTORY_SEPARATOR;
 
 //----Smarty Directories----\\
 $config['smarty']['cache_dir']    = $smarty_path.'cache'.DIRECTORY_SEPARATOR;

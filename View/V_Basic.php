@@ -9,9 +9,12 @@
 namespace View;
 
 use Smarty;
+use Utilities\Categories;
 use Utilities\Roles;
 
-require('libs/Smarty.class.php');
+
+require_once '.'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
+
 
 class V_Basic extends Smarty
 {
@@ -20,20 +23,29 @@ class V_Basic extends Smarty
      */
     public function __construct()
     {
-        /**
-//        $this->smarty();
+        echo("1".nl2br("\r\n"));
         global $config;
-//        $this->Smarty();
-        $this->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
-        $this->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
-        $this->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
-        $this->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
-        $this->caching = false;
+        echo("2".nl2br("\r\n"));
+        //parent::__construct();
+        echo("3".nl2br("\r\n"));
+        //$this->setTemplateDir($config['smarty']['template_dir']);
+        echo("templatedir".nl2br("\r\n"));
+        //$this->setCompileDir($config['smarty']['compile_dir']);
+        echo("compile_dir".nl2br("\r\n"));
+        //$this->setCacheDir($config['smarty']['config_dir']);
+        echo("config_dir".nl2br("\r\n"));
+        //$this->setConfigDir($config['smarty']['cache_dir']);
+        echo("cache_dir".nl2br("\r\n"));
+        /** $smarty->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
+        $smarty->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
+        $smarty->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
+        $smarty->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
+
+        $smarty->caching = false;
+         *
          *
          */
-        global $config;
-        parent::__construct();
-        var_dump($this->get_config_vars());
+        var_dump($this->getConfigDir());
     }
 
 
@@ -88,7 +100,8 @@ class V_Basic extends Smarty
      */
     public function fetch_Template($nome_template)
     {
-        $contenuto = $this->fetch($nome_template.'.tpl');
+        $smarty = new Smarty();
+        $contenuto = $smarty->fetch($nome_template.'.tpl');
         return $contenuto;
     }
 
@@ -101,8 +114,9 @@ class V_Basic extends Smarty
      */
     public function set_Dati($dati)
     {
-        $this->assign('username', $dati['username']);
-        $this->assign('email', $dati['email']);
+        $smarty = new Smarty();
+        $smarty->assign('username', $dati['username']);
+        $smarty->assign('email', $dati['email']);
     }
 
 
@@ -170,32 +184,32 @@ class V_Basic extends Smarty
 
             switch ($valore)
             {
-                case \Utilities\Categories::PAESAGGI:
+                case Categories::PAESAGGI:
                     $categoria = "Paesaggi";
                     break;
 
-                case \Utilities\Categories::RITRATTI:
+                case Categories::RITRATTI:
                     $categoria = "Ritratti";
                     break;
 
-                case \Utilities\Categories::FAUNA:
+                case Categories::FAUNA:
                     $categoria = "Fauna";
                     break;
 
-                case \Utilities\Categories::BIANCONERO:
+                case Categories::BIANCONERO:
                     $categoria = "Bianco e Nero";
                     break;
 
-                case \Utilities\Categories::ASTRONOMIA:
+                case Categories::ASTRONOMIA:
                     $categoria = "Astronomia";
                     break;
-                case \Utilities\Categories::STREET:
+                case Categories::STREET:
                     $categoria = "Street";
                     break;
-                case \Utilities\Categories::NATURAMORTA:
+                case Categories::NATURAMORTA:
                     $categoria = "Natura Morta";
                     break;
-                case \Utilities\Categories::SPORT:
+                case Categories::SPORT:
                     $categoria = "Sport";
                     break;
             }
@@ -226,7 +240,13 @@ class V_Basic extends Smarty
      */
     public function impostaDati($key, $valore)
     {
-        $this->assign($key, $valore);
+        $smarty = new Smarty();
+        $smarty->assign($key, $valore);
+    }
+
+    public function homecazzo()
+    {
+        $this->display('home_loggati.tpl');
     }
 
 
