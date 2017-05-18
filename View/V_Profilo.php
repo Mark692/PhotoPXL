@@ -20,7 +20,7 @@ class V_Profilo extends V_Home
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
         return parent::get_Dati($keys);
@@ -30,7 +30,7 @@ class V_Profilo extends V_Home
     /**
      * mostra il profilo dell'utente
      */
-    public function showProfile($array_user, $pic_profile, $thumbnail)
+    public static function showProfile($array_user, $pic_profile, $thumbnail)
     {
 
         $this->assign('user_details', $array_user);
@@ -45,7 +45,7 @@ class V_Profilo extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      */
-    public function showEditProfile($array_user, $pic_profile, $thumbnail)
+    public static function showEditProfile($array_user, $pic_profile, $thumbnail)
     {
 
         $this->assign('user_details', $array_user);
@@ -60,7 +60,7 @@ class V_Profilo extends V_Home
     /**
      * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
      */
-    public function banner_password($username, $role)
+    public static function banner_password($username, $role)
     {
         $banner = $this->fetch_banner($tpl = 'banner_password_cambiata');
         $this->assign('banner', $banner);
@@ -72,7 +72,7 @@ class V_Profilo extends V_Home
     /**
      * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente
      */
-    public function banner_email($username, $role)
+    public static function banner_email($username, $role)
     {
         $banner = $this->fetch_banner($tpl = 'banner_email_cambiata');
         $this->assign('banner', $banner);

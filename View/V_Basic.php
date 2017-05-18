@@ -19,19 +19,12 @@ class V_Basic extends Smarty
      */
     public function __construct()
     {
-        echo("1".nl2br("\r\n"));
         global $config;
-        echo("2".nl2br("\r\n"));
-        //parent::__construct();
-        echo("3".nl2br("\r\n"));
-        //$this->setTemplateDir($config['smarty']['template_dir']);
-        echo("templatedir".nl2br("\r\n"));
-        //$this->setCompileDir($config['smarty']['compile_dir']);
-        echo("compile_dir".nl2br("\r\n"));
-        //$this->setCacheDir($config['smarty']['config_dir']);
-        echo("config_dir".nl2br("\r\n"));
-        //$this->setConfigDir($config['smarty']['cache_dir']);
-        echo("cache_dir".nl2br("\r\n"));
+        parent::__construct();
+        $this->setTemplateDir($config['smarty']['template_dir']);
+        $this->setCompileDir($config['smarty']['compile_dir']);
+        $this->setCacheDir($config['smarty']['config_dir']);
+        $this->setConfigDir($config['smarty']['cache_dir']);
         /** $smarty->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
         $smarty->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
         $smarty->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
@@ -41,7 +34,6 @@ class V_Basic extends Smarty
          *
          *
          */
-        var_dump($this->getConfigDir());
     }
 
 
@@ -51,7 +43,7 @@ class V_Basic extends Smarty
      * @param string or array $keys Description chiavi usate per cercare
      * @return array
      */
-    public function get_Dati($keys)
+    public static function get_Dati($keys)
     {
         $total = array_merge($_REQUEST, $_FILES);
         foreach($keys as $dato)
@@ -66,7 +58,7 @@ class V_Basic extends Smarty
      * Questa funzione, restituisce il task inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public function getTask()
+    public static function getTask()
     {
         if(isset($_REQUEST['task']))
         {
@@ -78,7 +70,7 @@ class V_Basic extends Smarty
     /**
      * @return mixed
      */
-    public function getController()
+    public static function getController()
     {
         if(isset($_REQUEST['controller']))
         {
@@ -94,7 +86,7 @@ class V_Basic extends Smarty
      *
      * @return tpl content
      */
-    public function fetch_Template($nome_template)
+    public static function fetch_Template($nome_template)
     {
         $smarty = new Smarty();
         $contenuto = $smarty->fetch($nome_template.'.tpl');
@@ -108,7 +100,7 @@ class V_Basic extends Smarty
      * @param array $dati
      * @param int $data
      */
-    public function set_Dati($dati)
+    public static function set_Dati($dati)
     {
         $smarty = new Smarty();
         $smarty->assign('username', $dati['username']);
@@ -121,7 +113,7 @@ class V_Basic extends Smarty
      * @param type $role
      * @return array
      */
-    public function imposta_ruolo($role)
+    public static function imposta_ruolo($role)
     {
         switch ($role)
         {
@@ -156,7 +148,7 @@ class V_Basic extends Smarty
      * @param array $role
      * @return array
      */
-    public function reimposta_ruolo($role)
+    public static function reimposta_ruolo($role)
     {
         $cost = [];
         foreach($role as $valore)
@@ -172,7 +164,7 @@ class V_Basic extends Smarty
      * @param array $categories
      * @return array
      */
-    public function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
+    public static function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
     {
         $cost = [];
         foreach($categories as $valore)
@@ -218,7 +210,7 @@ class V_Basic extends Smarty
     /**
      * trasforma le stringe in numeri per le categorie
      */
-    public function reimposta_categorie($categories)
+    public static function reimposta_categorie($categories)
     {
         $cost = [];
         foreach($categories as $valore)
@@ -234,13 +226,13 @@ class V_Basic extends Smarty
      * @param type $key
      * @param type $valore
      */
-    public function impostaDati($key, $valore)
+    public static function impostaDati($key, $valore)
     {
         $smarty = new Smarty();
         $smarty->assign($key, $valore);
     }
 
-    public function homecazzo()
+    public static function homecazzo()
     {
         $this->display('home_loggati.tpl');
     }

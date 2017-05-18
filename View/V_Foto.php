@@ -16,7 +16,7 @@ class V_Foto extends V_Home
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
         return parent::get_Dati($keys);
@@ -27,7 +27,7 @@ class V_Foto extends V_Home
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public function getID()
+    public static function getID()
     {
         if(isset($_REQUEST['id']))
         {
@@ -41,7 +41,7 @@ class V_Foto extends V_Home
      * @param type $array_user
      * @param type $photo
      */
-    public function showPhotoPage($array_user, $photo)
+    public static function showPhotoPage($array_user, $photo)
     {
         $this->assign('photo_deteils', $photo);
         //$categories = $this->imposta_categoria($photo['categories']);
@@ -57,7 +57,7 @@ class V_Foto extends V_Home
      * @param type $array_user
      * @param type $photo
      */
-    public function showUploadPhoto($role)
+    public static function showUploadPhoto($role)
     {
         $array_categories = $this->imposta_categoria();
         $role = $this->imposta_ruolo($role);
@@ -76,7 +76,7 @@ class V_Foto extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati di una foto
      */
-    public function showEditProfile($array_user, $photo)
+    public static function showEditProfile($array_user, $photo)
     {
 
         $this->assign('user_details', $array_user);

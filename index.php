@@ -6,9 +6,11 @@
  * and open the template in the editor.
  */
 
-$path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
+//Include Smarty
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
 
+//Include autoloader and other functionalities
+$path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
@@ -31,9 +33,7 @@ $pic_profile="templates/main/template/img/img01.jpg";
 $avvia->login();
  *
  */
-echo("index".nl2br("\r\n"));
 $v = new \View\V_Basic();
-echo("finito tutto".nl2br("\r\n"));
 //$avvia->homecazzo();
 
 /*

@@ -21,11 +21,11 @@ class V_Registration extends V_Home
         $keys = array ('username', 'password', 'email');
         return parent::get_Dati($keys);
     }
-    
+
     /**
      * ritorna il contunuto del tpl che da un messaggio di per il login errato
      */
-    public function error($username, $role)
+    public static function error($username, $role)
     {
         $banner = $this->fetch_banner($tpl = 'banner_login_incorrect');
         $this->assign('banner', $banner);

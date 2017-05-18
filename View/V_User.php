@@ -20,7 +20,7 @@ class V_Users extends V_Basic
         $keys = array ('commento','id','id_commento');
         return parent::get_Dati($keys);
     }
-    public function get_Dati_like()
+    public static function get_Dati_like()
     {
         $keys = array ('id');
 //        return parent::get_Dati($keys);

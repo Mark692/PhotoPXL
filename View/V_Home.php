@@ -10,13 +10,13 @@ namespace View;
 
 class V_Home extends V_Basic
 {
-    private $mainContent;
+    //private $mainContent; //QUESTA VARIABILE NON è USATA. CHE CI STA A FARE?
     /**
      *
      * Mostra il tamplete della Home di default
      */
-    public function standardHome($username, $role, $thumbanil,$banner = '')
-    {   
+    public static function standardHome($username, $role, $thumbanil,$banner = '')
+    {
         $smarty = new \Smarty();
         $role=$this->imposta_ruolo($role);
         $tpl = $this->set_home($username);
@@ -31,7 +31,7 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete della Home di per i non loggati
      */
-    public function login()
+    public static function login()
     {
         $smarty = new \Smarty();
         $tpl = 'login';
@@ -39,12 +39,12 @@ class V_Home extends V_Basic
         $this->set_Contenuto_Home($tpl);
         $smarty->display('home_default.tpl');
     }
-    
+
     /**
      *
      * Mostra il tamplete della Home di utenti per la registrazione
      */
-    public function registration()
+    public static function registration()
     {
         $smarty = new \Smarty();
         $tpl = 'registration';
@@ -59,7 +59,7 @@ class V_Home extends V_Basic
      * @param type $role
      * @param type $contenuto è il fetch di un tpl
      */
-    public function home($role, $tpl)
+    public static function home($role, $tpl)
     {
         $smarty = new \Smarty();
         $this->set_Cont_menu_user($role);
@@ -69,9 +69,9 @@ class V_Home extends V_Basic
 
 
     /**
-     * mostra la home page con messsaggio di errore 
+     * mostra la home page con messsaggio di errore
      */
-    public function notAllowed()
+    public static function notAllowed()
     {
         $smarty = new \Smarty();
         $smarty->assign('messagio_errore', 'non consentito');
@@ -83,7 +83,7 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per dire ad un utemte che è stato bannato
      */
-    public function bannedHome($username)
+    public static function bannedHome($username)
     {
         $smarty = new \Smarty();
         $smarty->assign('username',$username);
@@ -99,7 +99,7 @@ class V_Home extends V_Basic
      * Scrive nel tpl gli attributi della classe
      * il contenuto non è altro che il fetch di altri tpl
      */
-    public function set_Contenuto_Home($tpl)
+    public static function set_Contenuto_Home($tpl)
     {
         $smarty = new \Smarty();
         $mainContent = $this->fetch_home($tpl);
@@ -110,8 +110,8 @@ class V_Home extends V_Basic
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
      */
-    public function set_Cont_menu_user($role)
-    {   
+    public static function set_Cont_menu_user($role)
+    {
         $smarty = new \Smarty();
         $cont = $this->fetch_Bar($role);
         $smarty->assign('menu_user', $cont);
@@ -121,7 +121,7 @@ class V_Home extends V_Basic
     /**
      * restituisce il contnto del tpl in base all'utente
      */
-    public function fetch_Bar($role)
+    public static function fetch_Bar($role)
     {
         $smarty = new \Smarty();
         $contenuto = $smarty->fetch('menu_user_'.$role.'.tpl');
@@ -132,7 +132,7 @@ class V_Home extends V_Basic
     /**
      * restituisce il contnto del tpl in base all'utente
      */
-    public function fetch_home($tpl)
+    public static function fetch_home($tpl)
     {
         $smarty = new \Smarty();
         $contenuto = $smarty->fetch($tpl.'.tpl');
@@ -145,7 +145,7 @@ class V_Home extends V_Basic
      * @param type $username prende il valore da session
      * @return type tpl
      */
-    public function set_home($username = FALSE)
+    public static function set_home($username = FALSE)
     {
         if($username === FALSE)
         {
@@ -159,9 +159,9 @@ class V_Home extends V_Basic
 
 
     /*
-     * fa il fetch del tpl che gli viene passato come parametro 
+     * fa il fetch del tpl che gli viene passato come parametro
     */
-    public function fetch_banner($tpl)
+    public static function fetch_banner($tpl)
     {
         $smarty = new \Smarty();
         $banner = $smarty->fetch($tpl.'.tpl');
@@ -170,10 +170,10 @@ class V_Home extends V_Basic
 
 //questa è da vedere
     /**
-     * visualizza una pagina di errore per caricamento foto 
+     * visualizza una pagina di errore per caricamento foto
      * @param type $messaggio
      */
-    public function error($messaggio)
+    public static function error($messaggio)
     {
         $smarty = new \Smarty();
         $this->assign('messaggio', $messaggio);

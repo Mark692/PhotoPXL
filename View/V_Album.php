@@ -39,7 +39,7 @@ class V_Album extends V_Home
     /*
      * restituisce il contento del tpl in base all'utente
      */
-    public function set_album_tpl($album, $thumbnail,$array_user)
+    public static function set_album_tpl($album, $thumbnail,$array_user)
     {
         $smarty = new \Smarty();
         $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
@@ -53,7 +53,7 @@ class V_Album extends V_Home
         $smarty->assign('user_details',$array_user);
         $role=$array_user['role'];
         $role=$this->imposta_ruolo($role);
-        $this->home($role, $tpl='album'); 
+        $this->home($role, $tpl='album');
     }
 
 
