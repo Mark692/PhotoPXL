@@ -29,7 +29,7 @@ class C_Profile {
      * @param string $photoPath the photo's path
      * @return boolean true if the photo was correctly uploaded
      */
-    public function uploadProPic($photoPath) {
+    public static function uploadProPic($photoPath) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
@@ -38,7 +38,7 @@ class C_Profile {
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
         E_User::upload_NewCover($_SESSION["username"], $photo_blob);
-        V_Users::showProfile(); //per Federico
+        V_Profilo::home(); //per Federico
         return true;
     }
 
@@ -48,7 +48,7 @@ class C_Profile {
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly updated.
      */
-    public function updateProPic($photoId) {
+    public static function updateProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
@@ -63,7 +63,7 @@ class C_Profile {
             return false;
         }
         E_User::set_ProfilePic($_SESSION["username"], $photoId);
-        V_Users::showProfile();
+        V_Profilo::home();
         return true;
     }
 
@@ -73,7 +73,7 @@ class C_Profile {
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly removed.
      */
-    public function removeProPic($photoId) {
+    public static function removeProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
@@ -84,7 +84,7 @@ class C_Profile {
             return false;
         }
         E_User::remove_CurrentProPic($_SESSION["username"]);
-        V_Users::showProfile();
+        V_Profilo::home();
         return true;
     }
 
@@ -116,7 +116,7 @@ class C_Profile {
      * @param string $newEmail user's new email.
      * @return boolean true if the email was correctly changed.
      */
-    public function changeEmail($newEmail) {
+    public static function changeEmail($newEmail) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             V_Home::bannedHome();
