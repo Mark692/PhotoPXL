@@ -15,12 +15,12 @@ class V_Users extends V_Basic
      *
      * @return array
      */
-    public static function get_Dati_commento()
+    public function get_Dati_commento()
     {
         $keys = array ('commento','id','id_commento');
         return parent::get_Dati($keys);
     }
-    public static function get_Dati_like()
+    public function get_Dati_like()
     {
         $keys = array ('id');
 //        return parent::get_Dati($keys);

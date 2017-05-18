@@ -10,13 +10,26 @@ namespace View;
 
 class V_Album extends V_Home
 {
+    //METODI STATICI -> CONTROL\\
+
+    //A BENEDETTA SERVE LA FUNZIONE STATICA ::album() PER DARE LA SCHERMATA QUANDO SI ENTRA NELL'ALBUM
+    public static function album($qualche_parametro, $parametro2, $tre, $quattro, $chenesoquantiteneservono)
+    {
+        $v = new V_Basic();
+        //VISUALIZZA L'ALBUM
+    }
+
+
+    //METODI BASE - NON STATICI!!!\\
+
+
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
      *
      * @return array
      */
-    public static function get_Dati()
+    public function get_Dati()
     {
         $keys = array ('title', 'description', 'categories');
         return parent::get_Dati($keys);
@@ -27,7 +40,7 @@ class V_Album extends V_Home
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public static function get_ID_Album()
+    public function get_ID_Album()
     {
         if(isset($_REQUEST['id_album']))
         {
@@ -39,7 +52,7 @@ class V_Album extends V_Home
     /*
      * restituisce il contento del tpl in base all'utente
      */
-    public static function set_album_tpl($album, $thumbnail,$array_user)
+    public function set_album_tpl($album, $thumbnail,$array_user)
     {
         $smarty = new \Smarty();
         $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);

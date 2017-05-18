@@ -14,13 +14,34 @@ namespace View;
 
 class V_Profilo extends V_Home
 {
+    //METODI STATICI -> CONTROL\\
+
+    //A BENEDETTA SERVE LA FUNZIONE STATICA ::home() pagina profilo con la LISTA (THUMBNAIL = MINIATURE) degli album/foto
+    public static function home($qualche_parametro, $parametro2, $tre, $quattro, $chenesoquantiteneservono)
+    {
+        $v = new V_Basic();
+        //VISUALIZZA LA HOME
+    }
+
+
+    //A BENEDETTA SERVE LA FUNZIONE STATICA ::banner() DEVE AVVERTIRE L'UTENTE CHE L'AZIONE è AVVENUTA CON SUCCESSO
+    public static function banner()
+    {
+        $v = new V_Basic();
+        //MOSTRA IL BANNER = TESTO. FINE.
+    }
+
+
+    //METODI BASE - NON STATICI!!!\\
+
+
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono
      * registrati tutti i dati inviati tramite POST dal modulo di modifica del profilo
      *
      * @return array
      */
-    public static function get_Dati()
+    public function get_Dati()
     {
         $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
         return parent::get_Dati($keys);
@@ -30,7 +51,7 @@ class V_Profilo extends V_Home
     /**
      * mostra il profilo dell'utente
      */
-    public static function showProfile($array_user, $pic_profile, $thumbnail)
+    public function showProfile($array_user, $pic_profile, $thumbnail)
     {
 
         $this->assign('user_details', $array_user);
@@ -45,7 +66,7 @@ class V_Profilo extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      */
-    public static function showEditProfile($array_user, $pic_profile, $thumbnail)
+    public function showEditProfile($array_user, $pic_profile, $thumbnail)
     {
 
         $this->assign('user_details', $array_user);
@@ -60,7 +81,7 @@ class V_Profilo extends V_Home
     /**
      * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
      */
-    public static function banner_password($username, $role)
+    public function banner_password($username, $role)
     {
         $banner = $this->fetch_banner($tpl = 'banner_password_cambiata');
         $this->assign('banner', $banner);
@@ -72,7 +93,7 @@ class V_Profilo extends V_Home
     /**
      * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente
      */
-    public static function banner_email($username, $role)
+    public function banner_email($username, $role)
     {
         $banner = $this->fetch_banner($tpl = 'banner_email_cambiata');
         $this->assign('banner', $banner);

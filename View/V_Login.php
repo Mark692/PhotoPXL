@@ -16,7 +16,7 @@ class V_Login extends V_Home
      *
      * @return array
      */
-    public static function get_Dati()
+    public function get_Dati()
     {
         $keys = array ('username', 'nonce');
         return parent::get_Dati($keys);
@@ -27,7 +27,7 @@ class V_Login extends V_Home
      * visualizza una pagina di errore per login
      * @param type $messaggio
      */
-    public static function error($messaggio)
+    public function error($messaggio)
     {
         $tpl = 'login';
         $this->set_Cont_menu_user($role = 'ospite');

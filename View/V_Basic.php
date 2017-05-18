@@ -25,15 +25,6 @@ class V_Basic extends Smarty
         $this->setCompileDir($config['smarty']['compile_dir']);
         $this->setCacheDir($config['smarty']['config_dir']);
         $this->setConfigDir($config['smarty']['cache_dir']);
-        /** $smarty->template_dir = $config['smarty']['template_dir'];  //L'insieme di queste assegnazioni
-        $smarty->compile_dir = $config['smarty']['compile_dir'];   //serve all'oggetto Smarty per
-        $smarty->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
-        $smarty->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
-
-        $smarty->caching = false;
-         *
-         *
-         */
     }
 
 
@@ -43,7 +34,7 @@ class V_Basic extends Smarty
      * @param string or array $keys Description chiavi usate per cercare
      * @return array
      */
-    public static function get_Dati($keys)
+    public function get_Dati($keys)
     {
         $total = array_merge($_REQUEST, $_FILES);
         foreach($keys as $dato)
@@ -58,7 +49,7 @@ class V_Basic extends Smarty
      * Questa funzione, restituisce il task inviato all'interno del vettore
      * superglobale $_REQUEST
      */
-    public static function getTask()
+    public function getTask()
     {
         if(isset($_REQUEST['task']))
         {
@@ -70,7 +61,7 @@ class V_Basic extends Smarty
     /**
      * @return mixed
      */
-    public static function getController()
+    public function getController()
     {
         if(isset($_REQUEST['controller']))
         {
@@ -86,7 +77,7 @@ class V_Basic extends Smarty
      *
      * @return tpl content
      */
-    public static function fetch_Template($nome_template)
+    public function fetch_Template($nome_template)
     {
         $smarty = new Smarty();
         $contenuto = $smarty->fetch($nome_template.'.tpl');
@@ -100,7 +91,7 @@ class V_Basic extends Smarty
      * @param array $dati
      * @param int $data
      */
-    public static function set_Dati($dati)
+    public function set_Dati($dati)
     {
         $smarty = new Smarty();
         $smarty->assign('username', $dati['username']);
@@ -113,7 +104,7 @@ class V_Basic extends Smarty
      * @param type $role
      * @return array
      */
-    public static function imposta_ruolo($role)
+    public function imposta_ruolo($role)
     {
         switch ($role)
         {
@@ -148,7 +139,7 @@ class V_Basic extends Smarty
      * @param array $role
      * @return array
      */
-    public static function reimposta_ruolo($role)
+    public function reimposta_ruolo($role)
     {
         $cost = [];
         foreach($role as $valore)
@@ -164,7 +155,7 @@ class V_Basic extends Smarty
      * @param array $categories
      * @return array
      */
-    public static function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
+    public function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
     {
         $cost = [];
         foreach($categories as $valore)
@@ -210,7 +201,7 @@ class V_Basic extends Smarty
     /**
      * trasforma le stringe in numeri per le categorie
      */
-    public static function reimposta_categorie($categories)
+    public function reimposta_categorie($categories)
     {
         $cost = [];
         foreach($categories as $valore)
@@ -226,13 +217,13 @@ class V_Basic extends Smarty
      * @param type $key
      * @param type $valore
      */
-    public static function impostaDati($key, $valore)
+    public function impostaDati($key, $valore)
     {
         $smarty = new Smarty();
         $smarty->assign($key, $valore);
     }
 
-    public static function homecazzo()
+    public function homecazzo()
     {
         $this->display('home_loggati.tpl');
     }

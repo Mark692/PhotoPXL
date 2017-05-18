@@ -10,31 +10,7 @@ namespace View;
 
 class V_Foto extends V_Home
 {
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
-     * @return array
-     */
-    public static function get_Dati()
-    {
-        $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
-        return parent::get_Dati($keys);
-    }
-
-
-    /**
-     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
-     * superglobale $_REQUEST
-     */
-    public static function getID()
-    {
-        if(isset($_REQUEST['id']))
-        {
-            return $_REQUEST['id'];
-        }
-    }
-
+    //METODI STATICI -> CONTROL\\
 
     /**
      * Questo metodo viene utilizzato per vedere una foto, assegna a smarty i dati dell'utente e il percorso della foto
@@ -52,12 +28,41 @@ class V_Foto extends V_Home
     }
 
 
+    //METODI BASE - NON STATICI!!!\\
+
+
+    /**
+     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
+     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
+     *
+     * @return array
+     */
+    public function get_Dati()
+    {
+        $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
+        return parent::get_Dati($keys);
+    }
+
+
+    /**
+     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
+     * superglobale $_REQUEST
+     */
+    public function getID()
+    {
+        if(isset($_REQUEST['id']))
+        {
+            return $_REQUEST['id'];
+        }
+    }
+
+
     /**
      * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
      * @param type $array_user
      * @param type $photo
      */
-    public static function showUploadPhoto($role)
+    public function showUploadPhoto($role)
     {
         $array_categories = $this->imposta_categoria();
         $role = $this->imposta_ruolo($role);
@@ -76,7 +81,7 @@ class V_Foto extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati di una foto
      */
-    public static function showEditProfile($array_user, $photo)
+    public function showEditProfile($array_user, $photo)
     {
 
         $this->assign('user_details', $array_user);

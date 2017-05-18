@@ -9,13 +9,18 @@ namespace View;
 
 class V_Amministratore extends V_Basic
 {
+    //A CHE SERVE STA FUNZIONE?
+    //NON LA USA NESSUN METODO
+    //NON RICHIAMA V_Basic
+    //Cosa fa?
+
     /**
      * Grazie a questa funzione all'interno della variabile $dati vengono
      * registrati tutti i dati inviati tramite POST dal modulo di modifica del profilo
      *
      * @return array
      */
-    public static function get_dati()
+    public function get_dati()
     {
         //'bannati' mi riporta i nomi degli utenti bannati che sono stati selezionati
         //nel tpl dovrò inserire nella <input type="checkbox" name='bannati' valure='$username'/>$username </ br>
