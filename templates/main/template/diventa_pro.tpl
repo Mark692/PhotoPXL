@@ -1,33 +1,32 @@
-<table class="tabella"  align="center" border="3" cellpadding="5" cellspacing="0"
-    <tr>
-	<td class="colonna foto">
+<div class="container">
+    <div class="row">
+    <div class="col-md-6">
 		<table>
-                    {foreach from=$ultime_foto item=array1}
-                        <tr>
-                            {foreach from=$array1 item=valore}
-                                <td>
-                             <img src={$valore} width="100" height="100" >  
-                                </td>
+                            {foreach from=$thumbnail item=array1}
+                                <tr>
+                                {foreach from=$array1 item=valore}
+                                    <td>
+                                <img src="{$valore}" class="thumbnail" > <!-- sistemare il css per le thumb -->
+                                    </td>
+                                {/foreach}
+                                </tr>
                             {/foreach}
-                        </tr>
-                    {/foreach}
-                </table> 
-	</td>
-	<td class="colonna ricerca" width="900px">
-            <div class="metodo">
-		<form method="POST" action="index.php">
-                    <h1 class="title">Diventa Pro Adesso!!!</h1>
-                        <p><label for="Categories" class="top">I vantaggi nel diventare PRO:</label></ br>
-                        <ul>
-                            <li>Potrai caricare foto illimitate</li>
-                            <li>Potrai impostare la visibilità delle tue foto e album</li>
-                            <li>Potrai caricare fino a 3 foto contemporaneamente</li>
-                        </ul>
-                        <p><input type="hidden" name="controller" value="Profilo" />
-                            <input type="hidden" name="task" value="Cambia_ruolo" />
-                            <input type="submit" name="cerca" class="button" value="Diventa Pro"  /></p>
-                </form>
-            </div>
-	</td>
-    </tr>
-</table>
+                </table>  
+    </div>
+    <div class="col-md-6">
+		
+                    <h1 class="text-success">Diventa Pro Adesso!!!</h1>
+                    <p> <label>I vantaggi nel diventare PRO:</label></ br>
+                    <ul>
+                        <li>Potrai caricare foto illimitate</li>
+                        <li>Potrai impostare la visibilità delle tue foto e album</li>
+                        <li>Potrai caricare fino a 3 foto contemporaneamente</li>
+                    </ul>
+                    <form method="POST" action="index.php">
+                    <p><input type="hidden" name="controller" value="Profilo" />
+                       <input type="hidden" name="task" value="Cambia_ruolo" />
+                       <input type="submit" name="cerca" class="btn-success" value="Diventa Pro"  /></p>
+                    </form>
+    </div>
+    </div>
+</div>

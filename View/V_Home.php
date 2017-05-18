@@ -15,8 +15,51 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete della Home di default
      */
-    public function standardHome()
+    public function standardHome($username, $role, $thumbanil,$banner = '')
+    {   
+        $role=$this->imposta_ruolo($role);
+        $tpl = $this->set_home($username);
+        $this->set_Cont_menu_user($role);
+        $this->set_Contenuto_Home($tpl);
+        $this->assign('thumbanil',$thumbanil);
+        $this->display('home_default.tpl');
+    }
+
+
+    /**
+     *
+     * Mostra il tamplete della Home di per i non loggati
+     */
+    public function login()
     {
+        $tpl = 'login';
+        $this->set_Cont_menu_user($role = 'ospite');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
+    }
+    
+    /**
+     *
+     * Mostra il tamplete della Home di utenti per la registrazione
+     */
+    public function registration()
+    {
+        $tpl = 'registration';
+        $this->set_Cont_menu_user($role = 'ospite');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
+    }
+
+    /**
+     * questa funzione serve per impostare qualsiasi pagina del sito
+     * @param type $username
+     * @param type $role
+     * @param type $contenuto è il fetch di un tpl
+     */
+    public function home($role, $tpl)
+    {
+        $this->set_Cont_menu_user($role);
+        $this->set_Contenuto_Home($tpl);
         $this->display('home_default.tpl');
     }
 
@@ -35,9 +78,25 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per dire ad un utemte che è stato bannato
      */
-    public function bannedHome()
+    public function bannedHome($username)
     {
-        $this->display('banned.tpl');
+        $this->assign('username',$username);
+        $tpl = 'banned';
+        $this->set_Cont_menu_user($role = 'banned');
+        $this->set_Contenuto_Home($tpl);
+        $this->display('home_default.tpl');
+    }
+
+
+    /**
+     * imposta il contenuto principale alla variabile privata della classe
+     * Scrive nel tpl gli attributi della classe
+     * il contenuto non è altro che il fetch di altri tpl
+     */
+    public function set_Contenuto_Home($tpl)
+    {
+        $mainContent = $this->fetch_home($tpl);
+        $this->assign('content', $mainContent);
     }
 
 
@@ -45,29 +104,74 @@ class V_Home extends V_Basic
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
      */
-    public function set_Contenuto($contenuto)
+    public function set_Cont_menu_user($role)
     {
-        $this->mainContent = $contenuto;
-        $this->assign('content', $this->mainContent);
+        $cont = $this->fetch_Bar($role);
+        $this->assign('menu_user', $cont);
     }
 
+
     /**
-     * setta la barra in base all'utente
+     * restituisce il contnto del tpl in base all'utente
      */
-    public function set_Bar($role)
+    public function fetch_Bar($role)
     {
-        $ruolo = $this->imposta_ruolo($role);
-        return $this->fetch('topbar_'.$ruolo.'.tpl');
+        //$ruolo = $this->imposta_ruolo($role);
+        $contenuto = $this->fetch('menu_user_'.$role.'.tpl');
+        return $contenuto;
     }
+
+
+    /**
+     * restituisce il contnto del tpl in base all'utente
+     */
+    public function fetch_home($tpl)
+    {
+        //$ruolo = $this->imposta_ruolo($role);
+        $contenuto = $this->fetch($tpl.'.tpl');
+        return $contenuto;
+    }
+
+
+    /**
+     * setta il contenuto della homepage in base al fatto l'utente sia loggato oppure no
+     * @param type $username prende il valore da session
+     * @return type tpl
+     */
+    public function set_home($username = FALSE)
+    {
+        if($username === FALSE)
+        {
+            return $tpl = 'home_guest';
+        }
+        else
+        {
+            return $tpl = 'home_loggati';
+        }
+    }
+
+
+    /*
+     * fa il fetch del tpl che gli viene passato come parametro 
+    */
+    public function fetch_banner($tpl)
+    {
+        //$ruolo = $this->imposta_ruolo($role);
+        $banner = $this->fetch($tpl.'.tpl');
+        return $banner;
+    }
+
+//questa è da vedere
     /**
      * visualizza una pagina di errore per caricamento foto 
      * @param type $messaggio
      */
-
     public function error($messaggio)
     {
-        $this->assign('messaggio',$messaggio);
-        $this->display('pagina_errore.tpl');
+        $this->assign('messaggio', $messaggio);
+        $contenuto = $this->fetch('pagina_errore.tpl');
+        return $contenuto;
     }
+
 
 }

@@ -16,11 +16,11 @@
                 <p><label for="Description" class="top">Descrizione:</label><br />
                     <textarea type="text" name="Description" cols="20" rows="5">inserisci...</textarea></p>
                 <p><label for="Categories" class="top">Categoria</label><br />
-                    <select name="Categories" multiple>
-                        {foreach from=$Array_categories item=$catgories_scritte}
-                             <option value="$categories" checked>$catgories_scritte</option>
-                        {/foreach}
-                    </select> 
+                   <select name="Categories" multiple>
+                            {foreach from=$array_categories item=categories}
+                                <option value="$categories" checked>{$categories}</option>
+                            {/foreach}
+                   </select> 
                 </div>
             </td>
         </tr>

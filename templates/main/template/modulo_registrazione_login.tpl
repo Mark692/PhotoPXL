@@ -1,6 +1,10 @@
 <table>
+<tr>
+    <td>
+<div id="page">
+    <table>
         <tr>
-            <td width="750px" align="center">
+            <td class="contain" align="center">
         <div class="foto">
             <h3>Foto da mostrare</h3><br/>
                  <table>
@@ -19,9 +23,9 @@
                 <p><label for="descrizione">descrizione del sito</label><br />
             </div>
         </td>
-        <td width="750px" align="center">
+        <td class="contain" align="center">
             <div class="modulo">
-                <h1>Registrazione</h1>
+                <h2>Registrazione</h2>
                 <form method="post" action="prova.php">
                       <p><label for="username" class="top">Nome utente:</label><br />
                           <input type="text" name="username" class="input" tabindex="15" class="field" value="" /></p>
@@ -33,14 +37,14 @@
                           <input type="hidden" name="task" value="salva" />
                           <input type="submit" name="registrazione" class="button" value="Registrazione"  /></p>
                 </form>
-                <h1>Login</h1>
+                <h2>Login</h2>
                 <form method="post" action="index.php">
                       <p><label for="username" class="top">Nome utente:</label><br />
                           <input type="text" name="username" class="input" tabindex="15" class="field" value="" /></p>
                       <p><label for="password" class="top">Password:</label><br />
                           <input type="password" name="password" class="input" tabindex="15" class="field" value="" /></p>
                       <p><input type="hidden" name="controller" value="login" />
-                         <input type="hidden" name="task" value="login" />
+                         <input type="hidden" name="task" value="autentica" />
                          <input type="submit" name="login" class="button" value="Login"  /></p>
                 </form>
             </div>

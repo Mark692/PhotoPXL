@@ -19,11 +19,11 @@
                                 <option value="TRUE">Si</option>
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br />
-                            <select name="Categories" multiple>
-                              {foreach from=$Array_categories item=$categories}
-                                <option value="$categories" checked>$catgories</option>
-                              {/foreach}
-                            </select> 
+                        <select name="Categories" multiple>
+                            {foreach from=$array_categories item=categories}
+                                <option value="$categories" checked>{$categories}</option>
+                            {/foreach}
+                        </select></p> 
                         </div>
                    </td>
         </tr>
@@ -47,10 +47,10 @@
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br /></p>
                                 <select name="Categories" multiple>
-                                  {foreach from=$Array_categories item=$categories}
-                                    <option value="$categories" checked>$catgories</option>
-                                  {/foreach}
-                                </select> 
+                            {foreach from=$array_categories item=categories}
+                                <option value="$categories" checked>{$categories}</option>
+                            {/foreach}
+                            </select>
                     </div>
                   </td>
         </tr>
@@ -75,10 +75,10 @@
                             </select>
                             <p><label for="Categories" class="top">Categoria</label><br />
                             <select name="Categories" multiple>
-                                {foreach from=$Array_categories item=$categories}
-                                     <option value="$categories" checked>$catgories</option>
-                                {/foreach}
-                            </select> 
+                            {foreach from=$array_categories item=categories}
+                                <option value="$categories" checked>{$categories}</option>
+                            {/foreach}
+                            </select>
                         </div>
                     </td>
         </tr>

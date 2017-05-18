@@ -1,39 +1,35 @@
-<table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
-    <tr class="contenuto">
-        <td class="colonna1" width="900px" align="center">
-            <fieldset>
-            <div class="foto">
-                <table>
-                    {foreach from=$ultime_foto item=array1}
-                        <tr>
-                            {foreach from=$array1 item=valore}
-                                <td>
-                            <img src={$valore} width="100" height="100" >  
-                                </td>
+<div class="container">
+    <div class="row">
+    <div class="col-md-6">
+        <h1 class="text-success">Foto da mostrare</h1><br/>
+			<table>
+                            {foreach from=$thumbnail item=array1}
+                                <tr>
+                                {foreach from=$array1 item=valore}
+                                    <td>
+                                <img src="{$valore}" class="thumbnail" > <!-- sistemare il css per le thumb -->
+                                    </td>
+                                {/foreach}
+                                </tr>
                             {/foreach}
-                        </tr>
-                    {/foreach}
-                </table> 
-                <p><label for="descrizione" class="top">descrizione del sito</label></p>
-            </div>
-        </td>
-        <td class="colonna login" width="900px" align="center">
-            <h1 class="title">Login</h1>
-            <div class="modulo">
-            <form method="post" action="index.php">
-                      <p><label for="username" class="top">Nome utente:</label><br />
-                          <input type="text" name="username" id="username" tabindex="15" class="field" value="" />
-                      </p>
-                      <p><label for="password" class="top">Password:</label><br />
-                          <input type="password" name="password" id="password" tabindex="15" class="field" value="" /></p>
-                      <div class="pulsante"
-                      <p><input type="hidden" name="controller" value="login" />
-                         <input type="hidden" name="task" value="autentica" />
-                         <input type="submit" name="login" class="button" value="Login"  /> </p>
-                      </div>
-            </form>
-            </div>
-        </td>
-    </tr>
-</table>
-
+                        </table>
+                        <p><label for="descrizione">descrizione del sito</label><br />
+    </div>
+    <div class="col-md-6">
+                <h1 class="text-success">Login</h1>
+                <form method="post" action="index.php">
+                            <h3 class="text-success">Username:</h3><br />
+                            <div class="form-group">
+                                <input name="username" class="form-control" id="focusedInput" type="text" value="">
+                            </div>
+                            <h3 class="text-success">Password:</h3><br />
+                            <div class="form-group">
+                                <input name="password" class="form-control" id="focusedInput" type="password" value="">
+                            </div>
+                            <input type="hidden" name="controller" value="login" />
+                            <input type="hidden" name="task" value="login" />
+                            <input type="submit" name="login" class="btn-success" value="Login"  /></p>
+                </form>
+    </div>
+    </div>
+</div>

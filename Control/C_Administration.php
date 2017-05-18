@@ -51,7 +51,7 @@ class C_Administration {
      * @return boolean true if it was possible to ban a user.
      */
     public static function ban($username) {
-        return self::changeRole($username, Roles::BANNED);
+        \Entity\E_User_MOD::ban($username);
     }
 
 }

@@ -15,7 +15,7 @@ class V_Amministratore extends V_Basic
      *
      * @return array
      */
-    public function get_dati()
+    public static function get_dati()
     {
         //'bannati' mi riporta i nomi degli utenti bannati che sono stati selezionati
         //nel tpl dovrò inserire nella <input type="checkbox" name='bannati' valure='$username'/>$username </ br>

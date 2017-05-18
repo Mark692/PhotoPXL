@@ -8,7 +8,7 @@
 
 namespace View;
 
-class V_Foto extends V_Basic
+class V_Foto extends V_Home
 {
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
@@ -43,9 +43,47 @@ class V_Foto extends V_Basic
      */
     public function showPhotoPage($array_user, $photo)
     {
-        $this->assign('utente', $array_user);
-        $this->assign('utente', $photo);
-        $this->display('foto_user.tpl');
+        $this->assign('photo_deteils', $photo);
+        //$categories = $this->imposta_categoria($photo['categories']);
+        //$this->assign('categories', $categories);
+        $this->assign('user_details', $array_user);
+        $role = $this->imposta_ruolo($array_user['role']);
+        $this->home($role, $tpl = 'ShowPhotoUser');
+    }
+
+
+    /**
+     * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
+     * @param type $array_user
+     * @param type $photo
+     */
+    public function showUploadPhoto($role)
+    {
+        $array_categories = $this->imposta_categoria();
+        $role = $this->imposta_ruolo($role);
+        $this->assign('array_categories', $array_categories);
+        if($role == \Utilities\Roles::STANDARD)
+        {
+            $this->home($role, $tpl = 'upload_standard');
+        }
+        else
+        {
+            $this->home($role, $tpl = 'upload');
+        }
+    }
+
+
+    /**
+     * mostra il modulo tpl per la modifica dei dati di una foto
+     */
+    public function showEditProfile($array_user, $photo)
+    {
+
+        $this->assign('user_details', $array_user);
+        $this->assign('photo_deteils', $photo);
+        $role = $this->imposta_ruolo($array_user['role']);
+        $this->assign('role', $role);
+        $this->home($role, $tpl = 'EditPhoto');
     }
 
 

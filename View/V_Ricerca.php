@@ -16,7 +16,7 @@ class V_Ricerca extends V_Basic
      *
      * @return array
      */
-    public function get_Dati()
+    public static function get_Dati()
     {
         $keys = array ('categories','page_toView','tipo_ricerca');
         return parent::get_Dati($keys);
