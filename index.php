@@ -7,6 +7,8 @@
  */
 
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
+
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
@@ -30,7 +32,7 @@ $avvia->login();
  *
  */
 echo("index".nl2br("\r\n"));
-$avvia=new \View\V_Basic();
+$v = new \View\V_Basic();
 echo("finito tutto".nl2br("\r\n"));
 //$avvia->homecazzo();
 

@@ -12,10 +12,6 @@ use Smarty;
 use Utilities\Categories;
 use Utilities\Roles;
 
-
-require_once '.'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
-
-
 class V_Basic extends Smarty
 {
     /**
