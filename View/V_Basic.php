@@ -20,6 +20,7 @@ class V_Basic extends Smarty
      */
     public function __construct()
     {
+        /**
 //        $this->smarty();
         global $config;
 //        $this->Smarty();
@@ -28,6 +29,11 @@ class V_Basic extends Smarty
         $this->config_dir = $config['smarty']['config_dir'];    //conoscere la posizione di alcune
         $this->cache_dir = $config['smarty']['cache_dir'];     //cartelle usate dal programma
         $this->caching = false;
+         *
+         */
+        global $config;
+        parent::__construct();
+        var_dump($this->get_config_vars());
     }
 
 

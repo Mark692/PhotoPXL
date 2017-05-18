@@ -239,7 +239,7 @@ class F_User extends F_Database
 
         //DON'T return the token. It can still be used after some time.
         //Simply rethrieve it from the "users" DB table
-        return $token; //TEST ONLY PURPOSES!!!
+        //return $token; //TEST ONLY PURPOSES!!!
     }
 
 
@@ -297,7 +297,7 @@ class F_User extends F_Database
     /**
      * Resets the token for the user. This may occur when the user successfully logs in
      * or when he succedes to reset his password
-     * 
+     *
      * @param string $username The username whose token has to be resetted
      */
     public static function nullify_Token($username)

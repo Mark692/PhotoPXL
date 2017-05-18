@@ -57,7 +57,7 @@ class E_Photo
         $this->set_Description($desc);
 
 
-        if(self::check_Categories($cat) === FALSE)
+        if($this->check_Categories($cat) === FALSE)
         {
             throw new input_texts(4, $desc);
         }
@@ -270,7 +270,7 @@ class E_Photo
      * @param array $cats The categories to evaluate
      * @return bool Whether the categories are all valid entry
      */
-    public static function check_Categories($cats)
+    private function check_Categories($cats) //CHANGED FROM "public static" -> "private"
     {
         foreach($cats as $c)
         {
