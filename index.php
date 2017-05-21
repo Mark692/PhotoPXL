@@ -59,7 +59,6 @@ $v = new \View\V_Basic();
 //$i = new Utilities\installer();
 //$i->DB_FirstInstallation();
 
-
 //Prove funzioni
 //echo(nl2br("\r\n"));
 //echo(nl2br("\r\n"));
