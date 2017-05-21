@@ -33,8 +33,7 @@ $pic_profile="templates/main/template/img/img01.jpg";
 $avvia->login();
  *
  */
-$v = new \View\V_Basic();
-//$avvia->homecazzo();
+
 
 /*
  * $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
@@ -65,3 +64,4 @@ $v = new \View\V_Basic();
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
+?>
