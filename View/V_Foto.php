@@ -13,22 +13,29 @@ class V_Foto extends V_Home
     // METODI STATICI \\
     /**
      * Questo metodo viene utilizzato per vedere una foto, assegna a smarty i dati dell'utente e il percorso della foto
-     * @param type $array_user
      * @param type $photo
+     * @param type $user_datails
      */
-    public static function showPhotoPage()
+    public static function showPhotoPage($photo, $user_datails, $photo_datails, $comments)
     {
-        $v = new \View\V_Basic();
         $home = new \View\V_Home();
-        $id = $_SESSION('id');
-        $username = $_SESSION('username');
-        $photo = \Entity\E_Photo::get_By_ID($id, $username, $role=$_SESSION('role'));
-        $v->assign('photo_deteils', $photo);
-        //quale funzione mi da i dati della foto??quale titolo etc-....????
         //$categories = $this->imposta_categoria($photo['categories']);
         //$this->assign('categories', $categories);
-        $role = $v->imposta_ruolo($_SESSION('role'));
-        $home->home_default($role, 'ShowPhotoUser');
+        $home->assign('username', $user_datails['username']);
+        $home->assign('photo', $photo);
+        $home->assign('photo_datails', $photo_datails);
+        $home->assign('comments', $comments);
+        $user_like = \Entity\E_Photo::get_DB_LikeList($photo['id']);
+        foreach($user_like as $user)
+        {
+            if($user['username'] === $user_datails['username'])
+            {
+                $home->assign('attiva', $attiva = 'TRUE');
+            }
+        }
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'ShowPhotoUser');
+        $home->display('home_default.tpl');
     }
 
 
@@ -42,7 +49,7 @@ class V_Foto extends V_Home
         $v = new \View\V_Basic();
         $home = new \View\V_Home();
         $username = $_SESSION('username');
-        $role=$v->imposta_ruolo($_SESSION('role'));
+        $role = $v->imposta_ruolo($_SESSION('role'));
         $array_categories = $home->imposta_categoria();
         $v->assign('username', $username);
         $v->assign('array_categories', $array_categories);
@@ -63,27 +70,28 @@ class V_Foto extends V_Home
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
      *
      * @return array
-     */
-    public function get_Dati()
-    {
-        $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
-        return parent::get_Dati($keys);
-    }
+     *
+      public function get_Dati()
+      {
+      $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
+      return parent::get_Dati($keys);
+      }
 
 
-    /**
+      /**
      * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
      * superglobale $_REQUEST
+     *
+      public function getID()
+      {
+      if(isset($_REQUEST['id']))
+      {
+      return $_REQUEST['id'];
+      }
+      }
+     *
+     * 
      */
-    public function getID()
-    {
-        if(isset($_REQUEST['id']))
-        {
-            return $_REQUEST['id'];
-        }
-    }
-
-
     /**
      * mostra il modulo tpl per la modifica dei dati di una foto
      */

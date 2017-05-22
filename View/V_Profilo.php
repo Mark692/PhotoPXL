@@ -46,12 +46,18 @@ class V_Profilo extends V_Home
     /*
      * funzione che restituisce la home con banner di azione avvenuta con successo
      */
-    public static function banner()
+    public static function banner($user_datails, $array_photo)
     {
-        $v = new V_Basic();
-        $banner = $v->fetch('banner_ok.tpl');
-        $v->assign('$banner', $banner);
-        \View\V_Home::standardHome();
+        $home = new V_Home();
+        $home->set_banner($tpl = 'banner_ok.tpl');
+        $home->assign('username', $user_datails['username']);
+        $home->assign('array_photo', $array_photo);
+        $role = $home->imposta_ruolo($user_datails['role']);
+        $home->set_Cont_menu_user($role);
+        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
+        //$array_photo=$home->thumbnail($array_photo);
+        //$v->assign('array_photo',$array_photo);
+        $home->display('home_default.tpl');
     }
 
 
@@ -85,12 +91,11 @@ class V_Profilo extends V_Home
      * registrati tutti i dati inviati tramite POST dal modulo di modifica del profilo
      *
      * @return array
+
+      public function get_Dati()
+      {
+      $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
+      return parent::get_Dati($keys);
+      }
      */
-    public function get_Dati()
-    {
-        $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
-        return parent::get_Dati($keys);
-    }
-
-
 }

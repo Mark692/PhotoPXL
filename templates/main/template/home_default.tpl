@@ -33,7 +33,7 @@ Released   : 20080208
         <img src="templates/main/template/img/logo.png" width="250" height="150" align="top"></img>
         </div>	
         <div>
-            {$ciao}
+
             {$menu_user}
         </div>
         <!-- end header -->

@@ -16,20 +16,20 @@ class V_Album extends V_Home
     /*
      * funzione per restituire la vista di un album
      */
-    public static function album()
+    public static function album($album,$thumbnail,$user_datails)
     {
-        $v = new V_Basic();
+        //dubbio esistenziale...l'oggetto $album contiene le thumbanil 
         $home=new V_Home();
-        $username = $_SESSION["username"];
-        $id= $_SESSION["id"];
-        $album= \Entity\E_Album::get_By_ID($id);//devo capire se mi da solo le informazioni oppure le thumbnail interne
-        $v->assign('username',$username);
-        $v->assign('album', $album);
-        $role =$v->imposta_ruolo($_SESSION["role"]);
-        $home->home_default($role, $tpl = 'Album');
+        $home->assign('username',$user_datails['username']);
+        $home->assign('album', $album);
+        $home->assign('thumbnail', $thumbnail);
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'Album');
+        $home->display('home_default.tpl');
         //$array_photo=$home->thumbnail($array_photo);
         //$v->assign('array_photo',$array_photo);
     }
+
 
 
     //METODI BASE - NON STATICI!!!\\

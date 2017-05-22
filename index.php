@@ -16,10 +16,9 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 //session_start();
-/**$avvia = new \View\V_Home();
+$avvia = new \View\V_Home();
 $role= \Utilities\Roles::ADMIN;
-$username="cazzo fritto";
-$array_user=["username" => "cazzofritto", "password" => "tuozio",
+$user_datails=["username" => "cazzofritto", "password" => "tuozio",
 "email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
 $array_foto = [];
 for($i=1; $i<=16; $i++)
@@ -28,11 +27,11 @@ for($i=1; $i<=16; $i++)
 
 }
 $photo=["username"=>"cazz","photo"=>"c/img/img01.jpg", "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
-$thumbnail=array_chunk($array_foto, PHOTOS_PER_ROW);
+$array_photo=array_chunk($array_foto, PHOTOS_PER_ROW);
 $pic_profile="templates/main/template/img/img01.jpg";
-$avvia->login();
- *
- */
+
+//echo($avvia->fetch_banner($tpl='banner_no_permessi'));
+$avvia->error($user_datails, $array_photo);
 
 
 /*

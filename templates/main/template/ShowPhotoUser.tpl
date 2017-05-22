@@ -5,7 +5,8 @@
     <div class="col-md-6">
                     <p><h3 class="text-success">Titolo:</h3><br /></p>
                     <p><label for="Title">{$photo_deteils.title}</p> </br>
-                    <p><img src="{$photo_deteils.fullsize}" width="300px" height="300px"></p>
+                    <!-- vedere la grandezza della foto -->
+                    <p><img src="{$photo.fullsize}" width="300px" height="300px"></p>
                     <p><h3 class="text-success">Like:</h3>{$photo_deteils.total_like}<br /></p>
                     <!-- serve per attivare i like -->
                     {if $attiva eq "TRUE"}
@@ -22,7 +23,7 @@
                         </form>
                     {/if}
                     <!-- per attivare i tasti modifica e elimina foto -->
-                    {if $photo_deteils.username eq $user_details.username}
+                    {if $photo.username eq $user_details.username}
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Modifica Foto</button>
@@ -46,7 +47,7 @@
     </div>
 
                     
-<!-- come mettere i commenti già esistenti -->
+<!-- come mettere i commenti -->
 
     <div class="row">
             <form method="POST" action="index.php">
@@ -60,7 +61,15 @@
     </div>
     <div class="row">
         <h2>Commenti...</h2>
-        <!-- da continuare a vedere -->
+        <!--vedere nel caso sia vuoto $comments -->
+        {foreach from=$comments item=valore}
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well">
+                <p class="text-success">{$valore.username}</p>
+                <p>{$valore.text}</p>
+            </div>
+        </div>
+        {/foreach}
     
     </div>
     

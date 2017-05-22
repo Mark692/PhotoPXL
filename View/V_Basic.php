@@ -113,7 +113,7 @@ class V_Basic extends \Smarty
         switch ($role)
         {
             case Roles::BANNED:
-                $role = "bannato";
+                $role = "banned";
                 break;
 
             case Roles::STANDARD:

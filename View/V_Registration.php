@@ -24,18 +24,18 @@ class V_Registration extends V_Home
         \View\V_Home::standardHome();
     }
 
+
     // METODI NON STATICI \\
     /**
      * Grazie a questa funzione all'interno della variabile $dati_reg vengono
      * registrati tutti i dati inviati tramite POST dal modulo di registrazione
      *
      * @return array
+
+      public function get_Dati()
+      {
+      $keys = array ('username', 'password', 'email');
+      return parent::get_Dati($keys);
+      }
      */
-    public function get_Dati()
-    {
-        $keys = array ('username', 'password', 'email');
-        return parent::get_Dati($keys);
-    }
-
-
 }
