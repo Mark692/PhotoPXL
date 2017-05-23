@@ -8,7 +8,6 @@
 
 namespace View;
 
-use Entity\E_Photo;
 
 class V_Home extends V_Basic
 {

@@ -12,9 +12,6 @@
 
 namespace View;
 
-use Entity\E_User;
-use Entity\E_Album;
-use View\V_Home;
 
 class V_Profilo extends V_Home
 {
@@ -23,22 +20,16 @@ class V_Profilo extends V_Home
     /*
      * Funzione che restiuisce il template della pagina del profilo con la thumbnail degli album e i dati utente
      */
-    public static function home()
+    public static function home($user_datails,$album_thumbnail)
     {
-        $v = new \View\V_Basic();
         $home = new \View\V_Home();
-        $username = $_SESSION["username"];
-        $v->assign('username', $username);
-        $role = $v->imposta_ruolo($_SESSION["role"]);
-        $array_user = \Entity\E_User::get_UserDetails($username);
-        $pic_profile = \Entity\E_User::get_ProfilePic($username);
-        $array_album = \Entity\E_Album::get_By_User($username);
         //mettere in ordine le thumbanil degli album da passare a smarty
-        $v->assign('array_album', $array_album);
-        $v->assign('user_details', $array_user);
-        $v->assign('pic_profile', $pic_profile);
+        $home->assign('array_album', $album_thumbnail);
+        $home->assign('user_details', $user_datails);
         //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
-        $home->home_default($role, $tpl = 'ShowProfile');
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'ShowProfile');
+        $home->display('home_default.tpl');
     }
 
 
@@ -64,24 +55,19 @@ class V_Profilo extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      */
-    public static function showEditProfile()
+    public static function showEditProfile($user_datails)
     {
 
-        $v = new \View\V_Basic();
         $home = new \View\V_Home();
-        $username = $_SESSION["username"];
-        $v->assign('username', $username);
-        $role = $v->imposta_ruolo($_SESSION["role"]);
-        $array_user = \Entity\E_User::get_UserDetails($username);
-        $pic_profile = \Entity\E_User::get_ProfilePic($username);
-        $array_album = \Entity\E_Album::get_By_User($username);
         //mettere in ordine le thumbanil degli album da passare a smarty
-        $v->assign('array_album', $array_album);
-        $v->assign('user_details', $array_user);
-        $v->assign('pic_profile', $pic_profile);
+        $home->assign('user_details', $user_datails);
         //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
-        $v->assign('role', $role);
-        $home->home($role, $tpl = 'EditProfile');
+        $role = $home->imposta_ruolo($user_datails['role']);
+        $home->set_Cont_menu_user($role);
+        $home->set_Contenuto_Home($tpl = 'EditProfile');
+        //$array_photo=$home->thumbnail($array_photo);
+        //$v->assign('array_photo',$array_photo);
+        $home->display('home_default.tpl');
     }
 
 
