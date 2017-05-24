@@ -38,7 +38,7 @@ class C_Profile {
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
         E_User::upload_NewCover($_SESSION["username"], $photo_blob);
-        V_Profilo::home(); //CONTROLLARE I PARAMETRI DA PASSARE
+        V_Profilo::home(); //per Federico
         return true;
     }
 
@@ -51,15 +51,15 @@ class C_Profile {
     public static function updateProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome(); //CONTROLLARE I PARAMETRI DA PASSARE
+            V_Home::bannedHome();
             return false;
         }
         if (!E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)) {
-            V_Home::error(); //CONTROLLARE I PARAMETRI DA PASSARE
+            V_Home::error();
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed(); //CONTROLLARE I PARAMETRI DA PASSARE
+            V_Home::notAllowed();
             return false;
         }
         E_User::set_ProfilePic($_SESSION["username"], $photoId);

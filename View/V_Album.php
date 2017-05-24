@@ -16,9 +16,20 @@ class V_Album extends V_Home
     /*
      * funzione per restituire la vista di un album
      */
-    public static function album($album,$thumbnail,$user_datails)
+    public static function album($album,$thumbnail,$user_datails) //QUESTA FUNZIONE NON VA BENE.
+    //BENEDETTA PASSA 2 PARAMETRI:
+    //1 - L'ID DELL'ALBUM
+    //2 - UN ARRAY. OVVERO IL RISULTATO DELLA FUNZIONE E_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+            //CHE RESTITUISCE UN ARRAY CON I SEGUENTI PARAMETRI:
+            /*    * @return array An array with photo IDs and thumbnails.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
+             * */
     {
-        //dubbio esistenziale...l'oggetto $album contiene le thumbanil 
+        //dubbio esistenziale...l'oggetto $album contiene le thumbanil
         $home=new V_Home();
         $home->assign('username',$user_datails['username']);
         $home->assign('album', $album);
