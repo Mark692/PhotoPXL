@@ -14,12 +14,21 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'S
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
+
 require_once $path."U_Nonce.php"; 
+
+require_once $path."U_Nonce.php";
+//$test_it = new \Utilities\installer();
+//$test_it->try_Functions();
+
+
 
 //session_start();
 
-$avvia = new \View\V_Foto();
-$role= \Utilities\Roles::ADMIN;
+$avvia = new \View\V_Home();
+$avvia->login();
+/*
+ * $role= \Utilities\Roles::ADMIN;
 $user_datails=["username" => "cazzofritto", "password" => "tuozio",
 "email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
 $array_foto = [];
@@ -44,7 +53,7 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 
 
 
-//\Control\C_LoginRegistration::showHome();
+\Control\C_LoginRegistration::showHome();
 
 //*
 //------------------------------PROVE------------------------------//
@@ -64,4 +73,6 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
+ * 
+ */
 ?>

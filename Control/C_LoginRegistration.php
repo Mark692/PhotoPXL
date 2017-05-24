@@ -1,4 +1,4 @@
-a <?php
+<?php
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -111,7 +111,7 @@ class C_LoginRegistration {
 
     /**
      * This method is used when a user forget his password and wants to generate a new one.
-     * 
+     *
      * @param string $username the user's name
      * @return boolean true if the token was generated.
      */
@@ -126,7 +126,7 @@ class C_LoginRegistration {
     /**
      * This method is used when a user tries to log with a previously generated token.
      * If the login happens, the user has to set up a new password.
-     * 
+     *
      * @param string $username the user's name
      * @param string $userToken the user's token
      * @param boolean $keepLogged true if the user wants to keep the session active.
@@ -159,10 +159,10 @@ class C_LoginRegistration {
             V_Home::login();
         }
     }
-    
+
     /**
      * check if a username is already taken.
-     * 
+     *
      * @param string $username
      * @return boolean true if the username is available.
      */

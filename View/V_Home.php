@@ -54,6 +54,8 @@ class V_Home extends V_Basic
         $home->set_banner($tpl = 'banner_no_permessi');
         $home->assign('username', $user_datails['username']);
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $role = $home->imposta_ruolo($user_datails['role']);
         $home->set_Cont_menu_user($role);
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
@@ -74,6 +76,8 @@ class V_Home extends V_Basic
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_banned');
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $home->set_Cont_menu_user($role='guest');
         $home->set_Contenuto_Home($tpl='home_guest');
         $home->assign('array_photo',$home->thumbnail($array_photo));
@@ -94,19 +98,20 @@ class V_Home extends V_Basic
         $home->set_banner($tpl = 'banner_error');
         $home->assign('username', $user_datails['username']);
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
         $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
-    
+
     /*
      * 
      * 
      * @param type $user_datails Description i dati dell'utente
      * @param type $photos Description thumbanils restituite dalla ricerca
      */
-        
     public static function showPhotoCollection($photos,$user_datails)
     {
         $home=new V_Home();
@@ -119,33 +124,33 @@ class V_Home extends V_Basic
     }
 
 
+    /**
+     *
+     * Mostra il tamplete per effettuare il login
+     */
+    public static function login() 
+    {
+        $home=new V_Home(); 
+        $home->set_Cont_menu_user($role = 'guest'); 
+        $home->set_Contenuto_Home($tpl = 'login'); 
+        $home->display('home_default.tpl');
+    }
+    
+    /**
+     *
+     * Mostra il tamplete per effettuare il login
+     */
+    public static function registration() 
+    {
+        $home=new V_Home(); 
+        $home->set_Cont_menu_user($role = 'guest'); 
+        $home->set_Contenuto_Home($tpl = 'registration'); 
+        $home->display('home_default.tpl');
+    }
+    
     //METODI BASE - NON STATICI!!!\\
-    /**
-     *
-     * Mostra il tamplete della Home di per i non loggati
-     */
-    public function login()
-    {
-        $v = new V_Basic();
-        $tpl = 'login';
-        $this->set_Cont_menu_user($role = 'ospite');
-        $this->set_Contenuto_Home($tpl);
-        $v->display('home_default.tpl');
-    }
 
 
-    /**
-     *
-     * Mostra il tamplete della Home di utenti per la registrazione
-     */
-    public function registration()
-    {
-
-        $tpl = 'registration';
-        $this->set_Cont_menu_user($role = 'ospite');
-        $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
-    }
 
 
     /**
