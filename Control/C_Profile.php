@@ -25,7 +25,7 @@ class C_Profile {
 
     /**
      * This method is used to upload a new profile picture
-     * 
+     *
      * @param string $photoPath the photo's path
      * @return boolean true if the photo was correctly uploaded
      */
@@ -38,28 +38,28 @@ class C_Profile {
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
         E_User::upload_NewCover($_SESSION["username"], $photo_blob);
-        V_Profilo::home(); //per Federico
+        V_Profilo::home(); //CONTROLLARE I PARAMETRI DA PASSARE
         return true;
     }
 
     /**
      * This method is used to update the current profile picture with a new one
-     * 
+     *
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly updated.
      */
     public static function updateProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
+            V_Home::bannedHome(); //CONTROLLARE I PARAMETRI DA PASSARE
             return false;
         }
         if (!E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)) {
-            V_Home::error();
+            V_Home::error(); //CONTROLLARE I PARAMETRI DA PASSARE
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(); //CONTROLLARE I PARAMETRI DA PASSARE
             return false;
         }
         E_User::set_ProfilePic($_SESSION["username"], $photoId);
@@ -69,7 +69,7 @@ class C_Profile {
 
     /**
      * This method is used to remove the current profil picture.
-     * 
+     *
      * @param string $photoId the photo's path
      * @return boolean true if the photo was correctly removed.
      */
@@ -90,7 +90,7 @@ class C_Profile {
 
     /**
      * This method is used to change the password
-     * 
+     *
      * @param string $newPassword user's new password
      * @return boolean true is the password was correctly changed.
      */
@@ -112,7 +112,7 @@ class C_Profile {
 
     /**
      * This method is used to change the email.
-     * 
+     *
      * @param string $newEmail user's new email.
      * @return boolean true if the email was correctly changed.
      */

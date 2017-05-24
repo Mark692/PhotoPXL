@@ -60,7 +60,7 @@ class V_Home extends V_Basic
      *
      * Mostra un banner per dire ad un utemte che è stato bannato
      */
-    public static function bannedHome($array_photo)
+    public static function bannedHome($array_photo) //CONTROLLARE I PARAMETRI DA PASSARE
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_banned');
