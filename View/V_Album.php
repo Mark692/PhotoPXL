@@ -33,9 +33,9 @@ class V_Album extends V_Home
     {
         //dubbio esistenziale...l'oggetto $album contiene le thumbanil
         $home=new V_Home();
-        $home->assign('username',$user_datails['username']);
+        $home->assign('user_datails',$user_datails);
         $home->assign('album', $album);
-        $home->assign('thumbnail', $thumbnail);
+        $home->assign('thumbnail', $home->thumbnail($thumnail));
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($tpl = 'Album');
         $home->display('home_default.tpl');

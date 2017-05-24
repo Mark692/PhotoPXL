@@ -30,12 +30,11 @@ class V_Home extends V_Basic
         //da vedere come sistemare le foto per mettere l'id e il type
         $home = new V_Home();
         $home->assign('user_datails', $user_datails);
-        $home->assign('array_photo', $array_photo);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
         //DEVI AGGIUNGERE L'ID AD OGNI FOTO
         //DEVI AGGIUNGERE IL TYPE AD OGNI FOTO ALTRIMENTI NON SI VEDONO CORRETTAMENTE
