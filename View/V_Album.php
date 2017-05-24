@@ -28,6 +28,8 @@ class V_Album extends V_Home
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
              * */
+            //IN BASE A QUELLO CHE TI PASSA BENEDETTA DOVRESTI SCRIVERE
+            //public static function album($album_ID, $array_di_Miniature_delle_foto_nell_album)
     {
         //dubbio esistenziale...l'oggetto $album contiene le thumbanil
         $home=new V_Home();
