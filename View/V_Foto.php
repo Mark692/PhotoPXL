@@ -10,55 +10,32 @@ namespace View;
 
 class V_Foto extends V_Home
 {
-    //METODI STATICI -> CONTROL\\
-
+    // METODI STATICI \\
     /**
      * Questo metodo viene utilizzato per vedere una foto, assegna a smarty i dati dell'utente e il percorso della foto
-     * @param type $array_user
      * @param type $photo
+     * @param type $user_datails
      */
-    public static function showPhotoPage($array_user, $photo)
+    public static function showPhotoPage($photo, $user_datails, $photo_datails, $comments)
     {
-        //CONTROLLA STA FUNZIONE!!!
-        //BENEDETTA TI MANDA SOLO L'USERNAME DELL'UTENTE NON UN ARRAY!!!
-        //$array_user E' SBAGLIATO!!
-
-
-        $this->assign('photo_deteils', $photo);
+        $home = new \View\V_Home();
         //$categories = $this->imposta_categoria($photo['categories']);
         //$this->assign('categories', $categories);
-        $this->assign('user_details', $array_user);
-        $role = $this->imposta_ruolo($array_user['role']);
-        $this->home($role, $tpl = 'ShowPhotoUser');
-    }
-
-
-    //METODI BASE - NON STATICI!!!\\
-
-
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
-     * @return array
-     */
-    public function get_Dati()
-    {
-        $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
-        return parent::get_Dati($keys);
-    }
-
-
-    /**
-     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
-     * superglobale $_REQUEST
-     */
-    public function getID()
-    {
-        if(isset($_REQUEST['id']))
+        $home->assign('username', $user_datails['username']);
+        $home->assign('photo', $photo);
+        $home->assign('photo_datails', $photo_datails);
+        $home->assign('comments', $comments);
+        $user_like = \Entity\E_Photo::get_DB_LikeList($photo['id']);
+        foreach($user_like as $user)
         {
-            return $_REQUEST['id'];
+            if($user['username'] === $user_datails['username'])
+            {
+                $home->assign('attiva', $attiva = 'TRUE');
+            }
         }
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'ShowPhotoUser');
+        $home->display('home_default.tpl');
     }
 
 
@@ -67,26 +44,58 @@ class V_Foto extends V_Home
      * @param type $array_user
      * @param type $photo
      */
-    public function showUploadPhoto($role)
+    public static function showUploadPhoto()
     {
-        $array_categories = $this->imposta_categoria();
-        $role = $this->imposta_ruolo($role);
-        $this->assign('array_categories', $array_categories);
-        if($role == \Utilities\Roles::STANDARD)
+        $v = new \View\V_Basic();
+        $home = new \View\V_Home();
+        $username = $_SESSION('username');
+        $role = $v->imposta_ruolo($_SESSION('role'));
+        $array_categories = $home->imposta_categoria();
+        $v->assign('username', $username);
+        $v->assign('array_categories', $array_categories);
+        if($_SESSION('role') == \Utilities\Roles::STANDARD)
         {
-            $this->home($role, $tpl = 'upload_standard');
+            $home->home_default($role, $tpl = 'upload_standard');
         }
         else
         {
-            $this->home($role, $tpl = 'upload');
+            $this->home_default($role, $tpl = 'upload');
         }
     }
 
 
+    //METODI BASE - NON STATICI!!!\\
+    /**
+     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
+     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
+     *
+     * @return array
+     *
+      public function get_Dati()
+      {
+      $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
+      return parent::get_Dati($keys);
+      }
+
+
+      /**
+     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
+     * superglobale $_REQUEST
+     *
+      public function getID()
+      {
+      if(isset($_REQUEST['id']))
+      {
+      return $_REQUEST['id'];
+      }
+      }
+     *
+     * 
+     */
     /**
      * mostra il modulo tpl per la modifica dei dati di una foto
      */
-    public function showEditProfile($array_user, $photo)
+    public function showEditPhoto($array_user, $photo)
     {
 
         $this->assign('user_details', $array_user);

@@ -49,7 +49,7 @@ class C_LoginRegistration {
             return false;
         }
         if (U_Nonce::pass_isValid($userInfo["password"], $nonce, $hash)) {
-            $this->createSession($keepLogged);
+            self::createSession($keepLogged);
             $_SESSION['username'] = $username;
             E_User::nullify_Token($username);
             return true;
@@ -75,7 +75,7 @@ class C_LoginRegistration {
         try {
             $STD_user = new E_User_Standard($username, $password, $email);
             E_User_Standard::insert($STD_user);
-            $this->createSession($keepLogged);
+            self::createSession($keepLogged);
             $_SESSION['username'] = $username;
             V_Home::standardHome(); //Per Fede
             return true;
@@ -99,7 +99,7 @@ class C_LoginRegistration {
      *
      * @param boolean $keepLogged if the user wants to keep the session active.
      */
-    private function createSession($keepLogged) {
+    private static function createSession($keepLogged) {
         if ($keepLogged) {
             session_set_cookie_params(PHP_INT_MAX);
         } else {
@@ -111,7 +111,7 @@ class C_LoginRegistration {
 
     /**
      * This method is used when a user forget his password and wants to generate a new one.
-     * 
+     *
      * @param string $username the user's name
      * @return boolean true if the token was generated.
      */
@@ -126,7 +126,7 @@ class C_LoginRegistration {
     /**
      * This method is used when a user tries to log with a previously generated token.
      * If the login happens, the user has to set up a new password.
-     * 
+     *
      * @param string $username the user's name
      * @param string $userToken the user's token
      * @param boolean $keepLogged true if the user wants to keep the session active.
@@ -137,10 +137,10 @@ class C_LoginRegistration {
         if (!E_User::check_Token($username, $userToken)) {
             return false;
         }
-        $this->createSession($keepLogged);
+        self::createSession($keepLogged);
         $_SESSION['username'] = $username;
         if (!C_Profile::changePassword($newPassword)) {
-            $this->logout();
+            self::logout();
             return false;
         }
         E_User::nullify_Token($username);
@@ -159,10 +159,10 @@ class C_LoginRegistration {
             V_Home::login();
         }
     }
-    
+
     /**
      * check if a username is already taken.
-     * 
+     *
      * @param string $username
      * @return boolean true if the username is available.
      */

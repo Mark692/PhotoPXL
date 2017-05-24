@@ -1,17 +1,18 @@
 <table>
     <tr>
         <td align="center">
-            <table>
-                        {foreach from=$thumbanil item=array1}
-                            <tr>
+            <div class="container">
+                            {foreach from=$array_photo item=array1}
+                            <div class="row">
                                 {foreach from=$array1 item=valore}
-                                    <td>
-                                        <img src="{$valore}" > </img>
-                                    </td>
+                                    <div class="col-md-3">
+                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
+                                        <!--modo per mettere gli id nascoti-->
+                                    </div>
                                 {/foreach}
-                            </tr>
-                        {/foreach}
-            </table> 
+                            </div>
+                            {/foreach}
+            </div>
         </td>
         <td class="colonna" align="center">
             <form method="POST" action="index.php">

@@ -15,6 +15,7 @@ use Entity\E_Album;
 use Utilities\Roles;
 use View\V_Home;
 use View\V_Foto;
+use View\V_Album;
 
 /**
  * This class menages the actions a user can do about the photos.
@@ -64,17 +65,16 @@ class C_Photo {
      */
     public function see($photoId) {
         if ($this->isBanned($this->role)) {
+            V_Home::bannedHome();
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         if ($this->role != Roles::MOD and $this->role != Roles::ADMIN and $this->checkPrivacyOwner($photo)) {
             V_Home::notAllowed();
-            //per federico: richiama la home e scrive "non consentito" al posto delle anteprime foto
             return false;
         }
         V_Foto::showPhotoPage(E_User::get_UserDetails($_SESSION["username"]), $photo);
-        //per Federico
     }
 
     /**
@@ -92,7 +92,7 @@ class C_Photo {
             if ($category != PAESAGGI and $category != RITRATTI and $category != FAUNA
                     and $category != BIANCONERO and $category != ASTRONOMIA and
                     $category != STREET and $category != NATURAMORTA and $category != SPORT) {
-                V_Home::error(); //per federico: pagina con scritto "errore"
+                V_Home::error();
                 return false;
             }
         }
@@ -139,7 +139,7 @@ class C_Photo {
         if (!is_null($albumId)) {
             E_Photo::move_To($photoId, $albumId);
         }
-        //v_foto?
+        V_Album::album();
         return true;
     }
 
@@ -151,19 +151,17 @@ class C_Photo {
      * @param string $text the user's comment.
      * @return boolean true if the comment was correctly added.
      */
-    public static function comment($photoId, $text) {
+    public function comment($photoId, $text) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         if ($this->checkPrivacyOwner($photo)) {
-            V_Home::notAllowed();
             return false;
         }
         E_Comment::insert(new E_Comment($text, $_SESSION["username"], $photoId));
-        //v_foto?
+        return true;
     }
 
     /**
@@ -175,19 +173,17 @@ class C_Photo {
      */
     public static function likeUnlike($photoId) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         if ($this->checkPrivacyOwner($photo)) {
-            V_Home::notAllowed();
             return false;
         }
         if (!E_User::add_Like_to($photoId, $_SESSION["username"])) {
             E_User::remove_Like($_SESSION["username"], $photoId);
         }
-        //v_foto?
+        return true;
     }
 
     /**
@@ -209,7 +205,7 @@ class C_Photo {
             V_Home::notAllowed();
         }
         E_Photo::delete($photoId);
-        //v_album?
+        V_Album::album();
         return true;
     }
 
@@ -222,18 +218,15 @@ class C_Photo {
      */
     public function privacy($photoId) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
         if ($this->role == Roles::STANDARD or ( !E_Photo::is_TheUploader($_SESSION["username"], $photoId))) {
-            V_Home::notAllowed();
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         $photo->set_Reserved(!$photo->get_Reserved());
         E_Photo::update($photoId);
-        //v_profile?
         return true;
     }
 
@@ -248,8 +241,8 @@ class C_Photo {
             V_Home::bannedHome();
             return false;
         }
-        E_Photo::get_By_Categories($category, $_SESSION["username"], $this->role);
-        //v ???
+        $photos = E_Photo::get_By_Categories($category, $_SESSION["username"], $this->role);
+        V_Home::showPhotoCollection($photos);
     }
 
     /**
@@ -258,13 +251,11 @@ class C_Photo {
      * @param int $photoId the photo's ID
      * @return boolean true if the action went right.
      */
-    public static function seeComments($photoId) {
+    public function seeComments($photoId) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
-        E_Photo::get_DB_CommentsList($photoId);
-        //v_foto?
+        return E_Photo::get_DB_CommentsList($photoId);
     }
 
     /**
@@ -273,13 +264,11 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the action went right.
      */
-    public static function seeLikes($photoId) {
+    public function seeLikes($photoId) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
-        E_Photo::get_DB_LikeList($photoId);
-        //v_foto?
+        return E_Photo::get_DB_LikeList($photoId);
     }
 
     /**
@@ -304,7 +293,7 @@ class C_Photo {
             return false;
         }
         E_Photo::move_To($photoId, $newAlbumId);
-        //V_album?
+        V_Album::album(); //da passare il nuovo album
         return true;
     }
 
@@ -331,7 +320,6 @@ class C_Photo {
      */
     public static function mostLikedAsync($pageToView) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
             return false;
         }
         return E_Photo::get_MostLiked($_SESSION["username"], $this->role, $pageToView);

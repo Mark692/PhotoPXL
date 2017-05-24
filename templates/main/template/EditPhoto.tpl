@@ -4,9 +4,7 @@
                 <h3 class="text-success">Foto da modificare:</h3><br/>
                         <img src={$foto}></p>
                 <form method="POST" action="index.php">
-                    <p><input type="hidden" name="controller" value="upload" />
-                        <input type="hidden" name="task" value="elimina" />
-                        <input type="submit" name="elimina" class="btn-success" value="Elimina"  /></p>
+                    <input type="submit" class="btn-success" value="Elimina"  /></p>
                 </form>
     </div>
     <div class="col-md-6">
@@ -14,13 +12,13 @@
                 <form method="POST" action="index.php">
                         <p><h3 class="text-success">Titolo:</h3><br />
                         <div class="form-group">
-                                <input name="title" class="form-control" id="focusedInput" type="text" value="{$photo_deteils.title}">
+                                <input name="title" class="form-control" id="focusedInput" type="text" placeholder="{$photo_deteils.title}">
                         </div>
                         <p><h3 class="text-success">Descrizione</h3>><br />
                         <div class="form-group">
                             <div class="col-lg-10">
-                            <textarea name="description" class="form-control" rows="3" id="textArea"></textarea>
-                            <span class="help-block">{$photo_deteils.description}</span>
+                            <textarea name="description" class="form-control" rows="3" id="textArea" placeholder="{$photo_deteils.description}"></textarea>
+                            <span class="help-block"></span>
                             </div>
                          </div>
                         {if $user_details.role gt "Standard"}
@@ -72,8 +70,6 @@
                                 {/foreach}
                             </select>
                         </div>
-                        <input type="hidden" name="controller" value="upload" />
-                        <input type="hidden" name="task" value="salva" />
                         <input type="submit" name="salva" class="btn-success" value="Salva"  />
                 </form>
     </div>

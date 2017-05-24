@@ -10,14 +10,26 @@ namespace View;
 
 class V_Album extends V_Home
 {
-    //METODI STATICI -> CONTROL\\
+    //METODI STATICI \\
 
     //A BENEDETTA SERVE LA FUNZIONE STATICA ::album() PER DARE LA SCHERMATA QUANDO SI ENTRA NELL'ALBUM
-    public static function album($qualche_parametro, $parametro2, $tre, $quattro, $chenesoquantiteneservono)
+    /*
+     * funzione per restituire la vista di un album
+     */
+    public static function album($album,$thumbnail,$user_datails)
     {
-        $v = new V_Basic();
-        //VISUALIZZA L'ALBUM
+        //dubbio esistenziale...l'oggetto $album contiene le thumbanil 
+        $home=new V_Home();
+        $home->assign('username',$user_datails['username']);
+        $home->assign('album', $album);
+        $home->assign('thumbnail', $thumbnail);
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'Album');
+        $home->display('home_default.tpl');
+        //$array_photo=$home->thumbnail($array_photo);
+        //$v->assign('array_photo',$array_photo);
     }
+
 
 
     //METODI BASE - NON STATICI!!!\\
@@ -51,19 +63,20 @@ class V_Album extends V_Home
 
     /*
      * restituisce il contento del tpl in base all'utente
+     * nn lo so che fa questa
      */
     public function set_album_tpl($album, $thumbnail,$array_user)
     {
-        $smarty = new \Smarty();
+        $v = new \V_Basic();
         $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
-        $smarty->assign('id', $thumbnail['id']);
-        $smarty->assign('thumbnail', $thumbnail['thumbnail']);
-        $smarty->assign('page_tot', $page_tot);
-        $smarty->assign('title', $album['title']);
-        $smarty->assign('description', $album['description']);
+        $v->assign('id', $thumbnail['id']);
+        $v->assign('thumbnail', $thumbnail['thumbnail']);
+        $v->assign('page_tot', $page_tot);
+        $v->assign('title', $album['title']);
+        $v->assign('description', $album['description']);
         $categorie = $this->imposta_categoria($album['categories']); //dal numero alla stringa
-        $smarty->assign('categories', $categorie);
-        $smarty->assign('user_details',$array_user);
+        $v->assign('categories', $categorie);
+        $v->assign('user_details',$array_user);
         $role=$array_user['role'];
         $role=$this->imposta_ruolo($role);
         $this->home($role, $tpl='album');

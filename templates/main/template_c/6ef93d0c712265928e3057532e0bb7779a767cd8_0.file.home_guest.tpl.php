@@ -1,18 +1,62 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-05-22 12:52:48
+  from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/home_guest.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5922c3001ed7f7_38136788',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '6ef93d0c712265928e3057532e0bb7779a767cd8' => 
+    array (
+      0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/home_guest.tpl',
+      1 => 1495369705,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5922c3001ed7f7_38136788 (Smarty_Internal_Template $_smarty_tpl) {
+?>
 <div class="container">
     <div class="row">
     <div class="col-md-6">
         <h1 class="text-success">Foto da mostrare</h1><br/>
 			<div class="container">
-                            {foreach from=$array_photo item=array1}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array_photo']->value, 'array1');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['array1']->value) {
+?>
                             <div class="row">
-                                {foreach from=$array1 item=valore}
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array1']->value, 'valore');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
+?>
                                     <div class="col-md-3">
-                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
+                                        <img src="data:".<?php echo $_smarty_tpl->tpl_vars['valore']->value['type'];?>
+.";base64,'.base64_encode( <?php echo $_smarty_tpl->tpl_vars['valore']->value['thumbanil'];?>
+ ).'">
                                         <!--modo per mettere gli id nascoti-->
                                     </div>
-                                {/foreach}
+                                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
                             </div>
-                            {/foreach}
+                            <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
                         </div>
                         <p><label for="descrizione">descrizione del sito</label><br />
     </div>
@@ -51,4 +95,5 @@
                 </form>
     </div>
     </div>
-</div>
+</div><?php }
+}

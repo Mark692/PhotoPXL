@@ -12,94 +12,76 @@
 
 namespace View;
 
+
 class V_Profilo extends V_Home
 {
     //METODI STATICI -> CONTROL\\
-
     //A BENEDETTA SERVE LA FUNZIONE STATICA ::home() pagina profilo con la LISTA (THUMBNAIL = MINIATURE) degli album/foto
-    public static function home($qualche_parametro, $parametro2, $tre, $quattro, $chenesoquantiteneservono)
+    /*
+     * Funzione che restiuisce il template della pagina del profilo con la thumbnail degli album e i dati utente
+     */
+    public static function home($user_datails,$album_thumbnail)
     {
-        $v = new V_Basic();
-        //VISUALIZZA LA HOME
+        $home = new \View\V_Home();
+        //mettere in ordine le thumbanil degli album da passare a smarty
+        $home->assign('array_album', $album_thumbnail);
+        $home->assign('user_details', $user_datails);
+        //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
+        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Contenuto_Home($tpl = 'ShowProfile');
+        $home->display('home_default.tpl');
     }
 
 
     //A BENEDETTA SERVE LA FUNZIONE STATICA ::banner() DEVE AVVERTIRE L'UTENTE CHE L'AZIONE è AVVENUTA CON SUCCESSO
-    public static function banner()
-    {
-        $v = new V_Basic();
-        //MOSTRA IL BANNER = TESTO. FINE.
-    }
-
-
-    //METODI BASE - NON STATICI!!!\\
-
-
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di modifica del profilo
-     *
-     * @return array
+    /*
+     * funzione che restituisce la home con banner di azione avvenuta con successo
      */
-    public function get_Dati()
+    public static function banner($user_datails, $array_photo)
     {
-        $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
-        return parent::get_Dati($keys);
-    }
-
-
-    /**
-     * mostra il profilo dell'utente
-     */
-    public function showProfile($array_user, $pic_profile, $thumbnail)
-    {
-
-        $this->assign('user_details', $array_user);
-        $this->assign('pic_profile', $pic_profile);
-        $this->assign('thumbnail', $thumbnail);
-        $role = $this->imposta_ruolo($array_user['role']);
-        $this->assign('role', $role);
-        $this->home($role, $tpl = 'showProfile');
+        $home = new V_Home();
+        $home->set_banner($tpl = 'banner_ok.tpl');
+        $home->assign('username', $user_datails['username']);
+        $home->assign('array_photo', $array_photo);
+        $role = $home->imposta_ruolo($user_datails['role']);
+        $home->set_Cont_menu_user($role);
+        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
+        //$array_photo=$home->thumbnail($array_photo);
+        //$v->assign('array_photo',$array_photo);
+        $home->display('home_default.tpl');
     }
 
 
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      */
-    public function showEditProfile($array_user, $pic_profile, $thumbnail)
+    public static function showEditProfile($user_datails)
     {
 
-        $this->assign('user_details', $array_user);
-        $this->assign('pic_profile', $pic_profile);
-        $this->assign('thumbnail', $thumbnail);
-        $role = $this->imposta_ruolo($array_user['role']);
-        $this->assign('role', $role);
-        $this->home($role, $tpl = 'EditProfile');
+        $home = new \View\V_Home();
+        //mettere in ordine le thumbanil degli album da passare a smarty
+        $home->assign('user_details', $user_datails);
+        //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
+        $role = $home->imposta_ruolo($user_datails['role']);
+        $home->set_Cont_menu_user($role);
+        $home->set_Contenuto_Home($tpl = 'EditProfile');
+        //$array_photo=$home->thumbnail($array_photo);
+        //$v->assign('array_photo',$array_photo);
+        $home->display('home_default.tpl');
     }
 
 
+    //METODI BASE - NON STATICI!!!\\
     /**
-     * ritorna il contunuto del tpl che da un messaggio di password cambiata correttamente
+     * Grazie a questa funzione all'interno della variabile $dati vengono
+     * registrati tutti i dati inviati tramite POST dal modulo di modifica del profilo
+     *
+     * @return array
+
+      public function get_Dati()
+      {
+      $keys = array ('username', 'page_toView', 'page_tot', 'order', 'email', 'tmp_name', 'size', 'type');
+      return parent::get_Dati($keys);
+      }
      */
-    public function banner_password($username, $role)
-    {
-        $banner = $this->fetch_banner($tpl = 'banner_password_cambiata');
-        $this->assign('banner', $banner);
-        $role = $this->imposta_ruolo($role);
-        $this->standardHome($username, $role);
-    }
-
-
-    /**
-     * ritorna il contunuto del tpl che da un messaggio di email cambiata correttamente
-     */
-    public function banner_email($username, $role)
-    {
-        $banner = $this->fetch_banner($tpl = 'banner_email_cambiata');
-        $this->assign('banner', $banner);
-        $role = $this->imposta_ruolo($role);
-        $this->standardHome($username, $role);
-    }
-
-
 }

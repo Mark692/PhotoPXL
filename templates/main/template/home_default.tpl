@@ -33,22 +33,19 @@ Released   : 20080208
         <img src="templates/main/template/img/logo.png" width="250" height="150" align="top"></img>
         </div>	
         <div>
-            
+
             {$menu_user}
-                    
         </div>
         <!-- end header -->
             
-            {$banner}
+            {$banner|default:"&nbsp;"}
             
-        
-
-<div id="page">
+        <div>
     
-    {$content}
+            {$mainContent}
     
     <!--fine -->
-</div>
+        </div>
 
   <!-- JS -->
   <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>

@@ -6,7 +6,7 @@
                                 <tr>
                                 {foreach from=$array1 item=valore}
                                     <td>
-                                <img src="{$valore}" class="thumbnail" > <!-- sistemare il css per le thumb -->
+                                <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'"> <!-- sistemare il css per le thumb -->
                                     </td>
                                 {/foreach}
                                 </tr>

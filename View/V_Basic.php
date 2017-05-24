@@ -12,7 +12,9 @@ use Smarty;
 use Utilities\Categories;
 use Utilities\Roles;
 
-class V_Basic extends Smarty
+require_once '.'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
+
+class V_Basic extends \Smarty
 {
     /**
      * Costruttore della classe
@@ -79,11 +81,14 @@ class V_Basic extends Smarty
      */
     public function fetch_Template($nome_template)
     {
-        $smarty = new Smarty();
-        $contenuto = $smarty->fetch($nome_template.'.tpl');
+        $contenuto = $this->fetch($nome_template.'.tpl');
         return $contenuto;
     }
 
+    public function set_variable($var_tpl,$variabile)
+    {
+        $this->assign($var_tpl, $variabile);
+    }
 
     /**
      * Assegna a smarty i dati della registrazione passati come parametro
@@ -93,9 +98,8 @@ class V_Basic extends Smarty
      */
     public function set_Dati($dati)
     {
-        $smarty = new Smarty();
-        $smarty->assign('username', $dati['username']);
-        $smarty->assign('email', $dati['email']);
+        $this->assign('username', $dati['username']);
+        $this->assign('email', $dati['email']);
     }
 
 
@@ -109,7 +113,7 @@ class V_Basic extends Smarty
         switch ($role)
         {
             case Roles::BANNED:
-                $role = "bannato";
+                $role = "banned";
                 break;
 
             case Roles::STANDARD:
@@ -223,9 +227,16 @@ class V_Basic extends Smarty
         $smarty->assign($key, $valore);
     }
 
-    public function homecazzo()
+
+    public function thumbnail($array_photo)
     {
-        $this->display('home_loggati.tpl');
+        $array_foto = [];
+        for($i = 1; $i <= 16; $i++)
+        {
+            array_push($array_foto, $array_photo[$i]);
+        }
+        $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
+        return $array_foto;
     }
 
 

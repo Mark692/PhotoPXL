@@ -2,17 +2,18 @@
     <div class="row">
     <div class="col-md-6">
         <h1 class="text-success">Foto da mostrare</h1><br/>
-			<table>
-                            {foreach from=$thumbnail item=array1}
-                                <tr>
+			<div class="container">
+                            {foreach from=$array_photo item=array1}
+                            <div class="row">
                                 {foreach from=$array1 item=valore}
-                                    <td>
-                                <img src="{$valore}" class="thumbnail" > <!-- sistemare il css per le thumb -->
-                                    </td>
+                                    <div class="col-md-3">
+                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
+                                        <!--modo per mettere gli id nascoti-->
+                                    </div>
                                 {/foreach}
-                                </tr>
+                            </div>
                             {/foreach}
-                        </table>
+                        </div>
                         <p><label for="descrizione">descrizione del sito</label><br />
     </div>
     <div class="col-md-6">
