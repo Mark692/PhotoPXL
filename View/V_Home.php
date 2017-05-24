@@ -71,7 +71,7 @@ class V_Home extends V_Basic
      * @param type $user_datails Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function bannedHome($array_photo)
+    public static function bannedHome($array_photo) //CONTROLLARE I PARAMETRI DA PASSARE
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_banned');
