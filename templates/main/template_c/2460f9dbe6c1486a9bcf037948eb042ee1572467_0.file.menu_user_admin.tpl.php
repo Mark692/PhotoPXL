@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-22 12:19:11
+/* Smarty version 3.1.30, created on 2017-05-24 15:20:21
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/menu_user_admin.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5922bb1f1a9ca8_81216252',
+  'unifunc' => 'content_59258895dd2d16_84276606',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2460f9dbe6c1486a9bcf037948eb042ee1572467' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/menu_user_admin.tpl',
-      1 => 1495116710,
+      1 => 1495632021,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5922bb1f1a9ca8_81216252 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59258895dd2d16_84276606 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <nav class="navbar navbar-admin" role="navigation">
 <div class="container-fluid">
@@ -48,7 +48,7 @@ index.php?controller=amministratore&task=modulo_cambia_ruolo">Cambia Ruoli</a></
       </ul>
       <ul class="nav navbar-nav navbar-right">
               <li><a href="<?php echo $_smarty_tpl->tpl_vars['url']->value;?>
-index.php?controller=Profilo&task=riepilogo"><?php echo $_smarty_tpl->tpl_vars['username']->value;?>
+index.php?controller=Profilo&task=riepilogo"><?php echo $_smarty_tpl->tpl_vars['user_datails']->value['username'];?>
 </a></li>
       </ul>
   </div>

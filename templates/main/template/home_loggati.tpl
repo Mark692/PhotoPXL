@@ -6,7 +6,7 @@
                             <div class="row">
                                 {foreach from=$array1 item=valore}
                                     <div class="col-md-3">
-                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
+                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.fullsize} ).'">
                                         <!--modo per mettere gli id nascoti-->
                                     </div>
                                 {/foreach}
@@ -19,8 +19,8 @@
                     <h3 class="title">Ricerca per categoria</h3>
                     <p><label for="Categories">Categoria</label><br />
                     <select multiple="" class="form-control">
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
+                            {foreach from=$categories item=categoria}
+                                <option value="$categoria" checked>{$categoria}</option>
                             {/foreach}
                     </select>
                             <input type="hidden" name="controller" value="cerca" />

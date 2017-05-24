@@ -12,18 +12,22 @@ class V_Foto extends V_Home
 {
     // METODI STATICI \\
     /**
-     * Questo metodo viene utilizzato per vedere una foto, assegna a smarty i dati dell'utente e il percorso della foto
-     * @param type $photo
-     * @param type $user_datails
+     * Questo metodo viene utilizzato per vedere una foto, assegna a smarty 
+     * i dati dell'utente e il percorso della foto
+     * 
+     * @param type $photo Description la foto con fullsize type e id
+     * @param type $user_datails Description i dati dell'utente 
+     * @param type $photo_datails Description i dati dell'utente
+     * @param type $comments Description i commenti relativi alla foto
+     * 
      */
-    public static function showPhotoPage($photo, $user_datails, $photo_datails, $comments)
+    public static function showPhotoPage($photo, $user_datails, $comments)
     {
         $home = new \View\V_Home();
-        //$categories = $this->imposta_categoria($photo['categories']);
-        //$this->assign('categories', $categories);
-        $home->assign('username', $user_datails['username']);
+        $categories = $home->imposta_categoria($photo['categories']);
+        $home->assign('categories', $categories);
+        $home->assign('user_datails', $user_datails);
         $home->assign('photo', $photo);
-        $home->assign('photo_datails', $photo_datails);
         $home->assign('comments', $comments);
         $user_like = \Entity\E_Photo::get_DB_LikeList($photo['id']);
         foreach($user_like as $user)
