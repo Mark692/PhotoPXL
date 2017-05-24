@@ -14,10 +14,8 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'S
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
-
-require_once $path."U_Nonce.php"; 
-
 require_once $path."U_Nonce.php";
+
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
 
@@ -73,6 +71,6 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
- * 
+ *
  */
 ?>
