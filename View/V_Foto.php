@@ -19,6 +19,11 @@ class V_Foto extends V_Home
      */
     public static function showPhotoPage($array_user, $photo)
     {
+        //CONTROLLA STA FUNZIONE!!!
+        //BENEDETTA TI MANDA SOLO L'USERNAME DELL'UTENTE NON UN ARRAY!!!
+        //$array_user E' SBAGLIATO!!
+
+
         $this->assign('photo_deteils', $photo);
         //$categories = $this->imposta_categoria($photo['categories']);
         //$this->assign('categories', $categories);
