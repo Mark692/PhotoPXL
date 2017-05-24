@@ -1,3 +1,27 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-05-24 16:30:45
+  from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/login.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_592599151db716_91110861',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'fbcffc5a8ef427e5c3b6008376184b60bd7ddb17' => 
+    array (
+      0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/login.tpl',
+      1 => 1495636242,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_592599151db716_91110861 (Smarty_Internal_Template $_smarty_tpl) {
+?>
 <div class="container">
     <div class="row">
     <div class="col-md-6">
@@ -22,3 +46,5 @@
     </div>
     </div>
 </div>
+<?php }
+}

@@ -12,30 +12,34 @@
 
 namespace View;
 
-
 class V_Profilo extends V_Home
 {
     //METODI STATICI -> CONTROL\\
     //A BENEDETTA SERVE LA FUNZIONE STATICA ::home() pagina profilo con la LISTA (THUMBNAIL = MINIATURE) degli album/foto
     /*
      * Funzione che restiuisce il template della pagina del profilo con la thumbnail degli album e i dati utente
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
-    public static function home($user_datails,$album_thumbnail)
+    public static function home($user_datails, $album_thumbnail)
     {
         $home = new \View\V_Home();
         //mettere in ordine le thumbanil degli album da passare a smarty
         $home->assign('array_album', $album_thumbnail);
         $home->assign('user_details', $user_datails);
-        //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
+        $home->assign('array_photo', $home->thumbnail($album_thumbnail));
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($tpl = 'ShowProfile');
         $home->display('home_default.tpl');
     }
 
 
-    //A BENEDETTA SERVE LA FUNZIONE STATICA ::banner() DEVE AVVERTIRE L'UTENTE CHE L'AZIONE è AVVENUTA CON SUCCESSO
     /*
      * funzione che restituisce la home con banner di azione avvenuta con successo
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
     public static function banner($user_datails, $array_photo)
     {
@@ -46,27 +50,27 @@ class V_Profilo extends V_Home
         $role = $home->imposta_ruolo($user_datails['role']);
         $home->set_Cont_menu_user($role);
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
 
 
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
-    public static function showEditProfile($user_datails)
+    public static function showEditProfile($user_datails, $array_photo)
     {
 
         $home = new \View\V_Home();
-        //mettere in ordine le thumbanil degli album da passare a smarty
         $home->assign('user_details', $user_datails);
-        //$v->assign('thumbnail', $thumbnail);//vanno assegnate le miniature dell'album da verificare
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $role = $home->imposta_ruolo($user_datails['role']);
         $home->set_Cont_menu_user($role);
         $home->set_Contenuto_Home($tpl = 'EditProfile');
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
 

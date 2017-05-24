@@ -21,17 +21,21 @@ class V_Home extends V_Basic
      *               - "thumbnail" => it's thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
     public static function standardHome($user_datails, $array_photo)
     {
         //da vedere come sistemare le foto per mettere l'id e il type
         $home = new V_Home();
-        $home->assign('username', $user_datails['username']);
+        $home->assign('user_datails', $user_datails);
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
         //DEVI AGGIUNGERE L'ID AD OGNI FOTO
         //DEVI AGGIUNGERE IL TYPE AD OGNI FOTO ALTRIMENTI NON SI VEDONO CORRETTAMENTE
@@ -40,6 +44,9 @@ class V_Home extends V_Basic
 
     /**
      * mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
     public static function notAllowed($user_datails, $array_photo)
     {
@@ -47,11 +54,12 @@ class V_Home extends V_Basic
         $home->set_banner($tpl = 'banner_no_permessi');
         $home->assign('username', $user_datails['username']);
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $role = $home->imposta_ruolo($user_datails['role']);
         $home->set_Cont_menu_user($role);
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
 
@@ -59,24 +67,30 @@ class V_Home extends V_Basic
     /**
      *
      * Mostra un banner per dire ad un utemte che è stato bannato
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
     public static function bannedHome($array_photo) //CONTROLLARE I PARAMETRI DA PASSARE
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_banned');
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $home->set_Cont_menu_user($role='guest');
         $home->set_Contenuto_Home($tpl='home_guest');
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
 
 
 //questa è da vedere perchè scritta anche in v_registration ed è uguale..
     /**
-     * visualizza una banner di errore
-     * @param type $messaggio
+     * visualizza una banner di errore 
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $array_photo Description foto con + like
      */
     public static function error($user_datails, $array_photo)
     {
@@ -84,15 +98,19 @@ class V_Home extends V_Basic
         $home->set_banner($tpl = 'banner_error');
         $home->assign('username', $user_datails['username']);
         $home->assign('array_photo', $array_photo);
+        $categories = $home->imposta_categoria();
+        $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
+        $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
 
     /*
-     *
+     * 
+     * 
+     * @param type $user_datails Description i dati dell'utente
+     * @param type $photos Description thumbanils restituite dalla ricerca
      */
     public static function showPhotoCollection($photos,$user_datails)
     {
@@ -101,43 +119,38 @@ class V_Home extends V_Basic
         $home->assign('photos', $photos);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($tpl = 'SearchPhoto');
+        $home->assign('array_photo',$home->thumbnail($photos));
         $home->display('home_default.tpl');
-        //$array_photo=$home->thumbnail($array_photo);
-        //$v->assign('array_photo',$array_photo);
     }
 
 
     /**
      *
-     * Mostra il tamplete della Home di per i non loggati
+     * Mostra il tamplete per effettuare il login
      */
-    public static function login() //HO MESSO QUESTO STATICO PERCHè SERVE A BENEDETTA
+    public static function login() 
     {
-        $v = new V_Basic();
-        $tpl = 'login';
-        $home=new V_Home(); //HO AGGIUNTO QUESTO
-        $home->set_Cont_menu_user($role = 'ospite'); //HO TOLTO $THIS E MESSO $home
-        $home->set_Contenuto_Home($tpl); //HO TOLTO $THIS E MESSO $home
-        $v->display('home_default.tpl');
+        $home=new V_Home(); 
+        $home->set_Cont_menu_user($role = 'guest'); 
+        $home->set_Contenuto_Home($tpl = 'login'); 
+        $home->display('home_default.tpl');
     }
-
-
-
+    
+    /**
+     *
+     * Mostra il tamplete per effettuare il login
+     */
+    public static function registration() 
+    {
+        $home=new V_Home(); 
+        $home->set_Cont_menu_user($role = 'guest'); 
+        $home->set_Contenuto_Home($tpl = 'registration'); 
+        $home->display('home_default.tpl');
+    }
+    
     //METODI BASE - NON STATICI!!!\\
 
 
-    /**
-     *
-     * Mostra il tamplete della Home di utenti per la registrazione
-     */
-    public function registration()
-    {
-
-        $tpl = 'registration';
-        $this->set_Cont_menu_user($role = 'ospite');
-        $this->set_Contenuto_Home($tpl);
-        $this->display('home_default.tpl');
-    }
 
 
     /**

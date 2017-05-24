@@ -14,33 +14,40 @@ require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'S
 $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
+
+require_once $path."U_Nonce.php"; 
+
 require_once $path."U_Nonce.php";
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
-/*
+
+
 
 //session_start();
+
 $avvia = new \View\V_Home();
-$role= \Utilities\Roles::ADMIN;
+$avvia->login();
+/*
+ * $role= \Utilities\Roles::ADMIN;
 $user_datails=["username" => "cazzofritto", "password" => "tuozio",
 "email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
 $array_foto = [];
-for($i=1; $i<=16; $i++)
+
+for($i=1; $i<=11; $i++)
 {
-    array_push($array_foto, "templates/main/template/img/noimagefound.jpg");
+    array_push($array_foto,"templates/main/template/img/img01.jpg");
 
 }
-$photo=["username"=>"cazz","photo"=>"c/img/img01.jpg", "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
-$array_photo=array_chunk($array_foto, PHOTOS_PER_ROW);
+
+$photo=["username"=>"cazzofritto","title"=>"porco crist","fullsize"=>"c/img/img01.jpg","categories"=>array("1"), "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
 $pic_profile="templates/main/template/img/img01.jpg";
-
+$comments=["1" => array("username"=>"cazz","text"=>"ciaooodiladfnlmfnaldnflnfa"),"2" => array("username"=>"ca333zz","text"=>"ciaooodiladfnlmfnaldnflnfa")];
+$cat=$avvia->imposta_categoria($photo['categories']);
 //echo($avvia->fetch_banner($tpl='banner_no_permessi'));
-$avvia->error($user_datails, $array_photo);
+$avvia->showPhotoPage($photo, $user_datails, $comments);
 
+// $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
 
-/*
- * $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
- */
 
 
 
@@ -66,4 +73,6 @@ $avvia->error($user_datails, $array_photo);
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
+ * 
+ */
 ?>

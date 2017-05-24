@@ -7,7 +7,7 @@
                             <div class="row">
                                 {foreach from=$array1 item=valore}
                                     <div class="col-md-3">
-                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
+                                        <!--<img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'"> 
                                         <!--modo per mettere gli id nascoti-->
                                     </div>
                                 {/foreach}

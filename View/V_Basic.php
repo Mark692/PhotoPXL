@@ -168,35 +168,38 @@ class V_Basic extends \Smarty
             switch ($valore)
             {
                 case Categories::PAESAGGI:
-                    $categoria = "Paesaggi";
+                    $valore = "Paesaggi";
                     break;
 
                 case Categories::RITRATTI:
-                    $categoria = "Ritratti";
+                    $valore = "Ritratti";
                     break;
 
                 case Categories::FAUNA:
-                    $categoria = "Fauna";
+                    $valore = "Fauna";
                     break;
 
                 case Categories::BIANCONERO:
-                    $categoria = "Bianco e Nero";
+                    $valore = "Bianco e Nero";
                     break;
 
                 case Categories::ASTRONOMIA:
-                    $categoria = "Astronomia";
+                    $valore = "Astronomia";
                     break;
+                
                 case Categories::STREET:
-                    $categoria = "Street";
+                    $valore = "Street";
                     break;
+                
                 case Categories::NATURAMORTA:
-                    $categoria = "Natura Morta";
+                    $valore = "Natura Morta";
                     break;
+                
                 case Categories::SPORT:
-                    $categoria = "Sport";
+                    $valore = "Sport";
                     break;
             }
-            array_push($cost, $categoria);
+            array_push($cost, $valore);
         }
         return $cost;
     }
@@ -231,9 +234,9 @@ class V_Basic extends \Smarty
     public function thumbnail($array_photo)
     {
         $array_foto = [];
-        for($i = 1; $i <= 16; $i++)
+        foreach ($array_photo as $value)
         {
-            array_push($array_foto, $array_photo[$i]);
+            array_push($array_foto, $value);
         }
         $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
         return $array_foto;
