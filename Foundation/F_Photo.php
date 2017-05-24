@@ -138,7 +138,7 @@ class F_Photo extends F_Database
      * @return mixed A boolean FALSE if no photo matches the query.
      *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
      *               How to access the array:
-     *               - "photo" => the photo's ID
+     *               - "photo" => the photo's Entity Object
      *               - "uploader" => the user uploader
      *               - "fullsize" => the fullsize photo
      *               - "type" => its type
@@ -169,10 +169,16 @@ class F_Photo extends F_Database
         //Retrieves the comments
         $commented_By = self::get_UsernamesThatCommented($id);
 
-
         $e_photo = new E_Photo(
-                $photo["title"], $photo["description"], $photo["is_reserved"], $cats, $photo["upload_date"], $liked_By, $commented_By
-        );
+                $photo["title"],
+                $photo["description"],
+                $photo["is_reserved"],
+                $cats,
+                $photo["upload_date"],
+                $liked_By,
+                $commented_By
+                );
+
         $e_photo->set_ID($id);
 
         return array(

@@ -411,7 +411,7 @@ class E_Photo
      * @return mixed A boolean FALSE if no photo matches the query.
      *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
      *               How to access the array:
-     *               - "photo" => the photo's ID
+     *               - "photo" => the photo's Entity Object
      *               - "uploader" => the user uploader
      *               - "fullsize" => the fullsize photo
      *               - "type" => its type
