@@ -16,7 +16,7 @@ class V_Album extends V_Home
     /*
      * funzione per restituire la vista di un album
      */
-    public static function album($album,$thumbnail,$user_datails) //QUESTA FUNZIONE NON VA BENE.
+    public static function album($album,$username) //QUESTA FUNZIONE NON VA BENE.
     //BENEDETTA PASSA 2 PARAMETRI:
     //1 - L'ID DELL'ALBUM
     //2 - UN ARRAY. OVVERO IL RISULTATO DELLA FUNZIONE E_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
@@ -33,10 +33,13 @@ class V_Album extends V_Home
     {
         //dubbio esistenziale...l'oggetto $album contiene le thumbanil
         $home=new V_Home();
-        $home->assign('user_datails',$user_datails);
-        $home->assign('album', $album);
-        $home->assign('thumbnail', $home->thumbnail($thumnail));
-        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->assign('user_datails',$username);
+        $album_details=$home->album_details($album);
+        $thumbnail=$home->thumbnail($album);
+        $home->assign('album_details', $album_details);
+        $home->assign('thumbnail', $thumbnail);
+        $role= \Entity\E_User::get_DB_Role($username);
+        $home->set_Cont_menu_user($home->imposta_ruolo($role));
         $home->set_Contenuto_Home($tpl = 'Album');
         $home->display('home_default.tpl');
         //$array_photo=$home->thumbnail($array_photo);

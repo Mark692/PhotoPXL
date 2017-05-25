@@ -85,10 +85,12 @@ class V_Basic extends \Smarty
         return $contenuto;
     }
 
-    public function set_variable($var_tpl,$variabile)
+
+    public function set_variable($var_tpl, $variabile)
     {
         $this->assign($var_tpl, $variabile);
     }
+
 
     /**
      * Assegna a smarty i dati della registrazione passati come parametro
@@ -186,15 +188,15 @@ class V_Basic extends \Smarty
                 case Categories::ASTRONOMIA:
                     $valore = "Astronomia";
                     break;
-                
+
                 case Categories::STREET:
                     $valore = "Street";
                     break;
-                
+
                 case Categories::NATURAMORTA:
                     $valore = "Natura Morta";
                     break;
-                
+
                 case Categories::SPORT:
                     $valore = "Sport";
                     break;
@@ -234,12 +236,33 @@ class V_Basic extends \Smarty
     public function thumbnail($array_photo)
     {
         $array_foto = [];
-        foreach ($array_photo as $value)
+        foreach($array_photo as $value)
         {
             array_push($array_foto, $value);
         }
         $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
         return $array_foto;
+    }
+
+
+    public function photo_details($photo)
+    {
+        $title = $photo["photo"]->get_Title();
+        $description = $photo["photo"]->get_Description();
+        $is_reserved = $photo['photo']->get_Reserved();
+        $Upload_Date = $photo["photo"]->get_Upload_Date();
+        $tot_like = $photo['photo']->get_NLikes();
+        return $photo_details = ["title" => $title, "description" => $description, "is_reserved" => $is_reserved,
+            "Upload_Date" => $Upload_Date, "tot_like"=> $tot_like];
+    }
+
+
+    public function album_details($album)
+    {
+        $title = $album["album"]->get_Title();
+        $description = $album["album"]->get_Description();
+        $creation_date = $album["photo"]->get_Creation_Date();
+        return $album_details = ["title"=> $title, "description" => $description,"creation_date" => $creation_date];
     }
 
 

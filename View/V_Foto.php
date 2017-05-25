@@ -21,23 +21,28 @@ class V_Foto extends V_Home
      * @param type $comments Description i commenti relativi alla foto
      * 
      */
-    public static function showPhotoPage($photo, $user_datails, $comments)
+    public static function showPhotoPage($photo, $username)
     {
         $home = new \View\V_Home();
-        $categories = $home->imposta_categoria($photo['categories']);
-        $home->assign('categories', $categories);
-        $home->assign('user_datails', $user_datails);
-        $home->assign('photo', $photo);
-        $home->assign('comments', $comments);
-        $user_like = \Entity\E_Photo::get_DB_LikeList($photo['id']);
-        foreach($user_like as $user)
+        //i dettagli di photo come titolo etc è un oggetto
+        $home->assign('categories', $home->imposta_categoria($photo['photo']->get_Categories()));
+        $home->assign('username', $username);
+        $role= \Entity\E_User::get_DB_Role($username);
+        $photo_details=$home->photo_details($photo);
+        $home->assign('photo_details',$photo_details);
+        $home->assign('id', $photo['id']);
+        $home->assign('fullsize',$photo['fullsize']);
+        $home->assign('type',$photo['type']);
+        $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo['id']));
+        $likelist = $photo["photo"]->get_LikesList();
+        foreach($likelist as $user)
         {
-            if($user['username'] === $user_datails['username'])
+            if($user['username'] === $username)
             {
                 $home->assign('attiva', $attiva = 'TRUE');
             }
         }
-        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->set_Cont_menu_user($home->imposta_ruolo($role));
         $home->set_Contenuto_Home($tpl = 'ShowPhotoUser');
         $home->display('home_default.tpl');
     }

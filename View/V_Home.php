@@ -22,19 +22,19 @@ class V_Home extends V_Basic
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
      * 
-     * @param type $user_datails Description i dati dell'utente
+     * @param type $username Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function standardHome($user_datails, $array_photo)
+    public static function standardHome($username, $array_photo)
     {
         //da vedere come sistemare le foto per mettere l'id e il type
         $home = new V_Home();
-        $home->assign('user_datails', $user_datails);
+        $home->assign('user_datails', $username);
         $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
-        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
-        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+        $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
         //DEVI AGGIUNGERE L'ID AD OGNI FOTO
         //DEVI AGGIUNGERE IL TYPE AD OGNI FOTO ALTRIMENTI NON SI VEDONO CORRETTAMENTE
@@ -44,20 +44,19 @@ class V_Home extends V_Basic
     /**
      * mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
      * 
-     * @param type $user_datails Description i dati dell'utente
+     * @param type $username Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function notAllowed($user_datails, $array_photo)
+    public static function notAllowed($username, $array_photo)
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_no_permessi');
-        $home->assign('username', $user_datails['username']);
-        $home->assign('array_photo', $array_photo);
+        $home->assign('username', $username);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
-        $role = $home->imposta_ruolo($user_datails['role']);
-        $home->set_Cont_menu_user($role);
-        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+        $home->set_Contenuto_Home($home->set_home($username));
         $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
@@ -65,7 +64,7 @@ class V_Home extends V_Basic
 
     /**
      *
-     * Mostra un banner per dire ad un utemte che è stato bannato
+     * Mostra un banner per dire ad un utente che è stato bannato
      * 
      * @param type $user_datails Description i dati dell'utente
      * @param type $array_photo Description foto con + like
@@ -74,7 +73,7 @@ class V_Home extends V_Basic
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_banned');
-        $home->assign('array_photo', $array_photo);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
         $home->set_Cont_menu_user($role='guest');
@@ -88,19 +87,18 @@ class V_Home extends V_Basic
     /**
      * visualizza una banner di errore 
      * 
-     * @param type $user_datails Description i dati dell'utente
+     * @param type $username Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function error($user_datails, $array_photo)
+    public static function error($username, $array_photo)
     {
         $home = new V_Home();
-        $home->set_banner($tpl = 'banner_error');
-        $home->assign('username', $user_datails['username']);
-        $home->assign('array_photo', $array_photo);
+        $home->assign('username', $username);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
-        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
-        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+        $home->set_Contenuto_Home($home->set_home($username));
         $home->assign('array_photo',$home->thumbnail($array_photo));
         $home->display('home_default.tpl');
     }
@@ -111,14 +109,13 @@ class V_Home extends V_Basic
      * @param type $user_datails Description i dati dell'utente
      * @param type $photos Description thumbanils restituite dalla ricerca
      */
-    public static function showPhotoCollection($photos,$user_datails)
+    public static function showPhotoCollection($photos,$username)
     {
         $home=new V_Home();
-        $home->assign('username',$user_datails['username']);
-        $home->assign('photos', $photos);
-        $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
+        $home->assign('username',$username);
+        $home->assign('photos', $home->thumbnail($photos));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'SearchPhoto');
-        $home->assign('array_photo',$home->thumbnail($photos));
         $home->display('home_default.tpl');
     }
 

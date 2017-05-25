@@ -18,13 +18,19 @@ require_once $path."U_Nonce.php";
 
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
-
-
-
+$username= "cazzo";
+$role= \Utilities\Roles::ADMIN;
+//var_dump($foto);
 //session_start();
+$avvia=new \View\V_Basic();
+$avvia->assign('id',$id="1");
+$avvia->assign('username',$username);
+$avvia->assign('role',$role);
+//$v=new View\show_image();
+//$v->ShowImage($id=1, $username, $role);
+$avvia->display('prova.tpl');
 
-$avvia = new \View\V_Home();
-$avvia->login();
+//$avvia->login();
 /*
  * $role= \Utilities\Roles::ADMIN;
 $user_datails=["username" => "cazzofritto", "password" => "tuozio",
