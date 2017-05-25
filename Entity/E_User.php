@@ -250,9 +250,7 @@ class E_User
      * @param string $username The user's username
      * @throws queries In case of connection errors
      * @return mixed int The user's role
-     *               boolean FALSE if no username was found in the DB.
-     *               How to access to the array:
-     *               - "role" => the user role
+     *               boolean FALSE if no username was found in the DB
      */
     public static function get_DB_Role($username)
     {
