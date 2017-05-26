@@ -23,11 +23,14 @@ $role= \Utilities\Roles::ADMIN;
 //var_dump($foto);
 //session_start();
 $avvia=new \View\V_Basic();
-$avvia->assign('id',$id="1");
+$id="1";
 $avvia->assign('username',$username);
 $avvia->assign('role',$role);
+$foto=\Entity\E_Photo::get_By_ID($id, $username, $role);
 //$v=new View\show_image();
 //$v->ShowImage($id=1, $username, $role);
+$avvia->assign('type',$foto['type']);
+$avvia->assign('fullsize',$foto['fullsize']);
 $avvia->display('prova.tpl');
 
 //$avvia->login();

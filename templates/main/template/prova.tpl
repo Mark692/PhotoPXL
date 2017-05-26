@@ -1,3 +1,3 @@
 
-<img src="data:{$valore.type}";base64,'base64_encode( {$valore.thumbanil} )'">
+<img src=”showimage.php?id=1″ />
 
