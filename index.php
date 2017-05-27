@@ -21,8 +21,15 @@ require_once $path."U_Nonce.php";
 $username= "cazzo";
 $role= \Utilities\Roles::ADMIN;
 //var_dump($foto);
-//session_start();
-$avvia=new \View\V_Basic();
+
+$v=new Utilities\U_Session();
+$v->set_Val('username','cazzo');
+$v->set_Val('role', '1');
+$v->set_Val('id', '1');
+//var_dump($_SESSION);
+$c=new View\showimage();
+$c->showimage();
+/*$avvia=new \View\V_Basic();
 $id="1";
 $avvia->assign('username',$username);
 $avvia->assign('role',$role);
@@ -31,8 +38,7 @@ $foto=\Entity\E_Photo::get_By_ID($id, $username, $role);
 //$v->ShowImage($id=1, $username, $role);
 $avvia->assign('type',$foto['type']);
 $avvia->assign('fullsize',$foto['fullsize']);
-$avvia->display('prova.tpl');
-
+//$avvia->display('prova.tpl');
 //$avvia->login();
 /*
  * $role= \Utilities\Roles::ADMIN;
