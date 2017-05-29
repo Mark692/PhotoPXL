@@ -36,8 +36,7 @@
                                <button type="submit" class="btn btn-success">Aggiungi Foto</button>
                         </div>
                     </form>	
-                </td>
-	</tr>
-</table>
+    </div>
+    </div>
 </div>
 

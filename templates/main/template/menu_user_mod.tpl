@@ -15,7 +15,7 @@
                       <li><a href="{$url}index.php?controller=Mod&task=modulo_banna">Banna Utenti</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{$url}index.php?controller=Profilo&task=riepilogo">{$user_datails.username}</a></li>
+                    <li><a href="{$url}index.php?controller=Profilo&task=riepilogo">{$username}</a></li>
             </ul>
         </div>
     </div>
