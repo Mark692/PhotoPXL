@@ -12,33 +12,30 @@ class V_Album extends V_Home
 {
     //METODI STATICI \\
 
-    //A BENEDETTA SERVE LA FUNZIONE STATICA ::album() PER DARE LA SCHERMATA QUANDO SI ENTRA NELL'ALBUM
-    /*
-     * funzione per restituire la vista di un album
-     */
-    public static function album($album,$username) //QUESTA FUNZIONE NON VA BENE.
-    //BENEDETTA PASSA 2 PARAMETRI:
-    //1 - L'ID DELL'ALBUM
-    //2 - UN ARRAY. OVVERO IL RISULTATO DELLA FUNZIONE E_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
-            //CHE RESTITUISCE UN ARRAY CON I SEGUENTI PARAMETRI:
-            /*    * @return array An array with photo IDs and thumbnails.
+    /**
+     * Funzione per restituire la vista di un album
+     * @param int $E_album The album object to rethrive the details from
+     * @param array $array_photos
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => its thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
-             * */
-            //IN BASE A QUELLO CHE TI PASSA BENEDETTA DOVRESTI SCRIVERE
-            //public static function album($album_ID, $array_di_Miniature_delle_foto_nell_album)
+     * @param string $user_Watching The user who's trying to view the album
+     */
+    public static function album($E_album, $array_photos, $user_Watching) //QUESTA FUNZIONE NON VA BENE.
     {
-        //dubbio esistenziale...l'oggetto $album contiene le thumbanil
         $home=new V_Home();
-        $home->assign('user_datails',$username);
-        $album_details=$home->album_details($album);
-        $thumbnail=$home->thumbnail($album);
+        $home->assign('user_datails',$user_Watching); //Assegna un NOME UTENTE (string), va bene???
+
+        $album_details=$home->album_details($E_album);
         $home->assign('album_details', $album_details);
+
+        $thumbnail=$home->thumbnail($array_photos);
         $home->assign('thumbnail', $thumbnail);
-        $role= \Entity\E_User::get_DB_Role($username);
+
+        $role= \Entity\E_User::get_DB_Role($user_Watching);
+
         $home->set_Cont_menu_user($home->imposta_ruolo($role));
         $home->set_Contenuto_Home($tpl = 'Album');
         $home->display('home_default.tpl');

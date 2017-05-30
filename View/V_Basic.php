@@ -233,14 +233,22 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * Divides the thumbnails into chunks to enable a multi-row view
+     *
+     * @param array $array_photo An array with thumbnails to display
+     * @return array
+     */
     public function thumbnail($array_photo)
     {
+        //A CHE SERVE STA ROBA?
         $array_foto = [];
         foreach($array_photo as $value)
         {
             array_push($array_foto, $value);
         }
         $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
+        // return array_chunk($array_photo, PHOTOS_PER_ROW); NON VA BENE FARE COSì?!?!?
         return $array_foto;
     }
 
