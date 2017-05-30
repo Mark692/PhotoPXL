@@ -16,19 +16,31 @@ require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
-//$test_it = new \Utilities\installer();
-//$test_it->try_Functions();
-$username= "cazzo";
-$role= \Utilities\Roles::ADMIN;
-//var_dump($foto);
 
-$v=new Utilities\U_Session();
-$v->set_Val('username','cazzo');
-$v->set_Val('role', '1');
-$v->set_Val('id', '1');
-//var_dump($_SESSION);
-$c=new View\showimage();
-$c->showimage();
+$album_ID=1;
+$user_Watching = "Marco";
+$user_Role = \Utilities\Roles::ADMIN;
+
+$E_album = \Foundation\F_Album::get_By_ID($album_ID);
+$array_photos = \Foundation\F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, 1, FALSE);
+
+\View\V_Album::album($E_album["album"], $array_photos, $user_Watching);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*$avvia=new \View\V_Basic();
 $id="1";
 $avvia->assign('username',$username);
