@@ -17,65 +17,43 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
-
-
-
-$album_ID=1;
-$user_Watching = "Marco";
-$user_Role = \Utilities\Roles::ADMIN;
-
-$E_album = \Foundation\F_Album::get_By_ID($album_ID);
-$array_photos = \Foundation\F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, 1, FALSE);
-
-\View\V_Album::album($E_album["album"], $array_photos, $user_Watching);
-
-
-
-
-//$avvia=new View\V_Album();
-//$avvia->album($E_album, $array_photos, $username);
-
-/*$avvia=new \View\V_Basic();
-$id="1";
-$avvia->assign('username',$username);
-$avvia->assign('role',$role);
-$foto=\Entity\E_Photo::get_By_ID($id, $username, $role);
-//$v=new View\show_image();
-//$v->ShowImage($id=1, $username, $role);
-$avvia->assign('type',$foto['type']);
-$avvia->assign('fullsize',$foto['fullsize']);
-//$avvia->display('prova.tpl');
-//$avvia->login();
-/*
- * $role= \Utilities\Roles::ADMIN;
-$user_datails=["username" => "cazzofritto", "password" => "tuozio",
-"email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
-$array_foto = [];
-
-for($i=1; $i<=11; $i++)
-{
-    array_push($array_foto,"templates/main/template/img/img01.jpg");
-
-}
-
-$photo=["username"=>"cazzofritto","title"=>"porco crist","fullsize"=>"c/img/img01.jpg","categories"=>array("1"), "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
-$pic_profile="templates/main/template/img/img01.jpg";
-$comments=["1" => array("username"=>"cazz","text"=>"ciaooodiladfnlmfnaldnflnfa"),"2" => array("username"=>"ca333zz","text"=>"ciaooodiladfnlmfnaldnflnfa")];
-$cat=$avvia->imposta_categoria($photo['categories']);
-//echo($avvia->fetch_banner($tpl='banner_no_permessi'));
-$avvia->showPhotoPage($photo, $user_datails, $comments);
-
-// $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
-
-
-
-
-
-
-\Control\C_LoginRegistration::showHome();
-
 //*
 //------------------------------PROVE------------------------------//
+$p=new P\photo();
+$p->GET_MOSTLIKED();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //NOTA: QUESTA FUNZIONE CERCHERA' DI POPOLARE IL DATABASE "my_photopxl"
 //USALA PER POTER AVERE TUTTO ENTITY E FOUNDATION FUNZIONANTI.
@@ -92,6 +70,3 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
- *
- */
-?>
