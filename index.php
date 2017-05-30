@@ -17,6 +17,9 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
+
+
+
 $album_ID=1;
 $user_Watching = "Marco";
 $user_Role = \Utilities\Roles::ADMIN;
@@ -29,17 +32,8 @@ $array_photos = \Foundation\F_Photo::get_By_Album($album_ID, $user_Watching, $us
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+//$avvia=new View\V_Album();
+//$avvia->album($E_album, $array_photos, $username);
 
 /*$avvia=new \View\V_Basic();
 $id="1";

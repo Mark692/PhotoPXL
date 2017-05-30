@@ -241,15 +241,12 @@ class V_Basic extends \Smarty
      */
     public function thumbnail($array_photo)
     {
-        //A CHE SERVE STA ROBA?
         $array_foto = [];
         foreach($array_photo as $value)
         {
             array_push($array_foto, $value);
         }
-        $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
-        // return array_chunk($array_photo, PHOTOS_PER_ROW); NON VA BENE FARE COSì?!?!?
-        return $array_foto;
+        return array_chunk($array_photo, PHOTOS_PER_ROW);
     }
 
 
@@ -258,10 +255,11 @@ class V_Basic extends \Smarty
         $title = $photo["photo"]->get_Title();
         $description = $photo["photo"]->get_Description();
         $is_reserved = $photo['photo']->get_Reserved();
+        $categories = $this->imposta_categoria($photo["photo"]->get_Categories());
         $Upload_Date = $photo["photo"]->get_Upload_Date();
         $tot_like = $photo['photo']->get_NLikes();
-        return $photo_details = ["title" => $title, "description" => $description, "is_reserved" => $is_reserved,
-            "Upload_Date" => $Upload_Date, "tot_like"=> $tot_like];
+        return $photo_details = ["title"       => $title, "description" => $description, "is_reserved" => $is_reserved,
+            "Upload_Date" => $Upload_Date, "tot_like"    => $tot_like];
     }
 
 

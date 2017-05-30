@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-24 15:55:28
+/* Smarty version 3.1.30, created on 2017-05-30 15:13:09
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592590d01a4973_63507329',
+  'unifunc' => 'content_592d6fe5c40607_68656339',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd06c047dc6fad9b9ae28bc50cd81017820a972a3' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl',
-      1 => 1495634127,
+      1 => 1496149989,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592590d01a4973_63507329 (Smarty_Internal_Template $_smarty_tpl) {
+function content_592d6fe5c40607_68656339 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <!-- può essere fatto un solo template sfruttando foto altri user -->
@@ -28,12 +28,12 @@ function content_592590d01a4973_63507329 (Smarty_Internal_Template $_smarty_tpl)
     <div class="row">
     <div class="col-md-6">
                     <p><h3 class="text-success">Titolo:</h3><br /></p>
-                    <p><label for="Title"><?php echo $_smarty_tpl->tpl_vars['photo']->value['title'];?>
+                    <p><label for="Title"><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['title'];?>
 </p> </br>
-                    <!-- vedere la grandezza della foto -->
+                    <!-- vedere la grandezza della foto e come far vedere na foto-->
                     <p><img src="<?php echo $_smarty_tpl->tpl_vars['photo']->value['fullsize'];?>
 " width="300px" height="300px"></p>
-                    <p><h3 class="text-success">Like:</h3><?php echo $_smarty_tpl->tpl_vars['photo']->value['total_like'];?>
+                    <p><h3 class="text-success">Like:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['total_like'];?>
 <br /></p>
                     <!-- serve per attivare i like -->
                     <?php if ($_smarty_tpl->tpl_vars['attiva']->value == "TRUE") {?>
@@ -50,7 +50,8 @@ function content_592590d01a4973_63507329 (Smarty_Internal_Template $_smarty_tpl)
                         </form>
                     <?php }?>
                     <!-- per attivare i tasti modifica e elimina foto -->
-                    <?php if ($_smarty_tpl->tpl_vars['photo']->value['username'] == $_smarty_tpl->tpl_vars['user_datails']->value['username']) {?>
+                    <?php if ($_smarty_tpl->tpl_vars['photo_details']->value['username'] == $_smarty_tpl->tpl_vars['username']->value) {?>
+                     <!-- l'uploader della foto dove si trova -->
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Modifica Foto</button>
@@ -65,9 +66,9 @@ function content_592590d01a4973_63507329 (Smarty_Internal_Template $_smarty_tpl)
                     
     </div>
     <div class="col-md-6">
-                    <p><h3 class="text-success">Descrizione:</h3><br /><?php echo $_smarty_tpl->tpl_vars['photo']->value['description'];?>
+                    <p><h3 class="text-success">Descrizione:</h3><br /><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['description'];?>
 </p>
-                    <p><h3 class="text-success">Riservata:</h3><br /><?php echo $_smarty_tpl->tpl_vars['photo']->value['is_reserved'];?>
+                    <p><h3 class="text-success">Riservata:</h3><br /><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['is_reserved'];?>
 </p>   
                     <p><h3 class="text-success">Categoria:</h3><br />
                         <?php
@@ -84,10 +85,8 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
                     </p>
-                    <p><h3 class="text-success">Data di pubblicazione:</h3><?php echo $_smarty_tpl->tpl_vars['photo']->value['upload_date'];?>
+                    <p><h3 class="text-success">Data di pubblicazione:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['upload_date'];?>
 <br /></p>
-                    <!--<p><h3 class="text-success">Album di appartenenza:</h3><?php echo $_smarty_tpl->tpl_vars['photo']->value['name_album'];?>
-<br /></p> -->
     </div>
     </div>
 
@@ -120,7 +119,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
 </p>
                 <p><?php echo $_smarty_tpl->tpl_vars['valore']->value['text'];?>
 </p>
-                <?php if ($_smarty_tpl->tpl_vars['valore']->value['username'] == $_smarty_tpl->tpl_vars['user_datails']->value['username']) {?>
+                <?php if ($_smarty_tpl->tpl_vars['valore']->value['username'] == $_smarty_tpl->tpl_vars['username']->value) {?>
                 <form method="POST" action="index.php">
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>
