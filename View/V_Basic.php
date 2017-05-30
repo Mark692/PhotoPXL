@@ -267,9 +267,10 @@ class V_Basic extends \Smarty
 
     public function album_details($album)
     {
-        $title = $album["album"]->get_Title();
-        $description = $album["album"]->get_Description();
-        $creation_date = $album["photo"]->get_Creation_Date();
+
+        $title = $album->get_Title();
+        $description = $album->get_Description();
+        $creation_date = $album->get_Creation_Date();
         return $album_details = ["title"=> $title, "description" => $description,"creation_date" => $creation_date];
     }
 
