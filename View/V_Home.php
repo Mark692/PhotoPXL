@@ -15,15 +15,13 @@ class V_Home extends V_Basic
     /**
      * Mostra il template della Home di default
      *
-     * $array_photo array An array with the IDs and Thumbnails of the most liked photos.
+     * @param type $username Description i dati dell'utente
+     * @param array $array_photo array An array with the IDs and Thumbnails of the most liked photos.
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => it's thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
-     * 
-     * @param type $username Description i dati dell'utente
-     * @param type $array_photo Description foto con + like
      */
     public static function standardHome($username, $array_photo)
     {
@@ -36,14 +34,12 @@ class V_Home extends V_Basic
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
-        //DEVI AGGIUNGERE L'ID AD OGNI FOTO
-        //DEVI AGGIUNGERE IL TYPE AD OGNI FOTO ALTRIMENTI NON SI VEDONO CORRETTAMENTE
     }
 
 
     /**
      * mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
-     * 
+     *
      * @param type $username Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
@@ -57,7 +53,9 @@ class V_Home extends V_Basic
         $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
-        $home->assign('array_photo',$home->thumbnail($array_photo));
+        $home->assign('array_photo',$home->thumbnail($array_photo)); //SISTEMA STA MERDA
+        //A CHE SERVE CHE FAI DUE VOLTE STA COSA???
+        //GUARDA 4 RIGHE PIù SOPRA E TROVI LA STESSA IDENTICA COSA
         $home->display('home_default.tpl');
     }
 
@@ -65,7 +63,7 @@ class V_Home extends V_Basic
     /**
      *
      * Mostra un banner per dire ad un utente che è stato bannato
-     * 
+     *
      * @param type $user_datails Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
@@ -78,15 +76,17 @@ class V_Home extends V_Basic
         $home->assign('categories', $categories);
         $home->set_Cont_menu_user($role='guest');
         $home->set_Contenuto_Home($tpl='home_guest');
-        $home->assign('array_photo',$home->thumbnail($array_photo));
+        $home->assign('array_photo',$home->thumbnail($array_photo)); //SISTEMA STA MERDA
+        //A CHE SERVE CHE FAI DUE VOLTE STA COSA???
+        //GUARDA 4 RIGHE PIù SOPRA E TROVI LA STESSA IDENTICA COSA
         $home->display('home_default.tpl');
     }
 
 
 //questa è da vedere perchè scritta anche in v_registration ed è uguale..
     /**
-     * visualizza una banner di errore 
-     * 
+     * visualizza una banner di errore
+     *
      * @param type $username Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
@@ -99,13 +99,15 @@ class V_Home extends V_Basic
         $home->assign('categories', $categories);
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
-        $home->assign('array_photo',$home->thumbnail($array_photo));
+        $home->assign('array_photo',$home->thumbnail($array_photo)); //SISTEMA STA MERDA
+        //A CHE SERVE CHE FAI DUE VOLTE STA COSA???
+        //GUARDA 4 RIGHE PIù SOPRA E TROVI LA STESSA IDENTICA COSA
         $home->display('home_default.tpl');
     }
 
     /*
-     * 
-     * 
+     *
+     *
      * @param type $user_datails Description i dati dell'utente
      * @param type $photos Description thumbanils restituite dalla ricerca
      */
@@ -124,26 +126,26 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per effettuare il login
      */
-    public static function login() 
+    public static function login()
     {
-        $home=new V_Home(); 
-        $home->set_Cont_menu_user($role = 'guest'); 
-        $home->set_Contenuto_Home($tpl = 'login'); 
+        $home=new V_Home();
+        $home->set_Cont_menu_user($role = 'guest');
+        $home->set_Contenuto_Home($tpl = 'login');
         $home->display('home_default.tpl');
     }
-    
+
     /**
      *
      * Mostra il tamplete per effettuare il login
      */
-    public static function registration() 
+    public static function registration()
     {
-        $home=new V_Home(); 
-        $home->set_Cont_menu_user($role = 'guest'); 
-        $home->set_Contenuto_Home($tpl = 'registration'); 
+        $home=new V_Home();
+        $home->set_Cont_menu_user($role = 'guest');
+        $home->set_Contenuto_Home($tpl = 'registration');
         $home->display('home_default.tpl');
     }
-    
+
     //METODI BASE - NON STATICI!!!\\
 
 
