@@ -12,15 +12,12 @@ use Entity\E_Photo;
 
 class showimage
 {
-    public function showimage()
+    public function showimage($id,$username)
     {
-        $id = $_SESSION['id'];
-        $username = $_SESSION['username'];
         $role= E_User::get_DB_Role($username);
-        $foto = E_Photo::get_By_ID($id, $username, $role);
-        $img = $foto['fullsize'];
-        $type = $foto['type'];
-        header("Content-type:image/".$type);
-        echo $img;
+        $thumb = E_Photo::get_By_ID($id, $username, $role);
+        $mime = image_type_to_mime_type($thumb["type"]);
+        $pic = $thumb["fullsize"];
+        echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
     }
 }

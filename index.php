@@ -22,9 +22,12 @@ $username= "cazzo";
 $role= \Utilities\Roles::ADMIN;
 //var_dump($foto);
 $id='1';
-$photo= \Entity\E_Photo::get_By_ID($id, $username, $role);
-$avvia=new View\V_Foto();
-$avvia->showPhotoPage($photo, $username);
+$E_album= \Entity\E_Album::get_By_ID($id);
+$e=new \View\showimage();
+$e->showimage($id,$username);
+//$avvia=new View\V_Album();
+//$avvia->album($E_album, $array_photos, $username);
+
 /*$avvia=new \View\V_Basic();
 $id="1";
 $avvia->assign('username',$username);

@@ -233,6 +233,12 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * Divides the thumbnails into chunks to enable a multi-row view
+     *
+     * @param array $array_photo An array with thumbnails to display
+     * @return array
+     */
     public function thumbnail($array_photo)
     {
         $array_foto = [];
@@ -240,8 +246,7 @@ class V_Basic extends \Smarty
         {
             array_push($array_foto, $value);
         }
-        $array_foto = array_chunk($array_foto, PHOTOS_PER_ROW);
-        return $array_foto;
+        return array_chunk($array_photo, PHOTOS_PER_ROW);
     }
 
 
@@ -250,10 +255,11 @@ class V_Basic extends \Smarty
         $title = $photo["photo"]->get_Title();
         $description = $photo["photo"]->get_Description();
         $is_reserved = $photo['photo']->get_Reserved();
+        $categories = $this->imposta_categoria($photo["photo"]->get_Categories());
         $Upload_Date = $photo["photo"]->get_Upload_Date();
         $tot_like = $photo['photo']->get_NLikes();
-        return $photo_details = ["title" => $title, "description" => $description, "is_reserved" => $is_reserved,
-            "Upload_Date" => $Upload_Date, "tot_like"=> $tot_like];
+        return $photo_details = ["title"       => $title, "description" => $description, "is_reserved" => $is_reserved,
+            "Upload_Date" => $Upload_Date, "tot_like"    => $tot_like];
     }
 
 
@@ -261,8 +267,9 @@ class V_Basic extends \Smarty
     {
         $title = $album["album"]->get_Title();
         $description = $album["album"]->get_Description();
-        $creation_date = $album["photo"]->get_Creation_Date();
-        return $album_details = ["title"=> $title, "description" => $description,"creation_date" => $creation_date];
+        $categories = $this->imposta_categoria($album["album"]->get_Categories());
+        $creation_date = $album["album"]->get_Creation_Date();
+        return $album_details = ["title" => $title, "description" => $description,"categories" =>$categories, "creation_date" => $creation_date];
     }
 
 

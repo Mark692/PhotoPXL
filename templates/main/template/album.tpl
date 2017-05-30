@@ -21,6 +21,7 @@
                               {foreach from=$album_details.categories item=cat}
                                   <label>{$cat}</label>
                               {/foreach}
+                     {if $album_details.username eq $username}
                     <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Modifica Album</button>
@@ -35,7 +36,8 @@
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Aggiungi Foto</button>
                         </div>
-                    </form>	
+                    </form>
+                    {/if}
     </div>
     </div>
 </div>
