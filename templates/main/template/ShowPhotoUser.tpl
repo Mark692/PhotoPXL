@@ -47,7 +47,6 @@
                         {/foreach}
                     </p>
                     <p><h3 class="text-success">Data di pubblicazione:</h3>{$photo_details.upload_date}<br /></p>
-                    <!--<p><h3 class="text-success">Album di appartenenza:</h3>{$photo_details.name_album}<br /></p> -->
     </div>
     </div>
 
@@ -74,7 +73,7 @@
             <div class="well">
                 <p class="text-success">{$valore.username}</p>
                 <p>{$valore.text}</p>
-                {if $valore.username eq $user_datails.username}
+                {if $valore.username eq $username}
                 <form method="POST" action="index.php">
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>

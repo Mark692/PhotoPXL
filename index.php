@@ -21,14 +21,10 @@ require_once $path."U_Nonce.php";
 $username= "cazzo";
 $role= \Utilities\Roles::ADMIN;
 //var_dump($foto);
-
-$v=new Utilities\U_Session();
-$v->set_Val('username','cazzo');
-$v->set_Val('role', '1');
-$v->set_Val('id', '1');
-//var_dump($_SESSION);
-$c=new View\showimage();
-$c->showimage();
+$id='1';
+$photo= \Entity\E_Photo::get_By_ID($id, $username, $role);
+$avvia=new View\V_Foto();
+$avvia->showPhotoPage($photo, $username);
 /*$avvia=new \View\V_Basic();
 $id="1";
 $avvia->assign('username',$username);
