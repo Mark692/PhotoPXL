@@ -41,6 +41,7 @@ class F_Photo extends F_Database
         );
 
         $photo_ID = parent::insert_Query($insertInto, $set);
+
         $photo->set_ID($photo_ID);
 
         //Finally inserts categories

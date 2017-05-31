@@ -95,6 +95,41 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 
 //*
 //------------------------------PROVE------------------------------//
+$p=new P\photo();
+$p->GET_MOSTLIKED();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //NOTA: QUESTA FUNZIONE CERCHERA' DI POPOLARE IL DATABASE "my_photopxl"
 //USALA PER POTER AVERE TUTTO ENTITY E FOUNDATION FUNZIONANTI.
@@ -111,6 +146,3 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
- *
- */
-?>

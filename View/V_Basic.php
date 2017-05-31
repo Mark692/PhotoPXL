@@ -280,6 +280,7 @@ class V_Basic extends \Smarty
     }
 
 
+
     public function showimage($photo)
     {
         $mime = image_type_to_mime_type($photo["type"]);
@@ -305,3 +306,6 @@ class V_Basic extends \Smarty
 
 
 }
+
+
+

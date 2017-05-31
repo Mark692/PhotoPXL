@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace View; 
+namespace View;
 use Entity\E_User;
 use Entity\E_Photo;
 
@@ -15,9 +15,11 @@ class showimage
     public function showimage($id,$username)
     {
         $role= E_User::get_DB_Role($username);
+
         $thumb = E_Photo::get_By_ID($id, $username, $role);
         $mime = image_type_to_mime_type($thumb["type"]);
         $pic = $thumb["fullsize"];
+
         echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
     }
 }

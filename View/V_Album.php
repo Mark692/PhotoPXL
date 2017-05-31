@@ -22,14 +22,17 @@ class V_Album extends V_Home
      *               - "tot_photo" => the number of photos
      * @param string $username The user who's trying to view the album
      */
-    public static function album($E_album, $array_photos, $username) 
+    public static function album($E_album, $array_photos, $username)
     {
         $home = new V_Home();
         $home->assign('username', $username);
+
         $album_details = $home->album_details($E_album);
         $home->assign('album_details', $album_details);
+
         $thumbnail = $home->thumbnail($array_photos);
         $home->assign('thumbnail', $thumbnail);
+
         $role = \Entity\E_User::get_DB_Role($username);
         $home->set_Cont_menu_user($home->imposta_ruolo($role));
         $home->set_Contenuto_Home($tpl = 'Album');

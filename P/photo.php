@@ -45,8 +45,8 @@ class photo extends prova
         $bob = new E_Photo_Blob();
         $bob->on_Upload($source_Path);
 
-        $id = F_Photo::insert($this->photo, $bob, $uploader);
-        echo("Inserita la foto: $i con ID = $id");
+       F_Photo::insert($this->photo, $bob, $uploader);
+        echo("Inserita la foto: $i");
         echo(nl2br("\r\n"));
         echo("Fatto. Controlla nelle tabelle 'photo', 'cat_photo'");
     }
