@@ -16,33 +16,27 @@ class V_Foto extends V_Home
      * i dati dell'utente e il percorso della foto
      * 
      * @param type $photo Description la foto con fullsize type e id
-     * @param type $user_datails Description i dati dell'utente 
-     * @param type $photo_datails Description i dati dell'utente
-     * @param type $comments Description i commenti relativi alla foto
+     * @param type $username 
      * 
      */
     public static function showPhotoPage($photo, $username)
     {
         $home = new \View\V_Home();
         //i dettagli di photo come titolo etc è un oggetto
-        $home->assign('categories', $home->imposta_categoria($photo['photo']->get_Categories()));
         $home->assign('username', $username);
-        $role= \Entity\E_User::get_DB_Role($username);
-        $photo_details=$home->photo_details($photo);
-        $home->assign('photo_details',$photo_details);
-        $home->assign('id', $photo['id']);
-        $home->assign('fullsize',$photo['fullsize']);
-        $home->assign('type',$photo['type']);
-        $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo['id']));
+        $photo_details = $home->photo_details($photo);
+        $home->assign('photo_details', $photo_details);
+        $home->showimage($photo);
+        $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo_details['id']));
         $likelist = $photo["photo"]->get_LikesList();
         foreach($likelist as $user)
         {
-            if($user['username'] === $username)
+            if($user['username'] !== $username)
             {
-                $home->assign('attiva', $attiva = 'TRUE');
+                $home->assign('assegna', 'TRUE');
             }
         }
-        $home->set_Cont_menu_user($home->imposta_ruolo($role));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'ShowPhotoUser');
         $home->display('home_default.tpl');
     }
@@ -50,26 +44,43 @@ class V_Foto extends V_Home
 
     /**
      * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
-     * @param type $array_user
-     * @param type $photo
+     * @param type $username
      */
-    public static function showUploadPhoto()
+    public static function showUploadPhoto($username)
     {
-        $v = new \View\V_Basic();
         $home = new \View\V_Home();
-        $username = $_SESSION('username');
-        $role = $v->imposta_ruolo($_SESSION('role'));
-        $array_categories = $home->imposta_categoria();
-        $v->assign('username', $username);
-        $v->assign('array_categories', $array_categories);
-        if($_SESSION('role') == \Utilities\Roles::STANDARD)
+        if(\Entity\E_User::get_DB_Role($username) === \Utilities\Roles::STANDARD)
         {
-            $home->home_default($role, $tpl = 'upload_standard');
+            $tpl = 'upload_standard';
         }
         else
         {
-            $this->home_default($role, $tpl = 'upload');
+            $tpl = 'upload';
         }
+        $home->assign('username', $username);
+        $home->assign('array_categories', $home->imposta_categoria());
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+        $home->set_Contenuto_Home($tpl);
+        $home->display('home_default.tpl');
+    }
+
+    /**
+     * mostra una vista per la modifica dei dati di una foto
+     * @param type $photo Description la foto con fullsize type e id
+     * @param type $username  
+     */
+    public static function showEditPhoto($photo, $username)
+    {
+        $home = new \View\V_Home();
+        $home->assign('username', $username);
+        $photo_details = $home->photo_details($photo);
+        $home->assign('photo_details',$photo_details);
+        $home->showimage($photo);
+        $home->assign('array_categories', $home->imposta_categoria());
+        $home->assign('role',\Entity\E_User::get_DB_Role($username));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+        $home->set_Contenuto_Home($tpl = 'EditPhoto');
+        $home->display('home_default.tpl');
     }
 
 
@@ -104,15 +115,4 @@ class V_Foto extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati di una foto
      */
-    public function showEditPhoto($array_user, $photo)
-    {
-
-        $this->assign('user_details', $array_user);
-        $this->assign('photo_deteils', $photo);
-        $role = $this->imposta_ruolo($array_user['role']);
-        $this->assign('role', $role);
-        $this->home($role, $tpl = 'EditPhoto');
-    }
-
-
 }

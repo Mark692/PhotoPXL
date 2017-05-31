@@ -6,24 +6,24 @@
                     <p><h3 class="text-success">Titolo:</h3><br /></p>
                     <p><label for="Title">{$photo_details.title}</p> </br>
                     <!-- vedere la grandezza della foto e come far vedere na foto-->
-                    <p><img src="{$photo.fullsize}" width="300px" height="300px"></p>
-                    <p><h3 class="text-success">Like:</h3>{$photo_details.total_like}<br /></p>
-                    <!-- serve per attivare i like -->
-                    {if $attiva eq "TRUE"}
-                        <form method="post" action="index.php">  
-                        <div class="form-group">
-                               <button type="submit" class="btn btn-success">Mi Piace</button>
-                        </div>
-                        </form>
-                    {else}
+                    {$foto}
+                    <p><h3 class="text-success">Like:</h3>{$photo_details.total_like|default:"0"}<br /></p>
+                    <!-- serve per attivare i like devo vede perchè nn va-->
+                    {if $attiva|default:"FALSE" eq 'TRUE'}
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Non Mi Piace</button>
                         </div>
                         </form>
+                    {else}
+                        <form method="post" action="index.php">  
+                        <div class="form-group">
+                               <button type="submit" class="btn btn-success">Mi Piace</button>
+                        </div>
+                        </form>
                     {/if}
                     <!-- per attivare i tasti modifica e elimina foto -->
-                    {if $photo_details.username eq $username}
+                    {if $photo_details.uploader eq $username}
                      <!-- l'uploader della foto dove si trova -->
                         <form method="post" action="index.php">  
                         <div class="form-group">
@@ -46,7 +46,7 @@
                                 <option value="$categoria" checked>{$categoria}</option>
                         {/foreach}
                     </p>
-                    <p><h3 class="text-success">Data di pubblicazione:</h3>{$photo_details.upload_date}<br /></p>
+                    <p><h3 class="text-success">Data di pubblicazione:</h3>{$photo_details.Upload_Date}<br /></p>
     </div>
     </div>
 

@@ -29,7 +29,7 @@ class V_Home extends V_Basic
     {
         //da vedere come sistemare le foto per mettere l'id e il type
         $home = new V_Home();
-        $home->assign('user_datails', $username);
+        $home->assign('username', $username);
         $home->assign('array_photo', $home->thumbnail($array_photo));
         $categories = $home->imposta_categoria();
         $home->assign('categories', $categories);
@@ -104,7 +104,7 @@ class V_Home extends V_Basic
     }
 
     /*
-     * 
+     * restituisce una vista con le foto della ricerca
      * 
      * @param type $user_datails Description i dati dell'utente
      * @param type $photos Description thumbanils restituite dalla ricerca
@@ -126,7 +126,9 @@ class V_Home extends V_Basic
      */
     public static function login() 
     {
-        $home=new V_Home(); 
+        $home=new V_Home();
+        //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
+        $home->assign('foto',"templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest'); 
         $home->set_Contenuto_Home($tpl = 'login'); 
         $home->display('home_default.tpl');
@@ -139,6 +141,8 @@ class V_Home extends V_Basic
     public static function registration() 
     {
         $home=new V_Home(); 
+        //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
+        $home->assign('foto',"templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest'); 
         $home->set_Contenuto_Home($tpl = 'registration'); 
         $home->display('home_default.tpl');

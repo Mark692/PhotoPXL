@@ -22,13 +22,13 @@ class V_Profilo extends V_Home
      * @param type $user_datails Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function home($user_datails, $album_thumbnail)
+    public static function home($username, $album_thumbnail)
     {
         $home = new \View\V_Home();
         //mettere in ordine le thumbanil degli album da passare a smarty
         $home->assign('array_album', $album_thumbnail);
         $home->assign('user_details', $user_datails);
-        $home->assign('array_photo', $home->thumbnail($album_thumbnail));
+        $thumbnail = $home->thumbnail($album_thumbnail);
         $home->set_Cont_menu_user($home->imposta_ruolo($user_datails['role']));
         $home->set_Contenuto_Home($tpl = 'ShowProfile');
         $home->display('home_default.tpl');
@@ -41,16 +41,16 @@ class V_Profilo extends V_Home
      * @param type $user_datails Description i dati dell'utente
      * @param type $array_photo Description foto con + like
      */
-    public static function banner($user_datails, $array_photo)
+    public static function banner($username, $array_photos)
     {
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_ok.tpl');
-        $home->assign('username', $user_datails['username']);
-        $home->assign('array_photo', $array_photo);
-        $role = $home->imposta_ruolo($user_datails['role']);
+        $home->assign('username', $username);
+        $thumbnail = $home->thumbnail($array_photos);
+        $home->assign('thumbnail', $thumbnail);//{$thumbnail} nel tempalte
+        $role = $home->imposta_ruolo(\Entity\E_User::get_DB_Role($username));
         $home->set_Cont_menu_user($role);
-        $home->set_Contenuto_Home($home->set_home($user_datails['username']));
-        $home->assign('array_photo', $home->thumbnail($array_photo));
+        $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
     }
 

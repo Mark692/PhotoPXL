@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-30 15:13:09
+/* Smarty version 3.1.30, created on 2017-05-31 11:07:38
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592d6fe5c40607_68656339',
+  'unifunc' => 'content_592e87da46f826_04462231',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd06c047dc6fad9b9ae28bc50cd81017820a972a3' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl',
-      1 => 1496149989,
+      1 => 1496221658,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592d6fe5c40607_68656339 (Smarty_Internal_Template $_smarty_tpl) {
+function content_592e87da46f826_04462231 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <!-- può essere fatto un solo template sfruttando foto altri user -->
@@ -31,26 +31,26 @@ function content_592d6fe5c40607_68656339 (Smarty_Internal_Template $_smarty_tpl)
                     <p><label for="Title"><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['title'];?>
 </p> </br>
                     <!-- vedere la grandezza della foto e come far vedere na foto-->
-                    <p><img src="<?php echo $_smarty_tpl->tpl_vars['photo']->value['fullsize'];?>
-" width="300px" height="300px"></p>
-                    <p><h3 class="text-success">Like:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['total_like'];?>
+                    <?php echo $_smarty_tpl->tpl_vars['foto']->value;?>
+
+                    <p><h3 class="text-success">Like:</h3><?php echo (($tmp = @$_smarty_tpl->tpl_vars['photo_details']->value['total_like'])===null||$tmp==='' ? "0" : $tmp);?>
 <br /></p>
-                    <!-- serve per attivare i like -->
-                    <?php if ($_smarty_tpl->tpl_vars['attiva']->value == "TRUE") {?>
-                        <form method="post" action="index.php">  
-                        <div class="form-group">
-                               <button type="submit" class="btn btn-success">Mi Piace</button>
-                        </div>
-                        </form>
-                    <?php } else { ?>
+                    <!-- serve per attivare i like devo vede perchè nn va-->
+                    <?php if ((($tmp = @$_smarty_tpl->tpl_vars['attiva']->value)===null||$tmp==='' ? "FALSE" : $tmp) == 'TRUE') {?>
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Non Mi Piace</button>
                         </div>
                         </form>
+                    <?php } else { ?>
+                        <form method="post" action="index.php">  
+                        <div class="form-group">
+                               <button type="submit" class="btn btn-success">Mi Piace</button>
+                        </div>
+                        </form>
                     <?php }?>
                     <!-- per attivare i tasti modifica e elimina foto -->
-                    <?php if ($_smarty_tpl->tpl_vars['photo_details']->value['username'] == $_smarty_tpl->tpl_vars['username']->value) {?>
+                    <?php if ($_smarty_tpl->tpl_vars['photo_details']->value['uploader'] == $_smarty_tpl->tpl_vars['username']->value) {?>
                      <!-- l'uploader della foto dove si trova -->
                         <form method="post" action="index.php">  
                         <div class="form-group">
@@ -85,7 +85,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
                     </p>
-                    <p><h3 class="text-success">Data di pubblicazione:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['upload_date'];?>
+                    <p><h3 class="text-success">Data di pubblicazione:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['Upload_Date'];?>
 <br /></p>
     </div>
     </div>

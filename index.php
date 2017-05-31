@@ -18,14 +18,40 @@ require_once $path."U_Nonce.php";
 
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
-$username= "cazzo";
-$role= \Utilities\Roles::ADMIN;
-//var_dump($foto);
+/**$t= new P\photo();
+for($i=1;$i<18;$i++)
+{
+    $t->INSERT($i);
+}
+ * 
+ */
+//devo vede se  funziona quella delle thumbnail e cambiarla a tutte le parti do serve
+//vedere le select multiple
+//aggiustare il pulsante salva in modifica foto
+
+$username= "Fede";
+$role= \Entity\E_User::get_DB_Role($username);
+$home = new \View\V_Home();
 $id='1';
-$E_album= \Entity\E_Album::get_By_ID($id);
-$e=new \View\showimage();
-$e->showimage($id,$username);
-//$avvia=new View\V_Album();
+$photo= \Entity\E_Photo::get_By_ID($id, $username, $role);
+$home->login();
+/**
+$home->assign('username', $username);
+$categories = $home->imposta_categoria();
+$home->assign('array_categories', $categories);
+$home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
+$home->set_Contenuto_Home($tpl='upload');
+$home->display('home_default.tpl');
+//var_dump($foto);
+//$id='1';
+//$photo=\Entity\E_Photo::get_By_ID($id, $username, $role);
+//$foto= \Entity\E_Photo::get_MostLiked($username, $role);
+//var_dump($foto);
+
+//$avvia=new \View\V_Foto();
+//$photo=\Entity\E_Photo::get_By_ID($id, $username, $role);
+//$avvia->showPhotoPage($photo, $username);
+
 //$avvia->album($E_album, $array_photos, $username);
 
 /*$avvia=new \View\V_Basic();

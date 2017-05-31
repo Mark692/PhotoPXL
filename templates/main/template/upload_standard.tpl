@@ -1,38 +1,40 @@
-<form method="post" action="index.php">
-    <table class="tabella" align="center" border="3" cellpadding="5" cellspacing="0">
-    
-        <tr class="contenuto">
-            <td class="foto1" width="900px" align="center">
-                <h3 class="title">Inserisci foto:</h3><br />
-                <div class="foto1">
-                    <p><input type="file" name="foto" id="foto_profilo" class="field" value=""></p>
-                </div>
-            </td>
-            <td class="colonna login" width="900px" align="center">
-                <h3 class="title">Dati foto </h3>
-                <div class="modulo">
-                <p><label for="Title" class="top">Titolo:</label><br />
-                   <input type="text" name="title" id="title" class="field" value=""/></p>
-                <p><label for="Description" class="top">Descrizione:</label><br />
-                    <textarea type="text" name="Description" cols="20" rows="5">inserisci...</textarea></p>
-                <p><label for="Categories" class="top">Categoria</label><br />
-                   <select name="Categories" multiple>
-                            {foreach from=$array_categories item=categories}
-                                <option value="$categories" checked>{$categories}</option>
-                            {/foreach}
-                   </select> 
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="tasto">
-                    <p><input type="hidden" name="controller" value="upload" />
-                    <input type="hidden" name="task" value="salva" />
-                    <input type="submit" name="salva" class="button" value="Salva"  /></p>
-                </div>
-            </td> 
-        </tr>            
+<div class="container">
+    <form method="post" action="index.php">
+        <div class="row">
+        <div class="col-md-6">
+                    
+                    <h3 class="text-success">Inserisci foto 1:</h3><br />
+                        <div class="form-group">
+                            <input name="photo" class="form-control" id="focusedInput" type="file" >
+                        </div>
+                    <h3 class="text-success">Titolo:</h3><br />
+                    <div class="form-group">
+                            <input name="title" class="form-control" id="focusedInput" type="text" placeholder="inserisci titolo..." >
+                    </div>
+        </div>
+        <div class="col-md-6">
+                    <h3 class="text-success">Descrizione</h3><br />
+                    <div class="form-group">
+                            <div class="col-lg-12">
+                                <textarea name="description" class="form-control" rows="3" id="textArea" placeholder="inserisci descrizione..."></textarea>
+                                <span class="help-block"></span>
+                            </div>
+                    </div>
+                    <h3 class="text-success">Categoria</h3><br />
+                    <div class="form-group">
+                    <div class="col-lg-12">
+                            <select name="categories" multiple="" class="form-control">
+                                    {foreach from=$array_categories item=categories}
+                                        {if $categories eq $photo_deteils.categories}
+                                                <option value="$categories" selected="selected">{$categories}</option>
+                                        {else}  <option value="$categories">{$categories}</option>
+                                        {/if}
+                                    {/foreach}
+                            </select>
+                    </div>
+                    </div>
+        </div>
+        </div>
+    </form>
+</div>
 
-    </table>
-</form>
