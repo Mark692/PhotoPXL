@@ -19,11 +19,9 @@ require_once $path."U_Nonce.php";
 
 //*
 //------------------------------PROVE------------------------------//
-$p=new P\photo();
-$p->GET_MOSTLIKED();
 
-
-
+$t= new P\photo();
+var_dump($t);
 
 
 
