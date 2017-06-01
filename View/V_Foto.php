@@ -25,12 +25,15 @@ class V_Foto extends V_Home
         //i dettagli di photo come titolo etc è un oggetto
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
+        $cat = $home->imposta_categoria($photo_details['categories']);
+        $home->assign('categories', $cat);
         $home->assign('photo_details', $photo_details);
         $home->showimage($photo);
         $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo_details['id']));
         $likelist = $photo["photo"]->get_LikesList();
         foreach($likelist as $user)
         {
+            //mi da errore dicendo che username non è definita
             if($user['username'] !== $username)
             {
                 $home->assign('assegna', 'TRUE');
@@ -58,7 +61,7 @@ class V_Foto extends V_Home
             $tpl = 'upload';
         }
         $home->assign('username', $username);
-        $home->assign('array_categories', $home->imposta_categoria());
+        $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl);
         $home->display('home_default.tpl');
@@ -76,7 +79,7 @@ class V_Foto extends V_Home
         $photo_details = $home->photo_details($photo);
         $home->assign('photo_details',$photo_details);
         $home->showimage($photo);
-        $home->assign('array_categories', $home->imposta_categoria());
+        $home->assign('categories', $home->imposta_categoria());
         $home->assign('role',\Entity\E_User::get_DB_Role($username));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'EditPhoto');
@@ -85,34 +88,5 @@ class V_Foto extends V_Home
 
 
     //METODI BASE - NON STATICI!!!\\
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
-     * @return array
-     *
-      public function get_Dati()
-      {
-      $keys = array ('title', 'description', 'is_reserved', 'categories', 'album_id');
-      return parent::get_Dati($keys);
-      }
 
-
-      /**
-     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
-     * superglobale $_REQUEST
-     *
-      public function getID()
-      {
-      if(isset($_REQUEST['id']))
-      {
-      return $_REQUEST['id'];
-      }
-      }
-     *
-     * 
-     */
-    /**
-     * mostra il modulo tpl per la modifica dei dati di una foto
-     */
 }

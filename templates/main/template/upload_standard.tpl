@@ -22,16 +22,14 @@
                     </div>
                     <h3 class="text-success">Categoria</h3><br />
                     <div class="form-group">
-                    <div class="col-lg-12">
+                        <div class="col-lg-10">
+                            <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
-                                    {foreach from=$array_categories item=categories}
-                                        {if $categories eq $photo_deteils.categories}
-                                                <option value="$categories" selected="selected">{$categories}</option>
-                                        {else}  <option value="$categories">{$categories}</option>
-                                        {/if}
-                                    {/foreach}
+                                {foreach from=$categories item=cat}
+                                       <option value={$cat.riferimento}>{$cat.visualizzato}</option>
+                                {/foreach}
                             </select>
-                    </div>
+                        </div>
                     </div>
         </div>
         </div>

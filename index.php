@@ -16,6 +16,52 @@ require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
+//$role= \Entity\E_User::get_DB_Role($username);
+$id="1";
+//Entity\E_User::add_Like_to($id, $username);
+//$thumb= \Entity\E_Photo::get_MostLiked($username, $role);
+//var_dump($thumb);
+$username= "Marco";
+$role= \Entity\E_User::get_DB_Role($username);
+$user_details= \Entity\E_User::get_UserDetails($user='Fede');
+$E_album= \Entity\E_Album::get_By_ID($id);
+
+$array_photo= \Entity\E_Photo::get_By_Album($id, $username, $role);
+\View\V_Album::album($E_album, $array_photo, $username);
+
+
+/**
+$val=$home->imposta_categoria($cats);
+var_dump($val);
+$array_photo= \Entity\E_Photo::get_By_Categories($cats, $username, $role);
+$home->assign('categoria',$val);
+$home->display('prova.tpl');
+//$home->showPhotoCollection($array_photo, $username,$cats);
+/**
+$username= "Fede";
+$prova = new \P\prova();
+        $title = $prova->rnd_str();
+        $desc = $prova->rnd_str();
+        $is_reserved = rand(0, 1);
+        $cat = [];
+        for($i = 0; $i < 6; $i++)
+        {
+            array_push($cat, rand(1, 8));
+        }
+        $cat = array_unique($cat);
+        $up_Date = rand(1111, 6666);
+        $f = new \Entity\E_Photo($title, $desc, $is_reserved, $cat, $up_Date);
+$bob = new \Entity\E_Photo_Blob();
+$percorso_foto="/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/img/noimagefound.jpg";
+$bob->on_Upload($percorso_foto);
+var_dump($bob);
+$username= "m86N4zW2ca";
+$id="10";
+$photos= \Entity\E_User::add_Like_to($id, $username);
+ * \Entity\E_Photo::insert($f, $bob, $username)
+ * 
+ */
+
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
 /**$t= new P\photo();
@@ -29,66 +75,15 @@ for($i=1;$i<18;$i++)
 //vedere le select multiple
 //aggiustare il pulsante salva in modifica foto
 
-$username= "Fede";
-$role= \Entity\E_User::get_DB_Role($username);
-$home = new \View\V_Home();
-$id='1';
-$photo= \Entity\E_Photo::get_By_ID($id, $username, $role);
-$home->login();
-/**
-$home->assign('username', $username);
-$categories = $home->imposta_categoria();
-$home->assign('array_categories', $categories);
-$home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-$home->set_Contenuto_Home($tpl='upload');
-$home->display('home_default.tpl');
-//var_dump($foto);
-//$id='1';
-//$photo=\Entity\E_Photo::get_By_ID($id, $username, $role);
-//$foto= \Entity\E_Photo::get_MostLiked($username, $role);
-//var_dump($foto);
 
-//$avvia=new \View\V_Foto();
-//$photo=\Entity\E_Photo::get_By_ID($id, $username, $role);
-//$avvia->showPhotoPage($photo, $username);
 
-//$avvia->album($E_album, $array_photos, $username);
 
-/*$avvia=new \View\V_Basic();
-$id="1";
-$avvia->assign('username',$username);
-$avvia->assign('role',$role);
-$foto=\Entity\E_Photo::get_By_ID($id, $username, $role);
-//$v=new View\show_image();
-//$v->ShowImage($id=1, $username, $role);
-$avvia->assign('type',$foto['type']);
-$avvia->assign('fullsize',$foto['fullsize']);
-//$avvia->display('prova.tpl');
-//$avvia->login();
+
+
+
+
+
 /*
- * $role= \Utilities\Roles::ADMIN;
-$user_datails=["username" => "cazzofritto", "password" => "tuozio",
-"email"=>"cazzo@inculo.it","role"=>\Utilities\Roles::ADMIN];
-$array_foto = [];
-
-for($i=1; $i<=11; $i++)
-{
-    array_push($array_foto,"templates/main/template/img/img01.jpg");
-
-}
-
-$photo=["username"=>"cazzofritto","title"=>"porco crist","fullsize"=>"c/img/img01.jpg","categories"=>array("1"), "upload_date" => "01/03/05", "description" => "andatene a fanculo merde","is_reserved" =>"si"];
-$pic_profile="templates/main/template/img/img01.jpg";
-$comments=["1" => array("username"=>"cazz","text"=>"ciaooodiladfnlmfnaldnflnfa"),"2" => array("username"=>"ca333zz","text"=>"ciaooodiladfnlmfnaldnflnfa")];
-$cat=$avvia->imposta_categoria($photo['categories']);
-//echo($avvia->fetch_banner($tpl='banner_no_permessi'));
-$avvia->showPhotoPage($photo, $user_datails, $comments);
-
-// $avvia->showProfile($array_user, $immagine_profilo,$thumbnail);
-
-
-
-
 
 
 \Control\C_LoginRegistration::showHome();
@@ -97,40 +92,6 @@ $avvia->showPhotoPage($photo, $user_datails, $comments);
 //------------------------------PROVE------------------------------//
 $p=new P\photo();
 $p->GET_MOSTLIKED();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //NOTA: QUESTA FUNZIONE CERCHERA' DI POPOLARE IL DATABASE "my_photopxl"
 //USALA PER POTER AVERE TUTTO ENTITY E FOUNDATION FUNZIONANTI.
 //
@@ -146,3 +107,40 @@ $p->GET_MOSTLIKED();
 //echo(nl2br("\r\n"));
 //$test_it = new \Utilities\installer();
 //$test_it->try_Functions();
+
+ * 
+ */
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

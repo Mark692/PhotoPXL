@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-31 11:52:37
+/* Smarty version 3.1.30, created on 2017-06-01 17:10:55
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/upload.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592e9265e26211_29708084',
+  'unifunc' => 'content_59302e7f3b2b94_62580080',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '137d5694e12ae60ded728e89932a780015462d9e' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/upload.tpl',
-      1 => 1496224357,
+      1 => 1496329810,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592e9265e26211_29708084 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59302e7f3b2b94_62580080 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <h2 class="text-success">Carica fino a tre foto conteporanemante:</h2><br />
@@ -65,27 +65,25 @@ function content_592e9265e26211_29708084 (Smarty_Internal_Template $_smarty_tpl)
                     </div>
                     <h3 class="text-success">Categoria</h3><br />
                     <div class="form-group">
-                    <div class="col-lg-12">
+                        <div class="col-lg-10">
+                            <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
-                                    <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array_categories']->value, 'categories');
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['categories']->value) {
+foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                        <?php if ($_smarty_tpl->tpl_vars['categories']->value == $_smarty_tpl->tpl_vars['photo_deteils']->value['categories']) {?>
-                                                <option value="$categories" selected="selected"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
+                                       <option value=<?php echo $_smarty_tpl->tpl_vars['cat']->value['riferimento'];?>
+><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
 </option>
-                                        <?php } else { ?>  <option value="$categories"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
-</option>
-                                        <?php }?>
-                                    <?php
+                                <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
                             </select>
-                    </div>
+                        </div>
                     </div>
         </div>
         </div>
@@ -130,27 +128,25 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                     </div>
                     <h3 class="text-success">Categoria</h3><br />
                     <div class="form-group">
-                    <div class="col-lg-12">
+                        <div class="col-lg-10">
+                            <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
-                                    <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array_categories']->value, 'categories');
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['categories']->value) {
+foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                        <?php if ($_smarty_tpl->tpl_vars['categories']->value == $_smarty_tpl->tpl_vars['photo_deteils']->value['categories']) {?>
-                                                <option value="$categories" selected="selected"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
+                                       <option value=<?php echo $_smarty_tpl->tpl_vars['cat']->value['riferimento'];?>
+><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
 </option>
-                                        <?php } else { ?>  <option value="$categories"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
-</option>
-                                        <?php }?>
-                                    <?php
+                                <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
                             </select>
-                    </div>
+                        </div>
                     </div>
         </div>
         </div>
@@ -195,27 +191,25 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                     </div>
                     <h3 class="text-success">Categoria</h3><br />
                     <div class="form-group">
-                    <div class="col-lg-12">
+                        <div class="col-lg-10">
+                            <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
-                                    <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array_categories']->value, 'categories');
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['categories']->value) {
+foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                        <?php if ($_smarty_tpl->tpl_vars['categories']->value == $_smarty_tpl->tpl_vars['photo_deteils']->value['categories']) {?>
-                                                <option value="$categories" selected="selected"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
+                                       <option value=<?php echo $_smarty_tpl->tpl_vars['cat']->value['riferimento'];?>
+><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
 </option>
-                                        <?php } else { ?>  <option value="$categories"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
-</option>
-                                        <?php }?>
-                                    <?php
+                                <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
                             </select>
-                    </div>
+                        </div>
                     </div>
         </div>
         </div>

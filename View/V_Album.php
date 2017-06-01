@@ -14,7 +14,7 @@ class V_Album extends V_Home
     /**
      * Funzione per restituire la vista di un album
      * @param int $E_album The album object to rethrive the details from
-     * @param array $array_photos
+     * @param array $array_photo
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => its thumbnail
@@ -22,52 +22,27 @@ class V_Album extends V_Home
      *               - "tot_photo" => the number of photos
      * @param string $username The user who's trying to view the album
      */
-    public static function album($E_album, $array_photos, $username)
+    public static function album($E_album, $array_photo, $username)
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
+        //i dettagli di photo come titolo etc è un oggetto
         $home->assign('username', $username);
-
         $album_details = $home->album_details($E_album);
         $home->assign('album_details', $album_details);
-
-        $thumbnail = $home->thumbnail($array_photos);
-        $home->assign('thumbnail', $thumbnail);
-
-        $role = \Entity\E_User::get_DB_Role($username);
-        $home->set_Cont_menu_user($home->imposta_ruolo($role));
+        $user_album=$E_album['username'];
+        $home->assign('user_album',$user_album);
+        $cat = $home->imposta_categoria($album_details['categories']);
+        $home->assign('categories', $cat);
+        $home->assign('array_photo', $home->thumbnail($array_photo));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'Album');
         $home->display('home_default.tpl');
     }
 
 
     //METODI BASE - NON STATICI!!!\\
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
-     * @return array
-     */
-    public function get_Dati()
-    {
-        $keys = array ('title', 'description', 'categories');
-        return parent::get_Dati($keys);
-    }
-
-
-    /**
-     * Questa funzione, restituisce l'id della foto inviato all'interno del vettore
-     * superglobale $_REQUEST
-     */
-    public function get_ID_Album()
-    {
-        if(isset($_REQUEST['id_album']))
-        {
-            return $_REQUEST['id_album'];
-        }
-    }
-
-
-    /*
+  
+/*
      * restituisce il contento del tpl in base all'utente
      * nn lo so che fa questa
      */

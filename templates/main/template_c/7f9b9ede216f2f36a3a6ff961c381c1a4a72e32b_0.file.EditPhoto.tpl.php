@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-31 11:49:01
+/* Smarty version 3.1.30, created on 2017-06-01 17:08:10
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditPhoto.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592e918d715893_48299842',
+  'unifunc' => 'content_59302dda511b63_25956399',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7f9b9ede216f2f36a3a6ff961c381c1a4a72e32b' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditPhoto.tpl',
-      1 => 1496224141,
+      1 => 1496329690,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592e918d715893_48299842 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59302dda511b63_25956399 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <div class="row">
@@ -95,11 +95,12 @@ function content_592e918d715893_48299842 (Smarty_Internal_Template $_smarty_tpl)
                             <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
                                 <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['array_categories']->value, 'categories');
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['categories']->value) {
+foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                       <option value="$categories"><?php echo $_smarty_tpl->tpl_vars['categories']->value;?>
+                                       <option value=<?php echo $_smarty_tpl->tpl_vars['cat']->value['riferimento'];?>
+><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
 </option>
                                 <?php
 }

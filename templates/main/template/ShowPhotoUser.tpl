@@ -7,7 +7,7 @@
                     <p><label for="Title">{$photo_details.title}</p> </br>
                     <!-- vedere la grandezza della foto e come far vedere na foto-->
                     {$foto}
-                    <p><h3 class="text-success">Like:</h3>{$photo_details.total_like|default:"0"}<br /></p>
+                    <p><h3 class="text-success">Like:</h3>{$photo_details.tot_like|default:"0"}<br /></p>
                     <!-- serve per attivare i like devo vede perchè nn va-->
                     {if $attiva|default:"FALSE" eq 'TRUE'}
                         <form method="post" action="index.php">  
@@ -42,10 +42,9 @@
                     <p><h3 class="text-success">Descrizione:</h3><br />{$photo_details.description}</p>
                     <p><h3 class="text-success">Riservata:</h3><br />{$photo_details.is_reserved}</p>   
                     <p><h3 class="text-success">Categoria:</h3><br />
-                        {foreach from=$categories item=categoria}
-                                <option value="$categoria" checked>{$categoria}</option>
+                        {foreach from=$categories item=cat}
+                                {$cat.visualizzato}<br />
                         {/foreach}
-                    </p>
                     <p><h3 class="text-success">Data di pubblicazione:</h3>{$photo_details.Upload_Date}<br /></p>
     </div>
     </div>
@@ -71,13 +70,14 @@
         {foreach from=$comments item=valore}
         <div class="col-md-6 col-md-offset-3">
             <div class="well">
-                <p class="text-success">{$valore.username}</p>
+                <p class="text-success">{$valore.user}</p>
                 <p>{$valore.text}</p>
-                {if $valore.username eq $username}
+                {if $valore.user eq $username}
                 <form method="POST" action="index.php">
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>
                     </div>
+                <!-- va anche il tasto modifica -->
                 </form>
                 {/if}
             </div>

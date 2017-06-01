@@ -67,8 +67,8 @@
                         <div class="col-lg-10">
                             <!-- select multiple -->
                             <select name="categories" multiple="" class="form-control">
-                                {foreach from=$array_categories item=categories}
-                                       <option value="$categories">{$categories}</option>
+                                {foreach from=$categories item=cat}
+                                       <option value={$cat.riferimento}>{$cat.visualizzato}</option>
                                 {/foreach}
                             </select>
                         </div>

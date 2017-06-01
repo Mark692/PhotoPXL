@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-31 11:07:38
+/* Smarty version 3.1.30, created on 2017-06-01 11:56:13
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592e87da46f826_04462231',
+  'unifunc' => 'content_592fe4bd6fec64_96826294',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd06c047dc6fad9b9ae28bc50cd81017820a972a3' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl',
-      1 => 1496221658,
+      1 => 1496310971,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592e87da46f826_04462231 (Smarty_Internal_Template $_smarty_tpl) {
+function content_592fe4bd6fec64_96826294 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <!-- può essere fatto un solo template sfruttando foto altri user -->
@@ -33,7 +33,7 @@ function content_592e87da46f826_04462231 (Smarty_Internal_Template $_smarty_tpl)
                     <!-- vedere la grandezza della foto e come far vedere na foto-->
                     <?php echo $_smarty_tpl->tpl_vars['foto']->value;?>
 
-                    <p><h3 class="text-success">Like:</h3><?php echo (($tmp = @$_smarty_tpl->tpl_vars['photo_details']->value['total_like'])===null||$tmp==='' ? "0" : $tmp);?>
+                    <p><h3 class="text-success">Like:</h3><?php echo (($tmp = @$_smarty_tpl->tpl_vars['photo_details']->value['tot_like'])===null||$tmp==='' ? "0" : $tmp);?>
 <br /></p>
                     <!-- serve per attivare i like devo vede perchè nn va-->
                     <?php if ((($tmp = @$_smarty_tpl->tpl_vars['attiva']->value)===null||$tmp==='' ? "FALSE" : $tmp) == 'TRUE') {?>
@@ -72,19 +72,18 @@ function content_592e87da46f826_04462231 (Smarty_Internal_Template $_smarty_tpl)
 </p>   
                     <p><h3 class="text-success">Categoria:</h3><br />
                         <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'categoria');
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
-foreach ($_from as $_smarty_tpl->tpl_vars['categoria']->value) {
+foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                <option value="$categoria" checked><?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
-</option>
+                                <?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
+<br />
                         <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
-                    </p>
                     <p><h3 class="text-success">Data di pubblicazione:</h3><?php echo $_smarty_tpl->tpl_vars['photo_details']->value['Upload_Date'];?>
 <br /></p>
     </div>
@@ -115,15 +114,16 @@ foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
 ?>
         <div class="col-md-6 col-md-offset-3">
             <div class="well">
-                <p class="text-success"><?php echo $_smarty_tpl->tpl_vars['valore']->value['username'];?>
+                <p class="text-success"><?php echo $_smarty_tpl->tpl_vars['valore']->value['user'];?>
 </p>
                 <p><?php echo $_smarty_tpl->tpl_vars['valore']->value['text'];?>
 </p>
-                <?php if ($_smarty_tpl->tpl_vars['valore']->value['username'] == $_smarty_tpl->tpl_vars['username']->value) {?>
+                <?php if ($_smarty_tpl->tpl_vars['valore']->value['user'] == $_smarty_tpl->tpl_vars['username']->value) {?>
                 <form method="POST" action="index.php">
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>
                     </div>
+                <!-- va anche il tasto modifica -->
                 </form>
                 <?php }?>
             </div>
