@@ -14,7 +14,7 @@ switch ($action) {
     case "changeRole": $role = filter_input(INPUT_POST, "role");
         $returns = C_Administration::changeRole($username, $role);
         break;
-    case "changeRole": $returns = C_Administration::ban($username);
+    case "ban": $returns = C_Administration::ban($username);
         break;
     default : $return = false;
 }
