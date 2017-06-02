@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-01 11:05:18
-  from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/home_loggati.tpl" */
+/* Smarty version 3.1.30, created on 2017-06-01 11:48:00
+  from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/SearchPhoto.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592fd8ceaf6b30_81603262',
+  'unifunc' => 'content_592fe2d0901c85_05096492',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '72e1bb121f508ea4d6aaacb881cd86a48cded9f9' => 
+    '393ef5942158a3beabd3c8b71d3833aa91dbe1f3' => 
     array (
-      0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/home_loggati.tpl',
-      1 => 1496307916,
+      0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/SearchPhoto.tpl',
+      1 => 1496310274,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592fd8ceaf6b30_81603262 (Smarty_Internal_Template $_smarty_tpl) {
+function content_592fe2d0901c85_05096492 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <div class="row">
@@ -60,36 +60,21 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
             </div>
     </div>
         <div class="col-md-6">
-            <form method="POST" action="index.php">
-                    <h3 class="text-success">Ricerca per Categoria:</h3><br />
-                        <div class="form-group">
-                        <div class="col-lg-10">
-                            <!-- select multiple -->
-                            <select name="categories" multiple="" class="form-control">
-                                <?php
+                    <h2 class="text-success">Risultato della ricerca per la cateroria:</h2><br />
+                    <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['categories']->value, 'cat');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['cat']->value) {
 ?>
-                                       <option value=<?php echo $_smarty_tpl->tpl_vars['cat']->value['riferimento'];?>
-><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
-</option>
-                                <?php
+                        <h3 class="text-success"><?php echo $_smarty_tpl->tpl_vars['cat']->value['visualizzato'];?>
+<br /></h3>
+                    <?php
 }
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
 ?>
 
-                            </select>
-                        </div>
-                        </div>
-                        &nbsp;
-                        <input type="submit" name="cerca" class="btn btn-success" value="Inizia a Cercare" />
-            </form>
         </div>
     </div>
-</div>                
-    
-    
-    <?php }
+</div><?php }
 }

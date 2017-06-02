@@ -2,19 +2,8 @@
     <div class="row">
     <div class="col-md-6">
         <h1 class="text-success">Foto da mostrare</h1><br/>
-			<div class="container">
-                            {foreach from=$array_photo item=array1}
-                            <div class="row">
-                                {foreach from=$array1 item=valore}
-                                    <div class="col-md-3">
-                                        <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'">
-                                        <!--modo per mettere gli id nascoti-->
-                                    </div>
-                                {/foreach}
-                            </div>
-                            {/foreach}
-                        </div>
-                        <p><label for="descrizione">descrizione del sito</label><br />
+            <img src={$foto}>
+            <p><label for="descrizione">descrizione del sito</label><br />
     </div>
     <div class="col-md-6">
                 <h1 class="text-success">Registrazione</h1>
