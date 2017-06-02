@@ -183,38 +183,6 @@ class V_Home extends V_Basic
     }
 
 
-    //FUNZIONE PROPOSTA - SISTEMA
-    public static function welcome($default, $switch)
-    {
-        $home = new V_Home();
-        $home->assign('foto', $default["fullize"]);
-        //il TYPE dove lo metti?
-
-        $home->set_Cont_menu_user($role = 'guest');
-        switch($switch)
-        {
-            case 0: //Utente bannato
-                $home->set_banner($tpl = 'banner_banned');
-                $home->set_Contenuto_Home($tpl = 'home_guest');
-                break;
-
-            case 1: //Login
-                $home->set_Contenuto_Home($tpl = 'login');
-                break;
-
-            case 2: //Registrazione
-                $home->set_Contenuto_Home($tpl = 'registration');
-                break;
-
-            default: //MOSTRA IL LOGIN
-                $home->set_Contenuto_Home($tpl = 'login');
-                break;
-        }
-
-        $home->display('home_default.tpl');
-    }
-
-
     //METODI BASE - NON STATICI!!!\\
 
     //QUESTE FUNZIONI NON VANNO BENE
