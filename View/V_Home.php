@@ -216,6 +216,16 @@ class V_Home extends V_Basic
 
 
     //METODI BASE - NON STATICI!!!\\
+
+    //QUESTE FUNZIONI NON VANNO BENE
+    //DEVI AGGIUNGERE UN'ISTANZA DI V_Basic per istanziare l'oggetto e quindi Smarty
+
+    //L'HO FATTO IO. TU CONTROLLA CHE ABBIA UN SENSO QUELLO CHE HO FATTO E CHE FUNZIONI TUTTO
+
+
+
+
+
     /**
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
@@ -223,8 +233,9 @@ class V_Home extends V_Basic
      */
     public function set_Contenuto_Home($tpl)
     {
-        $mainContent = $this->fetch_home($tpl);
-        $this->assign('mainContent', $mainContent);
+        $v = new \V_Home();
+        $mainContent = $v->fetch_home($tpl);
+        $v->assign('mainContent', $mainContent);
     }
 
 
@@ -235,8 +246,9 @@ class V_Home extends V_Basic
      */
     public function set_Cont_menu_user($role)
     {
-        $cont = $this->fetch_Bar($role);
-        $this->assign('menu_user', $cont);
+        $v = new \V_Home();
+        $cont = $v->fetch_Bar($role);
+        $v->assign('menu_user', $cont);
     }
 
 
@@ -247,8 +259,9 @@ class V_Home extends V_Basic
      */
     public function set_banner($tpl)
     {
-        $cont = $this->fetch_banner($tpl);
-        $this->assign('banner', $cont);
+        $v = new \V_Home();
+        $cont = $v->fetch_banner($tpl);
+        $v->assign('banner', $cont);
     }
 
 
@@ -261,8 +274,8 @@ class V_Home extends V_Basic
      */
     public function fetch_Bar($role)
     {
-        $contenuto = $this->fetch('menu_user_'.$role.'.tpl');
-        return $contenuto;
+        $v = new \V_Home();
+        return $v->fetch('menu_user_'.$role.'.tpl');
     }
 
 
@@ -275,8 +288,8 @@ class V_Home extends V_Basic
      */
     public function fetch_home($tpl)
     {
-        $contenuto = $this->fetch($tpl.'.tpl');
-        return $contenuto;
+        $v = new \V_Home();
+        return $v->fetch($tpl.'.tpl');
     }
 
 
@@ -289,9 +302,8 @@ class V_Home extends V_Basic
      */
     public function fetch_banner($tpl)
     {
-
-        $contenuto = $this->fetch($tpl.'.tpl');
-        return $contenuto;
+        $v = new \V_Home();
+        return $v->fetch($tpl.'.tpl');
     }
 
 
@@ -315,4 +327,19 @@ class V_Home extends V_Basic
     }
 
 
+    public function CheckPhotos($tot_photos)
+    {
+        $v = new \V_Home();
+        if($tot_photos != 0) //Esistono delle foto
+        {
+            $v->assign('array_photo', $home->thumbnail($array_photo));
+        }
+        else
+        {
+            //FAI STA ROBA.
+            //DOVREBBE COMPARIRE LA SCRITTA:
+            //"Nessuna foto corrispondente alla ricerca fatta"
+
+        }
+    }
 }
