@@ -30,49 +30,6 @@ class V_Basic extends \Smarty
 
 
     /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     * @param string or array $keys Description chiavi usate per cercare
-     * @return array
-     */
-    public function get_Dati($keys)
-    {
-        $total = array_merge($_REQUEST, $_FILES);
-        foreach($keys as $dato)
-        {
-            $dettagli[$dato] = $total[$dato];
-        }
-        return $dettagli;
-    }
-
-
-    /**
-     * Questa funzione, restituisce il task inviato all'interno del vettore
-     * superglobale $_REQUEST
-     */
-    public function getTask()
-    {
-        if(isset($_REQUEST['task']))
-        {
-            return $_REQUEST['task'];
-        }
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getController()
-    {
-        if(isset($_REQUEST['controller']))
-        {
-            return $_REQUEST['controller'];
-        }
-//        return FALSE;
-    }
-
-
-    /**
      * Ritorna il contenuto del template che si vuole visualizzare
      * Questa funzione va sovrascritta nelle classi figlie impostando $nome_template
      *
@@ -82,25 +39,6 @@ class V_Basic extends \Smarty
     {
         $contenuto = $this->fetch($nome_template.'.tpl');
         return $contenuto;
-    }
-
-
-    public function set_variable($var_tpl, $variabile)
-    {
-        $this->assign($var_tpl, $variabile);
-    }
-
-
-    /**
-     * Assegna a smarty i dati della registrazione passati come parametro
-     *
-     * @param array $dati
-     * @param int $data
-     */
-    public function set_Dati($dati)
-    {
-        $this->assign('username', $dati['username']);
-        $this->assign('email', $dati['email']);
     }
 
 
@@ -239,6 +177,16 @@ class V_Basic extends \Smarty
     }
 
 
+    public function user_details($user_details)
+    {
+        $username = $user_details->get_Username();
+        $password = $user_details->get_Password();
+        $email = $user_details->get_Email();
+        $role = $this->imposta_ruolo($user_details->get_Role());
+        return $album_details = ["username" => $username, "email" => $email, "password" => $password, "role" => $role];
+    }
+
+
     public function showimage($photo)
     {
         $mime = image_type_to_mime_type($photo["type"]);
@@ -250,21 +198,11 @@ class V_Basic extends \Smarty
 
     public function show_profile_pic($photo)
     {
-        if(isset($photo["photo"]))
-        {
-            $mime = image_type_to_mime_type($photo["type"]);
-            $pic = $photo["photo"];
-            $foto = '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-            $this->assign('pic_profile', $foto);
-        }
-        else
-        {
-            $photo= \Entity\E_Photo::get_By_ID($id='2', $username='AllUser', $role= \Utilities\Roles::ADMIN);
-            $mime = image_type_to_mime_type($photo["type"]);
-            $pic = $photo["fullsize"];
-            $foto = '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-            $this->assign('pic_profile', $foto);
-        }
+        $mime = image_type_to_mime_type($photo["type"]);
+        $pic = $photo["photo"];
+        $foto = '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+        $this->assign('pic_profile', $foto);
     }
+
 
 }

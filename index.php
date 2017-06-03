@@ -22,12 +22,13 @@ $id="1";
 //$thumb= \Entity\E_Photo::get_MostLiked($username, $role);
 //var_dump($thumb);
 $username= "Marco";
+$user_details= \Entity\E_User::get_UserDetails($username='Fede');
 $role= \Entity\E_User::get_DB_Role($username);
-$user_details= \Entity\E_User::get_UserDetails($user='Fede');
-$E_album= \Entity\E_Album::get_By_ID($id);
-
+$DB_album= \Entity\E_Album::get_By_ID($id);
 $array_photo= \Entity\E_Photo::get_By_Album($id, $username, $role);
-\View\V_Album::album($E_album, $array_photo, $username);
+\View\V_Home::notAllowed($array_photo, $username);
+
+//$v->standardHome($array_photo, $username);
 
 
 /**

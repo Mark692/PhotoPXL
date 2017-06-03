@@ -1,21 +1,29 @@
 <div class="container">
     <div class="row">
     <div class="col-md-6">
-			<table>
-                            {foreach from=$thumbnail item=array1}
-                                <tr>
+			{if $no_result|default:"FALSE" eq "FALSE"}
+			<div class="container">
+                            {foreach from=$array_photo item=array1}
+                            <div class="row">
                                 {foreach from=$array1 item=valore}
-                                    <td>
-                                <img src="data:".{$valore.type}.";base64,'.base64_encode( {$valore.thumbanil} ).'"> <!-- sistemare il css per le thumb -->
-                                    </td>
+                                    <div class="col-sm-1">
+                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
+                                        <a href="http://www.html.it">
+                                        {$valore}
+                                        </a>
+                                        <!--modo per mettere gli id nascoti-->
+                                    </div>
                                 {/foreach}
-                                </tr>
+                            </div>
                             {/foreach}
-                        </table> 
+                        </div>
+                        {else}
+                            <h3 class="text-success">{$no_result}</h3>
+                        {/if}
     </div>
     <div class="col-md-6">
 		<form metod="POST" action="index.php">
-			<img src="{$user_details.pic}" class="thumbnail">
+                            {$pic_profile}
                             <input type="hidden" name="controller" value="profilo" />
                             <input type="hidden" name="task" value="update" />
                             <input type="submit" name="Salva" class="btn-success" value="Modifica"/>
@@ -31,7 +39,7 @@
                             <div class="form-group">
                                 <input name="email" class="form-control" id="focusedInput" type="text" value="{$user_details.email}">
                             </div>
-                            <h3 class="text-success">Ruolo:</h3><br />{$role}
+                            <h3 class="text-success">Ruolo:</h3><br />{$user_details.role}
                             <input type="hidden" name="controller" value="profilo" />
                             <input type="hidden" name="task" value="update" />
                             <input type="submit" name="Salva" class="btn-success" value="Salva Modifiche"/>
