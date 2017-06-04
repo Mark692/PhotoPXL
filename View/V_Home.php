@@ -62,21 +62,11 @@ class V_Home extends V_Basic
     /**
      *
      * Mostra un banner per dire ad un utente che è stato bannato
-     * @param array $photo_BANNED Foto base del sito
-     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
-     *               How to access the array:
-     *               - "photo" => the photo's Entity Object
-     *               - "uploader" => the user uploader
-     *               - "fullsize" => the fullsize photo
-     *               - "type" => its type
      */
-    public static function bannedHome($photo_BANNED)
+    public static function bannedHome()
     {
-        //LA FOTO DA PRENDERE FATTELA PASSARE COME PARAMETRO!
-        //USA IL PARAMETRO CHE HO MESSO IO ED ASSUMI SIA UNA FOTO FULLSIZE
         $home = new V_Home();
-        //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
-        $home->showimage($photo_BANNED); //QUESTO NON VA BENE
+        $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_banner($tpl = 'banner_banned');
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'home_guest');
