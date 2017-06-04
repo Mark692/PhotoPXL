@@ -21,7 +21,7 @@ class V_Foto extends V_Home
      */
     public static function showPhotoPage($photo, $username)
     {
-        $home = new \View\V_Home();
+        $home = new View\V_Home();
         //i dettagli di photo come titolo etc è un oggetto
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
@@ -31,10 +31,10 @@ class V_Foto extends V_Home
         $home->showimage($photo);
         $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo_details['id']));
         $likelist = $photo["photo"]->get_LikesList();
+        var_dump($likelist);
         foreach($likelist as $user)
         {
-            //mi da errore dicendo che username non è definita
-            if($user['username'] !== $username)
+            if($user['user'] !== $username)
             {
                 $home->assign('assegna', 'TRUE');
             }

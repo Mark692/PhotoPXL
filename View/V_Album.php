@@ -29,10 +29,10 @@ class V_Album extends V_Home
         $home->assign('username', $username);
         $album_details = $home->album_details($DB_album);
         $home->assign('album_details', $album_details);
-        $user_album=$DB_album['username'];
-        $home->assign('user_album',$user_album);
-        $cat = $home->imposta_categoria($album_details['categories']);
-        $home->assign('categories', $cat);
+        $user_album = $DB_album['username'];
+        $home->assign('user_album', $user_album);
+        $home->assign('categories', $home->imposta_categoria($album_details['categories']));
+        $home->CheckPhotos($array_photo);
         $home->assign('array_photo', $home->thumbnail($array_photo));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'Album');
@@ -42,7 +42,7 @@ class V_Album extends V_Home
 
     //METODI BASE - NON STATICI!!!\\
 
-/*
+    /*
      * restituisce il contento del tpl in base all'utente
      * nn lo so che fa questa
      */

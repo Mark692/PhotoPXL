@@ -36,9 +36,9 @@ class C_Album {
             return false;
         }
         $album = E_Album::get_By_ID($albumId);
-        V_Album::album($album, E_Photo::get_By_Album($albumId, $_SESSION["username"], $role)); // Per Federico
+        V_Album::album($album, E_Photo::get_By_Album($albumId, $_SESSION["username"], $role), $_SESSION["username"]);
     }
-    
+
     /**
      * This method is used to see more content of an album if the element are more than 16.
      * 
@@ -46,7 +46,7 @@ class C_Album {
      * @param int $pageToView the next page to view
      * @return boolean true if the user's allowed to see the album
      */
-    public static function seeAsync($albumId, $pageToView){
+    public static function seeAsync($albumId, $pageToView) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
             return false;
@@ -78,8 +78,8 @@ class C_Album {
             V_Home::bannedHome();
             return false;
         }
-        if(!E_Album::is_TheCreator($_SESSION["username"], $albumId)){
-            V_Home::notAllowed();
+        if (!E_Album::is_TheCreator($_SESSION["username"], $albumId)) {
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         $album = E_Album::get_By_ID($albumId);
@@ -88,7 +88,7 @@ class C_Album {
         $album->set_Categories($categories);
         $album->set_Description($description);
         E_Album::update_Details($album);
-        V_Album::album();
+        V_Album::album($album, E_Photo::get_By_Album($albumId, $_SESSION["username"], $role), $_SESSION["username"]);
         return true;
     }
 
@@ -105,8 +105,8 @@ class C_Album {
             V_Home::bannedHome();
             return false;
         }
-        if(!E_Album::is_TheCreator($_SESSION["username"], $albumId)){
-            V_Home::notAllowed();
+        if (!E_Album::is_TheCreator($_SESSION["username"], $albumId)) {
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         if ($withPhotos) {
@@ -114,7 +114,7 @@ class C_Album {
         } else {
             E_Album::delete($albumId);
         }
-        V_Profilo::home();
+        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), E_Album::get_By_User($_SESSION["username"]));
         return true;
     }
 
@@ -134,7 +134,7 @@ class C_Album {
         }
         $album = new E_Album($title, $description, $categories, time());
         E_Album::insert($album, $_SESSION["username"]);
-        V_Album::album();
+        V_Album::album($album, E_Photo::get_By_Album($albumId, $_SESSION["username"], $role), $_SESSION["username"]);
     }
 
 }

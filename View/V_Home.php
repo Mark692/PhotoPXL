@@ -22,39 +22,16 @@ class V_Home extends V_Basic
      *               - "tot_photo" => the number of photos
      * @param string $username username utente
      */
-    public static function standardHome($array_photo, $username = FALSE)
+    public static function standardHome($array_photo, $username)
     {
+
         //da vedere come sistemare le foto per mettere l'id
         $home = new V_Home();
         $home->assign('username', $username);
-        if($array_photo["tot_photo"] != 0) //Esistono delle foto
-        {
-            $home->assign('array_photo', $home->thumbnail($array_photo));
-        }
-        else
-        {
-            //FAI STA ROBA.
-            //DOVREBBE COMPARIRE LA SCRITTA:
-            //"Nessuna foto corrispondente alla ricerca fatta"
-
-            //TI CONSIGLIO DI FARTI UNA FUNZIONE CHE FA QUESTO if-else
-            //ED USARLA PER OGNI FUNZIONE CHE MOSTRI DELLE FOTO.
-            //RISPARMI UN SACCO DI TEMPO ED è ANCHE FATTO BENE
-            //- TI SCRIVO UN ACCENNO DI FUNZIONE: V_Home->CheckPhotos
-        }
-        $categories = $home->imposta_categoria();
-        $home->assign('categories', $categories);
-        if($username === FALSE)
-        {
-            $role = 'guest';
-            //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
-            $home->assign('photo', "templates/main/template/img/noimagefound.jpg");
-        }
-        else
-        {
-            $role = $home->imposta_ruolo(\Entity\E_User::get_DB_Role($username));
-        }
-        $home->set_Cont_menu_user($role);
+        $home->CheckPhotos($array_photo);
+        $home->assign('categories', $home->imposta_categoria());
+        $home->set_Contenuto_Home($home->set_home($username));
+        $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
     }
@@ -74,9 +51,8 @@ class V_Home extends V_Basic
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_no_permessi');
         $home->assign('username', $username);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
-        $categories = $home->imposta_categoria();
-        $home->assign('categories', $categories);
+        $home->CheckPhotos($array_photo);
+        $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
@@ -100,7 +76,7 @@ class V_Home extends V_Basic
         //USA IL PARAMETRO CHE HO MESSO IO ED ASSUMI SIA UNA FOTO FULLSIZE
         $home = new V_Home();
         //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
-        $home->assign('photo', "templates/main/template/img/noimagefound.jpg"); //QUESTO NON VA BENE
+        $home->showimage($photo_BANNED); //QUESTO NON VA BENE
         $home->set_banner($tpl = 'banner_banned');
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'home_guest');
@@ -120,9 +96,8 @@ class V_Home extends V_Basic
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_error');
         $home->assign('username', $username);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
-        $categories = $home->imposta_categoria();
-        $home->assign('categories', $categories);
+        $home->CheckPhotos($array_photo);
+        $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
@@ -134,15 +109,12 @@ class V_Home extends V_Basic
      *
      * @param array $array_photo  thumbanils restituite dalla ricerca
      * @param string $username  username
-     * @param array $categories  la categoria per cui è stata fatta la ricerca, array
      */
-    public static function showPhotoCollection($array_photo, $username, $categories)
+    public static function showPhotoCollection($array_photo, $username)
     {
         $home = new V_Home();
         $home->assign('username', $username);
-        $cat = $home->imposta_categoria($categories); //Non ho capito a che serve...
-        $home->assign('categories', $cat);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
+        $home->CheckPhotos($array_photo);
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'SearchPhoto');
         $home->display('home_default.tpl');
@@ -152,6 +124,14 @@ class V_Home extends V_Basic
     /**
      *
      * Mostra il tamplete per effettuare il login
+     *
+     * @param array $default Foto base del sito
+     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
      */
     public static function login()
     {
@@ -166,11 +146,19 @@ class V_Home extends V_Basic
     /**
      *
      * Mostra il tamplete per effettuare il login
+     * @param array $default Foto base del sito
+     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
      */
     public static function registration()
     {
         $home = new V_Home();
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
+        $home->showimage($default);
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'registration');
         $home->display('home_default.tpl');
@@ -178,16 +166,9 @@ class V_Home extends V_Basic
 
 
     //METODI BASE - NON STATICI!!!\\
-
     //QUESTE FUNZIONI NON VANNO BENE
     //DEVI AGGIUNGERE UN'ISTANZA DI V_Basic per istanziare l'oggetto e quindi Smarty
-
     //L'HO FATTO IO. TU CONTROLLA CHE ABBIA UN SENSO QUELLO CHE HO FATTO E CHE FUNZIONI TUTTO
-
-
-
-
-
     /**
      * imposta il contenuto principale alla variabile privata della classe
      * Scrive nel tpl gli attributi della classe
@@ -195,9 +176,8 @@ class V_Home extends V_Basic
      */
     public function set_Contenuto_Home($tpl)
     {
-        $v = new \V_Home();
-        $mainContent = $v->fetch_home($tpl);
-        $v->assign('mainContent', $mainContent);
+        $mainContent = $this->fetch_home($tpl);
+        $this->assign('mainContent', $mainContent);
     }
 
 
@@ -208,9 +188,8 @@ class V_Home extends V_Basic
      */
     public function set_Cont_menu_user($role)
     {
-        $v = new \V_Home();
-        $cont = $v->fetch_Bar($role);
-        $v->assign('menu_user', $cont);
+        $cont = $this->fetch_Bar($role);
+        $this->assign('menu_user', $cont);
     }
 
 
@@ -221,9 +200,8 @@ class V_Home extends V_Basic
      */
     public function set_banner($tpl)
     {
-        $v = new \V_Home();
-        $cont = $v->fetch_banner($tpl);
-        $v->assign('banner', $cont);
+        $cont = $this->fetch_banner($tpl);
+        $this->assign('banner', $cont);
     }
 
 
@@ -236,8 +214,7 @@ class V_Home extends V_Basic
      */
     public function fetch_Bar($role)
     {
-        $v = new \V_Home();
-        return $v->fetch('menu_user_'.$role.'.tpl');
+        return $this->fetch('menu_user_'.$role.'.tpl');
     }
 
 
@@ -250,8 +227,7 @@ class V_Home extends V_Basic
      */
     public function fetch_home($tpl)
     {
-        $v = new \V_Home();
-        return $v->fetch($tpl.'.tpl');
+        return $this->fetch($tpl.'.tpl');
     }
 
 
@@ -264,8 +240,7 @@ class V_Home extends V_Basic
      */
     public function fetch_banner($tpl)
     {
-        $v = new \V_Home();
-        return $v->fetch($tpl.'.tpl');
+        return $this->fetch($tpl.'.tpl');
     }
 
 
@@ -289,19 +264,17 @@ class V_Home extends V_Basic
     }
 
 
-    public function CheckPhotos($tot_photos)
+    public function CheckPhotos($array_photo)
     {
-        $v = new \V_Home();
-        if($tot_photos != 0) //Esistono delle foto
+        if($array_photo['tot_photo'] != 0) //Esistono delle foto
         {
-            $v->assign('array_photo', $home->thumbnail($array_photo));
+            $this->assign('array_photo', $this->thumbnail($array_photo));
         }
         else
         {
-            //FAI STA ROBA.
-            //DOVREBBE COMPARIRE LA SCRITTA:
-            //"Nessuna foto corrispondente alla ricerca fatta"
-
+            $this->assign('no_result', 'Nessun Risulato da Visualizzare');
         }
     }
+
+
 }

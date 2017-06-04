@@ -26,21 +26,15 @@ class V_Profilo extends V_Home
     public static function home($username, $user_details, $array_photo)
     {
         $home = new \View\V_Home();
-        $profile_user = $user_details->get_Username();
-        $profile_email = $user_details->get_Email();
-        $profile_role = $home->imposta_ruolo($user_details->get_Role());
-        $home->show_profile_pic(\Entity\E_User::get_ProfilePic($profile_user));
+        $details = $home->user_details($user_details);
+        $home->assign('user_details', $details);
+        $home->show_profile_pic(\Entity\E_User::get_ProfilePic($details['username']));
         $home->assign('username', $username);
-        if($username === $profile_user)
+        if($username === $details['username'])
         {
-            echo('sono lo stesso');
             $home->assign('attiva', TRUE);
         }
-
-        $home->assign('profile_user', $profile_user);
-        $home->assign('profile_email', $profile_email);
-        $home->assign('profile_role', $profile_role);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
+        $home->CheckPhotos($array_photo);
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'ShowProfile');
         $home->display('home_default.tpl');
@@ -58,9 +52,8 @@ class V_Profilo extends V_Home
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_ok');
         $home->assign('username', $username);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
-        $categories = $home->imposta_categoria();
-        $home->assign('categories', $categories);
+        $home->CheckPhotos($array_photo);
+        $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($home->set_home($username));
         $home->display('home_default.tpl');
@@ -70,21 +63,19 @@ class V_Profilo extends V_Home
     /**
      * mostra il modulo tpl per la modifica dei dati del profilo
      *
-     * @param Entity\E_User* $user_datails i dati dell'utente presi da DB
+     * @param Entity\E_User* $user_details i dati dell'utente presi da DB
      * @param array $array_photo foto con + like
      */
-    public static function showEditProfile($user_datails, $array_photo)
+    public static function showEditProfile($user_details, $array_photo)
     {
-        //da sistema
         $home = new \View\V_Home();
-        $home->assign('user_details', $user_datails);
-        $home->assign('array_photo', $home->thumbnail($array_photo));
-        $role = $home->imposta_ruolo($user_datails['role']);
-        $home->set_Cont_menu_user($role);
+        $details = $home->user_details($user_details);
+        $home->assign('user_details', $details);
+        $home->show_profile_pic(\Entity\E_User::get_ProfilePic($details['username']));
+        $home->assign('username', $details['username']);
+        $home->CheckPhotos($array_photo);
+        $home->set_Cont_menu_user($details['role']);
         $home->set_Contenuto_Home($tpl = 'EditProfile');
-        $home->assign('array_photo', $home->thumbnail($array_photo)); //SISTEMA STA MERDA
-        //A CHE SERVE CHE FAI DUE VOLTE STA COSA???
-        //GUARDA 4 RIGHE PIù SOPRA E TROVI LA STESSA IDENTICA COSA
         $home->display('home_default.tpl');
     }
 

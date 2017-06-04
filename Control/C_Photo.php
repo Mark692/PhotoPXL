@@ -71,10 +71,10 @@ class C_Photo {
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
         /* @var $photo \Entity\E_Photo */
         if ($this->role != Roles::MOD and $this->role != Roles::ADMIN and $this->checkPrivacyOwner($photo)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
-        V_Foto::showPhotoPage(E_User::get_UserDetails($_SESSION["username"]), $photo);
+        V_Foto::showPhotoPage($photo, $_SESSION["username"]);
     }
 
     /**
@@ -92,7 +92,7 @@ class C_Photo {
             if ($category != PAESAGGI and $category != RITRATTI and $category != FAUNA
                     and $category != BIANCONERO and $category != ASTRONOMIA and
                     $category != STREET and $category != NATURAMORTA and $category != SPORT) {
-                V_Home::error();
+                V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
                 return false;
             }
         }
@@ -101,7 +101,7 @@ class C_Photo {
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::error();
+            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION['username'], $this->role);
@@ -110,7 +110,7 @@ class C_Photo {
         $photo->set_Categories($categories);
         $photo->set_Description($description);
         \Entity\E_Photo::update($photo);
-        V_Foto::showPhotoPage(E_User::get_UserDetails($_SESSION["username"]), $photo); //controllare
+        V_Foto::showPhotoPage($photo, $_SESSION["username"]); //controllare
         return true;
     }
 
@@ -138,8 +138,10 @@ class C_Photo {
         $photoId = E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
         if (!is_null($albumId)) {
             E_Photo::move_To($photoId, $albumId);
+            V_Album::album(E_Album::get_By_ID($albumId), E_Photo::get_By_Album($albumId, $_SESSION["username"], $this->role), $_SESSION["username"]);
+        } else {
+            \View\V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), E_Album::get_By_User($_SESSION["username"]));
         }
-        V_Album::album();
         return true;
     }
 
@@ -193,7 +195,7 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the photo was correctly deleted.
      */
-    public function delete($photoId) {
+    public function delete($photoId, $albumId) {
         if ($this->isBanned($this->role)) {
             V_Home::bannedHome();
             return false;
@@ -202,10 +204,10 @@ class C_Photo {
         /* @var $photo \Entity\E_Photo */
         if ($this->role != Roles::MOD and $this->role != Roles::ADMIN
                 and $this->checkPrivacyOwner($photo)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
         }
         E_Photo::delete($photoId);
-        V_Album::album();
+        V_Album::album(E_Album::get_By_ID($albumId), $photo, $_SESSION["username"]);
         return true;
     }
 
@@ -242,7 +244,7 @@ class C_Photo {
             return false;
         }
         $photos = E_Photo::get_By_Categories($category, $_SESSION["username"], $this->role);
-        V_Home::showPhotoCollection($photos);
+        V_Home::showPhotoCollection($photos, $_SESSION["username"]);
     }
 
     /**
@@ -285,15 +287,15 @@ class C_Photo {
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
         if (!E_Album::is_TheCreator($_SESSION["username"], $newAlbumId)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
         E_Photo::move_To($photoId, $newAlbumId);
-        V_Album::album(); //da passare il nuovo album
+        V_Album::album(E_Album::get_By_ID($newAlbumId), E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role), $_SESSION["username"]);
         return true;
     }
 
@@ -307,7 +309,7 @@ class C_Photo {
             V_Home::bannedHome();
             return false;
         }
-        V_Home::standardHome(E_Photo::get_MostLiked($_SESSION["username"], $this->role));
+        V_Home::standardHome(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
         return true;
     }
 

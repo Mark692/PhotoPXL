@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,13 +10,13 @@ use Control\C_Photo;
 
 $photo = new C_Photo();
 $action = filter_input(INPUT_POST, "action");
-switch ($action){
+switch ($action) {
     case "see": $photoId = filter_input(INPUT_POST, "photoId");
         $photo->see($photoId);
         break;
     case "edit": $photoId = filter_input(INPUT_POST, "photoId");
         $title = filter_input(INPUT_POST, "title");
-        $categories= filter_input(INPUT_POST, "categories");
+        $categories = filter_input(INPUT_POST, "categories");
         $description = filter_input(INPUT_POST, "description");
         $photo->edit($photoId, $title, $categories, $description);
         break;
@@ -28,6 +28,7 @@ switch ($action){
         $photo->upload($photoPath, $title, $categories, $description);
         break;
     case "delete": $photoId = filter_input(INPUT_POST, "photoId");
+        $albumId = filter_input(INPUT_POST, "albumId");
         $photo->delete($photoId);
         break;
     case "searchByCategory": $category = filter_input(INPUT_POST, "category");
