@@ -153,12 +153,9 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per effettuare il login
      */
-    public static function login($default)
+    public static function login()
     {
-        //LA FOTO DA PRENDERE FATTELA PASSARE COME PARAMETRO!
-        //USA IL PARAMETRO CHE HO MESSO IO ED ASSUMI SIA UNA FOTO FULLSIZE
         $home = new V_Home();
-        //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'login');
@@ -170,12 +167,9 @@ class V_Home extends V_Basic
      *
      * Mostra il tamplete per effettuare il login
      */
-    public static function registration($default)
+    public static function registration()
     {
-        //LA FOTO DA PRENDERE FATTELA PASSARE COME PARAMETRO!
-        //USA IL PARAMETRO CHE HO MESSO IO ED ASSUMI SIA UNA FOTO FULLSIZE
         $home = new V_Home();
-        //da prendere una foto dal db...questa è una a caso ci vuole uno screen del sito interno
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'registration');
