@@ -12,9 +12,8 @@ class V_Registration extends V_Home
     // METODI STATICI \\
     /**
      * visualizza una banner di errore
-     * @param type $messaggio
      */
-    //da verificare perchè esiste una simile anche in v-home
+    //da SISTEMARE!!!
     public static function error()
     {
         $v = new V_Basic();
