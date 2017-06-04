@@ -38,7 +38,7 @@ class C_Profile {
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
         E_User::upload_NewCover($_SESSION["username"], $photo_blob);
-        V_Profilo::home(); //per Federico
+        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"])); //per Federico
         return true;
     }
 
@@ -55,15 +55,15 @@ class C_Profile {
             return false;
         }
         if (!E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)) {
-            V_Home::error();
+            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         E_User::set_ProfilePic($_SESSION["username"], $photoId);
-        V_Profilo::home();
+        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"]));
         return true;
     }
 
@@ -80,11 +80,11 @@ class C_Profile {
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed();
+            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         E_User::remove_CurrentProPic($_SESSION["username"]);
-        V_Profilo::home();
+        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"]));
         return true;
     }
 
@@ -102,10 +102,10 @@ class C_Profile {
         }
         try {
             E_User::change_Password($newPassword);
-            V_Profile::banner(); //per Fede, appare un banner del tipo "password cambiata correttamente"
+            V_Profile::banner($_SESSION["username"]); 
             return true;
         } catch (input_texts $e) {
-            V_Home::error();
+            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
     }
@@ -124,10 +124,10 @@ class C_Profile {
         }
         try {
             E_User::change_Email($newEmail);
-            V_Profilo::banner(); //per Fede, appare un banner del tipo "email cambiata correttamente"
+            V_Profilo::banner($_SESSION["username"]); //per Fede, appare un banner del tipo "email cambiata correttamente"
             return true;
         } catch (input_texts $e) {
-            V_Home::error();
+            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
     }

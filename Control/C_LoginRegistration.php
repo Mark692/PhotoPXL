@@ -77,10 +77,10 @@ class C_LoginRegistration {
             E_User_Standard::insert($STD_user);
             self::createSession($keepLogged);
             $_SESSION['username'] = $username;
-            V_Home::standardHome(); //Per Fede
+            V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], \Utilities\Roles::STANDARD), $username);
             return true;
         } catch (input_texts $e) {
-            V_Registration::error();   //Per Fede
+            V_Registration::error(); 
             return false;
         }
     }
@@ -151,7 +151,7 @@ class C_LoginRegistration {
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             $role = E_User::get_DB_Role($_SESSION["username"]);
             if ($role != \Utilities\Roles::BANNED) {
-                V_Home::standardHome();
+                V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             } else {
                 V_Home::bannedHome();
             }
