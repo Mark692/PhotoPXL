@@ -1,16 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
-
-Name       : Greeny Grass
-Description: A two-column, fixed-width design.
-Version    : 1.0
-Released   : 20080208
-
--->
-
 <!DOCTYPE html>
 <html lang="it">
   <head>
@@ -24,6 +11,11 @@ Released   : 20080208
     <link href="templates/main/template/css/bootstrap.min.css" rel="stylesheet">
     <link href="templates/main/template/css/Custom.css" rel="stylesheet">
    
+    <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="templates/main/template/js/sha512.js"></script>
   </head>
 <body>
         <!-- start header -->
@@ -46,12 +38,4 @@ Released   : 20080208
     
     <!--fine -->
         </div>
-
-  <!-- JS -->
-  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <script src="templates/main/template/js/bootstrap.min.js"></script>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
-  <!-- JS -->
 </body>
