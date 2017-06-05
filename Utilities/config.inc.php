@@ -30,6 +30,11 @@ $config['mysql_host']     = 'localhost';     //NOT USED ON ALTERVISTA. PERMISSIO
 $config['mysql_user']     = 'root';          //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
 $config['mysql_password'] = 'FRIGO A LEGNA'; //NOT USED ON ALTERVISTA. PERMISSION CHANGES ARE FORBIDDEN!
 
+//For a basic installation in case no connection parameters are required\\
+//Uncomment them when necessary
+//$config['mysql_user']     = '';
+//$config['mysql_password'] = '';
+
 
 
 //----Photo/Album Categories----\\
@@ -56,7 +61,7 @@ define("TOKEN_BIN_LENGHT", 32); //This has to be converted to HEX and then saved
 define("TOKEN_LIFETIME", 172800); //Two days lifetime
 
 
-//----Input important text----\\
+//----Important input text----\\
 define("MIN_TITLE_CHARS", 3);
 define("MAX_TITLE_CHARS", 30);
 define("MAX_DESCRIPTION_CHARS", 500);
@@ -64,6 +69,7 @@ define("MAX_DESCRIPTION_CHARS", 500);
 define("MIN_USERNAME_CHARS", 3);
 define("MAX_USERNAME_CHARS", 20);
 
+define("MIN_COMMENT_CHARS", 1);
 define("MAX_COMMENT_CHARS", 2000);
 
 

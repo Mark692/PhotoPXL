@@ -22,6 +22,7 @@ use P\photo;
 use P\PMAusers;
 use P\std_user;
 use P\user;
+use PDO;
 use PDOException;
 use Utilities\Roles;
 
@@ -157,7 +158,7 @@ class installer extends F_Database
         echo(nl2br("\r\n"));
         echo("-- Accedi a PhpMyAdmin");
         echo(nl2br("\r\n"));
-        echo("--- Controlla se esiste un Database chiamato 'my_photopxl'. In caso NON esista DEVI crearlo. ");
+        echo("--- Controlla se esiste un Database chiamato 'my_photopxl'. In caso NON esista BISOGNA crearlo. ");
         echo(nl2br("\r\n"));
         echo("Nome del Database: 'my_photopxl'. Codifica dei Caratteri: 'utf8_unicode_ci'");
         echo(nl2br("\r\n"));
@@ -190,8 +191,8 @@ class installer extends F_Database
      */
     private function DB_Photos()
     {
-        //NEED to create this user and let him upload the standard photos
-        //so the other users can have a default pic
+//NEED to create this user and let him upload the standard photos
+//so the other users can have a default pic
         $AllUser = new E_User_Standard($this->default_DBuser, "password0", "email@pro.va");
         F_User_Standard::insert($AllUser);
         F_User_Admin::change_Role($AllUser->get_Username(), Roles::ADMIN);
@@ -548,54 +549,44 @@ class installer extends F_Database
      * @param string $form_DBUsername The user connecting to the DB
      * @param string $form_DBPassword The user connecting password
      */
-//    public function DB_ConnectionParameters(
-//    $form_DBHost = 'localhost', //Not really necessary
-//            $form_DBName = 'my_photopxl', $form_DBUsername = '', $form_DBPassword = '') //Default values for Altervista
-//    {
-//        try
-//        {
-//            $connection = $this->DB_Check($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword);
-//            $connection = NULL; //Closes DB connection
-//            echo("ok, i parametri inseriti sono giusti");
-//
-//            //Saves connection parameters
-//            //---SBAGLIATO---\\
-////---NON SI DEVONO SALVARE STE COSE SU TXT---\\
-//            $text = fopen($this->DBSetup_txt, "w");
-//            fwrite($text, $form_DBHost."\n");
-//            fwrite($text, $form_DBName."\n");
-//            fwrite($text, $form_DBUsername."\n");
-//            fwrite($text, $form_DBPassword."\n");
-//            fclose($text);
-////----SBAGLIATO!!!----\\
-//            //PROSEGUI CON L'ESECUZIONE DELL'APP
-//        }
-//        catch(PDOException $ex)
-//        {
-//            echo("Il DB non è correttamente configurato. Cambia i parametri di connessione!");
-//            echo(nl2br("\r\n"));
-//            echo("In dettaglio: ".$ex->getMessage());
-//            //Rimanda al form che usa questa funzione
-//        }
-//    }
-//
-//
-//    /**
-//     * Tries to connect to the DB in order to test the parameters given
-//     *
-//     * @throws PDOException Whether the connection parameters are not correct
-//     * @return PDO The PDO connection to the DB
-//     */
-//    private function DB_Check($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword)
-//    {
-//        $connection = new PDO(
-//                'mysql:host='.$form_DBHost.'; '
-//                .'dbname='.$form_DBName, $form_DBUsername, $form_DBPassword
-//        );
-//        return $connection;
-////        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
-//        //Usala nella funzione che richiama DB_Check se la connessione va bene
-//    }
+    public function set_DB_ConnectionParameters() //Default values for Altervista
+    {
+        try
+        {
+            global $config;
+            $connection = $this->DB_Check(
+                    $config['mysql_host'],
+                    $config['mysql_database'],
+                    $config['mysql_user'],
+                    $config['mysql_password']);
+            $connection = NULL; //Closes DB connection
+        }
+        catch(PDOException $ex)
+        {
+            //Sets default connection parameters to enstablish a basic connection
+            $config['mysql_user'] = '';
+            $config['mysql_password'] = '';
+        }
+    }
+
+
+    /**
+     * Tries to connect to the DB in order to test the parameters given
+     *
+     * @throws PDOException Whether the connection parameters are not correct
+     * @return PDO The PDO connection to the DB
+     */
+    private function DB_Check($form_DBHost, $form_DBName, $form_DBUsername, $form_DBPassword)
+    {
+        $connection = new PDO(
+                'mysql:host='.$form_DBHost.'; '
+                .'dbname='.$form_DBName, $form_DBUsername, $form_DBPassword
+        );
+        return $connection;
+//        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //Attiva durante lo Sviluppo
+    }
+
+
     /**
      * Checks whether the app is installed (or not) opening a txt file. If the file
      * does not exists or 0 is written into it, FALSE will be returned.
@@ -622,7 +613,7 @@ class installer extends F_Database
     /**
      * Writes to the installation text file that the app is correctly installed
      */
-    private function set_asInstalled()
+    public function set_asInstalled()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
         fwrite($text, "1\n"); //The app is correctly installed
@@ -633,7 +624,7 @@ class installer extends F_Database
     /**
      * Writes to the installation text file that the app is not correctly installed
      */
-    private function set_asInvalidInstallation()
+    public function set_asInvalidInstallation()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
         fwrite($text, "0\n"); //The app is not correctly installed
