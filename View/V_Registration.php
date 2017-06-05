@@ -14,27 +14,16 @@ class V_Registration extends V_Home
      * visualizza una banner di errore
      */
     //da SISTEMARE!!!
-    public static function error()
+    public static function error_registration()
     {
-        $v = new V_Basic();
         $home = new V_Home();
-        $banner = $home->fetch_banner($tpl = 'banner_error');
-        $v->assign('banner', $banner);
-        \View\V_Home::standardHome();
+        $home->set_banner($tpl = 'banner_error_registration');
+        $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
+        $home->set_Cont_menu_user($role = 'guest');
+        $home->set_Contenuto_Home($tpl = 'registration');
+        $home->display('home_default.tpl');
     }
 
 
     // METODI NON STATICI \\
-    /**
-     * Grazie a questa funzione all'interno della variabile $dati_reg vengono
-     * registrati tutti i dati inviati tramite POST dal modulo di registrazione
-     *
-     * @return array
-
-      public function get_Dati()
-      {
-      $keys = array ('username', 'password', 'email');
-      return parent::get_Dati($keys);
-      }
-     */
 }
