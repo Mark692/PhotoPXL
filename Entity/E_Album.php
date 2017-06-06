@@ -32,7 +32,6 @@ class E_Album
      * to set the $up_date to NOW automatically.
      *
      * @param string $title The  title of the album
-     * @param string $creator The user that created this album
      * @param string $desc The description of the album
      * @param array $categories The categories array of the album
      * @param int $creation_date The creation date of the album

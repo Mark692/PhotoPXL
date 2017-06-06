@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
 DROP TABLE IF EXISTS `likes`;
 CREATE TABLE IF NOT EXISTS `likes` (
   `user` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `photo` int(11) NOT NULL 
+  `photo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `photo`;
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` tinyint(4) NOT NULL DEFAULT '1',
   `up_Count` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `last_Upload` int(10) unsigned NOT NULL DEFAULT '0',
-  `token` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL
+  `token` varchar(74) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `album`
