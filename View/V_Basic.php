@@ -134,7 +134,6 @@ class V_Basic extends \Smarty
      * @param array $array_photo An array with thumbnails to display
      * @return array
      */
-    //devo vede se questa funziona
     public function thumbnail($thumb)
     {
         $array_foto = [];
@@ -152,6 +151,11 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * restiruisce un array con i dettagli delle foto 
+     * @param type $photo objet
+     * @return type array
+     */
     public function photo_details($photo)
     {
         $uploader = $photo["uploader"];
@@ -167,6 +171,11 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * restiruisce un array con i dettagli dell'album
+     * @param type $album objet
+     * @return type array
+     */
     public function album_details($album)
     {
         $title = $album["album"]->get_Title();
@@ -177,6 +186,11 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * restiruisce un array con i dettagli dell'utente
+     * @param type $user_details objet
+     * @return type array
+     */
     public function user_details($user_details)
     {
         $username = $user_details->get_Username();
@@ -187,6 +201,10 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * assegna a smarty una foto con codifica base64 
+     * @param type $photo
+     */
     public function showimage($photo)
     {
         $mime = image_type_to_mime_type($photo["type"]);
@@ -196,6 +214,10 @@ class V_Basic extends \Smarty
     }
 
 
+    /**
+     * assegna a smarty una foto con codifica base64 
+     * @param type $photo
+     */
     public function show_profile_pic($photo)
     {
         $mime = image_type_to_mime_type($photo["type"]);

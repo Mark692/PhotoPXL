@@ -69,7 +69,7 @@ class V_Home extends V_Basic
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_banner($tpl = 'banner_banned');
         $home->set_Cont_menu_user($role = 'guest');
-        $home->set_Contenuto_Home($tpl = 'home_guest');
+        $home->set_Contenuto_Home($tpl = 'login');
         $home->display('home_default.tpl');
     }
 
@@ -148,7 +148,6 @@ class V_Home extends V_Basic
     {
         $home = new V_Home();
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
-        $home->showimage($default);
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'registration');
         $home->display('home_default.tpl');
@@ -254,6 +253,11 @@ class V_Home extends V_Basic
     }
 
 
+    /**
+     * controlla se nell'array_photo ci sono elementi e li assegna a smarty, altrimenti assegna un messaggio
+     * 
+     * @param type $array_photo
+     */
     public function CheckPhotos($array_photo)
     {
         if($array_photo['tot_photo'] != 0) //Esistono delle foto

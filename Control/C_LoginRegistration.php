@@ -80,7 +80,7 @@ class C_LoginRegistration {
             V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], \Utilities\Roles::STANDARD), $username);
             return true;
         } catch (input_texts $e) {
-            V_Registration::error(); 
+            V_Registration::error_registration(); 
             return false;
         }
     }

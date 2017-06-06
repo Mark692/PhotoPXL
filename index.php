@@ -15,6 +15,10 @@ require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
+//\Control\C_LoginRegistration::showHome();
+$v=new View\V_Registration();
+$v->error_registartion();
+
 
 //*
 $test_it = new \Utilities\installer();
@@ -26,4 +30,3 @@ $test_it = new \Utilities\installer();
 
 //Prove funzioni
 //$test_it->try_Functions();
-
