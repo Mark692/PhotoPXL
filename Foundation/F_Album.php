@@ -14,6 +14,9 @@ use Foundation\F_Photo;
 use const NO_ALBUM_COVER;
 use const PHOTOS_PER_PAGE;
 
+/**
+ * This class defines functions about saving and retriving Albums information from DB
+ */
 class F_Album extends F_Database
 {
 

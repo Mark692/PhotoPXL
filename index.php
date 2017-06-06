@@ -17,7 +17,7 @@ require_once $path."U_Nonce.php";
 
 //\Control\C_LoginRegistration::showHome();
 $v=new View\V_Registration();
-$v->error_registartion();
+//$v->error_registartion();
 
 
 //*

@@ -11,7 +11,7 @@ namespace Foundation;
 use Utilities\Roles;
 
 /**
- * Sets basic info for MOD users
+ * Sets basic functions for MOD users
  */
 class F_User_MOD extends F_User_PRO
 {

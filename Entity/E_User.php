@@ -14,8 +14,8 @@ use const MAX_USERNAME_CHARS;
 use const MIN_USERNAME_CHARS;
 
 /**
- * This class implements basic User functions related to login credentials
- * Also it implements functions about Users Roles to be used in children implementations
+ * This class implements basic User functions related to login credentials.
+ * Also it implements functions about Users Roles to be used in children classes implementations
  */
 class E_User
 {

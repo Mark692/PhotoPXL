@@ -9,7 +9,7 @@
 namespace Foundation;
 
 /**
- * Sets basic info for Admin users
+ * Sets basic functions for Admin users
  */
 class F_User_Admin extends F_User_MOD
 {

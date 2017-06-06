@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Entity.html">\Entity</a></li>
+                                                        <li><a href="../namespaces/Foundation.html">\Foundation</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">62</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-755210537"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-755210537" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1069881616"></a>
+                                <a href="../namespaces/Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
+            </div>
+            <div id="namespace-1069881616" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Entity.E_Album.html">E_Album</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_Comment.html">E_Comment</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_Photo.html">E_Photo</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_Photo_Blob.html">E_Photo_Blob</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User.html">E_User</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User_Admin.html">E_User_Admin</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User_Banned.html">E_User_Banned</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User_MOD.html">E_User_MOD</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User_PRO.html">E_User_PRO</a></li>
+                                                    <li class="class"><a href="../classes/Entity.E_User_Standard.html">E_User_Standard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1643433956"></a>
+                                <a href="../namespaces/Foundation.html" style="margin-left: 30px; padding-left: 0">Foundation</a>
+            </div>
+            <div id="namespace-1643433956" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Foundation.F_Album.html">F_Album</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_Comment.html">F_Comment</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_Database.html">F_Database</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_Photo.html">F_Photo</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_User.html">F_User</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_User_Admin.html">F_User_Admin</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_User_MOD.html">F_User_MOD</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_User_PRO.html">F_User_PRO</a></li>
+                                                    <li class="class"><a href="../classes/Foundation.F_User_Standard.html">F_User_Standard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Foundation.html">\Foundation</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Foundation</small>F_Photo</h1>
+                    <p><em>This class defines functions about saving and retriving Photos information from DB</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_update" class="">update()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_insert" class="">insert()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_By_User" class="">get_By_User()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_By_ID" class="">get_By_ID()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_By_Album" class="">get_By_Album()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_By_Categories" class="">get_By_Categories()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_LikeList" class="">get_LikeList()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_MostLiked" class="">get_MostLiked()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_UsernamesThatCommented" class="">get_UsernamesThatCommented()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_delete" class="">delete()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_delete_ALL_fromAlbum" class="">delete_ALL_fromAlbum()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_move_To" class="">move_To()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_is_TheUploader" class="">is_TheUploader()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Foundation.F_Database.html#method_connect" class="">connect()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_execute_Query" class="">execute_Query()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_insert_Query" class="">insert_Query()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_fetch_Result" class="">fetch_Result()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_get_One" class="">get_One()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_get_All" class="">get_All()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_count" class="">count()</a><br />
+                                                                    <a href="../classes/Foundation.F_Database.html#method_bind_params" class="">bind_params()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Foundation.F_Database.html#method_basic_Query" class="">basic_Query()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_update_Categories" class="">update_Categories()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_query_addCats" class="">query_addCats()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_query_removeCats" class="">query_removeCats()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_get_Categories" class="">get_Categories()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_has_anAlbum" class="">has_anAlbum()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_can_beShowed" class="">can_beShowed()</a><br />
+                                                                    <a href="../classes/Foundation.F_Photo.html#method_add_ClauseNoPermission" class="">add_ClauseNoPermission()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Foundation.F_Photo.html"><div class="path-wrapper">Foundation\F_Photo.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper"><a href="../classes/Foundation.F_Database.html">\Foundation\F_Database</a></div>
+                                                                                                    <div class="namespace-wrapper">\Foundation\F_Photo</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update" name="method_update" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">update()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update(\Entity\E_Photo  <span class="argument">$to_Update</span>) </pre>
+                <p><em>Updates a record from the &quot;photo&quot; table</em></p>
+                <p>Also it binds parameters to the query</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Entity.E_Photo.html">\Entity\E_Photo</a></td>
+                                <td>$to_Update </td>
+                                <td><p>The photo to update</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_insert" name="method_insert" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">insert()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">insert(\Entity\E_Photo  <span class="argument">$photo</span>, \Entity\E_Photo_Blob  <span class="argument">$photo_details</span>, string  <span class="argument">$uploader</span>) </pre>
+                <p><em>Saves a photo object and sets its ID into the $photo object</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Entity.E_Photo.html">\Entity\E_Photo</a></td>
+                                <td>$photo </td>
+                                <td><p>The photo to save</p></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Entity.E_Photo_Blob.html">\Entity\E_Photo_Blob</a></td>
+                                <td>$photo_details </td>
+                                <td><p>The blob file that includes its size and type</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$uploader </td>
+                                <td><p>The uploader's username</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_By_User" name="method_get_By_User" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_By_User()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_By_User(string  <span class="argument">$uploader</span>, string  <span class="argument">$user_Watching</span>, \Foundation\enum  <span class="argument">$user_Role</span>, integer  <span class="argument">$page_toView = 1</span>, boolean  <span class="argument">$order_DESC = FALSE</span>) : array</pre>
+                <p><em>Rethrives all the IDs and thumbnails of a user photos by passing its username</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$uploader </td>
+                                <td><p>The user's username selected to get the photos from</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The watching user's role</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$page_toView </td>
+                                <td><p>The page number to view. It influences the offset</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$order_DESC </td>
+                                <td><p>Whether to order result in DESCendent order. Default: ASCendent</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The user's photos.
+How to access the array:</p>
+<ul>
+<li>&quot;id&quot; =&gt; the photo's ID</li>
+<li>&quot;thumbnail&quot; =&gt; its thumbnail</li>
+<li>&quot;type&quot; =&gt; its type</li>
+<li>&quot;tot_photo&quot; =&gt; the number of photos matching the query</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_By_ID" name="method_get_By_ID" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_By_ID()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_By_ID(integer  <span class="argument">$id</span>, string  <span class="argument">$user_Watching</span>, \Foundation\enum  <span class="argument">$user_Role</span>) : mixed</pre>
+                <p><em>Rethrives the photo corresponding to the ID selected</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$id </td>
+                                <td><p>The photo's ID</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user role</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>A boolean FALSE if no photo matches the query.
+An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
+How to access the array:</p>
+<ul>
+<li>&quot;photo&quot; =&gt; the photo's Entity Object</li>
+<li>&quot;uploader&quot; =&gt; the user uploader</li>
+<li>&quot;fullsize&quot; =&gt; the fullsize photo</li>
+<li>&quot;type&quot; =&gt; its type</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_By_Album" name="method_get_By_Album" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_By_Album()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_By_Album(integer  <span class="argument">$album_ID</span>, string  <span class="argument">$user_Watching</span>, \Foundation\enum  <span class="argument">$user_Role</span>, integer  <span class="argument">$page_toView = 1</span>, boolean  <span class="argument">$order_DESC = FALSE</span>) : array</pre>
+                <p><em>Retrieves the IDs and thumbnails of the photos belonging to a specific album.</em></p>
+                <p>The fetched photos are always the public ones but can also be the private
+ones if the user watching is the Uploader or a MOD/Admin</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$album_ID </td>
+                                <td><p>The album ID of which get the photos from</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user role</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$page_toView </td>
+                                <td><p>The page number to view. It influences the offset</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$order_DESC </td>
+                                <td><p>Whether to order result in DESCendent order. Default: ASCendent</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>An array with photo IDs and thumbnails.
+How to access the array:</p>
+<ul>
+<li>&quot;id&quot; =&gt; the photo's ID</li>
+<li>&quot;thumbnail&quot; =&gt; its thumbnail</li>
+<li>&quot;type&quot; =&gt; the user uploader</li>
+<li>&quot;tot_photo&quot; =&gt; the number of photos</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_By_Categories" name="method_get_By_Categories" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_By_Categories()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_By_Categories(array  <span class="argument">$cats</span>, string  <span class="argument">$user_Watching</span>, \Foundation\enum  <span class="argument">$user_Role</span>, integer  <span class="argument">$page_toView = 1</span>, boolean  <span class="argument">$order_DESC = FALSE</span>) : array</pre>
+                <p><em>Retrives all the photos with the selected categories</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cats </td>
+                                <td><p>The categories to search</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user role</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$page_toView </td>
+                                <td><p>The number of page to view. It influences the offset</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$order_DESC </td>
+                                <td><p>Whether to order result in DESCendent order. Default: ASCendent</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>An array with the photos matching the categories selected.
+How to access to the array:</p>
+<ul>
+<li>&quot;id&quot; =&gt; the photo's ID</li>
+<li>&quot;thumbnail&quot; =&gt; its thumbnail</li>
+<li>&quot;type&quot; =&gt; the user uploader</li>
+<li>&quot;tot_photo&quot; =&gt; the number of photos</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_LikeList" name="method_get_LikeList" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_LikeList()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_LikeList(integer  <span class="argument">$photo_ID</span>) : array</pre>
+                <p><em>Retrieves the list of all uses that liked the selected photo</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo's ID</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The users that liked the selected photo.
+How to access the array:</p>
+<ul>
+<li>Numeric Key =&gt; The usernames</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_MostLiked" name="method_get_MostLiked" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_MostLiked()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_MostLiked(string  <span class="argument">$user_Watching</span>, \Foundation\enum  <span class="argument">$user_Role</span>, integer  <span class="argument">$page_toView = 1</span>) : array</pre>
+                <p><em>Retrieves the most liked photos in DESCending style</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user role</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$page_toView </td>
+                                <td><p>The page number to view. It influences the offset</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>An array with the IDs and Thumbnails of the most liked photos.
+How to access the array:</p>
+<ul>
+<li>&quot;id&quot; =&gt; the photo's ID</li>
+<li>&quot;thumbnail&quot; =&gt; it's thumbnail</li>
+<li>&quot;type&quot; =&gt; the user uploader</li>
+<li>&quot;tot_photo&quot; =&gt; the number of photos</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_UsernamesThatCommented" name="method_get_UsernamesThatCommented" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">get_UsernamesThatCommented()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_UsernamesThatCommented(integer  <span class="argument">$photo_ID</span>) : array</pre>
+                <p><em>Retrieves the list of all uses that commented the selected photo</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo's ID</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The users that commented the selected photo.
+How to access the array:</p>
+<ul>
+<li>&quot;Numeric Key&quot; =&gt; The usernames</li>
+</ul>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete" name="method_delete" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">delete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete(integer  <span class="argument">$photo_ID</span>) </pre>
+                <p><em>Deletes a photo from the DB including its likes and comments</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo ID to delete from the DB</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_delete_ALL_fromAlbum" name="method_delete_ALL_fromAlbum" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">delete_ALL_fromAlbum()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">delete_ALL_fromAlbum(integer  <span class="argument">$album_ID</span>) </pre>
+                <p><em>Deletes all photos within an album including their likes and comments</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$album_ID </td>
+                                <td><p>The album from which we want to delete photos</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_move_To" name="method_move_To" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">move_To()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">move_To(integer  <span class="argument">$photo_ID</span>, integer  <span class="argument">$album_ID</span>) </pre>
+                <p><em>Moves a photo to another album.</em></p>
+                <p>Use $album=0 to move the photo out of the album</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo to move</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$album_ID </td>
+                                <td><p>The new album ID to move to photo to. Use $album=0 to move the photo out of the album</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_TheUploader" name="method_is_TheUploader" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">is_TheUploader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_TheUploader(string  <span class="argument">$username</span>, integer  <span class="argument">$photo_ID</span>) : boolean</pre>
+                <p><em>Checks whether the user is the uploader of the photo.</em></p>
+                <p>This will enable/disable the update for the photo</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$username </td>
+                                <td><p>The user to check with the photo's uploader</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo's ID to get the uploader from</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Whether the user is the uploader</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_connect" name="method_connect" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">connect()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">connect() : \PDO</pre>
+                <p><em>Tries to connect to the DB</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    \PDO
+                                            &mdash; <p>The PDO connection to the DB</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>array $config Needed to set the connection parameters</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_execute_Query" name="method_execute_Query" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">execute_Query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">execute_Query(string  <span class="argument">$query</span>, array  <span class="argument">$toBind</span>) : string</pre>
+                <p><em>Saves an object on the DB</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$query </td>
+                                <td><p>The query used to save a record on the DB</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$toBind </td>
+                                <td><p>The array of values to bind at the query</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The last inserted (primary key, auto_incremental) ID.
+It will return 0 if no ID column exists in the table</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_insert_Query" name="method_insert_Query" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">insert_Query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">insert_Query(string  <span class="argument">$insertInto</span>, array  <span class="argument">$set</span>) : integer</pre>
+                <p><em>Inserts a new record into the DB. Retrieves the last inserted ID</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$insertInto </td>
+                                <td><p>The table to put the record in</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$set </td>
+                                <td><p>The values to insert</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>The last inserted ID</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_fetch_Result" name="method_fetch_Result" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">fetch_Result()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">fetch_Result(string  <span class="argument">$query</span>, array  <span class="argument">$toBind</span>, boolean  <span class="argument">$fetchAll = FALSE</span>) : mixed</pre>
+                <p><em>Fetches the results of the query</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$query </td>
+                                <td><p>The query to execute</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$toBind </td>
+                                <td><p>The values to bind to the query</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$fetchAll </td>
+                                <td><p>Whether to return one (FALSE) or all (TRUE) the records that match the query</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>array An associative array with a numeric keys.
+At each key corresponds another associative array with
+keys named as DB column and their values are the DB records
+boolean FALSE in case $fetchAll=FALSE and no records were affected by the query</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_One" name="method_get_One" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_One()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_One(array  <span class="argument">$select</span>, string  <span class="argument">$from</span>, array  <span class="argument">$where</span>) : mixed</pre>
+                <p><em>Returns an array with a single record, matching the query</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$select </td>
+                                <td><p>The columns to select. Use a string &quot;*&quot; to select all</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$from </td>
+                                <td><p>The DB table to search in</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$where </td>
+                                <td><p>The associative array with the values to search for</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>An array with the record matching the query
+boolean FALSE in case no record matched the query</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_All" name="method_get_All" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_All()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_All(array  <span class="argument">$select</span>, string  <span class="argument">$from</span>, array  <span class="argument">$where</span>, integer  <span class="argument">$limit</span>, integer  <span class="argument">$offset</span>, string  <span class="argument">$orderBy_column = &#039;&#039;</span>, boolean  <span class="argument">$order_DESC = FALSE</span>) : array</pre>
+                <p><em>Rethrives all the records that match the query</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$select </td>
+                                <td><p>The columns to select. Use a string &quot;*&quot; to select all</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$from </td>
+                                <td><p>The DB table to search in</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$where </td>
+                                <td><p>The associative array with the values to search for</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$limit </td>
+                                <td><p>Limits the results to fetch with the query</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$offset </td>
+                                <td><p>Sets how many records skip before fetching the results</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$orderBy_column </td>
+                                <td><p>The table column chosen to order the results</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$order_DESC </td>
+                                <td><p>Whether to return results in ASCendent or DESCendent style</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The associative array with all the records that matched the query
+An ampty array [] in case no record were affected by the query</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_count" name="method_count" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">count()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">count(string  <span class="argument">$count</span>, string  <span class="argument">$from</span>, string  <span class="argument">$where</span>, array  <span class="argument">$toBind = array()</span>) : integer</pre>
+                <p><em>Returns the count of matching rows</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$count </td>
+                                <td><p>The column to count the affected rows from</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$from </td>
+                                <td><p>The table to count in</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$where </td>
+                                <td><p>The clauses to be matched for the count</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$toBind </td>
+                                <td><p>The values to bind at the query</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    integer
+                                            &mdash; <p>The number of affected rows</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bind_params" name="method_bind_params" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">bind_params()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bind_params(\PDOStatement  <span class="argument">$pdo_stmt</span>, array  <span class="argument">$toBind</span>) : \PDOStatement</pre>
+                <p><em>Binds an array of parameters to the query using Question Marks</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\PDOStatement</td>
+                                <td>$pdo_stmt </td>
+                                <td><p>The PDOStatement object to bind the parameters to</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$toBind </td>
+                                <td><p>The array of parameters to bind</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exceptions\queries</dt>
+                            <dd><p>In case of invalid parameters to bind</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    \PDOStatement
+                                            &mdash; <p>The object to execute()</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_basic_Query" name="method_basic_Query" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">basic_Query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">basic_Query(array  <span class="argument">$select</span>, string  <span class="argument">$from</span>, array  <span class="argument">$where</span>) : string</pre>
+                <p><em>Generates a basic query from the given parameters</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$select </td>
+                                <td><p>The columns to select. Use a string &quot;*&quot; to select all</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$from </td>
+                                <td><p>The DB table to search in</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$where </td>
+                                <td><p>The associative array with the values to search for</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The complete query</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Foundation.F_Database.html"><div class="path-wrapper">\Foundation\F_Database</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_update_Categories" name="method_update_Categories" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">update_Categories()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">update_Categories(array  <span class="argument">$new_cats</span>, integer  <span class="argument">$photo_ID</span>) </pre>
+                <p><em>Updates the categories of a photo. This function both add new categories
+and remove old categories (if selected) from the album</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$new_cats </td>
+                                <td><p>The new categories chosen for the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo's ID to whom set/remove the categories</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_query_addCats" name="method_query_addCats" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">query_addCats()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">query_addCats(array  <span class="argument">$cats</span>, integer  <span class="argument">$photo_ID</span>) : string</pre>
+                <p><em>Sets the photo categories</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cats </td>
+                                <td><p>The categories chosen for the album</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo's ID to which set the categories</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The query used to add categories to the photo</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_query_removeCats" name="method_query_removeCats" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">query_removeCats()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">query_removeCats(array  <span class="argument">$cats</span>, integer  <span class="argument">$photo_ID</span>) : string</pre>
+                <p><em>Removes the selected categories from the photo</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cats </td>
+                                <td><p>The category/ies to remove from the photo selected</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo to modify and remove categories from</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The query used to remove categories from the photo</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_Categories" name="method_get_Categories" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">get_Categories()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_Categories(integer  <span class="argument">$photo_ID</span>) : array</pre>
+                <p><em>Retrieves the photo&#039;s categories</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo ID to look for categories</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The photo's categories</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_has_anAlbum" name="method_has_anAlbum" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">has_anAlbum()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">has_anAlbum(integer  <span class="argument">$photo_ID</span>) : boolean</pre>
+                <p><em>Checks whether the photo belongs to an album or not</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo to check</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Whether the photo belongs to an album or not</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_can_beShowed" name="method_can_beShowed" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">can_beShowed()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">can_beShowed(integer  <span class="argument">$photo_ID</span>, string  <span class="argument">$user</span>, \Foundation\enum  <span class="argument">$user_Role</span>) : boolean</pre>
+                <p><em>Cheks whether the user can look at &quot;reserved&quot; photos.</em></p>
+                <p>Returns TRUE whether the user is the uploader or at least a MOD</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$photo_ID </td>
+                                <td><p>The photo to check if public or reserved</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user </td>
+                                <td><p>The user trying to look at the photo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user role</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Foundation\queries</dt>
+                            <dd><p>In case of connection errors</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Whether the user can look at the specific photo</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_ClauseNoPermission" name="method_add_ClauseNoPermission" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">add_ClauseNoPermission()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_ClauseNoPermission(\Foundation\enum  <span class="argument">$user_Role</span>) : string</pre>
+                <p><em>Sets a basic WHERE clause whether the user&#039;s Role is not MOD/Admin</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Foundation\enum</td>
+                                <td>$user_Role </td>
+                                <td><p>The user's Role</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The WHERE clause to add at the query</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">F_Photo.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Foundation\F_Photo.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Entity.html">\Entity</a></li>
+                                                                            <li><a href="../namespaces/Foundation.html">\Foundation</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on June 6th, 2017 at 16:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

@@ -13,6 +13,9 @@ use Entity\E_Photo_Blob;
 use Utilities\Roles;
 use const PHOTOS_PER_PAGE;
 
+/**
+ * This class defines functions about saving and retriving Photos information from DB
+ */
 class F_Photo extends F_Database
 {
     /**

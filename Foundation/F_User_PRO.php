@@ -9,7 +9,7 @@
 namespace Foundation;
 
 /**
- * Sets basic info for PRO users
+ * Sets basic functions for PRO users
  */
 class F_User_PRO extends F_User
 {

@@ -152,7 +152,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * restiruisce un array con i dettagli delle foto 
+     * restiruisce un array con i dettagli delle foto
      * @param type $photo objet
      * @return type array
      */
@@ -202,7 +202,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * assegna a smarty una foto con codifica base64 
+     * assegna a smarty una foto con codifica base64
      * @param type $photo
      */
     public function showimage($photo)
@@ -215,7 +215,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * assegna a smarty una foto con codifica base64 
+     * assegna a smarty una foto con codifica base64
      * @param type $photo
      */
     public function show_profile_pic($photo)

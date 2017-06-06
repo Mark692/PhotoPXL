@@ -11,10 +11,10 @@ namespace Entity;
 use Utilities\Roles;
 
 /**
- * This class represents a Standard User which has some limitation in its functions.
+ * This class represents a Banned User which has fully limited functions.
  * Limitations:
- * - Limited number of daily uploads
- * - All its photos are public, means that everybody logged in can see them
+ * - No login
+ * - No uploads
  */
 class E_User_Banned extends E_User
 {

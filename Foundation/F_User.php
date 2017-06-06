@@ -20,6 +20,10 @@ use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
 use const USER_PER_PAGE;
 
+/**
+ * This is the fundamental class for all other User classes.
+ * Defines common function for every user
+ */
 class F_User extends F_Database
 {
 

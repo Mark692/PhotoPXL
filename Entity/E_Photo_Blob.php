@@ -13,6 +13,9 @@ use const MAX_SIZE_FULL;
 use const THUMB_HEIGHT;
 use const THUMB_WIDTH;
 
+/**
+ * This class enables to process uploaded data
+ */
 class E_Photo_Blob
 {
     private $fullsize;

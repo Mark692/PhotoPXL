@@ -13,7 +13,7 @@ use Utilities\Roles;
 use const UPLOAD_STD_LIMIT;
 
 /**
- * This class represents a Standard User which has some limitation in its functions.
+ * This class represents a Standard User which has some limitations in its functions.
  * Limitations:
  * - Limited number of daily uploads
  * - All its photos are public, means that everybody logged in can see them

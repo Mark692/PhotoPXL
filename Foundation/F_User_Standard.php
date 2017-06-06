@@ -14,7 +14,7 @@ use Utilities\Roles;
 use const DEFAULT_PRO_PIC;
 
 /**
- * Sets basic info for Standard users
+ * Sets basic functions for Standard users
  */
 class F_User_Standard extends F_User
 {
