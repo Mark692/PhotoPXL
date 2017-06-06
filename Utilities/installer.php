@@ -612,8 +612,9 @@ class installer extends F_Database
 
     /**
      * Writes to the installation text file that the app is correctly installed
+     * UNSTABLE! It generates an infinite loop!! DO NOT USE IT!
      */
-    public function set_asInstalled()
+    private function set_asInstalled()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
         fwrite($text, "1\n"); //The app is correctly installed
@@ -623,8 +624,9 @@ class installer extends F_Database
 
     /**
      * Writes to the installation text file that the app is not correctly installed
+     * UNSTABLE! It generates an infinite loop!! DO NOT USE IT!
      */
-    public function set_asInvalidInstallation()
+    private function set_asInvalidInstallation()
     {
         $text = fopen($this->installer_txt, "w"); //Creates if does not exists and writes to the file
         fwrite($text, "0\n"); //The app is not correctly installed

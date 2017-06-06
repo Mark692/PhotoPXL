@@ -18,7 +18,8 @@ require_once $path."U_Nonce.php";
 
 //*
 $test_it = new \Utilities\installer();
-//$test_it->set_DB_ConnectionParameters();
+//$test_it->set_DB_ConnectionParameters(); //Uncomment this to enable connection
+//parameters with both: mine and standard ones (no pass, no user)
 
 //NOTA: QUESTA FUNZIONE CERCHERA' DI CREARE E POPOLARE IL DATABASE "my_photopxl"
 //$test_it->DB_FirstInstallation();
