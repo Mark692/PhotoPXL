@@ -9,7 +9,7 @@
 namespace View;
 
 /**
- * questa classe consete di gestire le varie viste relative agli album
+ * Questa classe gestisce le varie viste relative agli album
  */
 class V_Album extends V_Home
 {

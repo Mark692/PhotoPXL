@@ -8,13 +8,13 @@
 namespace View;
 
 /**
- * questa classe consete di gestire le varie viste relative al Login e alla Registrazione
+ * Questa classe gestisce le varie viste relative al Login e alla Registrazione
  */
 class V_Registration extends V_Home
 {
     // METODI STATICI \\
     /**
-     * mostra la home page con messsaggio di errore = Ops...Hai sbagliato username o password'
+     * Mostra la home page con messsaggio di errore = Ops...Hai sbagliato username o password'
      *
      */
     public static function error_registration()
@@ -28,7 +28,7 @@ class V_Registration extends V_Home
     }
     
     /**
-     * mostra la home page con messsaggio di errore = Ops...Hai sbagliato username o password'
+     * Mostra la home page con messsaggio di errore = Ops...Hai sbagliato username o password'
      *
      */
     public static function error_login()

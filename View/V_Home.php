@@ -8,6 +8,10 @@
 
 namespace View;
 
+/**
+ * Classe che gestisce le varie viste relative all'homepage di default,
+ * i vari messaggi di errore e di banned ed altre funzioni per la gestione dei tpl
+ */
 class V_Home extends V_Basic
 {
     //METODI STATICI -> CONTROL\\
@@ -38,7 +42,7 @@ class V_Home extends V_Basic
 
 
     /**
-     * mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
+     * Mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
      *
      * @param array $array_photo array con ID e Thumbnails che hanno più like.
      *               How to access the array:
@@ -62,8 +66,8 @@ class V_Home extends V_Basic
 
 
     /**
-     *
      * Ritorna la pagina di login per utenti non loggati in caso in cui l'utnete venga bannato
+     * 
      */
     public static function bannedHome()
     {
@@ -77,7 +81,7 @@ class V_Home extends V_Basic
 
 
     /**
-     * visualizza una banner di errore
+     * Visualizza una banner di errore
      * mostra la home page con messsaggio di errore = Ops...Qualcosa è andato storto
      *
      * @param array $array_photo array con ID e Thumbnails che hanno più like.
@@ -102,7 +106,7 @@ class V_Home extends V_Basic
 
 
     /**
-     * mostra le thumbanil della ricerca effettuata dall'utente
+     * Mostra le thumbanil della ricerca effettuata dall'utente
      *
      * @param array $array_photo array con ID e Thumbnails restituite dalla ricerca fatta.
      *               How to access the array:
@@ -124,7 +128,6 @@ class V_Home extends V_Basic
 
 
     /**
-     *
      * Ritorna il template che consente di effettuare il login
      */
     public static function login()
@@ -138,7 +141,6 @@ class V_Home extends V_Basic
 
 
     /**
-     *
      * Ritorna il template che permette di effettuare la registrazione al sito
      */
     public static function registration()
@@ -153,8 +155,7 @@ class V_Home extends V_Basic
 
     //METODI BASE - NON STATICI!!!\\
     /**
-     * 
-     * la funzione imposta il contenuto principale della home_default.tpl
+     * La funzione imposta il contenuto principale della home_default.tpl,
      * il contenuto non è altro che il fetch di altri tpl
      * 
      * @param string $tpl Il nome del tpl del quale bisogna fare il fetch
@@ -167,8 +168,7 @@ class V_Home extends V_Basic
 
 
     /**
-     * 
-     * la funzione imposta il contenuto della top bar della home_default.tpl
+     * La funzione imposta il contenuto della top bar della home_default.tpl,
      * il contenuto non è altro che il fetch di altri tpl
      * 
      * @param stirng $role  stringa che contine il ruolo dell'utente
@@ -181,8 +181,7 @@ class V_Home extends V_Basic
 
 
     /**
-     * 
-     * la funzione imposta il contenuto del banner della home_default.tpl 
+     * La funzione imposta il contenuto del banner della home_default.tpl, 
      * il quale di defautl è impostato a "&nbsp;"
      * il contenuto non è altro che il fetch di altri tpl
      * 
@@ -196,11 +195,10 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * restituisce il contnto del tpl richiesto
+     * Restituisce il contnto del tpl richiesto
      *
      * @param stirng $role  stringa che contine il ruolo dell'utente
-     * @return string $cotenuto che contine il fetch del tpl
+     * @return tpl content che contine il fetch del tpl
      */
     public function fetch_Bar($role)
     {
@@ -209,11 +207,10 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * restituisce il contento del tpl richiesto
+     * Restituisce il contento del tpl richiesto
      *
      * @param string $tpl  nome del tpl da fetchare
-     * @return string $cotenuto che contine il fetch del tpl
+     * @return tpl content che contine il fetch del tpl
      */
     public function fetch_home($tpl)
     {
@@ -222,8 +219,7 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * restituisce il contento del tpl richiesto
+     * Restituisce il contento del tpl richiesto
      *
      * @param string $tpl nome del tpl da fetchare
      * @return string $cotenuto che contine il fetch del tpl
@@ -235,9 +231,9 @@ class V_Home extends V_Basic
 
 
     /**
-     * controlla se nell'array_photo ci sono elementi e li assegna a smarty, altrimenti assegna un messaggio
+     * Controlla se nell'array_photo ci sono elementi e li assegna a smarty, altrimenti assegna un messaggio
      * 
-     *  @param array $array_photo array con ID e Thumbnails restituite dalla ricerca fatta.
+     * @param array $array_photo array con ID e Thumbnails restituite dalla ricerca fatta.
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => it's thumbnail

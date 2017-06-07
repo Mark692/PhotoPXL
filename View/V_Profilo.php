@@ -13,11 +13,11 @@
 namespace View;
 
 /**
- * questa classe consete di gestire le varie viste relative al Profilo
+ * Questa classe gestisce le varie viste relative al Profilo
  */
 class V_Profilo extends V_Home
 {
-    /*
+    /**
      * Funzione che restiuisce il template del profilo nel quale sono presenti 
      * le thumbnail delle foto/album di un determinato utente e le sue informazioni
      * e la sua immagine di profilo 
@@ -49,8 +49,8 @@ class V_Profilo extends V_Home
     }
 
 
-    /*
-     * mostra la home page con messsaggio di successo = Azione avvenuta correttamente'
+    /**
+     * Mostra la home page con messsaggio di successo = Azione avvenuta correttamente'
      *
      * @param array $array_photo array con ID e Thumbnails che hanno più like.
      *               How to access the array:
@@ -74,7 +74,7 @@ class V_Profilo extends V_Home
 
 
     /**
-     * ritorna una vista che consente la modifica dei dati utente
+     * Ritorna una vista che consente la modifica dei dati utente
      *
      * @param objet $user_details  \Entity\E_User_* The user searched
      * @param array $array_photo array con ID e Thumbnails che hanno più like.

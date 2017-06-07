@@ -13,6 +13,10 @@ use Utilities\Roles;
 
 require_once '.'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
 
+/**
+ * Estende la classe Smarty e inizializza l'ambiente di Smarty.
+ * Gestisce alcune funzioni di base per View
+ */
 class V_Basic extends \Smarty
 {
     /**
@@ -44,7 +48,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * questa funzione ritorna una stringa in base al ruolo dell'utente 
+     * Questa funzione ritorna una stringa in base al ruolo dell'utente 
      * @param int $role ruolo dell'utente
      * @return string $role stringa relativa al ruolo 
      */
@@ -79,7 +83,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * questa funzione ritorna un'array in base all'array di categories che viene passato
+     * Questa funzione ritorna un'array in base all'array di categories che viene passato
      * nel'array saranno presenti la stringa e il valore numerico relativo alla categoria 
      * @param array $categories valore numerico delle categories
      * @return array $cost
@@ -131,7 +135,7 @@ class V_Basic extends \Smarty
 
 
     /**
-     * Divide le miniature in blocchi per consentire una visualizzazione a più righe
+     * Divide le thumbnails in blocchi per consentire una visualizzazione a più righe
      *
      * @param array $thumb array con le thumbanil da visualizzare
      *               How to access the array:
@@ -139,7 +143,7 @@ class V_Basic extends \Smarty
      *               - "thumbnail" => its thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
-     * @return array
+     * @return array di thumbanil divise per righe
      */
     public function thumbnail($thumb)
     {
@@ -159,9 +163,9 @@ class V_Basic extends \Smarty
 
 
     /**
-     * restiruisce un array con i dettagli delle foto
-     * @param objet $photo 
-     * @return array
+     * Restiruisce un array con i dettagli delle foto
+     * @param object $photo the photo's Entity Object
+     * @return array $photo_details tutti i dettagli relativi ad una determinata foto
      */
     public function photo_details($photo)
     {
@@ -179,9 +183,9 @@ class V_Basic extends \Smarty
 
 
     /**
-     * restiruisce un array con i dettagli dell'album
-     * @param objet $album 
-     * @return array
+     * Restiruisce un array con i dettagli dell'album
+     * @param objet $album the album's Entity Object
+     * @return array $album_details tutti i dettagli relativi ad un determinato album
      */
     public function album_details($album)
     {
@@ -194,9 +198,9 @@ class V_Basic extends \Smarty
 
 
     /**
-     * restiruisce un array con i dettagli dell'utente
-     * @param objet $user_details 
-     * @return array
+     * Restiruisce un array con i dettagli dell'utente
+     * @param object $user_details \Entity\E_User_* The user searched 
+     * @return array $user_det tutti i dettagli relativi ad un determinato utente
      */
     public function user_details($user_details)
     {
@@ -204,13 +208,18 @@ class V_Basic extends \Smarty
         $password = $user_details->get_Password();
         $email = $user_details->get_Email();
         $role = $this->imposta_ruolo($user_details->get_Role());
-        return $album_details = ["username" => $username, "email" => $email, "password" => $password, "role" => $role];
+        return $user_det = ["username" => $username, "email" => $email, "password" => $password, "role" => $role];
     }
 
 
     /**
-     * assegna a smarty una foto con codifica base64
+     * Assegna a smarty una foto con codifica base64
      * @param objet $photo
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
      */
     public function showimage($photo)
     {
@@ -222,8 +231,13 @@ class V_Basic extends \Smarty
 
 
     /**
-     * assegna a smarty una foto con codifica base64
+     * Assegna a smarty una foto con codifica base64
      * @param objet $photo
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
      */
     public function show_profile_pic($photo)
     {
