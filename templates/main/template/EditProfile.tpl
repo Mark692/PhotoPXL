@@ -8,7 +8,7 @@
                                 {foreach from=$array1 item=valore}
                                     <div class="col-sm-1">
                                         <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
-                                        <a href="http://www.html.it">
+                                        <a href="">
                                         {$valore}
                                         </a>
                                         <!--modo per mettere gli id nascoti-->
@@ -22,7 +22,7 @@
                         {/if}
     </div>
     <div class="col-md-6">
-		<form metod="POST" action="index.php">
+		<form metod="POST" action="">
                             {$pic_profile}
                             <input type="hidden" name="controller" value="profilo" />
                             <input type="hidden" name="task" value="update" />
@@ -40,8 +40,6 @@
                                 <input name="email" class="form-control" id="focusedInput" type="text" value="{$user_details.email}">
                             </div>
                             <h3 class="text-success">Ruolo:</h3><br />{$user_details.role}
-                            <input type="hidden" name="controller" value="profilo" />
-                            <input type="hidden" name="task" value="update" />
                             <input type="submit" name="Salva" class="btn-success" value="Salva Modifiche"/>
                 </form>
     </div>

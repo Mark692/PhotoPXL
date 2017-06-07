@@ -20,8 +20,7 @@
                             <div class="form-group">
                                 <input name="email" class="form-control" id="focusedInput" type="text" value="">
                             </div>
-                            <input type="hidden" name="controller" value="profilo" /> <!-- in value ci andranno in seguito -->
-                            <input type="hidden" name="task" value="update" />
+                            
                             <input type="submit" name="Salva" class="btn-success" value="Registrati"/>
                 </form>
     </div>

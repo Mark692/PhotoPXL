@@ -8,11 +8,10 @@
                             <div class="row">
                                 {foreach from=$array1 item=valore}
                                     <div class="col-sm-1">
-                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
-                                        <a href="http://www.html.it">
+                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO-->
+                                        <a href="">
                                         {$valore}
                                         </a>
-                                        <!--modo per mettere gli id nascoti-->
                                     </div>
                                 {/foreach}
                             </div>
@@ -24,7 +23,7 @@
             </div>
     </div>
         <div class="col-md-6">
-            <form method="POST" action="index.php">
+            <form method="POST" action="">
                     <h3 class="text-success">Ricerca per Categoria:</h3><br />
                         <div class="form-group">
                         <div class="col-lg-10">

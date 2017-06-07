@@ -33,6 +33,7 @@ class V_Basic extends \Smarty
      * Ritorna il contenuto del template che si vuole visualizzare
      * Questa funzione va sovrascritta nelle classi figlie impostando $nome_template
      *
+     * @param string $nome_template una stringa con il riferimento al template da fetchare 
      * @return tpl content
      */
     public function fetch_Template($nome_template)
@@ -43,9 +44,9 @@ class V_Basic extends \Smarty
 
 
     /**
-     * dal valore numerico mi ritorna un array con stringhe
-     * @param type $role
-     * @return array
+     * questa funzione ritorna una stringa in base al ruolo dell'utente 
+     * @param int $role ruolo dell'utente
+     * @return string $role stringa relativa al ruolo 
      */
     public function imposta_ruolo($role)
     {
@@ -78,9 +79,10 @@ class V_Basic extends \Smarty
 
 
     /**
-     * dal valore numerico mi ritorna un array con scritte
-     * @param array $categories
-     * @return array
+     * questa funzione ritorna un'array in base all'array di categories che viene passato
+     * nel'array saranno presenti la stringa e il valore numerico relativo alla categoria 
+     * @param array $categories valore numerico delle categories
+     * @return array $cost
      */
     public function imposta_categoria($categories = [1, 2, 3, 4, 5, 6, 7, 8])
     {
@@ -129,9 +131,14 @@ class V_Basic extends \Smarty
 
 
     /**
-     * Divides the thumbnails into chunks to enable a multi-row view
+     * Divide le miniature in blocchi per consentire una visualizzazione a più righe
      *
-     * @param array $array_photo An array with thumbnails to display
+     * @param array $thumb array con le thumbanil da visualizzare
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      * @return array
      */
     public function thumbnail($thumb)
@@ -153,8 +160,8 @@ class V_Basic extends \Smarty
 
     /**
      * restiruisce un array con i dettagli delle foto
-     * @param type $photo objet
-     * @return type array
+     * @param objet $photo 
+     * @return array
      */
     public function photo_details($photo)
     {
@@ -173,8 +180,8 @@ class V_Basic extends \Smarty
 
     /**
      * restiruisce un array con i dettagli dell'album
-     * @param type $album objet
-     * @return type array
+     * @param objet $album 
+     * @return array
      */
     public function album_details($album)
     {
@@ -188,8 +195,8 @@ class V_Basic extends \Smarty
 
     /**
      * restiruisce un array con i dettagli dell'utente
-     * @param type $user_details objet
-     * @return type array
+     * @param objet $user_details 
+     * @return array
      */
     public function user_details($user_details)
     {
@@ -203,7 +210,7 @@ class V_Basic extends \Smarty
 
     /**
      * assegna a smarty una foto con codifica base64
-     * @param type $photo
+     * @param objet $photo
      */
     public function showimage($photo)
     {
@@ -216,7 +223,7 @@ class V_Basic extends \Smarty
 
     /**
      * assegna a smarty una foto con codifica base64
-     * @param type $photo
+     * @param objet $photo
      */
     public function show_profile_pic($photo)
     {

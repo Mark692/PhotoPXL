@@ -8,8 +8,8 @@
                             <div class="row">
                                 {foreach from=$array1 item=valore}
                                     <div class="col-sm-1">
-                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
-                                        <a href="http://www.html.it">
+                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO -->
+                                        <a href="">
                                         {$valore}
                                         </a>
                                         <!--modo per mettere gli id nascoti-->
@@ -24,10 +24,7 @@
             </div>
     </div>
         <div class="col-md-6">
-                    <h2 class="text-success">Risultato della ricerca per la cateroria:</h2><br />
-                    {foreach from=$categories item=cat}
-                        <h3 class="text-success">{$cat.visualizzato}<br /></h3>
-                    {/foreach}
+                    <h2 class="text-success">Risultato della ricerca:</h2><br />
         </div>
     </div>
 </div>

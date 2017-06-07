@@ -12,20 +12,20 @@ class V_Home extends V_Basic
 {
     //METODI STATICI -> CONTROL\\
     /**
-     * Mostra il template della Home di default
+     * Mostra il template della Home di default per un utnete loggato
+     * assrgna a smarty i vari parametri
      *
-     * @param array $array_photo array An array with the IDs and Thumbnails of the most liked photos.
+     * @param array $array_photo array con ID e Thumbnails che hanno più like.
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => it's thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
-     * @param string $username username utente
+     * @param string $username L'utente che sta cercando di visualizzare la pagina
      */
     public static function standardHome($array_photo, $username)
     {
 
-        //da vedere come sistemare le foto per mettere l'id
         $home = new V_Home();
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
@@ -40,14 +40,16 @@ class V_Home extends V_Basic
     /**
      * mostra la home page con messsaggio di errore = Non hai i permessi per effuttuare l'operazione'
      *
-     * @param type $array_photo Description foto con + like
-     * @param type $username Description username
+     * @param array $array_photo array con ID e Thumbnails che hanno più like.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
+     * @param string $username L'utente che sta cercando di visualizzare la pagina
      */
     public static function notAllowed($array_photo, $username)
     {
-        //A CHE SERVE PASSARE $array_photo ? CHE COSA BISOGNA PASSARE, LE FOTO PIù PIACIUTE?
-        //IN OGNI CASO, QUANDO RICEVI ARRAY DI FOTO DEVI SEMPRE FARE IL CONTROLLO SU "tot_photo"
-        //SEMPRE.
         $home = new V_Home();
         $home->set_banner($tpl = 'banner_no_permessi');
         $home->assign('username', $username);
@@ -61,7 +63,7 @@ class V_Home extends V_Basic
 
     /**
      *
-     * Mostra un banner per dire ad un utente che è stato bannato
+     * Ritorna la pagina di login per utenti non loggati in caso in cui l'utnete venga bannato
      */
     public static function bannedHome()
     {
@@ -74,12 +76,17 @@ class V_Home extends V_Basic
     }
 
 
-//questa è da vedere perchè scritta anche in v_registration ed è uguale..
     /**
      * visualizza una banner di errore
+     * mostra la home page con messsaggio di errore = Ops...Qualcosa è andato storto
      *
-     * @param array $array_photo foto con + like
-     * @param string $username
+     * @param array $array_photo array con ID e Thumbnails che hanno più like.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
+     * @param string $username L'utente che sta cercando di visualizzare la pagina
      */
     public static function error($array_photo, $username)
     {
@@ -95,10 +102,15 @@ class V_Home extends V_Basic
 
 
     /**
-     * restituisce una vista con le foto della ricerca
+     * mostra le thumbanil della ricerca effettuata dall'utente
      *
-     * @param array $array_photo  thumbanils restituite dalla ricerca
-     * @param string $username  username
+     * @param array $array_photo array con ID e Thumbnails restituite dalla ricerca fatta.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
+     * @param string $username L'utente che sta cercando di visualizzare la pagina
      */
     public static function showPhotoCollection($array_photo, $username)
     {
@@ -113,15 +125,7 @@ class V_Home extends V_Basic
 
     /**
      *
-     * Mostra il tamplete per effettuare il login
-     *
-     * @param array $default Foto base del sito
-     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
-     *               How to access the array:
-     *               - "photo" => the photo's Entity Object
-     *               - "uploader" => the user uploader
-     *               - "fullsize" => the fullsize photo
-     *               - "type" => its type
+     * Ritorna il template che consente di effettuare il login
      */
     public static function login()
     {
@@ -135,14 +139,7 @@ class V_Home extends V_Basic
 
     /**
      *
-     * Mostra il tamplete per effettuare il login
-     * @param array $default Foto base del sito
-     *               An array containing the \Entity\E_Photo object photo, its uploader, fullsize and type
-     *               How to access the array:
-     *               - "photo" => the photo's Entity Object
-     *               - "uploader" => the user uploader
-     *               - "fullsize" => the fullsize photo
-     *               - "type" => its type
+     * Ritorna il template che permette di effettuare la registrazione al sito
      */
     public static function registration()
     {
@@ -155,13 +152,12 @@ class V_Home extends V_Basic
 
 
     //METODI BASE - NON STATICI!!!\\
-    //QUESTE FUNZIONI NON VANNO BENE
-    //DEVI AGGIUNGERE UN'ISTANZA DI V_Basic per istanziare l'oggetto e quindi Smarty
-    //L'HO FATTO IO. TU CONTROLLA CHE ABBIA UN SENSO QUELLO CHE HO FATTO E CHE FUNZIONI TUTTO
     /**
-     * imposta il contenuto principale alla variabile privata della classe
-     * Scrive nel tpl gli attributi della classe
+     * 
+     * la funzione imposta il contenuto principale della home_default.tpl
      * il contenuto non è altro che il fetch di altri tpl
+     * 
+     * @param string $tpl Il nome del tpl del quale bisogna fare il fetch
      */
     public function set_Contenuto_Home($tpl)
     {
@@ -171,9 +167,11 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * imposta il contenuto principale alla variabile privata della classe
-     * Scrive nel tpl gli attributi della classe
+     * 
+     * la funzione imposta il contenuto della top bar della home_default.tpl
+     * il contenuto non è altro che il fetch di altri tpl
+     * 
+     * @param stirng $role  stringa che contine il ruolo dell'utente
      */
     public function set_Cont_menu_user($role)
     {
@@ -183,9 +181,12 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * imposta il contenuto principale alla variabile privata della classe
-     * Scrive nel tpl gli attributi della classe
+     * 
+     * la funzione imposta il contenuto del banner della home_default.tpl 
+     * il quale di defautl è impostato a "&nbsp;"
+     * il contenuto non è altro che il fetch di altri tpl
+     * 
+     * @param string $tpl Il nome del tpl del quale bisogna fare il fetch
      */
     public function set_banner($tpl)
     {
@@ -198,8 +199,8 @@ class V_Home extends V_Basic
      *
      * restituisce il contnto del tpl richiesto
      *
-     * @param type $role description stringa che contine il ruolo dell'user...non numerico
-     * @return type $cotenuto che contine il etch del tpl
+     * @param stirng $role  stringa che contine il ruolo dell'utente
+     * @return string $cotenuto che contine il fetch del tpl
      */
     public function fetch_Bar($role)
     {
@@ -211,8 +212,8 @@ class V_Home extends V_Basic
      *
      * restituisce il contento del tpl richiesto
      *
-     * @param type $tpl description nome del tpl da fetchare
-     * @return type $cotenuto che contine il etch del tpl
+     * @param string $tpl  nome del tpl da fetchare
+     * @return string $cotenuto che contine il fetch del tpl
      */
     public function fetch_home($tpl)
     {
@@ -222,10 +223,10 @@ class V_Home extends V_Basic
 
     /**
      *
-     * fa il fetch del tpl che gli viene passato come parametro
+     * restituisce il contento del tpl richiesto
      *
-     * @param type $tpl description nome del tpl da fetchare
-     * @return type $cotenuto che contine il etch del tpl
+     * @param string $tpl nome del tpl da fetchare
+     * @return string $cotenuto che contine il fetch del tpl
      */
     public function fetch_banner($tpl)
     {
@@ -234,29 +235,14 @@ class V_Home extends V_Basic
 
 
     /**
-     *
-     * setta il contenuto della homepage in base al fatto l'utente sia loggato oppure no
-     *
-     * @param type $username prende il valore da session
-     * @return type tpl
-     */
-    public function set_home($username)
-    {
-        if($username === FALSE)
-        {
-            return $tpl = 'home_guest';
-        }
-        else
-        {
-            return $tpl = 'home_loggati';
-        }
-    }
-
-
-    /**
      * controlla se nell'array_photo ci sono elementi e li assegna a smarty, altrimenti assegna un messaggio
      * 
-     * @param type $array_photo
+     *  @param array $array_photo array con ID e Thumbnails restituite dalla ricerca fatta.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public function CheckPhotos($array_photo)
     {

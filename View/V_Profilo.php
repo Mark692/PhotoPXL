@@ -12,16 +12,24 @@
 
 namespace View;
 
+/**
+ * questa classe consete di gestire le varie viste relative al Profilo
+ */
 class V_Profilo extends V_Home
 {
-    //METODI STATICI\\
-    //A BENEDETTA SERVE LA FUNZIONE STATICA ::home() pagina profilo con la LISTA (THUMBNAIL = MINIATURE) degli album/foto
     /*
-     * Funzione che restiuisce il template della pagina del profilo con la thumbnail degli album e i dati utente
+     * Funzione che restiuisce il template del profilo nel quale sono presenti 
+     * le thumbnail delle foto/album di un determinato utente e le sue informazioni
+     * e la sua immagine di profilo 
      *
-     * @param type $username  username di sessione
-     * @param type $user_datails  i dati dell'utente di cui si sta guardando il profilo
-     * @param type $array_photo  thumbnail degli album/foto di un utente
+     * @param type $username  L'untente che sta cercando di visualizzare il profilo
+     * @param objet $user_details  \Entity\E_User_* The user searched
+     * @param array $array_photo thumbnail delle foto/album di un determinato utente
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => its thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public static function home($username, $user_details, $array_photo)
     {
@@ -42,10 +50,15 @@ class V_Profilo extends V_Home
 
 
     /*
-     * funzione che restituisce la home con banner di azione avvenuta con successo
+     * mostra la home page con messsaggio di successo = Azione avvenuta correttamente'
      *
-     * @param array $array_photo foto con + like
-     * @param string $user_name i dati dell'utente
+     * @param array $array_photo array con ID e Thumbnails che hanno più like.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
+     * @param string $username L'utente che sta cercando di visualizzare la pagina
      */
     public static function banner($array_photo, $username)
     {
@@ -61,10 +74,15 @@ class V_Profilo extends V_Home
 
 
     /**
-     * mostra il modulo tpl per la modifica dei dati del profilo
+     * ritorna una vista che consente la modifica dei dati utente
      *
-     * @param Entity\E_User* $user_details i dati dell'utente presi da DB
-     * @param array $array_photo foto con + like
+     * @param objet $user_details  \Entity\E_User_* The user searched
+     * @param array $array_photo array con ID e Thumbnails che hanno più like.
+     *               How to access the array:
+     *               - "id" => the photo's ID
+     *               - "thumbnail" => it's thumbnail
+     *               - "type" => the user uploader
+     *               - "tot_photo" => the number of photos
      */
     public static function showEditProfile($user_details, $array_photo)
     {

@@ -7,7 +7,7 @@
     </div>
     <div class="col-md-6">
                 <h1 class="text-success">Registrazione</h1>
-		<form metod="POST" action="index.php">
+		<form metod="POST" action="">
                             <h3 class="text-success">Username:</h3><br />
                             <div class="form-group">
                                 <input name="username" class="form-control" id="focusedInput" type="text" value="">
@@ -25,7 +25,7 @@
                             <input type="submit" name="Salva" class="btn-success" value="Registrati"/>
                 </form>
                 <h1 class="text-success">Login</h1>
-                <form method="post" action="index.php">
+                <form method="post" action="">
                             <h3 class="text-success">Username:</h3><br />
                             <div class="form-group">
                                 <input name="username" class="form-control" id="focusedInput" type="text" value="">

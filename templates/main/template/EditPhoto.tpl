@@ -4,13 +4,13 @@
                 <h3 class="text-success">Foto da modificare:</h3><br/>
                 {$foto}
                 &nbsp;
-                <form method="POST" action="index.php">
+                <form method="POST" action="">
                     <input type="submit" class="btn-success" value="Elimina"  /></p>
                 </form>
     </div>
     <div class="col-md-6">
                 <h3 class="text-success">Dati foto </h3><br/>
-                <form method="POST" action="index.php">
+                <form method="POST" action="">
                         <p><h3 class="text-success">Titolo:</h3><br />
                         <div class="form-group">
                                 <input name="title" class="form-control" id="focusedInput" type="text" placeholder="{$photo_details.title}">

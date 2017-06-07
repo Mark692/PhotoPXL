@@ -8,19 +8,24 @@
 
 namespace View;
 
+/**
+ * questa classe consete di gestire le varie viste relative agli album
+ */
 class V_Album extends V_Home
 {
     //METODI STATICI \\
     /**
-     * Funzione per restituire la vista di un album
-     * @param array $DB_album The album object to rethrive the details from
+     * Richiama il tpl per la vista dell'album, 
+     * tramite smarty vengono assegnati i vari parametri al template
+     * Viene fatto il controllo su $array_photo per vedere se sono presenti le thumbanil e assegnate a smarty
+     * @param array $DB_album Oggetto Album per ricavare i dettagli 
      * @param array $array_photo
      *               How to access the array:
      *               - "id" => the photo's ID
      *               - "thumbnail" => its thumbnail
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
-     * @param string $username The user who's trying to view the album
+     * @param string $username L'utente che sta cercando di visualizzare l'album
      */
     public static function album($DB_album, $array_photo, $username)
     {
@@ -41,27 +46,6 @@ class V_Album extends V_Home
 
 
     //METODI BASE - NON STATICI!!!\\
-
-    /*
-     * restituisce il contento del tpl in base all'utente
-     * nn lo so che fa questa
-     */
-    public function set_album_tpl($album, $thumbnail, $array_user)
-    {
-        $v = new \V_Basic();
-        $page_tot = ceil($thumbnail['tot_photo'] / PHOTOS_PER_PAGE);
-        $v->assign('id', $thumbnail['id']);
-        $v->assign('thumbnail', $thumbnail['thumbnail']);
-        $v->assign('page_tot', $page_tot);
-        $v->assign('title', $album['title']);
-        $v->assign('description', $album['description']);
-        $categorie = $this->imposta_categoria($album['categories']); //dal numero alla stringa
-        $v->assign('categories', $categorie);
-        $v->assign('user_details', $array_user);
-        $role = $array_user['role'];
-        $role = $this->imposta_ruolo($role);
-        $this->home($role, $tpl = 'album');
-    }
 
 
 }

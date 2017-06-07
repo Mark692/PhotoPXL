@@ -66,7 +66,6 @@
     </div>
     <div class="row">
         <h2>Commenti...</h2>
-        <!--vedere nel caso sia vuoto $comments -->
         {foreach from=$comments item=valore}
         <div class="col-md-6 col-md-offset-3">
             <div class="well">
@@ -77,7 +76,9 @@
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>
                     </div>
-                <!-- va anche il tasto modifica -->
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-success">Modifica</button>
+                    </div>
                 </form>
                 {/if}
             </div>

@@ -8,15 +8,24 @@
 
 namespace View;
 
+/**
+ * questa classe consete di gestire le varie viste relative alle foto
+ */
 class V_Foto extends V_Home
 {
     // METODI STATICI \\
     /**
-     * Questo metodo viene utilizzato per vedere una foto, assegna a smarty
-     * i dati dell'utente e il percorso della foto
+     * Questa funzione assegna tramite smarty i vari parametri al tpl,
+     * consente di richiamare un tpl che permette la vista di una foto,
+     * assegna tramite smarty i commenti relativi alla foto
      *
-     * @param array $photo la foto con fullsize type e id
-     * @param string $username
+     * @param array $photo 
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
+     * @param string $username L'utente che sta cercando di visualizzare la foto
      *
      */
     public static function showPhotoPage($photo, $username)
@@ -47,7 +56,7 @@ class V_Foto extends V_Home
 
     /**
      * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
-     * @param string $username
+     * @param string $username L'utente che vuole effettuare l'upload delle foto
      */
     public static function showUploadPhoto($username)
     {
@@ -67,20 +76,29 @@ class V_Foto extends V_Home
         $home->display('home_default.tpl');
     }
 
+
     /**
-     * mostra una vista per la modifica dei dati di una foto
-     * @param array $photo Description la foto con fullsize type e id
-     * @param string $username
+     * Questa funzione assegna tramite smarty i vari parametri al tpl,
+     * consente di richiamare un tpl che permette la modifica dei vari dettagli della foto
+     * 
+     * @param array $photo 
+     *               How to access the array:
+     *               - "photo" => the photo's Entity Object
+     *               - "uploader" => the user uploader
+     *               - "fullsize" => the fullsize photo
+     *               - "type" => its type
+     * @param string $username L'utente che sta cercando di visualizzare la foto
+     *
      */
     public static function showEditPhoto($photo, $username)
     {
         $home = new \View\V_Home();
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
-        $home->assign('photo_details',$photo_details);
+        $home->assign('photo_details', $photo_details);
         $home->showimage($photo);
         $home->assign('categories', $home->imposta_categoria());
-        $home->assign('role',\Entity\E_User::get_DB_Role($username));
+        $home->assign('role', \Entity\E_User::get_DB_Role($username));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'EditPhoto');
         $home->display('home_default.tpl');
@@ -88,5 +106,4 @@ class V_Foto extends V_Home
 
 
     //METODI BASE - NON STATICI!!!\\
-
 }
