@@ -36,10 +36,12 @@ class queries extends PDOException
                 break;
 
             case 4:
+                //F_Database::connect() - Upon DB connection problems
                 $message = "Impossibile connettersi al database";
                 break;
 
             case 5:
+                //F_Database::execute_Query() - Upon query execution problems
                 $message = "Impossibile completare la richiesta verso il database";
                 break;
 

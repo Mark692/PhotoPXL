@@ -115,7 +115,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">62</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">46</span>
                                 </a>
                             </li>
                             <li>
@@ -145,19 +145,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-136005624"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2140580353"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-136005624" class="accordion-body collapse in">
+            <div id="namespace-2140580353" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1518570772"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-362282073"></a>
                                 <a href="../namespaces/Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
             </div>
-            <div id="namespace-1518570772" class="accordion-body collapse ">
+            <div id="namespace-362282073" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -181,10 +181,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1559733704"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-388341964"></a>
                                 <a href="../namespaces/Foundation.html" style="margin-left: 30px; padding-left: 0">Foundation</a>
             </div>
-            <div id="namespace-1559733704" class="accordion-body collapse ">
+            <div id="namespace-388341964" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -689,7 +689,7 @@ boolean FALSE if no username was found in the DB.</p>
             <article class="method">
                 <h3 class="public ">get_By_Role()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_By_Role(integer  <span class="argument">$role</span>,   <span class="argument">$page_toView = 1</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">get_By_Role(integer  <span class="argument">$role</span>, integer  <span class="argument">$page_toView = 1</span>) : array</pre>
                 <p><em>Returns a list of all users with the given role</em></p>
                 
 
@@ -701,9 +701,9 @@ boolean FALSE if no username was found in the DB.</p>
                                 <td><p>The role to search the users for</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$page_toView </td>
-                                <td></td>
+                                <td><p>The page of results to show. It influences the offset</p></td>
                             </tr>
                                             </table>
                 
@@ -744,7 +744,8 @@ How to access to the array:</p>
                 <h3 class="public ">change_Username()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">change_Username(\Entity\E_User_*  <span class="argument">$new_EUser</span>, string  <span class="argument">$old</span>) </pre>
-                <p><em>Changes the user&#039;s Username</em></p>
+                <p><em>Changes the user&#039;s Username
+THIS FUNCTION SHOULD BE REMOVED BECAUSE IT&#039;S NOT BEEN REQUESTED ANYMORE</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -1958,7 +1959,7 @@ classes which will define the attributes $_table and $_primaryKey.</em></p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 6th, 2017 at 16:38.
+                    on June 6th, 2017 at 20:22.
                 </section>
             </section>
         </section>

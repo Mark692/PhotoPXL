@@ -39,8 +39,9 @@ class E_Photo
      * @param string $desc The description given by the user
      * @param bool $is_reserved Whether the photo is reserved or public
      * @param array $cat The categories of this photo
-     * @param array $likes The list of users that liked the photo
      * @param int $up_Date The date of upload. Leave it empty to set it to NOW
+     * @param array $likes The list of users that liked the photo
+     * @param array $comments The list of users that commented the photo
      */
     public function __construct($title, $desc = '', $is_reserved = FALSE, $cat = [], $up_Date = 0, $likes = [], $comments = [])
     {

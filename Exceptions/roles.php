@@ -24,7 +24,7 @@ class roles extends Exception
         switch ($code) {
             case 0:
 
-                $message = "ATTENZIONE! Il ruolo inserito ($exc) non è corretto. Inserire un valore tra 0 e ".$max_role;
+                $message = "ATTENZIONE! Il ruolo inserito ($exc) non è corretto. Inserire un valore tra ".$min_role." e ".$max_role;
                 break;
 
             case 1:

@@ -262,6 +262,7 @@ class E_User
      * Returns a list of all users with the given role
      *
      * @param int $role The role to search the users for
+     * @param int $page_toView The page of results to show. It influences the offset
      * @throws queries In case of connection errors
      * @return array All the users (usernames only) with the specified role.
      *               How to access to the array:
