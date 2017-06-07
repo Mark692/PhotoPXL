@@ -9,7 +9,7 @@
 namespace View;
 
 /**
- * questa classe consete di gestire le varie viste relative alle foto
+ * Questa classe gestisce le varie viste relative alle foto
  */
 class V_Foto extends V_Home
 {
@@ -26,12 +26,10 @@ class V_Foto extends V_Home
      *               - "fullsize" => the fullsize photo
      *               - "type" => its type
      * @param string $username L'utente che sta cercando di visualizzare la foto
-     *
      */
     public static function showPhotoPage($photo, $username)
     {
         $home = new View\V_Home();
-        //i dettagli di photo come titolo etc è un oggetto
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
         $cat = $home->imposta_categoria($photo_details['categories']);
@@ -55,7 +53,8 @@ class V_Foto extends V_Home
 
 
     /**
-     * Questo metodo viene utilizzato per richiamare il modulo di upload di una foto
+     * Questa funzione viene utilizzata per richiamare il modulo di upload di una foto
+     * 
      * @param string $username L'utente che vuole effettuare l'upload delle foto
      */
     public static function showUploadPhoto($username)
