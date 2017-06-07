@@ -42,10 +42,12 @@ class queries extends PDOException
 
             case 5:
                 //F_Database::execute_Query() - Upon query execution problems
+                //F_User::remove_Like() - Upon query execution problems
                 $message = "Impossibile completare la richiesta verso il database";
                 break;
 
             case 6:
+                //F_Database::bind_params() - Thrown whether the parameters to bind are incorrect
                 $message = "Parametri inseriti non corretti";
                 break;
 

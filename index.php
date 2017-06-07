@@ -15,13 +15,9 @@ require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
-//*
-//$test_it = new \Utilities\installer();
-//$test_it->set_DB_ConnectionParameters(); //Uncomment this to enable connection
-//parameters with both: mine and standard ones (no pass, no user)
 
-//NOTA: QUESTA FUNZIONE CERCHERA' DI CREARE E POPOLARE IL DATABASE "my_photopxl"
-//$test_it->DB_FirstInstallation();
+$CU = new CaseUse\CU_Users();
+//$CU->registration("Marco", "password", "email!\"£$%&/(/&%il.it");
+//$CU->login("Marco", "prova");
+$CU->manage_profilePIC("Marco", 6);
 
-//Prove funzioni
-//$test_it->try_Functions();
