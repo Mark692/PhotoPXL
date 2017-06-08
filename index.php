@@ -16,7 +16,15 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
-$CU = new \CaseUse\C
+$CU = new \CaseUse\CU_Photos();
+$title = "Foto Bella";
+$desc = "questa è la mia foto personale";
+$is_reserved = 0;
+$cat = array(1, 4, 5, 6);
+$path_Photo = ".".DIRECTORY_SEPARATOR."Entity.jpg";
+$uploader = "Marco";
+
+$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
 
 
 
