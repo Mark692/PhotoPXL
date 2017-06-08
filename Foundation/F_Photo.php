@@ -70,7 +70,7 @@ class F_Photo extends F_Database
         $set = array(
             "title"       => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
-            "upload_date" => $to_Update->get_Upload_Date(),
+            //"upload_date" => $to_Update->get_Upload_Date(), //It shouldn't be changed from its original value
             "is_reserved" => $to_Update->get_Reserved()
         );
         $where = array("id" => $id);

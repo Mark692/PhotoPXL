@@ -17,14 +17,24 @@ require_once $path."U_Nonce.php";
 
 
 $CU = new \CaseUse\CU_Photos();
-$title = "Foto Bella";
-$desc = "questa è la mia foto personale";
-$is_reserved = 0;
-$cat = array(1, 4, 5, 6);
+$title = "Modificato";
+$desc = "Anche questa è modificata";
+$is_reserved = '';
+$cat = array(1, 2, 4, 5, 6, 7);
 $path_Photo = ".".DIRECTORY_SEPARATOR."Entity.jpg";
 $uploader = "Marco";
 
-$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
+$ID = 39;
+//$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
+//$CU->update_Details($ID, $title, $desc, $is_reserved, $cat);
 
+$user_Watching = "ProvaUpload";
+$user_Role = 4;
+$page_toView = 1;
+$order_DESC = TRUE;
+//$CU->get_Thumbs_fromUser($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
+
+$id = 15;
+$CU->get_Fullsize($id, $user_Watching, $user_Role);
 
 

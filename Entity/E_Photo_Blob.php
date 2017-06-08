@@ -221,22 +221,24 @@ class E_Photo_Blob
      * @param int $MAX_HEIGHT The max output height
      * @return array An array with the new Width and Height
      */
-    private function adapt_Dimensions($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
+    public function adapt_Dimensions($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
     {
         //Image is bigger than the MAX
-        if($height > $MAX_HEIGHT && $width > $MAX_WIDTH)
+        if($height > $MAX_HEIGHT || $width > $MAX_WIDTH)
         {
             $ratio = $width / $height;
-            if($ratio > 1) //Image is horizontal
-            {
-                $new_W = $MAX_WIDTH;
-                $new_H = floor($new_W / $ratio);
-            }
-            else //Image is vertical or squared
-            {
-                $new_H = $MAX_HEIGHT;
-                $new_W = floor($new_H * $ratio);
-            }
+            $w_rat = $width / $MAX_WIDTH;
+            $h_rat = $height / $MAX_HEIGHT;
+                if($w_rat >= $h_rat)
+                {
+                    $new_W = $MAX_WIDTH;
+                    $new_H = floor($new_W / $ratio);
+                }
+                else
+                {
+                    $new_H = $MAX_HEIGHT;
+                    $new_W = floor($new_H * $ratio);
+                }
         }
         else //Image is smaller than the MAX
         {

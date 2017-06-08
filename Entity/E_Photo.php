@@ -60,7 +60,7 @@ class E_Photo
 
         if($this->check_Categories($cat) === FALSE)
         {
-            throw new input_texts(4, $desc);
+            throw new input_texts(4, $cat);
         }
         $this->set_Categories($cat);
 
@@ -186,7 +186,7 @@ class E_Photo
      */
     public function set_Reserved($is_reserved)
     {
-        $this->is_reserved = $is_reserved;
+        $this->is_reserved = boolval($is_reserved);
     }
 
 
@@ -231,7 +231,7 @@ class E_Photo
      */
     private function set_TrueUploadDate($date)
     {
-        if($date <= 0)
+        if($date <= 0 || !is_int($date))
         {
             return time();
         }

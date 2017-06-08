@@ -45,7 +45,7 @@ class input_texts extends Exception
             case 4:
                 //E_Photo->__construct() - Categories check
                 //E_Album->__construct() - Categories check
-                $message = "Le categorie immesse non sono valide! $exc";
+                $message = "Le categorie immesse non sono valide!";
                 break;
 
             default: $message = "ATTENZIONE! Parametro non valido: $exc";

@@ -54,7 +54,7 @@ class E_Album
 
         if(self::check_Categories($categories) === FALSE)
         {
-            throw new input_texts(4, $desc);
+            throw new input_texts(4, $categories);
         }
         $this->set_Categories($categories);
 
