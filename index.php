@@ -16,7 +16,7 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
-
+$CU = new \CaseUse\C
 
 
 
