@@ -279,7 +279,7 @@ class E_Photo_Blob
      * @param string $source_Path The path to the uploaded image
      * @return mixed The int type of the image or FALSE in case it's not supported/allowed
      */
-    private static function check_Type($source_Path)
+    private function check_Type($source_Path)
     {
         $type = exif_ImageType($source_Path);
         if($type === IMAGETYPE_JPEG || $type === IMAGETYPE_PNG)
@@ -296,7 +296,7 @@ class E_Photo_Blob
      * @param string $source_Path The path to the uploaded image
      * @return mixed The size of the image or FALSE in case it's too big
      */
-    private static function check_Size($source_Path)
+    private function check_Size($source_Path)
     {
         $size = filesize($source_Path);
         if($size < MAX_SIZE_FULL)

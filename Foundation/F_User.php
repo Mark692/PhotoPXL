@@ -90,7 +90,7 @@ class F_User extends F_Database
 
 
     /**
-     * Checks whether the username is available. Case Sensitive.
+     * Checks whether the username is available
      *
      * @param string $username The username to check
      * @throws queries In case of connection errors
@@ -102,7 +102,7 @@ class F_User extends F_Database
                 . '('
                     .'SELECT 1 '
                     .'FROM `users` '
-                    .'WHERE `username`= BINARY ? '
+                    .'WHERE `username`= ? '
                     .'LIMIT 1' //Can this speed the query up?
                 .') AS available';
         $toBind = array($username);
@@ -345,13 +345,13 @@ class F_User extends F_Database
                 .'('
                     .'SELECT * '
                     .'FROM `photo` '
-                    .'WHERE `id` = ?'
+                    .'WHERE `id` = ? AND `user` = ?'
                 .') photo '
                 .'SET '
                     .'profile_pic.photo = photo.thumbnail, '
                     .'profile_pic.type = photo.type '
                 .'WHERE profile_pic.user = ?';
-        $toBind = array($photo_ID, $username);
+        $toBind = array($photo_ID, $username, $username);
         parent::execute_Query($query, $toBind);
     }
 

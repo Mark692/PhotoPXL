@@ -128,7 +128,7 @@ class E_User_Standard extends E_User
             $this->reset_Up_Count();
         }
 
-        if($this->get_up_Count < UPLOAD_STD_LIMIT)
+        if($this->get_up_Count() < UPLOAD_STD_LIMIT)
         {
             return TRUE;
         }
