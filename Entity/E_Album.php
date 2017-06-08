@@ -197,9 +197,11 @@ class E_Album
      */
     public static function check_Categories($cats)
     {
+        $constants = new \ReflectionClass('\Utilities\Categories');
+        $allowed = $constants->getConstants();
         foreach($cats as $c)
         {
-            if($c < PAESAGGI || $c > SPORT)
+            if(!in_array($c, $allowed, TRUE))
             {
                 return FALSE;
             }

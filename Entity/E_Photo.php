@@ -127,8 +127,7 @@ class E_Photo
      */
     private function check_Title($title)
     {
-        if(strlen($title)>=MIN_TITLE_CHARS
-                && strlen($title)<=MAX_TITLE_CHARS)
+        if(strlen($title) >= MIN_TITLE_CHARS && strlen($title) <= MAX_TITLE_CHARS)
         {
             $allowed = array('\'', '-', '_', '.', ' ', '!', '?'); //Allows these chars inside an album title
             if(ctype_alnum(str_replace($allowed, '', $title))) //Removes the allowed chars and checks whether the string is Alphanumeric
@@ -170,7 +169,7 @@ class E_Photo
      */
     private function check_Description($desc)
     {
-        if(strlen($desc)<=MAX_DESCRIPTION_CHARS)
+        if(strlen($desc) <= MAX_DESCRIPTION_CHARS)
         {
             return mb_check_encoding($desc, 'UTF-8');
         }
@@ -232,7 +231,7 @@ class E_Photo
      */
     private function set_TrueUploadDate($date)
     {
-        if ($date <= 0)
+        if($date <= 0)
         {
             return time();
         }
@@ -271,11 +270,13 @@ class E_Photo
      * @param array $cats The categories to evaluate
      * @return bool Whether the categories are all valid entry
      */
-    private function check_Categories($cats) //CHANGED FROM "public static" -> "private"
+    private function check_Categories($cats)
     {
+        $constants = new \ReflectionClass('\Utilities\Categories');
+        $allowed = $constants->getConstants();
         foreach($cats as $c)
         {
-            if($c < PAESAGGI || $c > SPORT)
+            if(!in_array($c, $allowed, TRUE))
             {
                 return FALSE;
             }
@@ -350,10 +351,7 @@ class E_Photo
     }
 
 
-
     //---ENTITY -> FOUNDATION---\\
-
-
     /**
      * Saves a photo object and sets its ID into the $photo object
      *
@@ -396,7 +394,7 @@ class E_Photo
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos matching the query
      */
-    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_User($uploader, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         return F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
@@ -441,7 +439,7 @@ class E_Photo
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
      */
-    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         return F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
@@ -463,7 +461,7 @@ class E_Photo
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
      */
-    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView=1, $order_DESC=FALSE)
+    public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         return F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
     }
@@ -570,4 +568,6 @@ class E_Photo
     {
         return F_Photo::is_TheUploader($username, $photo_ID);
     }
+
+
 }

@@ -665,18 +665,18 @@ class F_Photo extends F_Database
 
 
     /**
-     * Sets a basic WHERE clause whether the user's Role is not MOD/Admin
+     * Sets a basic WHERE clause in case the user's Role is not PRO/MOD/Admin
      *
      * @param enum $user_Role The user's Role
      * @return string The WHERE clause to add at the query
      */
     private function add_ClauseNoPermission($user_Role)
     {
-        if($user_Role < Roles::MOD)
+        if($user_Role < Roles::PRO)
         {
             return 'AND IF '
                     .'( '
-                        .'photo.user = BINARY ? , ' //$user_Watching - Case sensitive check
+                        .'photo.user = ? , ' //$user_Watching
                         .'1, ' //if TRUE
                         .'photo.is_reserved = 0' //if FALSE
                     .') ';
