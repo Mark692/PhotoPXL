@@ -282,7 +282,7 @@ class F_Photo extends F_Database
     public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         $where = '(';
-        //Alternate $where = `category` IN ( foreach($cats as $c) );
+        //Alternatively $where = `category` IN ( foreach($cats as $c) );
         for($i = 0; $i < count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
@@ -454,9 +454,9 @@ class F_Photo extends F_Database
         $where = array("photo" => $photo_ID);
         $likes = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach(array_values($likes) as $users)
+        foreach($likes as $users)
         {
-            array_push($usernames_only, $users);
+            array_push($usernames_only, $users["user"]);
         }
         return $usernames_only;
     }
@@ -672,7 +672,7 @@ class F_Photo extends F_Database
      */
     private function add_ClauseNoPermission($user_Role)
     {
-        if($user_Role < Roles::PRO)
+        if($user_Role < Roles::MOD)
         {
             return 'AND IF '
                     .'( '

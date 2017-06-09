@@ -19,12 +19,12 @@ require_once $path."U_Nonce.php";
 $CU = new \CaseUse\CU_Photos();
 $title = "Modificato";
 $desc = "Anche questa è modificata";
-$is_reserved = '';
-$cat = array(1, 2, 4, 5, 6, 7);
+$is_reserved = 0;
+$cat = array(1, 5, 6);
 $path_Photo = ".".DIRECTORY_SEPARATOR."Entity.jpg";
 $uploader = "Marco";
 
-$ID = 39;
+$ID = 27;
 //$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
 //$CU->update_Details($ID, $title, $desc, $is_reserved, $cat);
 
@@ -34,7 +34,9 @@ $page_toView = 1;
 $order_DESC = TRUE;
 //$CU->get_Thumbs_fromUser($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
 
-$id = 15;
-$CU->get_Fullsize($id, $user_Watching, $user_Role);
+$id = 39;
+//$CU->get_Fullsize($id, $user_Watching, $user_Role);
 
-
+$cats = array(1, 3);
+//$CU->get_Thumbs_fromCats($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
+$CU->lista_Like(8);

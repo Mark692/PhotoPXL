@@ -229,12 +229,12 @@ class E_Photo_Blob
             $ratio = $width / $height;
             $w_rat = $width / $MAX_WIDTH;
             $h_rat = $height / $MAX_HEIGHT;
-                if($w_rat >= $h_rat)
+                if($w_rat >= $h_rat) //It's longer than high
                 {
                     $new_W = $MAX_WIDTH;
                     $new_H = floor($new_W / $ratio);
                 }
-                else
+                else //It's higher than long
                 {
                     $new_H = $MAX_HEIGHT;
                     $new_W = floor($new_H * $ratio);

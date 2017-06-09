@@ -72,7 +72,7 @@ class CU_Photos
             try
             {
                 \Foundation\F_Photo::update($foto);
-                echo("Finito l'update. Controlla nel DB le tabelle 'photo', 'cat_photo'");
+                echo("Finito l'update. Controlla nel DB le tabelle 'photo', 'cat_photo'".nl2br("\r\n"));
                 return TRUE;
             }
             catch(queries $q)
@@ -101,7 +101,6 @@ class CU_Photos
         {
             $DB_result = \Foundation\F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
             echo("Ho preso le miniature dal DB".nl2br("\r\n"));
-            echo("Per ogni risultato sono disponibili: titolo, descrizione, privacy, categorie, uploader".nl2br("\r\n"));
 
             $this->display_Thumbs($DB_result, $user_Role);
         }
@@ -114,12 +113,20 @@ class CU_Photos
     }
 
 
+    /**
+     * Visualizza una foto ridimensionandola alle dimensioni massime imposte dall'app
+     *
+     * @param int $id L'ID della foto da visualizzare
+     * @param string $user_Watching L'utente che vuole visualizzare la foto
+     * @param int $user_Role Il ruolo dell'utente che vuole visualizzare la foto
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
     public function get_Fullsize($id, $user_Watching, $user_Role)
     {
         try
         {
             $DB_result = \Foundation\F_Photo::get_By_ID($id, $user_Watching, $user_Role);
-            echo("Ho preso la foto dal DB".nl2br("\r\n"));
+            echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
             $this->display_Full($DB_result, $user_Role);
         }
@@ -130,6 +137,61 @@ class CU_Photos
             return FALSE;
         }
     }
+
+
+    /**
+     * Vengono mostrate le miniature di tutte le foto appartenenti alle categorie scelte
+     *
+     * @param array $cats Le categorie che si vogliono usare per filtrare i risultati
+     * @param string $user_Watching L'utete che sta richiedendo le foto
+     * @param int $user_Role Il ruolo dell'utente
+     * @param int $page_toView Determina quale pagina di risultati mostrare
+     * @param boolean $order_DESC Determina l'ordinamento dei risultati
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function get_Thumbs_fromCats($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
+    {
+        try
+        {
+            $DB_result = \Foundation\F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
+            echo("Ho eseguito la query al DB".nl2br("\r\n"));
+
+            $this->display_Thumbs($DB_result, $user_Role);
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
+
+
+
+    public function lista_Like($ID)
+    {
+        try
+        {
+            $array_utenti = \Foundation\F_Photo::get_LikeList($ID);
+            echo("Utenti ai quali piace la foto $ID: ");
+            $s = '';
+            foreach($array_utenti as $u)
+            {
+                echo($u." ");
+            }
+            echo(substr($s, -2));
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+
+    }
+
+
+
 
 
     /**
@@ -248,7 +310,7 @@ class CU_Photos
      */
     private function display_Full($DB_result, $Function_role)
     {
-        if($DB_result !== [])
+        if($DB_result !== FALSE)
         {
             $ruolo = "NON DISPONIBILE"; //Per motivi di compatibilità qualora venisse passato un "ruolo" non valido
             $gestisci_Costanti = new \ReflectionClass('\Utilities\Roles');
@@ -290,6 +352,11 @@ class CU_Photos
 
             echo '<img src="data:'.$mime.'; base64, '.base64_encode($contents).'"/>';
             imagedestroy($pic);
+        }
+        else
+        {
+            echo("Impossibile visualizzare la foto. Non è stato preso niente dal DB".nl2br("\r\n"));
+            echo("E' possibile che l'utente scelto non abbia un ruolo adeguato a poter visualizzare la foto".nl2br("\r\n"));
         }
     }
 

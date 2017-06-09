@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/PhotoPXL/P/photo.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/Entity/E_Photo.php</file>
+            <file>file:/C:/xampp/htdocs/PhotoPXL/Utilities/config.inc.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/CaseUse/CU_Users.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/index.php</file>
             <file>file:/C:/xampp/htdocs/PhotoPXL/CaseUse/CU_Photos.php</file>
