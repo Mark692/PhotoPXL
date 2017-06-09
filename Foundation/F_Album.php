@@ -84,8 +84,7 @@ class F_Album extends F_Database
         $update = "album";
         $set = array(
             "title" => $to_Update->get_Title(),
-            "description" => $to_Update->get_Description(),
-            "creation_date" => $to_Update->get_Creation_Date()
+            "description" => $to_Update->get_Description()
                 );
         $where = array("id" => $id);
         parent::update($update, $set, $where);

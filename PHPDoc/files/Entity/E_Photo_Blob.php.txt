@@ -221,22 +221,24 @@ class E_Photo_Blob
      * @param int $MAX_HEIGHT The max output height
      * @return array An array with the new Width and Height
      */
-    private function adapt_Dimensions($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
+    public function adapt_Dimensions($width, $height, $MAX_WIDTH, $MAX_HEIGHT)
     {
         //Image is bigger than the MAX
-        if($height > $MAX_HEIGHT && $width > $MAX_WIDTH)
+        if($height > $MAX_HEIGHT || $width > $MAX_WIDTH)
         {
             $ratio = $width / $height;
-            if($ratio > 1) //Image is horizontal
-            {
-                $new_W = $MAX_WIDTH;
-                $new_H = floor($new_W / $ratio);
-            }
-            else //Image is vertical or squared
-            {
-                $new_H = $MAX_HEIGHT;
-                $new_W = floor($new_H * $ratio);
-            }
+            $w_rat = $width / $MAX_WIDTH;
+            $h_rat = $height / $MAX_HEIGHT;
+                if($w_rat >= $h_rat) //It's longer than high
+                {
+                    $new_W = $MAX_WIDTH;
+                    $new_H = floor($new_W / $ratio);
+                }
+                else //It's higher than long
+                {
+                    $new_H = $MAX_HEIGHT;
+                    $new_W = floor($new_H * $ratio);
+                }
         }
         else //Image is smaller than the MAX
         {
@@ -279,7 +281,7 @@ class E_Photo_Blob
      * @param string $source_Path The path to the uploaded image
      * @return mixed The int type of the image or FALSE in case it's not supported/allowed
      */
-    private static function check_Type($source_Path)
+    private function check_Type($source_Path)
     {
         $type = exif_ImageType($source_Path);
         if($type === IMAGETYPE_JPEG || $type === IMAGETYPE_PNG)
@@ -296,7 +298,7 @@ class E_Photo_Blob
      * @param string $source_Path The path to the uploaded image
      * @return mixed The size of the image or FALSE in case it's too big
      */
-    private static function check_Size($source_Path)
+    private function check_Size($source_Path)
     {
         $size = filesize($source_Path);
         if($size < MAX_SIZE_FULL)

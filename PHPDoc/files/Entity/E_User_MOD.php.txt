@@ -44,7 +44,9 @@ class E_User_MOD extends E_User_PRO
      * @throws queries In case of connection errors
      * @return array All the usernames that match the query and the total usernames stored in the DB.
      *               How to access the array:
-     *               - Numeric Keys => usernames
+     *               - Numeric Keys => "user" => The string username
+     *               - Numeric Keys => "photo" => His/Her profile pic
+     *               - Numeric Keys => "type" => The photo type
      *               - "total_inDB" => the number of total users matching the query
      */
     public static function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 100)
@@ -58,6 +60,7 @@ class E_User_MOD extends E_User_PRO
      *
      * @param string $username The user's username to ban
      * @throws queries In case of connection errors
+     * @return boolean Whether the action was successful or not
      */
     public static function ban($username)
     {

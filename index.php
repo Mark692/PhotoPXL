@@ -18,8 +18,21 @@ require_once $path."U_Nonce.php";
 
 $cu = new \CaseUse\CU_Albums();
 $owner = "Marco";
-$title = "Il mio secondo album";
-$desc = "Questo invece ha una descrizione";
-$cat = array(3, 3, 5, 6, 5, 3, 7);
-$creation_date = 2;
+$title = "Non mi piace questo ";
+$desc = "e neanche la descrizione";
+$cat = array(1, 3, 6, 7);
+$creation_date = -12342;
 //$cu->upload_it($owner, $title, $desc, $cat, $creation_date);
+
+$id = 1;
+//$cu->aggiorna_Dettagli($id, $title, $desc, $cat);
+
+$photoID = 6;
+//$cu->imposta_FotoCopertina($id, $photoID);
+
+$page_toView = 1;
+$order_DESC = FALSE;
+//$cu->mostra_AlbumUtente($owner, $page_toView, $order_DESC);
+//$cu->mostra_DettagliAlbum($id);
+//$cu->mostra_perCategorie($cat, $page_toView, $order_DESC);
+//$cu->elimina(3);

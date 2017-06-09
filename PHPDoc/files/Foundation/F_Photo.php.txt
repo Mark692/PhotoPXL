@@ -70,7 +70,7 @@ class F_Photo extends F_Database
         $set = array(
             "title"       => $to_Update->get_Title(),
             "description" => $to_Update->get_Description(),
-            "upload_date" => $to_Update->get_Upload_Date(),
+            //"upload_date" => $to_Update->get_Upload_Date(), //It shouldn't be changed from its original value
             "is_reserved" => $to_Update->get_Reserved()
         );
         $where = array("id" => $id);
@@ -282,7 +282,7 @@ class F_Photo extends F_Database
     public static function get_By_Categories($cats, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
     {
         $where = '(';
-        //Alternate $where = `category` IN ( foreach($cats as $c) );
+        //Alternatively $where = `category` IN ( foreach($cats as $c) );
         for($i = 0; $i < count($cats); $i++)
         {
             $where .= '(`category`=?) OR ';
@@ -454,9 +454,9 @@ class F_Photo extends F_Database
         $where = array("photo" => $photo_ID);
         $likes = parent::get_All($select, $from, $where);
         $usernames_only = [];
-        foreach(array_values($likes) as $users)
+        foreach($likes as $users)
         {
-            array_push($usernames_only, $users);
+            array_push($usernames_only, $users["user"]);
         }
         return $usernames_only;
     }
@@ -665,7 +665,7 @@ class F_Photo extends F_Database
 
 
     /**
-     * Sets a basic WHERE clause whether the user's Role is not MOD/Admin
+     * Sets a basic WHERE clause in case the user's Role is not MOD/Admin
      *
      * @param enum $user_Role The user's Role
      * @return string The WHERE clause to add at the query
@@ -676,7 +676,7 @@ class F_Photo extends F_Database
         {
             return 'AND IF '
                     .'( '
-                        .'photo.user = BINARY ? , ' //$user_Watching - Case sensitive check
+                        .'photo.user = ? , ' //$user_Watching
                         .'1, ' //if TRUE
                         .'photo.is_reserved = 0' //if FALSE
                     .') ';

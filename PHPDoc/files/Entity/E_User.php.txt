@@ -215,7 +215,7 @@ class E_User
 
 
     /**
-     * Checks whether the username is available. Case Sensitive.
+     * Checks whether the username is available
      *
      * @param string $username The username to check
      * @throws queries In case of connection errors

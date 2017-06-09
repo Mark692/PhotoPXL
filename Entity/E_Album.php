@@ -174,7 +174,7 @@ class E_Album
      */
     public function set_Categories($cat)
     {
-        $this->categories = array_unique($cat);
+        $this->categories = array_unique($cat); //Eliminates duplicated entries
     }
 
 

@@ -54,7 +54,7 @@ class E_Album
 
         if(self::check_Categories($categories) === FALSE)
         {
-            throw new input_texts(4, $desc);
+            throw new input_texts(4, $categories);
         }
         $this->set_Categories($categories);
 
@@ -174,7 +174,7 @@ class E_Album
      */
     public function set_Categories($cat)
     {
-        $this->categories = $cat;
+        $this->categories = array_unique($cat);
     }
 
 
@@ -197,9 +197,11 @@ class E_Album
      */
     public static function check_Categories($cats)
     {
+        $constants = new \ReflectionClass('\Utilities\Categories');
+        $allowed = $constants->getConstants();
         foreach($cats as $c)
         {
-            if($c < PAESAGGI || $c > SPORT)
+            if(!in_array($c, $allowed, TRUE))
             {
                 return FALSE;
             }

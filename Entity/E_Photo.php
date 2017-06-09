@@ -249,7 +249,7 @@ class E_Photo
      */
     public function set_Categories($cat)
     {
-        $this->categories = array_unique($cat);
+        $this->categories = array_unique($cat); //Eliminates duplicated entries
     }
 
 
