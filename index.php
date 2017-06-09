@@ -18,8 +18,8 @@ require_once $path."U_Nonce.php";
 
 $cu = new \CaseUse\CU_Albums();
 $owner = "Marco";
-$title = "Il mio primo album";
-$desc = "";
-$cat = array(1, 4, 5);
-$creation_date = 44;
-$cu->upload_it($owner, $title, $desc, $cat, $creation_date);
+$title = "Il mio secondo album";
+$desc = "Questo invece ha una descrizione";
+$cat = array(3, 3, 5, 6, 5, 3, 7);
+$creation_date = 2;
+//$cu->upload_it($owner, $title, $desc, $cat, $creation_date);

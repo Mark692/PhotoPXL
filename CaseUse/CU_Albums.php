@@ -66,6 +66,7 @@ class CU_Albums
         {
             $a = new E_Album($title, $desc, $cat, $creation_date);
             echo("Creazione album avvenuta con successo".nl2br("\r\n"));
+            print_r($a->get_Categories());
             return $a;
         }
         catch(input_texts $text)
