@@ -175,9 +175,9 @@ class F_User extends F_Database
 
         $array_users = parent::get_All($select, $from, $where, $limit, $offset);
         $username_only = [];
-        foreach(array_values($array_users) as $users)
+        foreach($array_users as $users)
         {
-            array_push($username_only, $users);
+            array_push($username_only, $users["username"]);
         }
         return $username_only;
     }

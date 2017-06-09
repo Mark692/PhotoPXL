@@ -8,11 +8,17 @@
 
 namespace CaseUse;
 
+use Entity\E_Photo_Blob;
 use Entity\E_User_Standard;
 use Exceptions\input_texts;
 use Exceptions\queries;
+use Exceptions\uploads;
 use Foundation\F_User;
+use Foundation\F_User_Admin;
+use Foundation\F_User_MOD;
+use Foundation\F_User_PRO;
 use Foundation\F_User_Standard;
+use ReflectionClass;
 use Utilities\Roles;
 
 /**
@@ -215,7 +221,7 @@ class CU_Users
                 ."Utilities".DIRECTORY_SEPARATOR
                 ."Install".DIRECTORY_SEPARATOR
                 ."marco.png";
-        $bob = new \Entity\E_Photo_Blob();
+        $bob = new E_Photo_Blob();
         try
         {
             $bob->on_Upload($path);
@@ -231,7 +237,7 @@ class CU_Users
                 return FALSE;
             }
         }
-        catch(\Exceptions\uploads $uploads)
+        catch(uploads $uploads)
         {
             echo($uploads->getMessage());
             echo(nl2br("\r\n"));
@@ -304,7 +310,7 @@ class CU_Users
         {
             echo("L'utente $username prova ad aggiungere il like alla foto con ID = $photo_ID");
             echo(nl2br("\r\n"));
-            $esito = \Foundation\F_User::add_Like_to($photo_ID, $username);
+            $esito = F_User::add_Like_to($photo_ID, $username);
             echo("Il like è stato aggiunto? ");
             return var_dump($esito);
         }
@@ -330,7 +336,7 @@ class CU_Users
         {
             echo("L'utente $username prova rimuovere il like dalla foto con ID = $photo_ID");
             echo(nl2br("\r\n"));
-            $esito = \Foundation\F_User::remove_Like($username, $photo_ID);
+            $esito = F_User::remove_Like($username, $photo_ID);
             echo("Il like è stato rimosso? ");
             return var_dump($esito);
         }
@@ -355,7 +361,7 @@ class CU_Users
         try
         {
             echo("Prendo l'utente dal database.".nl2br("\r\n"));
-            $E_User_STD = \Foundation\F_User::get_UserDetails($username);
+            $E_User_STD = F_User::get_UserDetails($username);
         }
         catch(queries $q1)
         {
@@ -365,7 +371,7 @@ class CU_Users
         }
 
 
-        if(!($E_User_STD instanceof \Entity\E_User_Standard)) //Se NON è un utente standard
+        if(!($E_User_STD instanceof E_User_Standard)) //Se NON è un utente standard
         {
             echo("Spiacente, questo controllo è valido solo per istanze di Entity\E_User_Standard");
             echo(nl2br("\r\n"));
@@ -392,7 +398,7 @@ class CU_Users
 
         try
         {
-            \Foundation\F_User_Standard::update_Counters($E_User_STD);
+            F_User_Standard::update_Counters($E_User_STD);
             echo("Aggiornamento dei contatori avvenuto con successo");
             echo(nl2br("\r\n"));
             return TRUE;
@@ -418,7 +424,7 @@ class CU_Users
     {
         try
         {
-            \Foundation\F_User_PRO::set_PhotoPrivacy($username, $photo_ID, $privacy);
+            F_User_PRO::set_PhotoPrivacy($username, $photo_ID, $privacy);
             echo("L'esito di questa funzione va verificato nel DB. L'utente che sta modificando la privacy DEVE essere l'uploader della foto");
             echo(nl2br("\r\n"));
             echo("Inoltre, non viene controllato il ruolo dell'utente. Questo controllo andrebbe fatto in Control, non in Foundation");
@@ -446,7 +452,7 @@ class CU_Users
     {
         try
         {
-            $lista = \Foundation\F_User_MOD::get_UsersList($pageToView, $starts_With, $limit_PerPage);
+            $lista = F_User_MOD::get_UsersList($pageToView, $starts_With, $limit_PerPage);
             $tot = $lista["total_inDB"];
             echo("Lista degli utenti che iniziano per '$starts_With'. Pagina $pageToView, risultati totali = $tot");
             echo(nl2br("\r\n"));
@@ -482,7 +488,7 @@ class CU_Users
     {
         try
         {
-            $esito = \Foundation\F_User_MOD::ban($username);
+            $esito = F_User_MOD::ban($username);
             if($esito === TRUE)
             {
                 echo("L'utente $username è stato bannato.");
@@ -505,11 +511,11 @@ class CU_Users
         echo("Ruolo attuale: ".nl2br("\r\n"));
         try
         {
-            $role = \Foundation\F_User::get_Role($username);
+            $role = F_User::get_Role($username);
 
             if($role !== FALSE)
             {
-                $gestisci_Costanti = new \ReflectionClass('\Utilities\Roles');
+                $gestisci_Costanti = new ReflectionClass('\Utilities\Roles');
                 $ruoli_Utenti = $gestisci_Costanti->getConstants();
 
                 foreach($ruoli_Utenti as $nome_Ruolo => $valore_Ruolo)
@@ -547,16 +553,16 @@ class CU_Users
     {
         try
         {
-            $esito = \Foundation\F_User_Admin::change_Role($username, $nuovo_Ruolo);
+            $esito = F_User_Admin::change_Role($username, $nuovo_Ruolo);
             if($esito === TRUE)
             {
                 try
                 {
-                    $role = \Foundation\F_User::get_Role($username);
+                    $role = F_User::get_Role($username);
 
                     if($role !== FALSE)
                     {
-                        $gestisci_Costanti = new \ReflectionClass('\Utilities\Roles');
+                        $gestisci_Costanti = new ReflectionClass('\Utilities\Roles');
                         $ruoli_Utenti = $gestisci_Costanti->getConstants();
 
                         foreach($ruoli_Utenti as $nome_Ruolo => $valore_Ruolo)

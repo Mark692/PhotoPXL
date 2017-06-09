@@ -16,27 +16,10 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
-$CU = new \CaseUse\CU_Photos();
-$title = "Modificato";
-$desc = "Anche questa è modificata";
-$is_reserved = 0;
-$cat = array(1, 5, 6);
-$path_Photo = ".".DIRECTORY_SEPARATOR."Entity.jpg";
-$uploader = "Marco";
-
-$ID = 27;
-//$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
-//$CU->update_Details($ID, $title, $desc, $is_reserved, $cat);
-
-$user_Watching = "ProvaUpload";
-$user_Role = 4;
-$page_toView = 1;
-$order_DESC = TRUE;
-//$CU->get_Thumbs_fromUser($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
-
-$id = 39;
-//$CU->get_Fullsize($id, $user_Watching, $user_Role);
-
-$cats = array(1, 3);
-//$CU->get_Thumbs_fromCats($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
-$CU->lista_Like(8);
+$cu = new \CaseUse\CU_Albums();
+$owner = "Marco";
+$title = "Il mio primo album";
+$desc = "";
+$cat = array(1, 4, 5);
+$creation_date = 44;
+$cu->upload_it($owner, $title, $desc, $cat, $creation_date);

@@ -33,8 +33,7 @@ class E_Comment
      */
     public function __construct($text, $user_ID, $photo_ID)
     {
-        if(trim($text) == ''
-            && ($this->check_Text($text) === FALSE))
+        if($this->check_Text($text) === FALSE)
         {
             throw new input_texts(3, $text);
         }
@@ -96,10 +95,11 @@ class E_Comment
      */
     private function check_Text($text)
     {
-        if(strlen($text) >= MIN_COMMENT_CHARS
-                && strlen($text)<=MAX_COMMENT_CHARS)
+        if(trim($text) !== ''
+                && strlen($text) >= MIN_COMMENT_CHARS
+                && strlen($text) <= MAX_COMMENT_CHARS)
         {
-            return mb_check_encoding($text, 'UTF-8');
+            return mb_check_encoding($text, 'UTF-8'); //Check the chars in input
         }
         return FALSE;
     }

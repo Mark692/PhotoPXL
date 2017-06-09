@@ -665,7 +665,7 @@ class F_Photo extends F_Database
 
 
     /**
-     * Sets a basic WHERE clause in case the user's Role is not PRO/MOD/Admin
+     * Sets a basic WHERE clause in case the user's Role is not MOD/Admin
      *
      * @param enum $user_Role The user's Role
      * @return string The WHERE clause to add at the query

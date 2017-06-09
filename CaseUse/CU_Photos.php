@@ -14,6 +14,10 @@ use Exceptions\input_texts;
 use Exceptions\queries;
 use Exceptions\uploads;
 use Foundation\F_Photo;
+use ReflectionClass;
+use const FULL_HEIGHT;
+use const FULL_WIDTH;
+use const PHOTOS_PER_ROW;
 
 /**
  * Questa classe si occupa di testare metodi di classe per gli oggetti E_Photo
@@ -42,6 +46,7 @@ class CU_Photos
             {
                 F_Photo::insert($E_Photo, $Blob, $uploader);
                 echo("Ho inserito la foto nel DB".nl2br("\r\n"));
+            return TRUE;
             }
             catch(queries $q)
             {
@@ -71,7 +76,7 @@ class CU_Photos
             $foto->set_ID($ID);
             try
             {
-                \Foundation\F_Photo::update($foto);
+                F_Photo::update($foto);
                 echo("Finito l'update. Controlla nel DB le tabelle 'photo', 'cat_photo'".nl2br("\r\n"));
                 return TRUE;
             }
@@ -99,10 +104,11 @@ class CU_Photos
     {
         try
         {
-            $DB_result = \Foundation\F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
+            $DB_result = F_Photo::get_By_User($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
             echo("Ho preso le miniature dal DB".nl2br("\r\n"));
 
             $this->display_Thumbs($DB_result, $user_Role);
+            return TRUE;
         }
         catch(queries $q)
         {
@@ -125,10 +131,11 @@ class CU_Photos
     {
         try
         {
-            $DB_result = \Foundation\F_Photo::get_By_ID($id, $user_Watching, $user_Role);
+            $DB_result = F_Photo::get_By_ID($id, $user_Watching, $user_Role);
             echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
             $this->display_Full($DB_result, $user_Role);
+            return TRUE;
         }
         catch(queries $q)
         {
@@ -153,10 +160,11 @@ class CU_Photos
     {
         try
         {
-            $DB_result = \Foundation\F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
+            $DB_result = F_Photo::get_By_Categories($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
             echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
             $this->display_Thumbs($DB_result, $user_Role);
+            return TRUE;
         }
         catch(queries $q)
         {
@@ -167,12 +175,17 @@ class CU_Photos
     }
 
 
-
+    /**
+     * Genera una lista di utenti che hanno messo "like" alla foto scelta
+     *
+     * @param int $ID L'ID della foto per la quale
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
     public function lista_Like($ID)
     {
         try
         {
-            $array_utenti = \Foundation\F_Photo::get_LikeList($ID);
+            $array_utenti = F_Photo::get_LikeList($ID);
             echo("Utenti ai quali piace la foto $ID: ");
             $s = '';
             foreach($array_utenti as $u)
@@ -180,6 +193,7 @@ class CU_Photos
                 echo($u." ");
             }
             echo(substr($s, -2));
+            return TRUE;
         }
         catch(queries $q)
         {
@@ -191,7 +205,55 @@ class CU_Photos
     }
 
 
+    /**
+     * Mostra le foto più piaciute partendo da quella con il maggior numero di like
+     *
+     * @param string $user_Watching L'utente che vuole visualizzare la lista di foto
+     * @param int $user_Role Il suo ruolo all'interno dell'app
+     * @param int $page_toView Determina quale pagina di risultati consultare
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function foto_PiuPiaciute($user_Watching, $user_Role, $page_toView)
+    {
+        try
+        {
+            $liked = F_Photo::get_MostLiked($user_Watching, $user_Role, $page_toView);
+            echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
+            $this->display_Thumbs($liked, $user_Role);
+            return TRUE;
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
+
+
+    /**
+     * Elimina una foto dal DB
+     *
+     * @param int $photo_ID La foto da eliminare assieme ai suoi riferimenti in Likes, Comments e Album
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function elimina($photo_ID)
+    {
+        try
+        {
+            F_Photo::delete($photo_ID);
+            echo("Richiesta al DB completata.".nl2br("\r\n"));
+            echo("Verificare che la foto con id $photo_ID sia stata effettivamente eliminata".nl2br("\r\n"));
+            return TRUE;
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
 
 
     /**
@@ -202,7 +264,7 @@ class CU_Photos
      * @param int $is_reserved La privacy della foto
      * @param array $cat Le categorie della foto
      * @return E_Photo|boolean  boolean Indica l'esito delle funzioni. FALSE = almeno un errore
-     *               array Contiene gli oggetti "foto" e "bob"
+     *                          E_Photo Contiene l'oggetto creato
      */
     private function crea_Foto_Entity($title, $desc, $is_reserved, $cat)
     {
@@ -225,7 +287,8 @@ class CU_Photos
      * Genera l'oggetto Blob con Fullsize, Thumbnail, Type e Size
      *
      * @param string $path Il percorso dal quale prendere la foto
-     * @return E_Photo_Blob|boolean
+     * @return E_Photo_Blob|boolean  boolean Indica l'esito delle funzioni. FALSE = almeno un errore
+     *                          E_Photo_Blob Contiene l'oggetto creato
      */
     private function crea_Foto_Bob($path)
     {
@@ -262,7 +325,7 @@ class CU_Photos
         if($DB_result !== [])
         {
             $ruolo = "NON DISPONIBILE"; //Per motivi di compatibilità qualora venisse passato un "ruolo" non valido
-            $gestisci_Costanti = new \ReflectionClass('\Utilities\Roles');
+            $gestisci_Costanti = new ReflectionClass('\Utilities\Roles');
             $ruoli_Utenti = $gestisci_Costanti->getConstants();
 
             foreach($ruoli_Utenti as $nome_Ruolo => $valore_Ruolo)
@@ -313,7 +376,7 @@ class CU_Photos
         if($DB_result !== FALSE)
         {
             $ruolo = "NON DISPONIBILE"; //Per motivi di compatibilità qualora venisse passato un "ruolo" non valido
-            $gestisci_Costanti = new \ReflectionClass('\Utilities\Roles');
+            $gestisci_Costanti = new ReflectionClass('\Utilities\Roles');
             $allowed = $gestisci_Costanti->getConstants();
 
             foreach($allowed as $nome => $valore)
@@ -332,7 +395,7 @@ class CU_Photos
             $image = imagecreatefromstring($DB_result["fullsize"]);
             $width = imagesx($image);
             $height = imagesy($image);
-            $bob = new \Entity\E_Photo_Blob();
+            $bob = new E_Photo_Blob();
             list($lungh, $alt) = $bob->adapt_Dimensions($width, $height, FULL_WIDTH, FULL_HEIGHT);
 
             $pic = imagescale($image, $lungh, $alt);
@@ -361,4 +424,39 @@ class CU_Photos
     }
 
 
+
+
+    /*
+     * Dati pronti per i test
+     *
+     *
+//$CU = new \CaseUse\CU_Photos();
+//$title = "Modificato";
+//$desc = "Anche questa è modificata";
+//$is_reserved = 0;
+//$cat = array(1, 5, 6);
+//$path_Photo = ".".DIRECTORY_SEPARATOR."Entity.jpg";
+//$uploader = "Marco";
+//
+//$ID = 27;
+//$CU->upload_it($title, $desc, $is_reserved, $cat, $path_Photo, $uploader);
+//$CU->update_Details($ID, $title, $desc, $is_reserved, $cat);
+
+//$user_Watching = "ProvaUpload";
+//$user_Role = 4;
+//$page_toView = 1;
+//$order_DESC = TRUE;
+//$CU->get_Thumbs_fromUser($uploader, $user_Watching, $user_Role, $page_toView, $order_DESC);
+
+//$id = 39;
+//$CU->get_Fullsize($id, $user_Watching, $user_Role);
+
+//$cats = array(1, 3);
+//$CU->get_Thumbs_fromCats($cats, $user_Watching, $user_Role, $page_toView, $order_DESC);
+//$CU->lista_Like(8);
+//$CU->foto_PiuPiaciute($user_Watching, $user_Role, $page_toView);
+
+//$CU->elimina(30);
+     *
+     */
 }

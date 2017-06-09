@@ -43,7 +43,7 @@ class queries extends PDOException
             case 5:
                 //F_Database::execute_Query() - Upon query execution problems
                 //F_User::remove_Like() - Upon query execution problems
-                $message = "Impossibile completare la richiesta verso il database";
+                $message = "Richiesta mal formulata";
                 break;
 
             case 6:
