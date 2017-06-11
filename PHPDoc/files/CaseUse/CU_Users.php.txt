@@ -184,7 +184,8 @@ class CU_Users
     /**
      * Cambia la foto profilo attualmente impostata con una scelta dal DB delle foto
      *
-     * @param type $username Il nick dell'utente che vuole cambiare la propria foto profilo
+     * @param string $username Il nick dell'utente che vuole cambiare la propria foto profilo
+     * @param int $photo_ID L'ID della foto da utilizzare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
     public function cambia_PROPIC_DB($username, $photo_ID)

@@ -356,10 +356,14 @@ class CU_Photos
                     $pic = $thumb["thumbnail"];
                     //header('Content-Type: image/'.$mime); //Scarica la pagina html...
                     echo '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
-                    echo(" ".$thumb["id"]);
+                    echo(" ".$thumb["id"].", ");
                     $i++;
                 }
             }
+        }
+        else
+        {
+            echo("Non è stato preso niente dal DB");
         }
     }
 

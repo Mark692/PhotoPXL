@@ -150,7 +150,7 @@ class CU_Photos
      * Vengono mostrate le miniature di tutte le foto appartenenti alle categorie scelte
      *
      * @param array $cats Le categorie che si vogliono usare per filtrare i risultati
-     * @param string $user_Watching L'utete che sta richiedendo le foto
+     * @param string $user_Watching L'utente che sta richiedendo le foto
      * @param int $user_Role Il ruolo dell'utente
      * @param int $page_toView Determina quale pagina di risultati mostrare
      * @param boolean $order_DESC Determina l'ordinamento dei risultati
@@ -221,6 +221,59 @@ class CU_Photos
             echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
             $this->display_Thumbs($liked, $user_Role);
+            return TRUE;
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
+
+
+    /**
+     * Vengono mostrate le miniature di tutte le foto appartenenti ad un determinato album
+     *
+     * @param array $album_ID L'album nel quale cercare le foto
+     * @param string $user_Watching L'utente che sta richiedendo le foto
+     * @param int $user_Role Il ruolo dell'utente
+     * @param int $page_toView Determina quale pagina di risultati mostrare
+     * @param boolean $order_DESC Determina l'ordinamento dei risultati
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView = 1, $order_DESC = FALSE)
+    {
+        try
+        {
+            $DB_result = F_Photo::get_By_Album($album_ID, $user_Watching, $user_Role, $page_toView, $order_DESC);
+            echo("Ho eseguito la query al DB".nl2br("\r\n"));
+
+            $this->display_Thumbs($DB_result, $user_Role);
+            return TRUE;
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
+
+
+    /**
+     * Sposta una foto in un altro album. Per rimuovere la foto dall'album usare move_To($photo_ID, 0)
+     * @param int $photo_ID La foto da spostare
+     * @param int $album_ID L'album in cui inserire la foto
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function move_To($photo_ID, $album_ID)
+    {
+        try
+        {
+            \Foundation\F_Photo::move_To($photo_ID, $album_ID);
+            echo("Query completata con successo".nl2br("\r\n"));
+
             return TRUE;
         }
         catch(queries $q)

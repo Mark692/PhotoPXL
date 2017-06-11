@@ -31,7 +31,6 @@ class F_User_Admin extends F_User_MOD
 
         if(in_array($new_Role, $allowed, TRUE))
         {
-            echo("ciao");
             $update = "users";
             $set = array("role" => $new_Role);
             $where = array("username" => $username);

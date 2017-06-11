@@ -221,7 +221,7 @@ class CU_Users
         $path = ".".DIRECTORY_SEPARATOR
                 ."Utilities".DIRECTORY_SEPARATOR
                 ."Install".DIRECTORY_SEPARATOR
-                ."marco.png";
+                .$username;
         $bob = new E_Photo_Blob();
         try
         {

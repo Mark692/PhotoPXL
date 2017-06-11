@@ -186,7 +186,7 @@ class E_Photo
      */
     public function set_Reserved($is_reserved)
     {
-        $this->is_reserved = boolval($is_reserved);
+        $this->is_reserved = $is_reserved;
     }
 
 
