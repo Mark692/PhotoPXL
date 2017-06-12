@@ -28,12 +28,11 @@ class CU_Albums
      * @param string $title Il titolo da dare all'album
      * @param string $desc La descrizione per l'album
      * @param array $cat Le categorie dell'album
-     * @param int $creation_date Data di creazione dell'album
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function upload_it($owner, $title, $desc, $cat, $creation_date)
+    public function insert($owner, $title, $desc, $cat)
     {
-        $E_Album = $this->create_EAlbum($title, $desc, $cat, $creation_date);
+        $E_Album = $this->create_EAlbum($title, $desc, $cat);
         if($E_Album !== FALSE)
         {
             try

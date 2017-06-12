@@ -33,7 +33,7 @@ class CU_Albums
      */
     public function upload_it($owner, $title, $desc, $cat, $creation_date)
     {
-        $E_Album = $this->crea_EAlbum($title, $desc, $cat, $creation_date);
+        $E_Album = $this->create_EAlbum($title, $desc, $cat, $creation_date);
         if($E_Album !== FALSE)
         {
             try
@@ -61,9 +61,9 @@ class CU_Albums
      * @param array $cat Le nuove categorie
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function aggiorna_Dettagli($id, $title, $desc, $cat)
+    public function update_Details($id, $title, $desc, $cat)
     {
-        $E_Album = $this->crea_EAlbum($title, $desc, $cat);
+        $E_Album = $this->create_EAlbum($title, $desc, $cat);
         if($E_Album !== FALSE)
         {
             $E_Album->set_ID($id);
@@ -89,7 +89,7 @@ class CU_Albums
      * @param int $photoID L'ID della foto da usare per la miniatura/cover
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function imposta_FotoCopertina($albumID, $photoID)
+    public function set_Cover($albumID, $photoID)
     {
         try
         {
@@ -115,7 +115,7 @@ class CU_Albums
      * @param boolean $order_DESC Determina l'ordinamento dei risultati
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function mostra_AlbumUtente($owner, $page_toView, $order_DESC)
+    public function get_By_User($owner, $page_toView, $order_DESC)
     {
         try
         {
@@ -140,14 +140,14 @@ class CU_Albums
      * @param int $id L'ID dell'album da visualizzare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function mostra_DettagliAlbum($id)
+    public function get_By_ID($id)
     {
         try
         {
             $results = F_Album::get_By_ID($id);
             echo("Query effettuata con successo.".nl2br("\r\n"));
 
-            $this->mostra_Copertina($results); //Mostra la copertina
+            $this->display_Cover($results); //Mostra la copertina
 
             $E_Album = $results["album"];
             echo("Dettagli album: ".nl2br("\r\n"));
@@ -189,7 +189,7 @@ class CU_Albums
      * @param boolean $order_DESC Determina l'ordinamento dei risultati
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function mostra_perCategorie($cats, $page_toView, $order_DESC)
+    public function get_By_Categories($cats, $page_toView, $order_DESC)
     {
         try
         {
@@ -214,7 +214,7 @@ class CU_Albums
      * @param int $id L'ID dell'album da eliminare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function elimina($id)
+    public function delete($id)
     {
         try
         {
@@ -241,7 +241,7 @@ class CU_Albums
      * @return boolean|E_Album boolean Indica l'esito delle funzioni. FALSE = almeno un errore
      *                         array Contiene gli oggetti "foto" e "bob"
      */
-    private function crea_EAlbum($title, $desc, $cat, $creation_date = 0)
+    private function create_EAlbum($title, $desc, $cat, $creation_date = 0)
     {
         try
         {
@@ -303,7 +303,7 @@ class CU_Albums
      * @param array $DB_result Array di risultati preso dal DB
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    private function mostra_Copertina($DB_result)
+    private function display_Cover($DB_result)
     {
         if($DB_result !== [])
         {
@@ -319,30 +319,55 @@ class CU_Albums
     }
 
 
+    /**
+     * Questa funzione elimina tutte le foto appartenenti ad un determinato album
+     * ed elimina l'album stesso. Per eliminare le foto viene usata una funzione
+     * propria di F_Photo, quindi vengono testate due funzioni contemporaneamente
+     *
+     * @param int $album_ID L'ID dell'album da eliminare con tutte le sue foto
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function delete_Album_AND_Photos($album_ID)
+    {
+        try
+        {
+            \Foundation\F_Album::delete_Album_AND_Photos($album_ID);
+            echo("Query effettuata con successo.".nl2br("\r\n"));
+            return TRUE;
+        }
+        catch(queries $q)
+        {
+            echo("E' avvenuto un errore contattando il DB: ".$q->getMessage());
+            echo(nl2br("\r\n"));
+            return FALSE;
+        }
+    }
+
+
     /*
      * Dati pronti per i test
      *
      *
-//$cu = new \CaseUse\CU_Albums();
+//$cu = new \CaseUse\C$cu = new \CaseUse\CU_Albums();
 //$owner = "Marco";
 //$title = "Non mi piace questo ";
 //$desc = "e neanche la descrizione";
 //$cat = array(1, 3, 6, 7);
 //$creation_date = -12342;
-//$cu->upload_it($owner, $title, $desc, $cat, $creation_date);
-
+//$cu->insert($owner, $title, $desc, $cat, $creation_date);
+//
 //$id = 1;
-//$cu->aggiorna_Dettagli($id, $title, $desc, $cat);
-
+//$cu->update_Details($id, $title, $desc, $cat);
+//
 //$photoID = 6;
-//$cu->imposta_FotoCopertina($id, $photoID);
-
+//$cu->set_Cover($id, $photoID);
+//
 //$page_toView = 1;
 //$order_DESC = FALSE;
-//$cu->mostra_AlbumUtente($owner, $page_toView, $order_DESC);
-//$cu->mostra_DettagliAlbum($id);
-//$cu->mostra_perCategorie($cat, $page_toView, $order_DESC);
-//$cu->elimina(3);
-     * 
+//$cu->get_By_User($owner, $page_toView, $order_DESC);
+//$cu->get_By_ID($id);
+//$cu->get_By_Categories($cat, $page_toView, $order_DESC);
+//$cu->delete(3);
+     *
      */
 }

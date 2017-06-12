@@ -146,19 +146,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1287775737"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-804949566"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1287775737" class="accordion-body collapse in">
+            <div id="namespace-804949566" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-484931060"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-567694515"></a>
                                 <a href="../namespaces/CaseUse.html" style="margin-left: 30px; padding-left: 0">CaseUse</a>
             </div>
-            <div id="namespace-484931060" class="accordion-body collapse ">
+            <div id="namespace-567694515" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -176,10 +176,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1100461096"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1391412083"></a>
                                 <a href="../namespaces/Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
             </div>
-            <div id="namespace-1100461096" class="accordion-body collapse ">
+            <div id="namespace-1391412083" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -203,10 +203,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-580895842"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-746488068"></a>
                                 <a href="../namespaces/Foundation.html" style="margin-left: 30px; padding-left: 0">Foundation</a>
             </div>
-            <div id="namespace-580895842" class="accordion-body collapse ">
+            <div id="namespace-746488068" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -578,7 +578,7 @@
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$title</span>, string  <span class="argument">$desc = &#039;&#039;</span>, boolean  <span class="argument">$is_reserved = FALSE</span>, array  <span class="argument">$cat = array()</span>, integer  <span class="argument">$up_Date</span>, array  <span class="argument">$likes = array()</span>, array  <span class="argument">$comments = array()</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$title</span>, string  <span class="argument">$desc = &#039;&#039;</span>, integer  <span class="argument">$is_reserved</span>, array  <span class="argument">$cat = array()</span>, integer  <span class="argument">$up_Date</span>, array  <span class="argument">$likes = array()</span>, array  <span class="argument">$comments = array()</span>) </pre>
                 <p><em>Instantiates a Photo object taken from the DB or just uploaded.</em></p>
                 <p>In case the Photo has just been uploaded use the short-construct in order to set:</p>
 <ul>
@@ -599,9 +599,9 @@
                                 <td><p>The description given by the user</p></td>
                             </tr>
                                                     <tr>
-                                <td>boolean</td>
+                                <td>integer</td>
                                 <td>$is_reserved </td>
-                                <td><p>Whether the photo is reserved or public</p></td>
+                                <td><p>Whether the photo is reserved (1) or public (0)</p></td>
                             </tr>
                                                     <tr>
                                 <td>array</td>
@@ -835,16 +835,16 @@
             <article class="method">
                 <h3 class="public ">set_Reserved()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_Reserved(boolean  <span class="argument">$is_reserved</span>) </pre>
+                <pre class="signature" style="margin-right: 54px;">set_Reserved(integer  <span class="argument">$is_reserved</span>) </pre>
                 <p><em>Sets the Photo privacy as
-- Reserved (TRUE): only certain users will be able to see the photo
-- Public  (FALSE): ALL users will be able to see the photo</em></p>
+- Reserved (1): only certain users will be able to see the photo
+- Public  (0): ALL users will be able to see the photo</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>boolean</td>
+                                <td>integer</td>
                                 <td>$is_reserved </td>
                                 <td><p>The new Photo privacy</p></td>
                             </tr>
@@ -871,14 +871,14 @@
             <article class="method">
                 <h3 class="public ">get_Reserved()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get_Reserved() : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">get_Reserved() : integer</pre>
                 <p><em>Retrieves the visibility of the Photo</em></p>
                 
 
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    integer
                                             &mdash; <p>Retrieves the visibility of the Photo</p>
                                     				
                             </article>
@@ -2093,7 +2093,7 @@ How to access the array:</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 10th, 2017 at 00:29.
+                    on June 12th, 2017 at 16:19.
                 </section>
             </section>
         </section>

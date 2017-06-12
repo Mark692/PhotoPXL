@@ -27,9 +27,9 @@ class CU_Comments
      * @param int $photoID L'ID della foto da commentare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function inserisci($testo, $utente, $photoID)
+    public function insert($testo, $utente, $photoID)
     {
-        $com = $this->crea_Commento($testo, $utente, $photoID);
+        $com = $this->create_Comment($testo, $utente, $photoID);
         if($com === FALSE)
         {
             echo("Impossibile procedere all'inserimento del commento nel DB".nl2br("\r\n"));
@@ -58,7 +58,7 @@ class CU_Comments
      * @param boolean $order_DESC Determina l'ordinamento dei commenti
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function get_PhotoComments($photo_ID, $order_DESC)
+    public function get_By_Photo($photo_ID, $order_DESC)
     {
         try
         {
@@ -105,9 +105,9 @@ class CU_Comments
      * @param int $photoID La foto alla quale cambiare il commento
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function cambia_Commento($id, $testo, $utente, $photoID)
+    public function update($id, $testo, $utente, $photoID)
     {
-        $com = $this->crea_Commento($testo, $utente, $photoID);
+        $com = $this->create_Comment($testo, $utente, $photoID);
         if($com === FALSE)
         {
             echo("Impossibile procedere all'inserimento del commento nel DB".nl2br("\r\n"));
@@ -136,7 +136,7 @@ class CU_Comments
      * @param int $id L'ID del commento da rimuovere
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function elimina_Commento($id)
+    public function remove($id)
     {
         try
         {
@@ -162,7 +162,7 @@ class CU_Comments
      * @return boolean|E_Comment Ritorna FALSE se è avvenuto qualche errore
      *                                   Ritorna E_Comment se tutto è andato bene
      */
-    private function crea_Commento($testo, $utente, $photoID)
+    private function create_Comment($testo, $utente, $photoID)
     {
         try
         {
@@ -182,20 +182,20 @@ class CU_Comments
      *
      *
 //$CU = new \CaseUse\CU_Comments();
-
+//
 //$testo = "A me piace questa";
 //$utente = "Fede";
 //$photoID = 17;
-//$c = $CU->inserisci($testo, $utente, $photoID);
-
+//$c = $CU->insert($testo, $utente, $photoID);
+//
 //$order_DESC = FALSE;
-//$CU->get_PhotoComments($photoID, $order_DESC);
-
+//$CU->get_By_Photo($photoID, $order_DESC);
+//
 //$id_commento = 23;
 //$nuovo_testo = "Questo commento non esiste";
-//$CU->cambia_Commento($id_commento, $nuovo_testo, $utente, $photoID);
-
-//$CU->elimina_Commento($id_commento);
-     * 
+//$CU->update($id_commento, $nuovo_testo, $utente, $photoID);
+//
+//$CU->remove($id_commento);
+     *
      */
 }

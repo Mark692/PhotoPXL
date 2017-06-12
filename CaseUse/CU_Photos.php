@@ -120,6 +120,29 @@ class CU_Photos
 
 
     /**
+     * Mostra una foto a dimensione massima (per l'app) ed i relativi dettagli
+     *
+     * @param int $id L'ID della foto da visualizzare
+     * @param string $user_Watching L'utente che vuole visualizzare la foto
+     * @param int $user_Role Il ruolo dell'utente che vuole visualizzare la foto
+     * @param boolean $order_DESC Determina l'ordinamento dei commenti
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function mostra_FULL($id, $user_Watching, $user_Role, $order_DESC)
+    {
+        $esito = $this->get_By_ID($id, $user_Watching, $user_Role);
+        if($esito === TRUE)
+        {
+            $comment = new \CaseUse\CU_Comments();
+                echo(nl2br("\r\n"));
+            $comment->get_By_Photo($id, $order_DESC);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+
+    /**
      * Visualizza una foto ridimensionandola alle dimensioni massime imposte dall'app
      *
      * @param int $id L'ID della foto da visualizzare
@@ -437,8 +460,8 @@ class CU_Photos
         if($DB_result !== FALSE)
         {
             $ruolo = "NON DISPONIBILE"; //Per motivi di compatibilità qualora venisse passato un "ruolo" non valido
-            $gestisci_Costanti = new ReflectionClass('\Utilities\Roles');
-            $allowed = $gestisci_Costanti->getConstants();
+            $const = new ReflectionClass('\Utilities\Roles');
+            $allowed = $const->getConstants();
 
             foreach($allowed as $nome => $valore)
             {
@@ -449,7 +472,7 @@ class CU_Photos
                 }
             }
 
-            echo("Si visualizza il risultato in base al ruolo ".$ruolo.nl2br("\r\n"));
+            echo("Si visualizza il risultato in base al ruolo ".$ruolo.nl2br("\r\n").nl2br("\r\n"));
 
             //Scala l'immagine per adattarla alle costanti di sistema FULL_WIDTH, FULL_HEIGHT
             $mime = image_type_to_mime_type($DB_result["type"]);
@@ -473,9 +496,39 @@ class CU_Photos
             ob_end_clean();
             echo("Titolo: ".$DB_result["photo"]->get_Title().nl2br("\r\n"));
             echo("Descrizione: ".$DB_result["photo"]->get_Description().nl2br("\r\n"));
+            echo("Categorie: ");
+
+            $const = new ReflectionClass('\Utilities\Categories');
+            $APP_cats = $const->getConstants();
+            $DB_cats = $DB_result["photo"]->get_Categories();
+            foreach($DB_cats as $c)
+            {
+                foreach($APP_cats as $k => $v)
+                {
+                    if($c == $v)
+                    {
+                        echo($k.", ");
+                    }
+                }
+            }
+            echo(nl2br("\r\n"));
+            echo("Data di caricamento: ".$DB_result["photo"]->get_Upload_Date().nl2br("\r\n"));
+            echo("Utente che ha caricato la foto: ".$DB_result["uploader"].nl2br("\r\n"));
 
             echo '<img src="data:'.$mime.'; base64, '.base64_encode($contents).'"/>';
             imagedestroy($pic);
+
+            echo(nl2br("\r\n"));
+            $likes = $DB_result["photo"]->get_NLikes();
+            echo("Questa foto piace a ".$likes);
+            if($likes == 1)
+            {
+                echo(" persona".nl2br("\r\n"));
+            }
+            else
+            {
+                echo(" persone".nl2br("\r\n"));
+            }
         }
         else
         {

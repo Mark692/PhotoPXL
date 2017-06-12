@@ -63,7 +63,7 @@ class CU_Comments
         try
         {
             $com = F_Comment::get_By_Photo($photo_ID, $order_DESC);
-            echo("Query eseguita.".nl2br("\r\n"));
+            echo("Commenti degli utenti: ".nl2br("\r\n"));
             if($com !== [])
             {
                 $conto = count($com);
@@ -73,7 +73,7 @@ class CU_Comments
                 }
                 else
                 {
-                    echo("Per la foto $photo_ID abbiamo ".count($com)." commenti:".nl2br("\r\n"));
+                    echo("Per la foto $photo_ID abbiamo ".$conto." commenti:".nl2br("\r\n"));
                 }
                 $i = 1;
                 foreach($com as $c)

@@ -345,7 +345,7 @@ class F_User extends F_Database
                 .'('
                     .'SELECT * '
                     .'FROM `photo` '
-                    .'WHERE `id` = ? AND `user` = ?'
+                    .'WHERE `id` = ? AND (`user` = ? OR `user` = "AllUser") '
                 .') photo '
                 .'SET '
                     .'profile_pic.photo = photo.thumbnail, '
