@@ -178,7 +178,7 @@ class F_Photo extends F_Database
                 $photo["description"],
                 $photo["is_reserved"],
                 $cats,
-                $photo["upload_date"],
+                intval($photo["upload_date"]),
                 $liked_By,
                 $commented_By
                 );

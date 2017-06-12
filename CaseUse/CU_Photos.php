@@ -501,18 +501,20 @@ class CU_Photos
             $const = new ReflectionClass('\Utilities\Categories');
             $APP_cats = $const->getConstants();
             $DB_cats = $DB_result["photo"]->get_Categories();
+            $categs = '';
             foreach($DB_cats as $c)
             {
                 foreach($APP_cats as $k => $v)
                 {
                     if($c == $v)
                     {
-                        echo($k.", ");
+                        $categs = $categs.$k.', ';
                     }
                 }
             }
-            echo(nl2br("\r\n"));
-            echo("Data di caricamento: ".$DB_result["photo"]->get_Upload_Date().nl2br("\r\n"));
+            echo(substr($categs, 0, -2).nl2br("\r\n"));
+            $date = $DB_result["photo"]->get_Upload_Date();
+            echo("Data di caricamento: ".date("d/m/y", $date)." alle ore ".date("H:i", $date).nl2br("\r\n"));
             echo("Utente che ha caricato la foto: ".$DB_result["uploader"].nl2br("\r\n"));
 
             echo '<img src="data:'.$mime.'; base64, '.base64_encode($contents).'"/>';
