@@ -28,6 +28,49 @@ use Utilities\Roles;
 class CU_Users
 {
     /**
+     * Registrazione e Login di un utente
+     *
+     * @param string $username Il nuovo username
+     * @param string $password La password per l'utente
+     * @param string $email L'email con cui registrarsi
+     */
+    public function Registrazione_Login($username, $password, $email)
+    {
+        echo("Inizio fase di registrazione: ".nl2br("\r\n").nl2br("\r\n"));
+        $esito = $this->insert($username, $password, $email);
+
+        if($esito === TRUE)
+        {
+            echo(nl2br("\r\n").nl2br("\r\n")."Fase di login: ".nl2br("\r\n").nl2br("\r\n"));
+            $this->get_LoginInfo($username, $password);
+        }
+        else
+        {
+            echo(nl2br("\r\n")."Registrazione fallita, non si procede al login con queste credenziali");
+        }
+    }
+
+
+    /**
+     * Questa funzione si occupa di gestire l'immagine di profilo di un utente
+     *
+     * @param string $username L'username con il quale si vuole procedere al cambio di foto profilo
+     * @param int $photo_ID L'ID di una foto presente nel DB con cui cambiare la foto
+     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
+     */
+    public function manage_profilePIC($username, $photo_ID)
+    {
+        $this->get_ProfilePic($username);
+
+        $this->set_ProfilePic($username, $photo_ID);
+
+        $this->upload_NewCover($username);
+
+        $this->remove_CurrentProPic($username);
+    }
+
+
+    /**
      * Questa funzione si occupa di creare un oggetto Entity\E_User_Standard ed inserirlo nel DB
      * Procede inoltre nel try catch di eventuali eccezioni
      *
@@ -36,7 +79,7 @@ class CU_Users
      * @param string $email L'email dell'utente
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function registration($username, $password, $email)
+    public function insert($username, $password, $email)
     {
         try
         {
@@ -92,7 +135,7 @@ class CU_Users
      * @param string $password La password di tale utente. Se ne prende l'impronta sha512 e la si confronta con il valore salvato nel DB
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function login($username, $password)
+    public function get_LoginInfo($username, $password)
     {
         try
         {
@@ -124,7 +167,7 @@ class CU_Users
             }
 
 //Se quindi la pass è giusta e l'utente non è bannato:
-            echo("Perfetto, i dati sono corretti. Login completato con successo");
+            echo("Perfetto, i dati sono corretti. Benvenuto $username");
             echo(nl2br("\r\n"));
 //In questo caso si potrebbe usare la funzione \Foundation\F_User::get_UserDetails($username); e mostrarne l'output
             return TRUE;
@@ -135,31 +178,12 @@ class CU_Users
 
 
     /**
-     * Questa funzione si occupa di gestire l'immagine di profilo di un utente
-     *
-     * @param string $username L'username con il quale si vuole procedere al cambio di foto profilo
-     * @param int $photo_ID L'ID di una foto presente nel DB con cui cambiare la foto
-     * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
-     */
-    public function manage_profilePIC($username, $photo_ID)
-    {
-        $this->default_PROPIC($username);
-
-        $this->cambia_PROPIC_DB($username, $photo_ID);
-
-        $this->upload_PROPIC($username);
-
-        $this->remove_Current_PROPIC($username);
-    }
-
-
-    /**
      * Mostra all'utente la sua foto profilo attualmente impostata. Da utilizzare per l'immagine di default
      *
      * @param string $username Il nick dell'utente che vuole visualizzare la propria foto profilo
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function default_PROPIC($username)
+    public function get_ProfilePic($username)
     {
         try
         {
@@ -188,7 +212,7 @@ class CU_Users
      * @param int $photo_ID L'ID della foto da utilizzare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function cambia_PROPIC_DB($username, $photo_ID)
+    public function set_ProfilePic($username, $photo_ID)
     {
         try
         {
@@ -213,7 +237,7 @@ class CU_Users
      * @param type $username Il nick dell'utente che vuole caricare la propria foto profilo
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function upload_PROPIC($username)
+    public function upload_NewCover($username)
     {
         echo("Prova ora a cambiare la foto profilo con una caricata al momento");
         echo(nl2br("\r\n"));
@@ -253,15 +277,15 @@ class CU_Users
      * @param type $username Il nick dell'utente che vuole rimuovere la propria foto profilo
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function remove_Current_PROPIC($username)
+    public function remove_CurrentProPic($username)
     {
-
         echo("Infine, l'utente decide di tornare alla foto di default.");
         echo(nl2br("\r\n"));
         try
         {
             F_User::remove_CurrentProPic($username);
             $this->display_it($username);
+            return TRUE;
         }
         catch(queries $q)
         {
@@ -305,7 +329,7 @@ class CU_Users
      * @param string $username L'username che vuole lasciare il like
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function aggiungi_Like($photo_ID, $username)
+    public function add_Like_to($photo_ID, $username)
     {
         try
         {
@@ -331,7 +355,7 @@ class CU_Users
      * @param int $photo_ID La foto dalla quale si vuole rimuovere il like
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function rimuovi_Like($username, $photo_ID)
+    public function remove_Like($username, $photo_ID)
     {
         try
         {
@@ -357,7 +381,7 @@ class CU_Users
      * @param string $username L'utente per il quale si vogliono controllare i parametri di upload
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function upload_Status($username)
+    public function can_Upload($username)
     {
         try
         {
@@ -374,8 +398,15 @@ class CU_Users
 
         if(!($E_User_STD instanceof E_User_Standard)) //Se NON è un utente standard
         {
-            echo("Spiacente, questo controllo è valido solo per istanze di Entity\E_User_Standard");
-            echo(nl2br("\r\n"));
+            echo("L'utente immesso ha ruolo ".$E_User_STD->get_Role()." per cui ".nl2br("\r\n"));
+            if($E_User_STD->can_Upload() === TRUE)
+            {
+                echo("gli è sempre permesso caricare foto");
+            }
+            else
+            {
+                echo("non gli è permesso caricare foto");
+            }
             return FALSE;
         }
 
@@ -385,7 +416,6 @@ class CU_Users
             echo("Perfetto, procedo con l'upload...".nl2br("\r\n"));
             $time = time();
             echo("Imposto l'ultima data di upload al timestamp $time ovvero ".date('d-m-y', $time).nl2br("\r\n"));
-            $E_User_STD->set_Last_Upload($time);
             $E_User_STD->add_up_Count();
             echo("Aggiungo 1 al contatore di upload. Totale upload fatti oggi: ".$E_User_STD->get_up_Count().nl2br("\r\n").nl2br("\r\n"));
         }
@@ -421,7 +451,7 @@ class CU_Users
      * @param int $privacy La nuova privacy per la foto
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function set_Privacy($username, $photo_ID, $privacy)
+    public function set_PhotoPrivacy($username, $photo_ID, $privacy)
     {
         try
         {
@@ -449,7 +479,7 @@ class CU_Users
      * @param int $limit_PerPage Quanti risultati mostrare per ogni pagina
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function lista_Utenti($pageToView = 1, $starts_With = '', $limit_PerPage = 10)
+    public function get_UsersList($pageToView = 1, $starts_With = '', $limit_PerPage = 10)
     {
         try
         {
@@ -485,7 +515,7 @@ class CU_Users
      * @param string $username L'utente da bannare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function banna($username)
+    public function ban($username)
     {
         try
         {
@@ -550,7 +580,7 @@ class CU_Users
      * @param int $nuovo_Ruolo Il nuovo ruolo da attribuirgli
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function cambia_Ruolo($username, $nuovo_Ruolo)
+    public function change_Role($username, $nuovo_Ruolo)
     {
         try
         {
@@ -613,24 +643,25 @@ class CU_Users
 //$email = "email@mail.it";
 //
 //$photo_ID = 7;
-//$CU->registration($username, $password, $email);
-//$CU->login($username, $password);
+//$CU->insert($username, $password, $email);
+//$CU->get_LoginInfo($username, $password);
 //$CU->manage_profilePIC($username, $photo_ID);
-//$CU->aggiungi_Like($photo_ID, $username);
-//$CU->rimuovi_Like($username, $photo_ID);
-//$CU->upload_Status($username);
-
+//$CU->add_Like_to($photo_ID, $username);
+//$CU->remove_Like($username, $photo_ID);
+//$CU->can_Upload($username);
+//
 //$privacy = 0;
-//$CU->set_Privacy($username, $photo_ID, $privacy);
-
+//$CU->set_PhotoPrivacy($username, $photo_ID, $privacy);
+//
 //$pageToView = 1;
 //$starts_With = "Mar";
 //$limit_PerPage = 5;
-//$CU->lista_Utenti($pageToView, $starts_With, $limit_PerPage);
-
-//$CU->banna($username);
-
+//$CU->get_UsersList($pageToView, $starts_With, $limit_PerPage);
+//
+//$CU->ban($username);
+//
 //$nuovo_Ruolo = 3;
-//$CU->cambia_Ruolo("Fede", $nuovo_Ruolo);
+//$CU->change_Role("Fede", $nuovo_Ruolo);
+     *
      */
 }

@@ -603,7 +603,7 @@ class F_Photo extends F_Database
         else //Removes the photo from the current album
         {
             $query = 'DELETE FROM `photo_album` '
-                    .'WHERE (photo.id = ?)'; //$photo_ID
+                    .'WHERE (photo = ?)'; //$photo_ID
 
             $toBind = array($photo_ID);
             parent::execute_Query($query, $toBind);

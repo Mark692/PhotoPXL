@@ -21,3 +21,7 @@ $percorso_foto = ".".DIRECTORY_SEPARATOR
                 ."Install".DIRECTORY_SEPARATOR;
 
 $p = new \CaseUse\CU_Photos();
+//$p->get_By_Album(2, "Marco", 4);
+
+
+$c = new \CaseUse\CasiDuso();

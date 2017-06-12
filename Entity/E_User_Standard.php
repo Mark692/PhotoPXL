@@ -98,11 +98,12 @@ class E_User_Standard extends E_User
 
 
     /**
-     * Increments the count of uploads by 1
+     * Increments the count of uploads by 1 and sets the last upload date to now
      */
     public function add_up_Count()
     {
         $this->up_Count = $this->up_Count + 1;
+        $this->set_Last_Upload(time());
     }
 
 
@@ -124,7 +125,6 @@ class E_User_Standard extends E_User
     {
         if(date('d-m-y', $this->last_Upload) !== date('d-m-y'))
         {
-            $this->set_Last_Upload(time());
             $this->reset_Up_Count();
         }
 
