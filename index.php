@@ -22,18 +22,18 @@ $user_Watching = "Marco";
 $user_Role = 2; //Questo può essere anche:
 //$user_Role = \Foundation\F_User::get_Role($user_Watching); //in modo da non bypassare il DB
 $order_DESC = FALSE;
-$photo->mostra_FULL($id, $user_Watching, $user_Role, $order_DESC);
+//$photo->mostra_FULL($id, $user_Watching, $user_Role, $order_DESC);
 
 
 //Users
 /*
  * Registrazione_Login($username, $password, $email)
- * manage_profilePIC($username, $photo_ID)
+ * manage_profilePIC($username, $photo_ID, $percorso)
  * insert($username, $password, $email)
  * get_LoginInfo($username, $password)
  * get_ProfilePic($username)
  * set_ProfilePic($username, $photo_ID)
- * upload_NewCover($username)
+ * upload_NewCover($username, $percorso)
  * remove_CurrentProPic($username)
  * add_Like_to($photo_ID, $username)
  * remove_Like($username, $photo_ID)
