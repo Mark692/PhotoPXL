@@ -398,7 +398,7 @@ class CU_Users
 
         if(!($E_User_STD instanceof E_User_Standard)) //Se NON è un utente standard
         {
-            echo("L'utente immesso ha ruolo ".$E_User_STD->get_Role()." per cui ".nl2br("\r\n"));
+            echo("L'utente immesso ha ruolo ".$E_User_STD->get_Role()." per cui ");
             if($E_User_STD->can_Upload() === TRUE)
             {
                 echo("gli è sempre permesso caricare foto");

@@ -36,7 +36,7 @@ class E_User_PRO extends E_User
      *
      * @return boolean TRUE
      */
-    public function canUpload()
+    public function can_Upload()
     {
         return TRUE;
     }
