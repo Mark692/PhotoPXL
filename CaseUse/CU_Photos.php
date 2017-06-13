@@ -44,8 +44,8 @@ class CU_Photos
         {
             try
             {
-                F_Photo::insert($E_Photo, $Blob, $uploader);
-                echo("Ho inserito la foto nel DB".nl2br("\r\n"));
+                $id = F_Photo::insert($E_Photo, $Blob, $uploader);
+                echo("Ho inserito la foto nel DB. Il suo ID è ".$id.nl2br("\r\n"));
                 return TRUE;
             }
             catch(queries $q)
@@ -134,7 +134,7 @@ class CU_Photos
         if($esito === TRUE)
         {
             $comment = new \CaseUse\CU_Comments();
-                echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
             $comment->get_By_Photo($id, $order_DESC);
             return TRUE;
         }
@@ -159,15 +159,14 @@ class CU_Photos
 
             if($DB_result === FALSE)
             {
-                echo("Spiacenti, nessuna foto corisponde alla ricerca fatta.");
+                echo("Spiacenti, nessuna foto corrisponde alla ricerca fatta.");
                 echo(nl2br("\r\n"));
                 echo("Assicurarsi che la foto esista o che si disponga del ruolo adeguato alla visualizzazione");
                 echo(nl2br("\r\n"));
                 return FALSE;
             }
 
-            $this->display_Full($DB_result, $user_Role);
-            return TRUE;
+            return $this->display_Full($DB_result, $user_Role);
         }
         catch(queries $q)
         {
@@ -413,10 +412,17 @@ class CU_Photos
                 if($valore_Ruolo == $Function_role)
                 {
                     $ruolo = $nome_Ruolo;
+                    $const_val = $valore_Ruolo;
                     break;
                 }
             }
-
+            if($const_val == \Utilities\Roles::BANNED)
+            {
+                echo("Spiacente, sei stato Bannato. Non hai accesso alla foto.");
+                echo(nl2br("\r\n"));
+                echo(nl2br("\r\n"));
+                return FALSE;
+            }
 
             echo("Si visualizzano i risultati in base al ruolo ".$ruolo.nl2br("\r\n"));
             echo("Risultati totali per la ricerca fatta: ".$DB_result["tot_photo"].nl2br("\r\n"));
@@ -440,6 +446,8 @@ class CU_Photos
                     $i++;
                 }
             }
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
         }
         else
         {
@@ -468,8 +476,16 @@ class CU_Photos
                 if($valore == $Function_role)
                 {
                     $ruolo = $nome;
+                    $cons_val = $valore;
                     break;
                 }
+            }
+            if($cons_val == \Utilities\Roles::BANNED)
+            {
+                echo("Spiacente, sei stato Bannato. Non hai accesso alla foto.");
+                echo(nl2br("\r\n"));
+                echo(nl2br("\r\n"));
+                return FALSE;
             }
 
             echo("Si visualizza il risultato in base al ruolo ".$ruolo.nl2br("\r\n").nl2br("\r\n"));
@@ -531,6 +547,7 @@ class CU_Photos
             {
                 echo(" persone".nl2br("\r\n"));
             }
+            return TRUE;
         }
         else
         {
@@ -550,9 +567,9 @@ class CU_Photos
       //$is_reserved = 0;
       //$cat = array(1, 5, 6);
       //$path_Photo = ".".DIRECTORY_SEPARATOR
-//                ."Utilities".DIRECTORY_SEPARATOR
-//                ."Install".DIRECTORY_SEPARATOR
-//                ."marco";
+      //                ."Utilities".DIRECTORY_SEPARATOR
+      //                ."Install".DIRECTORY_SEPARATOR
+      //                ."marco";
       //$uploader = "Marco";
       //
       //$ID = 27;

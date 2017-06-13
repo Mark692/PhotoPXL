@@ -17,11 +17,13 @@ require_once $path."U_Nonce.php";
 
 
 $photo = new \CaseUse\CU_Photos();
-$id = 20;
+$id = 11;
 $user_Watching = "Marco";
-$user_Role = 4;
+$user_Role = 2; //Questo può essere anche:
+//$user_Role = \Foundation\F_User::get_Role($user_Watching); //in modo da non bypassare il DB
 $order_DESC = FALSE;
 $photo->mostra_FULL($id, $user_Watching, $user_Role, $order_DESC);
+
 
 //Users
 /*

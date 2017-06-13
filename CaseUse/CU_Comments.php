@@ -38,8 +38,8 @@ class CU_Comments
 
         try
         {
-            F_Comment::insert($com);
-            echo("Richiesta completata con successo.".nl2br("\r\n"));
+            $id = F_Comment::insert($com);
+            echo("Ho inserito il commento nel DB. Il suo ID è ".$id.nl2br("\r\n"));
             return TRUE;
         }
         catch(queries $q)
@@ -181,21 +181,21 @@ class CU_Comments
      * Dati pronti per i test
      *
      *
-//$CU = new \CaseUse\CU_Comments();
-//
-//$testo = "A me piace questa";
-//$utente = "Fede";
-//$photoID = 17;
-//$c = $CU->insert($testo, $utente, $photoID);
-//
-//$order_DESC = FALSE;
-//$CU->get_By_Photo($photoID, $order_DESC);
-//
-//$id_commento = 23;
-//$nuovo_testo = "Questo commento non esiste";
-//$CU->update($id_commento, $nuovo_testo, $utente, $photoID);
-//
-//$CU->remove($id_commento);
+      //$CU = new \CaseUse\CU_Comments();
+      //
+      //$testo = "A me piace questa";
+      //$utente = "Fede";
+      //$photoID = 17;
+      //$c = $CU->insert($testo, $utente, $photoID);
+      //
+      //$order_DESC = FALSE;
+      //$CU->get_By_Photo($photoID, $order_DESC);
+      //
+      //$id_commento = 23;
+      //$nuovo_testo = "Questo commento non esiste";
+      //$CU->update($id_commento, $nuovo_testo, $utente, $photoID);
+      //
+      //$CU->remove($id_commento);
      *
      */
 }

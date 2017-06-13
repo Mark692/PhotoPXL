@@ -37,8 +37,8 @@ class CU_Albums
         {
             try
             {
-                F_Album::insert($E_Album, $owner);
-                echo("Ho inserito l'album nel DB".nl2br("\r\n"));
+                $id = F_Album::insert($E_Album, $owner);
+                echo("Ho inserito l'album nel DB. Il suo id è ".$id.nl2br("\r\n"));
                 return TRUE;
             }
             catch(queries $q)
@@ -93,8 +93,10 @@ class CU_Albums
         try
         {
             F_Album::set_Cover($albumID, $photoID);
-            echo("Query effettuata con successo.".nl2br("\r\n"));
-            echo("Tuttavia può succedere che la foto non venga aggiornata se photoID non è un ID valido.".nl2br("\r\n"));
+            echo("La query per impostare la cover è stata fatta.".nl2br("\r\n").nl2br("\r\n"));
+
+            echo("Si mostrano ora i dettagli dell'album: ".nl2br("\r\n"));
+            $this->get_By_ID($albumID);
             return TRUE;
         }
         catch(queries $q)
@@ -120,7 +122,14 @@ class CU_Albums
         {
             $results = F_Album::get_By_User($owner, $page_toView, $order_DESC);
             echo("Query effettuata con successo.".nl2br("\r\n"));
-
+            $ruolo = \Foundation\F_User::get_Role($owner);
+if($ruolo == \Utilities\Roles::BANNED)
+            {
+                echo("Spiacente, sei stato Bannato. Non hai accesso alle foto.");
+            echo(nl2br("\r\n"));
+            echo(nl2br("\r\n"));
+                return FALSE;
+            }
             $this->display_Thumbs($results);
             return TRUE;
         }
@@ -146,6 +155,12 @@ class CU_Albums
             $results = F_Album::get_By_ID($id);
             echo("Query effettuata con successo.".nl2br("\r\n"));
 
+            if($results === FALSE)
+            {
+                echo("Purtroppo non esistono album con l'ID fornito.".nl2br("\r\n").nl2br("\r\n"));
+                return FALSE;
+            }
+
             $this->display_Cover($results); //Mostra la copertina
 
             $E_Album = $results["album"];
@@ -167,6 +182,7 @@ class CU_Albums
                     }
                 }
             }
+            $c = substr($c, 0, -2);
             echo("Categorie: ".$c.nl2br("\r\n"));
             echo("Data creazione: ".$E_Album->get_Creation_Date().nl2br("\r\n"));
             return TRUE;
