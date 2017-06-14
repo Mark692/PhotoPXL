@@ -39,7 +39,8 @@ class CU_Comments
         try
         {
             F_Comment::insert($com);
-            echo("Richiesta completata con successo.".nl2br("\r\n"));
+            $id = $com->get_ID();
+            echo("Ho inserito il commento nel DB. Il suo ID è ".$id.nl2br("\r\n"));
             return TRUE;
         }
         catch(queries $q)
@@ -63,7 +64,7 @@ class CU_Comments
         try
         {
             $com = F_Comment::get_By_Photo($photo_ID, $order_DESC);
-            echo("Query eseguita.".nl2br("\r\n"));
+            echo("Commenti degli utenti: ".nl2br("\r\n"));
             if($com !== [])
             {
                 $conto = count($com);
@@ -73,7 +74,7 @@ class CU_Comments
                 }
                 else
                 {
-                    echo("Per la foto $photo_ID abbiamo ".count($com)." commenti:".nl2br("\r\n"));
+                    echo("Per la foto $photo_ID abbiamo ".$conto." commenti:".nl2br("\r\n"));
                 }
                 $i = 1;
                 foreach($com as $c)
@@ -181,21 +182,21 @@ class CU_Comments
      * Dati pronti per i test
      *
      *
-//$CU = new \CaseUse\CU_Comments();
-//
-//$testo = "A me piace questa";
-//$utente = "Fede";
-//$photoID = 17;
-//$c = $CU->insert($testo, $utente, $photoID);
-//
-//$order_DESC = FALSE;
-//$CU->get_By_Photo($photoID, $order_DESC);
-//
-//$id_commento = 23;
-//$nuovo_testo = "Questo commento non esiste";
-//$CU->update($id_commento, $nuovo_testo, $utente, $photoID);
-//
-//$CU->remove($id_commento);
+      //$CU = new \CaseUse\CU_Comments();
+      //
+      //$testo = "A me piace questa";
+      //$utente = "Fede";
+      //$photoID = 17;
+      //$c = $CU->insert($testo, $utente, $photoID);
+      //
+      //$order_DESC = FALSE;
+      //$CU->get_By_Photo($photoID, $order_DESC);
+      //
+      //$id_commento = 23;
+      //$nuovo_testo = "Questo commento non esiste";
+      //$CU->update($id_commento, $nuovo_testo, $utente, $photoID);
+      //
+      //$CU->remove($id_commento);
      *
      */
 }

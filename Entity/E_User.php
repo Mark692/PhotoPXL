@@ -41,6 +41,11 @@ class E_User
             throw new input_texts(0, $username);
         }
         $this->set_Username($username);
+
+        if($this->check_Password($password) === FALSE)
+        {
+            throw new input_texts(5, " ");
+        }
         $this->set_Password($password);
 
         if($email !== '' && $this->check_Email($email) === FALSE)
@@ -77,7 +82,7 @@ class E_User
      * Checks whether the username is a valid entry
      *
      * @param string $username The username input
-     * @return bool Whether the title has only a-zA-z0-9 and the $allowed chars
+     * @return bool Whether the username has a-Z0-9 chars and the $allowed chars
      */
     private function check_Username($username)
     {
@@ -91,6 +96,22 @@ class E_User
             }
         }
         return FALSE;
+    }
+
+
+    /**
+     * Checks whether the password has the correct minimum lenght
+     *
+     * @param string $password The user chosen password
+     * @return boolean Whether the password is long enough
+     */
+    private function check_Password($password)
+    {
+        if(strlen($password) < MIN_PASSWORD_CHARS)
+        {
+            return FALSE;
+        }
+        return TRUE;
     }
 
 

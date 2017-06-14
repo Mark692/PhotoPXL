@@ -38,7 +38,8 @@ class CU_Comments
 
         try
         {
-            $id = F_Comment::insert($com);
+            F_Comment::insert($com);
+            $id = $com->get_ID();
             echo("Ho inserito il commento nel DB. Il suo ID è ".$id.nl2br("\r\n"));
             return TRUE;
         }

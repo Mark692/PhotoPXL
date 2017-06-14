@@ -68,6 +68,7 @@ define("MAX_DESCRIPTION_CHARS", 500);
 
 define("MIN_USERNAME_CHARS", 3);
 define("MAX_USERNAME_CHARS", 20);
+define("MIN_PASSWORD_CHARS", 5);
 
 define("MIN_COMMENT_CHARS", 1);
 define("MAX_COMMENT_CHARS", 2000);

@@ -146,19 +146,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1157934916"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1540100148"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1157934916" class="accordion-body collapse in">
+            <div id="namespace-1540100148" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1790175155"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1211424986"></a>
                                 <a href="../namespaces/CaseUse.html" style="margin-left: 30px; padding-left: 0">CaseUse</a>
             </div>
-            <div id="namespace-1790175155" class="accordion-body collapse ">
+            <div id="namespace-1211424986" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -176,10 +176,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-761497455"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-452757909"></a>
                                 <a href="../namespaces/Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
             </div>
-            <div id="namespace-761497455" class="accordion-body collapse ">
+            <div id="namespace-452757909" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -203,10 +203,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-844256958"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1760610667"></a>
                                 <a href="../namespaces/Foundation.html" style="margin-left: 30px; padding-left: 0">Foundation</a>
             </div>
-            <div id="namespace-844256958" class="accordion-body collapse ">
+            <div id="namespace-1760610667" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -396,7 +396,7 @@ e le loro rispettive funzioni di Foundation</em></p>
             <article class="method">
                 <h3 class="public ">manage_profilePIC()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">manage_profilePIC(string  <span class="argument">$username</span>, integer  <span class="argument">$photo_ID</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">manage_profilePIC(string  <span class="argument">$username</span>, integer  <span class="argument">$photo_ID</span>, string  <span class="argument">$path</span>) : boolean</pre>
                 <p><em>Questa funzione si occupa di gestire l&#039;immagine di profilo di un utente</em></p>
                 
 
@@ -411,6 +411,11 @@ e le loro rispettive funzioni di Foundation</em></p>
                                 <td>integer</td>
                                 <td>$photo_ID </td>
                                 <td><p>L'ID di una foto presente nel DB con cui cambiare la foto</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>Il percorso dal quale prendere la foto</p></td>
                             </tr>
                                             </table>
                 
@@ -608,16 +613,21 @@ Procede inoltre nel try catch di eventuali eccezioni</em></p>
             <article class="method">
                 <h3 class="public ">upload_NewCover()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">upload_NewCover(\CaseUse\type  <span class="argument">$username</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">upload_NewCover(string  <span class="argument">$username</span>, string  <span class="argument">$path</span>) : boolean</pre>
                 <p><em>Carica una nuova foto profilo per l&#039;utente selezionato</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>\CaseUse\type</td>
+                                <td>string</td>
                                 <td>$username </td>
-                                <td><p>Il nick dell'utente che vuole caricare la propria foto profilo</p></td>
+                                <td><p>L'utente che vuole cambiare la sua foto profilo</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>Il percorso dal quale prendere la nuova foto da caricare</p></td>
                             </tr>
                                             </table>
                 
@@ -1059,7 +1069,7 @@ Procede inoltre nel try catch di eventuali eccezioni</em></p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 12th, 2017 at 16:19.
+                    on June 14th, 2017 at 06:54.
                 </section>
             </section>
         </section>

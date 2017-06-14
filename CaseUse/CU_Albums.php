@@ -37,7 +37,8 @@ class CU_Albums
         {
             try
             {
-                $id = F_Album::insert($E_Album, $owner);
+                F_Album::insert($E_Album, $owner);
+                $id = $E_Album->get_ID();
                 echo("Ho inserito l'album nel DB. Il suo id è ".$id.nl2br("\r\n"));
                 return TRUE;
             }
@@ -167,6 +168,7 @@ if($ruolo == \Utilities\Roles::BANNED)
             echo("Dettagli album: ".nl2br("\r\n"));
             echo("Titolo: ".$E_Album->get_Title().nl2br("\r\n"));
             echo("Descrizione: ".$E_Album->get_Description().nl2br("\r\n"));
+            echo("Proprietario: ".$results["username"].nl2br("\r\n"));
 
             $cats = $E_Album->get_Categories();
             $categorie = new ReflectionClass('\Utilities\Categories');

@@ -146,19 +146,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-763218349"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2029132259"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-763218349" class="accordion-body collapse in">
+            <div id="namespace-2029132259" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1466408332"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-310635121"></a>
                                 <a href="../namespaces/CaseUse.html" style="margin-left: 30px; padding-left: 0">CaseUse</a>
             </div>
-            <div id="namespace-1466408332" class="accordion-body collapse ">
+            <div id="namespace-310635121" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -176,10 +176,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1393317518"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2107797081"></a>
                                 <a href="../namespaces/Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
             </div>
-            <div id="namespace-1393317518" class="accordion-body collapse ">
+            <div id="namespace-2107797081" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -203,10 +203,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-420740299"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1955262526"></a>
                                 <a href="../namespaces/Foundation.html" style="margin-left: 30px; padding-left: 0">Foundation</a>
             </div>
-            <div id="namespace-420740299" class="accordion-body collapse ">
+            <div id="namespace-1955262526" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -269,6 +269,7 @@ e le loro rispettive funzioni di Foundation</em></p>
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_insert" class="">insert()</a><br />
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_update_Details" class="">update_Details()</a><br />
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_get_By_User" class="">get_By_User()</a><br />
+                                                                    <a href="../classes/CaseUse.CU_Photos.html#method_mostra_FULL" class="">mostra_FULL()</a><br />
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_get_By_ID" class="">get_By_ID()</a><br />
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_get_By_Categories" class="">get_By_Categories()</a><br />
                                                                     <a href="../classes/CaseUse.CU_Photos.html#method_get_LikeList" class="">get_LikeList()</a><br />
@@ -499,6 +500,58 @@ e le loro rispettive funzioni di Foundation</em></p>
                                 <td>boolean</td>
                                 <td>$order_DESC </td>
                                 <td><p>Ordinamento dei risultati</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_mostra_FULL" name="method_mostra_FULL" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">mostra_FULL()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">mostra_FULL(integer  <span class="argument">$id</span>, string  <span class="argument">$user_Watching</span>, integer  <span class="argument">$user_Role</span>, boolean  <span class="argument">$order_DESC</span>) : boolean</pre>
+                <p><em>Mostra una foto a dimensione massima (per l&#039;app) ed i relativi dettagli</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$id </td>
+                                <td><p>L'ID della foto da visualizzare</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$user_Watching </td>
+                                <td><p>L'utente che vuole visualizzare la foto</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$user_Role </td>
+                                <td><p>Il ruolo dell'utente che vuole visualizzare la foto</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$order_DESC </td>
+                                <td><p>Determina l'ordinamento dei commenti</p></td>
                             </tr>
                                             </table>
                 
@@ -1071,7 +1124,7 @@ E_Photo_Blob Contiene l'oggetto creato</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 12th, 2017 at 16:19.
+                    on June 14th, 2017 at 06:54.
                 </section>
             </section>
         </section>

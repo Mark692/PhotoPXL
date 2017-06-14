@@ -25,7 +25,7 @@ class F_User_PRO extends F_User
     public static function set_PhotoPrivacy($username, $photo_ID, $privacy)
     {
         $update = "photo";
-        $set = array("is_reserved" => intval($privacy)); //In case a bool is passed the value will be set as INT
+        $set = array("is_reserved" => $privacy); //In case a bool is passed the value will be set as INT
         $where = array("id" => $photo_ID, "user" => $username);
 
         parent::update($update, $set, $where);

@@ -44,7 +44,8 @@ class CU_Photos
         {
             try
             {
-                $id = F_Photo::insert($E_Photo, $Blob, $uploader);
+                F_Photo::insert($E_Photo, $Blob, $uploader);
+                $id = $E_Photo->get_ID();
                 echo("Ho inserito la foto nel DB. Il suo ID è ".$id.nl2br("\r\n"));
                 return TRUE;
             }

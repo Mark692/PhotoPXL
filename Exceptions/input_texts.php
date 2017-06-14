@@ -21,7 +21,7 @@ class input_texts extends Exception
         {
             case 0:
                 //E_User->__construct() - Username check
-                $message = "Il testo contiene Caratteri Speciali non ammessi. Permessi: -_.";
+                $message = "L'username inserito contiene Caratteri Speciali non ammessi. Permessi: -_.";
                 break;
 
             case 1:
@@ -47,6 +47,12 @@ class input_texts extends Exception
                 //E_Album->__construct() - Categories check
                 $message = "Le categorie immesse non sono valide!";
                 break;
+
+            case 5:
+                //E_User->__construct() - Password check
+                $message = "La password immessa è troppo corta. Lunghezza minima: ".MIN_PASSWORD_CHARS." caratteri.";
+                break;
+
 
             default: $message = "ATTENZIONE! Parametro non valido: $exc";
         }

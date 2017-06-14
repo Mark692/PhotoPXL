@@ -50,7 +50,7 @@ class E_User_Banned extends E_User
      *
      * @return boolean FALSE
      */
-    public function canUpload()
+    public function can_Upload()
     {
         return FALSE;
     }

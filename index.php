@@ -25,15 +25,20 @@ $order_DESC = FALSE;
 //$photo->mostra_FULL($id, $user_Watching, $user_Role, $order_DESC);
 
 
+
+
 //Users
 /*
  * Registrazione_Login($username, $password, $email)
- * manage_profilePIC($username, $photo_ID, $percorso)
+ * manage_profilePIC($username, $photo_ID, $path)
  * insert($username, $password, $email)
  * get_LoginInfo($username, $password)
  * get_ProfilePic($username)
  * set_ProfilePic($username, $photo_ID)
- * upload_NewCover($username, $percorso)
+ * $percorso = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR."Install".DIRECTORY_SEPARATOR;
+ * $nome_Foto = "marco";
+ * $percorso_foto = $percorso.$nome_Foto;
+ * upload_NewCover($username, $percorso_foto)
  * remove_CurrentProPic($username)
  * add_Like_to($photo_ID, $username)
  * remove_Like($username, $photo_ID)

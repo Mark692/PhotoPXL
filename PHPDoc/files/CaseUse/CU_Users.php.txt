@@ -10,6 +10,10 @@ namespace CaseUse;
 
 use Entity\E_Photo_Blob;
 use Entity\E_User_Standard;
+use Entity\E_User_PRO;
+use Entity\E_User_MOD;
+use Entity\E_User_Admin;
+use Entity\E_User_Banned;
 use Exceptions\input_texts;
 use Exceptions\queries;
 use Exceptions\uploads;
@@ -56,15 +60,16 @@ class CU_Users
      *
      * @param string $username L'username con il quale si vuole procedere al cambio di foto profilo
      * @param int $photo_ID L'ID di una foto presente nel DB con cui cambiare la foto
+     * @param string $path Il percorso dal quale prendere la foto
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function manage_profilePIC($username, $photo_ID)
+    public function manage_profilePIC($username, $photo_ID, $path)
     {
         $this->get_ProfilePic($username);
 
         $this->set_ProfilePic($username, $photo_ID);
 
-        $this->upload_NewCover($username);
+        $this->upload_NewCover($username, $path);
 
         $this->remove_CurrentProPic($username);
     }
@@ -234,18 +239,15 @@ class CU_Users
     /**
      * Carica una nuova foto profilo per l'utente selezionato
      *
-     * @param type $username Il nick dell'utente che vuole caricare la propria foto profilo
+     * @param string $username L'utente che vuole cambiare la sua foto profilo
+     * @param string $path Il percorso dal quale prendere la nuova foto da caricare
      * @return boolean Indica l'esito delle funzioni. TRUE = nessun errore, FALSE = almeno uno
      */
-    public function upload_NewCover($username)
+    public function upload_NewCover($username, $path)
     {
         echo("Prova ora a cambiare la foto profilo con una caricata al momento");
         echo(nl2br("\r\n"));
 
-        $path = ".".DIRECTORY_SEPARATOR
-                ."Utilities".DIRECTORY_SEPARATOR
-                ."Install".DIRECTORY_SEPARATOR
-                .$username;
         $bob = new E_Photo_Blob();
         try
         {
@@ -395,10 +397,9 @@ class CU_Users
             return FALSE;
         }
 
-
         if(!($E_User_STD instanceof E_User_Standard)) //Se NON è un utente standard
         {
-            echo("L'utente immesso ha ruolo ".$E_User_STD->get_Role()." per cui ".nl2br("\r\n"));
+            echo("L'utente immesso ha ruolo ".$E_User_STD->get_Role()." per cui ");
             if($E_User_STD->can_Upload() === TRUE)
             {
                 echo("gli è sempre permesso caricare foto");
@@ -456,9 +457,7 @@ class CU_Users
         try
         {
             F_User_PRO::set_PhotoPrivacy($username, $photo_ID, $privacy);
-            echo("L'esito di questa funzione va verificato nel DB. L'utente che sta modificando la privacy DEVE essere l'uploader della foto");
-            echo(nl2br("\r\n"));
-            echo("Inoltre, non viene controllato il ruolo dell'utente. Questo controllo andrebbe fatto in Control, non in Foundation");
+            echo("Query effettuata. ".nl2br("\r\n")."L'esito di questa funzione va verificato nel DB. ".nl2br("\r\n"));
             return TRUE;
         }
         catch(queries $q2)
@@ -600,7 +599,7 @@ class CU_Users
                         {
                             if($valore_Ruolo == $role)
                             {
-                                echo("Ruolo attuale: ".$nome_Ruolo);
+                                echo("L'utente $username ha ora ruolo: ".$nome_Ruolo);
                                 return TRUE;
                             }
                         }
