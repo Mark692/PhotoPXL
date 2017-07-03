@@ -16,8 +16,8 @@ class V_Home extends V_Basic
 {
     //METODI STATICI -> CONTROL\\
     /**
-     * Mostra il template della Home di default per un utnete loggato
-     * assrgna a smarty i vari parametri
+     * Mostra il template della Home di default per un utente loggato
+     * assegna a smarty i vari parametri
      *
      * @param array $array_photo array con ID e Thumbnails che hanno più like.
      *               How to access the array:
@@ -30,13 +30,12 @@ class V_Home extends V_Basic
     public static function standardHome($array_photo, $username)
     {
 
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
         $home->assign('categories', $home->imposta_categoria());
-        $home->set_Contenuto_Home($home->set_home($username));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($home->set_home($username));
+        $home->set_Contenuto_Home($tpl = 'home_loggati');
         $home->display('home_default.tpl');
     }
 
@@ -54,13 +53,13 @@ class V_Home extends V_Basic
      */
     public static function notAllowed($array_photo, $username)
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->set_banner($tpl = 'banner_no_permessi');
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
         $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($home->set_home($username));
+        $home->set_Contenuto_Home($tpl = 'home_loggati');
         $home->display('home_default.tpl');
     }
 
@@ -71,7 +70,7 @@ class V_Home extends V_Basic
      */
     public static function bannedHome()
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_banner($tpl = 'banner_banned');
         $home->set_Cont_menu_user($role = 'guest');
@@ -94,13 +93,13 @@ class V_Home extends V_Basic
      */
     public static function error($array_photo, $username)
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->set_banner($tpl = 'banner_error');
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
         $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($home->set_home($username));
+        $home->set_Contenuto_Home($tpl = 'home_loggati');
         $home->display('home_default.tpl');
     }
 
@@ -118,7 +117,7 @@ class V_Home extends V_Basic
      */
     public static function showPhotoCollection($array_photo, $username)
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
@@ -132,7 +131,8 @@ class V_Home extends V_Basic
      */
     public static function login()
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
+        ;
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'login');
@@ -145,7 +145,7 @@ class V_Home extends V_Basic
      */
     public static function registration()
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->assign('foto', "templates/main/template/img/noimagefound.jpg");
         $home->set_Cont_menu_user($role = 'guest');
         $home->set_Contenuto_Home($tpl = 'registration');
@@ -250,6 +250,25 @@ class V_Home extends V_Basic
         {
             $this->assign('no_result', 'Nessun Risulato da Visualizzare');
         }
+    }
+
+
+    /**
+     * Funzione che attiva il tasto mi piace oppure il tasto non mi piace
+     * @param type $likelist lista degli utenti che hanno messo mi piace a una determinata foto
+     * @param type $username 
+     */
+    public function attiva_like($likelist, $username)
+    {
+        $attiva = 0;
+        foreach($likelist as $user)
+        {
+            if($user === $username)
+            {
+                $attiva = '1';
+            }
+        }
+        return $attiva;
     }
 
 

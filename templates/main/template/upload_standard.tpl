@@ -33,6 +33,10 @@
                     </div>
         </div>
         </div>
+        <hr class="text-success">
+        <div class="form-group">
+                    <button type="submit" class="btn btn-success">Carica Foto</button>
+        </div>
     </form>
 </div>
 

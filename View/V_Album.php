@@ -30,7 +30,6 @@ class V_Album extends V_Home
     public static function album($DB_album, $array_photo, $username)
     {
         $home = new \View\V_Home();
-        //i dettagli di photo come titolo etc è un oggetto
         $home->assign('username', $username);
         $album_details = $home->album_details($DB_album);
         $home->assign('album_details', $album_details);

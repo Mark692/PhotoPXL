@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-03 10:48:25
+/* Smarty version 3.1.30, created on 2017-07-03 09:24:46
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowProfile.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_593277d91b93c4_77421654',
+  'unifunc' => 'content_5959f13eb98593_45218162',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '0adb9e36f069496087ba6d6dd3a9d404a20e4685' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowProfile.tpl',
-      1 => 1496479704,
+      1 => 1496823023,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_593277d91b93c4_77421654 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5959f13eb98593_45218162 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <div class="row">
@@ -39,12 +39,11 @@ if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
 ?>
                                     <div class="col-sm-1">
-                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
-                                        <a href="http://www.html.it">
+                                        <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO-->
+                                        <a href="">
                                         <?php echo $_smarty_tpl->tpl_vars['valore']->value;?>
 
                                         </a>
-                                        <!--modo per mettere gli id nascoti-->
                                     </div>
                                 <?php
 }

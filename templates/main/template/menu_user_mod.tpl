@@ -11,6 +11,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
                       <li><a href="">Carica Foto</a></li>
+                      <li><a href="">Crea Album</a></li>
                       <li><a href="">Logout</a></li>	
                       <li><a href="">Banna Utenti</a></li>
             </ul>

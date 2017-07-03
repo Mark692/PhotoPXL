@@ -8,8 +8,7 @@
                     <!-- vedere la grandezza della foto e come far vedere na foto-->
                     {$foto}
                     <p><h3 class="text-success">Like:</h3>{$photo_details.tot_like|default:"0"}<br /></p>
-                    <!-- serve per attivare i like devo vede perchè nn va-->
-                    {if $attiva|default:"FALSE" eq 'TRUE'}
+                    {if $attiva eq "1"}
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Non Mi Piace</button>

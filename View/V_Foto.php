@@ -29,7 +29,7 @@ class V_Foto extends V_Home
      */
     public static function showPhotoPage($photo, $username)
     {
-        $home = new View\V_Home();
+        $home = new \View\V_Home();
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
         $cat = $home->imposta_categoria($photo_details['categories']);
@@ -38,14 +38,7 @@ class V_Foto extends V_Home
         $home->showimage($photo);
         $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo_details['id']));
         $likelist = $photo["photo"]->get_LikesList();
-        var_dump($likelist);
-        foreach($likelist as $user)
-        {
-            if($user['user'] !== $username)
-            {
-                $home->assign('assegna', 'TRUE');
-            }
-        }
+        $home->assign('attiva', $home->attiva_like($likelist, $username));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
         $home->set_Contenuto_Home($tpl = 'ShowPhotoUser');
         $home->display('home_default.tpl');
@@ -105,4 +98,8 @@ class V_Foto extends V_Home
 
 
     //METODI BASE - NON STATICI!!!\\
+
+
+
+
 }

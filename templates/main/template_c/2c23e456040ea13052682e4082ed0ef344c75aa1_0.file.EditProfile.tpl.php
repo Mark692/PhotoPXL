@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-03 10:53:43
+/* Smarty version 3.1.30, created on 2017-07-03 09:24:02
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditProfile.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_593279173de3f6_66051098',
+  'unifunc' => 'content_5959f1129d2137_96867247',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2c23e456040ea13052682e4082ed0ef344c75aa1' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditProfile.tpl',
-      1 => 1496480023,
+      1 => 1496823193,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_593279173de3f6_66051098 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5959f1129d2137_96867247 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <div class="row">
@@ -40,7 +40,7 @@ foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
 ?>
                                     <div class="col-sm-1">
                                         <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
-                                        <a href="http://www.html.it">
+                                        <a href="">
                                         <?php echo $_smarty_tpl->tpl_vars['valore']->value;?>
 
                                         </a>
@@ -66,7 +66,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                         <?php }?>
     </div>
     <div class="col-md-6">
-		<form metod="POST" action="index.php">
+		<form metod="POST" action="">
                             <?php echo $_smarty_tpl->tpl_vars['pic_profile']->value;?>
 
                             <input type="hidden" name="controller" value="profilo" />
@@ -89,8 +89,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                             </div>
                             <h3 class="text-success">Ruolo:</h3><br /><?php echo $_smarty_tpl->tpl_vars['user_details']->value['role'];?>
 
-                            <input type="hidden" name="controller" value="profilo" />
-                            <input type="hidden" name="task" value="update" />
                             <input type="submit" name="Salva" class="btn-success" value="Salva Modifiche"/>
                 </form>
     </div>

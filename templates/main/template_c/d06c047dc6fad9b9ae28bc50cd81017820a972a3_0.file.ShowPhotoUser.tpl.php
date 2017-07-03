@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-01 11:56:13
+/* Smarty version 3.1.30, created on 2017-07-03 11:38:27
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592fe4bd6fec64_96826294',
+  'unifunc' => 'content_595a1093bb8323_17228209',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd06c047dc6fad9b9ae28bc50cd81017820a972a3' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/ShowPhotoUser.tpl',
-      1 => 1496310971,
+      1 => 1499074707,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592fe4bd6fec64_96826294 (Smarty_Internal_Template $_smarty_tpl) {
+function content_595a1093bb8323_17228209 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <!-- può essere fatto un solo template sfruttando foto altri user -->
@@ -35,8 +35,7 @@ function content_592fe4bd6fec64_96826294 (Smarty_Internal_Template $_smarty_tpl)
 
                     <p><h3 class="text-success">Like:</h3><?php echo (($tmp = @$_smarty_tpl->tpl_vars['photo_details']->value['tot_like'])===null||$tmp==='' ? "0" : $tmp);?>
 <br /></p>
-                    <!-- serve per attivare i like devo vede perchè nn va-->
-                    <?php if ((($tmp = @$_smarty_tpl->tpl_vars['attiva']->value)===null||$tmp==='' ? "FALSE" : $tmp) == 'TRUE') {?>
+                    <?php if ($_smarty_tpl->tpl_vars['attiva']->value == "1") {?>
                         <form method="post" action="index.php">  
                         <div class="form-group">
                                <button type="submit" class="btn btn-success">Non Mi Piace</button>
@@ -106,7 +105,6 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
     </div>
     <div class="row">
         <h2>Commenti...</h2>
-        <!--vedere nel caso sia vuoto $comments -->
         <?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['comments']->value, 'valore');
 if ($_from !== null) {
@@ -123,7 +121,9 @@ foreach ($_from as $_smarty_tpl->tpl_vars['valore']->value) {
                     <div class="form-group">
                     <button type="submit" class="btn btn-success">Elimina</button>
                     </div>
-                <!-- va anche il tasto modifica -->
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-success">Modifica</button>
+                    </div>
                 </form>
                 <?php }?>
             </div>
