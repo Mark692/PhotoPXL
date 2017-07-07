@@ -23,7 +23,7 @@ $user_Role = 2; //Questo può essere anche:
 //$user_Role = \Foundation\F_User::get_Role($user_Watching); //in modo da non bypassare il DB
 $order_DESC = FALSE;
 //$photo->mostra_FULL($id, $user_Watching, $user_Role, $order_DESC);
-
+//$photo->get_MostLiked($user_Watching, $user_Role, 1);
 
 
 
