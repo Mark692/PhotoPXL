@@ -16,13 +16,61 @@ require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
 
 
-$id = 1;
 $username = "Fede";
-$role = \Entity\E_User::get_DB_Role($username);
-$DB_album= \Entity\E_Album::get_By_ID($id);
-$array_photo= \Entity\E_Photo::get_By_Album($id, $username, $role);
-\View\V_Album::album($DB_album, $array_photo, $username);
+$user_Watching="Fede";
+$home=new \CaseUseView\CU_Home();
+$home->standardhome($username);
+
+//Home
+/*
+$home=new \CaseUseView\CU_Home();
+$home->standardhome($username);
+$home->notAllowed($username);
+$home->banned();
+$home->error($username);
+$cats= Utilities\Categories::FAUNA;
+$home->showPhotoCollection($username, $cats);//qua ci sta qualche cosa che non va dal databese riga 299...
+$home->login();
+$home->registration();
+ *
+ */
 
 
+//Foto
+/*
+$foto=new \CaseUseView\CU_Foto();
+$id = 7;
+$foto->showPhotoPage($id, $username);
+$foto->showEditPhoto($id, $username);
+$foto->showUploadPhoto($username);
+ *
+ */
 
 
+//Album
+/*
+$album=new \CaseUseView\CU_Album();
+$id = 2;
+$album->album($id, $username);
+ *
+ */
+
+
+//Profilo
+/**
+$profilo=new \CaseUseView\CU_Profilo();
+$user_Watching="Fede";
+$profilo->home_profile($username, $user_Watching);
+$profilo->banner($username);
+$profilo->showEditProfile($username);
+ *
+ */
+
+
+//Registazione
+/*
+$registrazione= new \CaseUseView\CU_Registration();
+$registrazione->errorLogin();
+$registrazione->errorRegistration();
+ *
+ */
