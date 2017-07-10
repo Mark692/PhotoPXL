@@ -249,6 +249,9 @@ class CU_Photos
         try
         {
             $liked = F_Photo::get_MostLiked($user_Watching, $user_Role, $page_toView);
+            echo("<pre>");
+            print_r($liked);
+            echo("<\pre>");
             echo("Ho eseguito la query al DB".nl2br("\r\n"));
 
             $this->display_Thumbs($liked, $user_Role);

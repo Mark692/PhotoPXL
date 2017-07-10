@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-01 17:11:18
+/* Smarty version 3.1.30, created on 2017-07-03 11:59:34
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/upload_standard.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59302e969c3202_17293138',
+  'unifunc' => 'content_595a158619fd10_05892948',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '74f1328929a49388190cf897f303588c30f8d89e' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/upload_standard.tpl',
-      1 => 1496329828,
+      1 => 1499075973,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59302e969c3202_17293138 (Smarty_Internal_Template $_smarty_tpl) {
+function content_595a158619fd10_05892948 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <form method="post" action="index.php">
@@ -67,6 +67,10 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
                         </div>
                     </div>
         </div>
+        </div>
+        <hr class="text-success">
+        <div class="form-group">
+                    <button type="submit" class="btn btn-success">Carica Foto</button>
         </div>
     </form>
 </div>

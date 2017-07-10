@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-06-01 17:08:10
+/* Smarty version 3.1.30, created on 2017-07-03 11:53:47
   from "/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditPhoto.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_59302dda511b63_25956399',
+  'unifunc' => 'content_595a142b9a0d44_83278132',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7f9b9ede216f2f36a3a6ff961c381c1a4a72e32b' => 
     array (
       0 => '/Users/federicosantomero/Documents/PhotoPXL/NewFolder/PhotoPXL/templates/main/template/EditPhoto.tpl',
-      1 => 1496329690,
+      1 => 1496823178,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59302dda511b63_25956399 (Smarty_Internal_Template $_smarty_tpl) {
+function content_595a142b9a0d44_83278132 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <div class="container">
     <div class="row">
@@ -29,13 +29,13 @@ function content_59302dda511b63_25956399 (Smarty_Internal_Template $_smarty_tpl)
                 <?php echo $_smarty_tpl->tpl_vars['foto']->value;?>
 
                 &nbsp;
-                <form method="POST" action="index.php">
+                <form method="POST" action="">
                     <input type="submit" class="btn-success" value="Elimina"  /></p>
                 </form>
     </div>
     <div class="col-md-6">
                 <h3 class="text-success">Dati foto </h3><br/>
-                <form method="POST" action="index.php">
+                <form method="POST" action="">
                         <p><h3 class="text-success">Titolo:</h3><br />
                         <div class="form-group">
                                 <input name="title" class="form-control" id="focusedInput" type="text" placeholder="<?php echo $_smarty_tpl->tpl_vars['photo_details']->value['title'];?>

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-05-24 15:55:38
+/* Smarty version 3.1.30, created on 2017-07-07 14:26:48
   from "C:\xampp\htdocs\PhotoPXL\templates\main\template\home_default.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_592590da56ef33_97936239',
+  'unifunc' => 'content_595f7e0813f300_39720002',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'adc45ebab62c4861b6af7cf63673349b4996a733' => 
     array (
       0 => 'C:\\xampp\\htdocs\\PhotoPXL\\templates\\main\\template\\home_default.tpl',
-      1 => 1495633357,
+      1 => 1496746701,
       2 => 'file',
     ),
   ),
@@ -20,21 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_592590da56ef33_97936239 (Smarty_Internal_Template $_smarty_tpl) {
+function content_595f7e0813f300_39720002 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
-
-Name       : Greeny Grass
-Description: A two-column, fixed-width design.
-Version    : 1.0
-Released   : 20080208
-
--->
-
 <!DOCTYPE html>
 <html lang="it">
   <head>
@@ -48,6 +35,21 @@ Released   : 20080208
     <link href="templates/main/template/css/bootstrap.min.css" rel="stylesheet">
     <link href="templates/main/template/css/Custom.css" rel="stylesheet">
    
+    <?php echo '<script'; ?>
+ src="http://code.jquery.com/jquery-2.2.0.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="templates/main/template/js/sha512.js"><?php echo '</script'; ?>
+>
   </head>
 <body>
         <!-- start header -->
@@ -73,24 +75,6 @@ Released   : 20080208
     
     <!--fine -->
         </div>
-
-  <!-- JS -->
-  <?php echo '<script'; ?>
- src="http://code.jquery.com/jquery-2.2.0.min.js"><?php echo '</script'; ?>
->
-  <?php echo '<script'; ?>
- src="templates/main/template/js/bootstrap.min.js"><?php echo '</script'; ?>
->
-  <?php echo '<script'; ?>
- src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"><?php echo '</script'; ?>
->
-  <?php echo '<script'; ?>
- src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"><?php echo '</script'; ?>
->
-  <?php echo '<script'; ?>
- src="http://code.jquery.com/jquery-2.2.0.min.js"><?php echo '</script'; ?>
->
-  <!-- JS -->
 </body>
 <?php }
 }

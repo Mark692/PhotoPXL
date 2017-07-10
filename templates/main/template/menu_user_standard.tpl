@@ -12,6 +12,7 @@
             <ul class="nav navbar-nav">
                       <li><a href="">Home</a></li>		
                       <li><a href="">Carica Foto</a></li>
+                      <li><a href="">Crea Album</a></li>
                       <li><a href="">Logout</a></li>	
                       <li><a href="">Diventa Pro</a></li>
             </ul>

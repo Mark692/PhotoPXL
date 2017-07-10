@@ -62,13 +62,13 @@ class V_Profilo extends V_Home
      */
     public static function banner($array_photo, $username)
     {
-        $home = new V_Home();
+        $home = new \View\V_Home();
         $home->set_banner($tpl = 'banner_ok');
         $home->assign('username', $username);
         $home->CheckPhotos($array_photo);
         $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($home->set_home($username));
+        $home->set_Contenuto_Home($tpl = 'home_loggati');
         $home->display('home_default.tpl');
     }
 
