@@ -14,13 +14,12 @@ $path = ".".DIRECTORY_SEPARATOR."Utilities".DIRECTORY_SEPARATOR;
 require_once $path."my_Autoloader.php";
 require_once $path."config.inc.php";
 require_once $path."U_Nonce.php";
-/*
+
+
 $username = "Fede";
 $user_Watching="Fede";
-$registrazione= new \CaseUseView\CU_Registration();
-$registrazione->errorRegistration();
-
-
+$home=new \CaseUseView\CU_Home();
+$home->standardhome($username);
 
 
 //Home
