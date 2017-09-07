@@ -10,14 +10,14 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
             <ul class="nav navbar-nav">
-                      <li><a href="">Home</a></li>		
-                      <li><a href="">Carica Foto</a></li>
+                      <li><a href="index.php">Home</a></li>		
+                      <li><a href="upload.php">Carica Foto</a></li>
                       <li><a href="">Crea Album</a></li>
-                      <li><a href="">Logout</a></li>	
                       <li><a href="">Diventa Pro</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">{$username}</a></li>
+                    <li><a href="profile.php">{$username}</a></li>
+                    <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>
     </div>

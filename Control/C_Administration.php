@@ -9,6 +9,7 @@
 namespace Control;
 
 use Entity\E_User;
+use Entity\E_User_Admin;
 use Utilities\Roles;
 
 /**
@@ -38,9 +39,7 @@ class C_Administration {
         if (!E_User::is_Available($username)) {
             return false;
         }
-        $userInfo = E_User::get_UserDetails($username);
-        /* @var $userInfo \Entity\E_User */
-        $userInfo->set_Role($role);
+        E_User_Admin::change_role($username, \Utilities\Roles::PRO);
         return true;
     }
 

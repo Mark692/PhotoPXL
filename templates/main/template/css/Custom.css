@@ -601,3 +601,8 @@ fieldset[disabled] .navbar-standard .btn-link:hover,
 fieldset[disabled] .navbar-standard .btn-link:focus {
   color: #cccccc;
 }
+
+#search_cat {
+    margin-top: 10px;
+    width: 100%;
+}

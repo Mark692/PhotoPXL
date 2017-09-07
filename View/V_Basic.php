@@ -154,7 +154,8 @@ class V_Basic extends \Smarty
             {
                 $mime = image_type_to_mime_type($value["type"]);
                 $pic = $value["thumbnail"];
-                $foto = '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+                $foto = '<a href="photo.php?id=' .
+                        $value['id'] . '"><img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/></a>';
                 array_push($array_foto, $foto);
             }
         }
@@ -174,7 +175,7 @@ class V_Basic extends \Smarty
         $description = $photo['photo']->get_Description();
         $is_reserved = $photo['photo']->get_Reserved();
         $categories = $this->imposta_categoria($photo["photo"]->get_Categories());
-        $Upload_Date = $photo['photo']->get_Upload_Date();
+        $Upload_Date = date('d/m/Y', $photo['photo']->get_Upload_Date());
         $tot_like = $photo['photo']->get_NLikes();
         $id = $photo['photo']->get_ID();
         return $photo_details = ['uploader'    => $uploader, 'id'          => $id, "title"       => $title, "description" => $description, "categories"  => $categories, "is_reserved" => $is_reserved,
@@ -225,7 +226,7 @@ class V_Basic extends \Smarty
     {
         $mime = image_type_to_mime_type($photo["type"]);
         $pic = $photo["fullsize"];
-        $foto = '<img src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
+        $foto = '<img width="100%" src="data:'.$mime.'; base64, '.base64_encode($pic).'"/>';
         $this->assign('foto', $foto);
     }
 

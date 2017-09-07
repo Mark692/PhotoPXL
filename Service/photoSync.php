@@ -1,10 +1,12 @@
 <?php
+session_start();
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+spl_autoload_register(function ($class_name) {
+    include dirname(dirname(__FILE__)) . "/" . str_replace("\\", "/", $class_name) . '.php';
+});
+
+$path = ".." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
+require_once $path . "config.inc.php";
 
 use Control\C_Photo;
 
@@ -20,13 +22,16 @@ switch ($action) {
         $description = filter_input(INPUT_POST, "description");
         $photo->edit($photoId, $title, $categories, $description);
         break;
-    case "upload": $photoPath = $_FILES['userfile']['tmp_name']; //userfile è l'id dell'input con type=file. Userfile è id(o name)
+    case "upload": $photoPath = $_FILES['photo']['tmp_name'];
         $title = filter_input(INPUT_POST, "title");
         $categories = filter_input(INPUT_POST, "categories");
         $description = filter_input(INPUT_POST, "description");
         $albumId = filter_input(INPUT_POST, "albumId");
-        $photo->upload($photoPath, $title, $categories, $description);
-        break;
+        $reserved = filter_input(INPUT_POST, "is_reserved");
+        $isReserved = (is_null($reserved) || $reserved == 'FALSE') ? false : true;
+        $id = $photo->upload($photoPath, $title, $categories, $description, $isReserved, $albumId);
+        header("Location: photo.php/id?$id");
+        exit();
     case "delete": $photoId = filter_input(INPUT_POST, "photoId");
         $albumId = filter_input(INPUT_POST, "albumId");
         $photo->delete($photoId);

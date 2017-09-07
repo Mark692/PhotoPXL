@@ -7,12 +7,11 @@
  */
 
 namespace View;
-
 /**
  * Questa classe gestisce le varie viste relative alle foto
  */
-class V_Foto extends V_Home
-{
+class V_Foto extends V_Home {
+
     // METODI STATICI \\
     /**
      * Questa funzione assegna tramite smarty i vari parametri al tpl,
@@ -27,14 +26,14 @@ class V_Foto extends V_Home
      *               - "type" => its type
      * @param string $username L'utente che sta cercando di visualizzare la foto
      */
-    public static function showPhotoPage($photo, $username)
-    {
+    public static function showPhotoPage($photo, $username) {
         $home = new \View\V_Home();
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
         $cat = $home->imposta_categoria($photo_details['categories']);
         $home->assign('categories', $cat);
         $home->assign('photo_details', $photo_details);
+        $home->assign('pid', $photo["photo"]->get_ID());
         $home->showimage($photo);
         $home->assign('comments', \Entity\E_Comment::get_By_Photo($photo_details['id']));
         $likelist = $photo["photo"]->get_LikesList();
@@ -44,30 +43,32 @@ class V_Foto extends V_Home
         $home->display('home_default.tpl');
     }
 
-
     /**
      * Questa funzione viene utilizzata per richiamare il modulo di upload di una foto
      * 
      * @param string $username L'utente che vuole effettuare l'upload delle foto
      */
-    public static function showUploadPhoto($username)
-    {
+    public static function showUploadPhoto($username) {
         $home = new \View\V_Home();
-        if(\Entity\E_User::get_DB_Role($username) === \Utilities\Roles::STANDARD)
-        {
+        $limit = false;
+        if (\Entity\E_User::get_DB_Role($username) === \Utilities\Roles::STANDARD) {
             $tpl = 'upload_standard';
-        }
-        else
-        {
+            $user = \Entity\E_User_Standard::get_UserDetails($username);
+            /* @var $user \Entity\E_User_Standard */
+            $limit = !$user->can_Upload();
+        } else {
             $tpl = 'upload';
         }
         $home->assign('username', $username);
         $home->assign('categories', $home->imposta_categoria());
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($tpl);
+        if ($limit) {
+            $home->set_banner("banner_limit_upload");
+        } else {
+            $home->set_Contenuto_Home($tpl);
+        }
         $home->display('home_default.tpl');
     }
-
 
     /**
      * Questa funzione assegna tramite smarty i vari parametri al tpl,
@@ -82,8 +83,7 @@ class V_Foto extends V_Home
      * @param string $username L'utente che sta cercando di visualizzare la foto
      *
      */
-    public static function showEditPhoto($photo, $username)
-    {
+    public static function showEditPhoto($photo, $username) {
         $home = new \View\V_Home();
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
@@ -96,10 +96,5 @@ class V_Foto extends V_Home
         $home->display('home_default.tpl');
     }
 
-
     //METODI BASE - NON STATICI!!!\\
-
-
-
-
 }

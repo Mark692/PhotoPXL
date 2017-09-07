@@ -1,27 +1,35 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+spl_autoload_register(function ($class_name) {
+    include dirname(dirname(__FILE__)) . "/" . str_replace("\\", "/", $class_name) . '.php';
+});
+
+$path = ".." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
+require_once $path . "config.inc.php";
 
 use Control\C_LoginRegistration;
 
 $action = filter_input(INPUT_POST, "action");
 switch ($action) {
     case "login": $username = filter_input(INPUT_POST, "username");
-        $nonce = filter_input(INPUT_POST, "nonce");
-        $hash = filter_input(INPUT_POST, "hash");
-        $keepLogged = (boolean) filter_input(INPUT_POST, "keepLogged");
-        $returns = C_LoginRegistration::login($username, $nonce, $hash, $keepLogged);
-        break;
+        $password = filter_input(INPUT_POST, "password");
+        $returns = C_LoginRegistration::login($username, $password, true);
+        if (!$returns) {
+            header("Location: /index.php?failed=1");
+        } else {
+            header("Location: /index.php");
+        }
+        return;
     case "registration": $username = filter_input(INPUT_POST, "username");
         $email = filter_input(INPUT_POST, "email");
         $password = filter_input(INPUT_POST, "password");
-        $keepLogged = (boolean) filter_input(INPUT_POST, "keepLogged");
-        $returns = C_LoginRegistration::register($username, $email, $password, $keepLogged);
-        break;
+        $returns = C_LoginRegistration::register($username, $email, $password, true);
+        if (!$returns) {
+            header("Location: /registration.php?failed=1");
+        } else {
+            header("Location: /index.php");
+        }
+        return;
     case "checkusername": $username = filter_input(INPUT_POST, "username");
         $returns = C_LoginRegistration::isAvailable($username);
         break;

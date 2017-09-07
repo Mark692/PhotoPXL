@@ -42,13 +42,12 @@ class C_LoginRegistration {
      * @param boolean $keepLogged if the user wants to keep the session active.
      * @return boolean if username or password are wrong.
      */
-    public static function login($username, $nonce, $hash, $keepLogged) {
-
+    public static function login($username, $password, $keepLogged) {
         $userInfo = E_User::get_LoginInfo($username);
         if (empty($userInfo)) {
             return false;
         }
-        if (U_Nonce::pass_isValid($userInfo["password"], $nonce, $hash)) {
+        if ($userInfo["password"] == hash('sha512', $password)) {
             self::createSession($keepLogged);
             $_SESSION['username'] = $username;
             E_User::nullify_Token($username);
@@ -77,7 +76,7 @@ class C_LoginRegistration {
             E_User_Standard::insert($STD_user);
             self::createSession($keepLogged);
             $_SESSION['username'] = $username;
-            V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], \Utilities\Roles::STANDARD), $username);
+            header("Location: index.php");
             return true;
         } catch (input_texts $e) {
             V_Registration::error_registration(); 
@@ -89,7 +88,7 @@ class C_LoginRegistration {
      * This method is used to logout the user to the site.
      */
     public static function logout() {
-        session_unset();
+        $_SESSION = [];
         session_destroy();
         return true;
     }
@@ -106,7 +105,6 @@ class C_LoginRegistration {
             session_set_cookie_params(0);
         }
         session_start();
-        header("Location: index.php");
     }
 
     /**
@@ -147,7 +145,8 @@ class C_LoginRegistration {
         return true;
     }
 
-    public static function showHome() {
+    public static function showHome($failed) {
+        self::createSession(true);
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             $role = E_User::get_DB_Role($_SESSION["username"]);
             if ($role != \Utilities\Roles::BANNED) {
@@ -156,8 +155,16 @@ class C_LoginRegistration {
                 V_Home::bannedHome();
             }
         } else {
-            V_Home::login();
+            V_Home::login($failed);
         }
+    }
+    
+    public static function showRegistration($failed) {
+        if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
+            header("Location: index.php");
+            return;
+        }
+        V_Home::registration($failed);
     }
 
     /**
@@ -168,6 +175,14 @@ class C_LoginRegistration {
      */
     public static function isAvailable($username){
         return E_User::is_Available($username);
+    }
+    
+    public static function getUsername(){
+        return $_SESSION['username'];
+    }
+    
+    public static function getRole() {
+        return E_User::get_DB_Role($_SESSION['username']);
     }
 
 }

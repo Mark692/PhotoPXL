@@ -10,6 +10,7 @@ namespace Control;
 
 use Entity\E_User;
 use Entity\E_Photo;
+use Entity\E_Photo_Blob;
 use Entity\E_Comment;
 use Entity\E_Album;
 use Utilities\Roles;
@@ -40,7 +41,6 @@ class C_Photo {
      */
     private function isBanned() {
         if ($this->role == Roles::BANNED) {
-            V_Home::bannedHome(); //per federico
             return true;
         }
         return false;
@@ -123,26 +123,24 @@ class C_Photo {
      * @param array $categories the photo's categories
      * @param string $description the photo's description.
      * @param int $albumId the destion album's ID.
-     * @return boolean true if the photo was correctly uploaded.
+     * @return id of uploaded photo.
      */
-    public function upload($photoPath, $title, $categories, $description, $albumId = null) {
+    public function upload($photoPath, $title, $categories, $description, $reserved, $albumId = null) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: index.php", true, 301);
+            exit();
         }
         $photo_blob = new E_Photo_Blob();
-        $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
+        $photo_blob->on_Upload($photoPath);
         $photo = new E_Photo($title);
         $photo->set_Categories($categories);
         $photo->set_Description($description);
+        $photo->set_Reserved($reserved);
         $photoId = E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
         if (!is_null($albumId)) {
             E_Photo::move_To($photoId, $albumId);
-            V_Album::album(E_Album::get_By_ID($albumId), E_Photo::get_By_Album($albumId, $_SESSION["username"], $this->role), $_SESSION["username"]);
-        } else {
-            \View\V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), E_Album::get_By_User($_SESSION["username"]));
         }
-        return true;
+        return $photoId;
     }
 
     /**
