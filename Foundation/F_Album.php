@@ -52,6 +52,7 @@ class F_Album extends F_Database
 
         //Sets a basic cover for the album
         self::insert_DefaultCover($album_ID);
+        return $album_ID;
     }
 
 

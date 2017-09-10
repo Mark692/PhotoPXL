@@ -11,9 +11,5 @@ if(!\Control\C_LoginRegistration::isLogged() || \Control\C_LoginRegistration::is
     header("Location: /index.php");
     exit();
 }
-
-$username = \Control\C_LoginRegistration::getUsername();
-$photoId = filter_input(INPUT_GET, "id");
-
-$cphoto = new \Control\C_Photo();
-$cphoto->see($photoId);
+$albumId = filter_input(INPUT_GET, "id");
+\Control\C_Album::see($albumId);

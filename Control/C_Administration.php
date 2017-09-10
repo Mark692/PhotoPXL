@@ -45,6 +45,11 @@ class C_Administration {
         \Entity\E_User_MOD::ban($username);
     }
     
+    /**
+     * This method is used to check if the current user is a mod or an admin
+     * 
+     * @return int
+     */
     public static function isModOrAdmin(){
         $uRole = E_User::get_DB_Role($_SESSION["username"]);
         return $uRole == Roles::ADMIN || $uRole== Roles::MOD;

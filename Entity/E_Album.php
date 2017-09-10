@@ -265,7 +265,7 @@ class E_Album
      */
     public static function insert(E_Album $album, $owner)
     {
-        F_Album::insert($album, $owner);
+        return F_Album::insert($album, $owner);
     }
 
 

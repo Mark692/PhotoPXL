@@ -151,7 +151,8 @@ class C_LoginRegistration {
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             $role = E_User::get_DB_Role($_SESSION["username"]);
             if ($role != \Utilities\Roles::BANNED) {
-                V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
+                V_Home::standardHome(\Entity\E_Photo::get_MostLiked($_SESSION["username"], 
+                        $role), $_SESSION["username"]);
             } else {
                 V_Home::bannedHome();
             }
@@ -203,10 +204,20 @@ class C_LoginRegistration {
         return E_User::get_DB_Role($_SESSION['username']);
     }
     
+    /**
+     * Check if the current user is banned
+     * 
+     * @return boolean
+     */
     public static function isBanned() {
         return self::getRole() == \Utilities\Roles::BANNED;
     }
 
+    /**
+     * Check if the current user is logged
+     * 
+     * @return boolean
+     */
     public static function isLogged() {
         return !is_null($_SESSION['username']);
     }

@@ -50,7 +50,7 @@ class C_Photo {
      * This method checks the photo's privacy and if the user in session is the owner.
      * 
      * @param \Entity\E_Photo $photo
-     * @return true if the photo is private and the current user is the owner.
+     * @return boolean true if the photo is private and the current user is the owner.
      */
     private function checkPrivacyOwner($photo) {
         return $photo->get_Reserved() && !E_Photo::is_TheUploader($_SESSION["username"], $photo->get_ID());
@@ -69,8 +69,12 @@ class C_Photo {
             return false;
         }
         $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
+        if(!$photo) {
+            header("Location: /error.php");
+            exit();
+        }
         /* @var $photo \Entity\E_Photo */
-        if ($this->role != Roles::MOD and $this->role != Roles::ADMIN and $this->checkPrivacyOwner($photo)) {
+        if ($this->role != Roles::MOD && $this->role != Roles::ADMIN && $this->checkPrivacyOwner($photo['photo'])) {
             V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
@@ -131,7 +135,7 @@ class C_Photo {
      * @param string $description the photo's description.
      * @param boolean $reserved whether the photo is reserved or not
      * @param int $albumId the destion album's ID.
-     * @return id of uploaded photo.
+     * @return int id of uploaded photo.
      */
     public function upload($photoPath, $title, $categories, $description, $reserved, $albumId = null) {
         if ($this->isBanned($this->role)) {
@@ -360,20 +364,6 @@ class C_Photo {
         }
         V_Home::standardHome(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
         return true;
-    }
-
-    /**
-     * Returns most liked photos in the homepage, which must be encoded in a 
-     * specific format (e.g. JSON) and then send to client
-     * 
-     * @param int $pageToView the next page to view
-     * @return boolean true 
-     */
-    public static function mostLikedAsync($pageToView) {
-        if ($this->isBanned($this->role)) {
-            return false;
-        }
-        return E_Photo::get_MostLiked($_SESSION["username"], $this->role, $pageToView);
     }
 
 }

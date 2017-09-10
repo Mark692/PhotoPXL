@@ -33,13 +33,14 @@ class V_Album extends V_Home
         $home->assign('username', $username);
         $album_details = $home->album_details($DB_album);
         $home->assign('album_details', $album_details);
+        $home->assign('aid', $DB_album['album']->get_ID());
         $user_album = $DB_album['username'];
         $home->assign('user_album', $user_album);
         $home->assign('categories', $home->imposta_categoria($album_details['categories']));
         $home->CheckPhotos($array_photo);
         $home->assign('array_photo', $home->thumbnail($array_photo));
         $home->set_Cont_menu_user($home->imposta_ruolo(\Entity\E_User::get_DB_Role($username)));
-        $home->set_Contenuto_Home($tpl = 'Album');
+        $home->set_Contenuto_Home($tpl = 'album');
         $home->display('home_default.tpl');
     }
 

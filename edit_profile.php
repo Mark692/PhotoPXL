@@ -1,5 +1,10 @@
 <?php
 
+if(!isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) || $_SERVER["HTTP_X_FORWARDED_PROTO"] != "https"){
+    header("Location: https://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"], true, 301);
+    exit();
+}
+
 session_start();
 
 require_once '.' . DIRECTORY_SEPARATOR . 'libs' . DIRECTORY_SEPARATOR . 'Smarty.class.php';

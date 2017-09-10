@@ -1,10 +1,13 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+session_start();
+
+spl_autoload_register(function ($class_name) {
+    include dirname(dirname(__FILE__)) . "/" . str_replace("\\", "/", $class_name) . '.php';
+});
+
+$path = ".." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
+require_once $path . "config.inc.php";
 
 use Control\C_Album;
 

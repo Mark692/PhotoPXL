@@ -13,8 +13,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="index.php">Home</a></li>   
                 <li><a href="upload.php">Carica Foto</a></li>
-                <li><a href="">Crea Album</a></li>
-                <li><a href="">Banna Utenti</a></li>
+                <li><a href="create_album.php">Crea Album</a></li>
                 <li><a href="change_role.php">Cambia Ruoli</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
