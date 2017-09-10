@@ -12,12 +12,12 @@ if(!\Control\C_LoginRegistration::isLogged() || \Control\C_LoginRegistration::is
     exit();
 }
 
-$username = \Control\C_LoginRegistration::getUsername();
-$photo = \Entity\E_Photo::get_By_ID(filter_input(INPUT_GET, "id"),
-        $username, \Control\C_LoginRegistration::getRole());
-if($photo)
+$categories = filter_input(INPUT_POST, "categories", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+if (is_null($categories) || empty($categories))
 {
-    \View\V_Foto::showPhotoPage($photo, $username);
-} else {
-    header("Location: /error.php");
+    header("Location: index.php");
+    exit();
 }
+$cphoto = new \Control\C_Photo();
+$cphoto->searchByCategory($categories);
+

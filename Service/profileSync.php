@@ -1,30 +1,50 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+session_start();
+
+spl_autoload_register(function ($class_name) {
+    include dirname(dirname(__FILE__)) . "/" . str_replace("\\", "/", $class_name) . '.php';
+});
+
+$path = ".." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
+require_once $path . "config.inc.php";
 
 use Control\C_Profile;
 
+if(!\Control\C_LoginRegistration::isLogged()){
+    header("Location: /index.php");
+    exit();
+}
+
 $action = filter_input(INPUT_POST, "action");
-;
+$success = true;
+
 switch ($action) {
-    case "changeEmail": $newEmail = filter_input(INPUT_POST, "newEmail");
-        C_Profile::changeEmail($newEmail);
+    case "edit":
+        $newUsername = filter_input(INPUT_POST, "username");
+        $newEmail = filter_input(INPUT_POST, "email");
+        $newPassword = filter_input(INPUT_POST, "password");
+        if (!is_null($newUsername) && !empty($newUsername)) {
+            $success = C_Profile::changeUserName($newUsername);
+        }
+        if ($success && !is_null($newPassword) && !empty($newPassword)) {
+            $success = C_Profile::changePassword($newPassword);
+        }
+        if ($success && !is_null($newEmail) && !empty($newEmail)) {
+            $success = C_Profile::changeEmail($newEmail);
+        }
         break;
-    case "changePassowrd": $newPassword = filter_input(INPUT_POST, "newPassword");
-        C_Profile::changePassword($newPassword);
-        break;
-    case "removeProPic": $photoId = filter_input(INPUT_POST, "photoId");
+    case "picture":
+        $photoId = filter_input(INPUT_POST, "photoId");
         C_Profile::removeProPic($photoId);
-        break;
-    case "updateProPic": $photoId = filter_input(INPUT_POST, "photoId");
         C_Profile::updateProPic($photoId);
-        break;
-    case "uploadProPic": $photoPath = filter_input(INPUT_POST, "photoPath");
+        $photoPath = filter_input(INPUT_POST, "photoPath");
         C_Profile::uploadProPic($photoPath);
         break;
-    default;
+}
+
+if ($success) {
+    header("Location: /edit_profile.php?success=1");
+} else {
+    header("Location: /error.php");
 }

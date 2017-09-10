@@ -31,7 +31,7 @@ switch ($action) {
         }
         return;
     case "checkusername": $username = filter_input(INPUT_POST, "username");
-        $returns = C_LoginRegistration::isAvailable($username);
+        echo json_encode(C_LoginRegistration::isAvailable($username));
         break;
     case "requirenonce": $returns = C_LoginRegistration::getNonce();
         break;
@@ -48,5 +48,3 @@ switch ($action) {
         break;
     default : $returns = false;
 }
-
-echo json_encode($returns);

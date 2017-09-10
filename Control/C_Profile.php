@@ -11,9 +11,6 @@ namespace Control;
 use Entity\E_User;
 use Entity\E_Photo;
 use Utilities\Roles;
-use View\V_Home;
-use View\V_Users;
-use View\V_Profilo;
 use Exceptions\input_texts;
 
 /**
@@ -32,13 +29,12 @@ class C_Profile {
     public static function uploadProPic($photoPath) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: /index.php");
+            exit();
         }
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath); //$_FILES['userfile']['tmp_name']; in service
         E_User::upload_NewCover($_SESSION["username"], $photo_blob);
-        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"])); //per Federico
         return true;
     }
 
@@ -51,19 +47,16 @@ class C_Profile {
     public static function updateProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: /index.php");
+            exit();
         }
         if (!E_Photo::get_By_ID($photoId, $_SESSION["username"], $role)) {
-            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         E_User::set_ProfilePic($_SESSION["username"], $photoId);
-        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"]));
         return true;
     }
 
@@ -76,15 +69,13 @@ class C_Profile {
     public static function removeProPic($photoId) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: /index.php");
+            exit();
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
         E_User::remove_CurrentProPic($_SESSION["username"]);
-        V_Profilo::home($_SESSION["username"], E_User::get_UserDetails($_SESSION["username"]), \Entity\E_Album::get_By_User($_SESSION["username"]));
         return true;
     }
 
@@ -97,39 +88,64 @@ class C_Profile {
     public static function changePassword($newPassword) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: /index.php");
+            exit();
         }
         try {
-            E_User::change_Password($newPassword);
-            V_Profile::banner($_SESSION["username"]); 
+            $user = E_User::get_UserDetails($_SESSION["username"]);
+            /* @var $user \Entity\E_User */
+            $user->set_Password($newPassword);
+            E_User::change_Password($user);
             return true;
         } catch (input_texts $e) {
-            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
     }
 
     /**
-     * This method is used to change the email.
-     *
-     * @param string $newEmail user's new email.
-     * @return boolean true if the email was correctly changed.
+     * This method is used to change the current user's name
+     * 
+     * @param string $newUsername the new username
+     * @return boolean whether it success or not.
      */
-    public static function changeEmail($newEmail) {
+    public static function changeUserName($newUsername) {
         $role = E_User::get_DB_Role($_SESSION["username"]);
         if ($role == Roles::BANNED) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: /index.php");
+            exit();
         }
         try {
-            E_User::change_Email($newEmail);
-            V_Profilo::banner($_SESSION["username"]); //per Fede, appare un banner del tipo "email cambiata correttamente"
+            $user = E_User::get_UserDetails($_SESSION["username"]);
+            /* @var $user \Entity\E_User */
+            $user->set_Username($newUsername);
+            E_User::change_Username($user, $_SESSION["username"]);
+            $_SESSION["username"] = $newUsername;
             return true;
         } catch (input_texts $e) {
-            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $role), $_SESSION["username"]);
             return false;
         }
     }
 
+    /**
+     * This method is used to change current user's email.
+     * 
+     * @param string $newEmail the new email to submit.
+     * @return boolean whether it success or not.
+     */ 
+    public static function changeEmail($newEmail) {
+        $role = E_User::get_DB_Role($_SESSION["username"]);
+        if ($role == Roles::BANNED) {
+            header("Location: /index.php");
+            exit();
+        }
+        try {
+            $user = E_User::get_UserDetails($_SESSION["username"]);
+            /* @var $user \Entity\E_User */
+            $user->set_Email($newEmail);
+            E_User::change_Email($user);
+            return true;
+        } catch (input_texts $e) {
+            return false;
+        }
+    }
 }

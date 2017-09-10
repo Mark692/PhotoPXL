@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Control;
 
 use Entity\E_User;
@@ -32,15 +26,13 @@ class C_Administration {
                 and $role != Roles::MOD and $role != Roles::ADMIN) {
             return false;
         }
-        $uRole = E_User::get_DB_Role($_SESSION["username"]);
-        if ($uRole != Roles::ADMIN and $uRole != Roles::MOD) {
+        if (!self::isModOrAdmin()) {
             return false;
         }
-        if (!E_User::is_Available($username)) {
+        if (E_User::is_Available($username)) {
             return false;
         }
-        E_User_Admin::change_role($username, \Utilities\Roles::PRO);
-        return true;
+        return E_User_Admin::change_role($username, $role);
     }
 
     /**
@@ -51,6 +43,11 @@ class C_Administration {
      */
     public static function ban($username) {
         \Entity\E_User_MOD::ban($username);
+    }
+    
+    public static function isModOrAdmin(){
+        $uRole = E_User::get_DB_Role($_SESSION["username"]);
+        return $uRole == Roles::ADMIN || $uRole== Roles::MOD;
     }
 
 }

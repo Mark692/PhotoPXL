@@ -14,13 +14,11 @@
                 <li><a href="index.php">Home</a></li>   
                 <li><a href="upload.php">Carica Foto</a></li>
                 <li><a href="">Crea Album</a></li>
-
                 <li><a href="">Banna Utenti</a></li>
-                <li><a href="">Cambia Ruoli</a></li>
+                <li><a href="change_role.php">Cambia Ruoli</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="profile.php
-                       ">{$username}</a></li>
+                <li><a href="profile.php" id="profile">{$username}</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>

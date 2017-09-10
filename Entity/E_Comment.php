@@ -158,10 +158,11 @@ class E_Comment
      *
      * @param E_Comment $comment The comment to save
      * @throws queries In case of connection errors
+     * @return Comment id
      */
     public static function insert(E_Comment $comment)
     {
-        F_Comment::insert($comment);
+        return F_Comment::insert($comment);
     }
 
 

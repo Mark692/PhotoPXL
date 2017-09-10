@@ -13,10 +13,10 @@
                       <li><a href="index.php">Home</a></li>		
                       <li><a href="upload.php">Carica Foto</a></li>
                       <li><a href="">Crea Album</a></li>
-                      <li><a href="">Diventa Pro</a></li>
+                      <li><a href="pro.php">Diventa Pro</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                    <li><a href="profile.php">{$username}</a></li>
+                    <li><a href="profile.php" id="profile">{$username}</a></li>
                     <li><a href="logout.php">Logout</a></li>
             </ul>
         </div>

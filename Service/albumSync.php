@@ -8,6 +8,11 @@
 
 use Control\C_Album;
 
+if(!\Control\C_LoginRegistration::isLogged()){
+    header("Location: /index.php");
+    exit();
+}
+
 $action = filter_input(INPUT_POST, "action");
 switch($action){
     case "create": $title = filter_input(INPUT_POST, "create");

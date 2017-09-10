@@ -87,6 +87,7 @@ class V_Foto extends V_Home {
         $home = new \View\V_Home();
         $home->assign('username', $username);
         $photo_details = $home->photo_details($photo);
+        $home->assign('pid', $photo_details["id"]);
         $home->assign('photo_details', $photo_details);
         $home->showimage($photo);
         $home->assign('categories', $home->imposta_categoria());
@@ -96,5 +97,4 @@ class V_Foto extends V_Home {
         $home->display('home_default.tpl');
     }
 
-    //METODI BASE - NON STATICI!!!\\
 }

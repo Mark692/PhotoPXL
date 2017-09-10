@@ -84,9 +84,12 @@ class V_Profilo extends V_Home
      *               - "type" => the user uploader
      *               - "tot_photo" => the number of photos
      */
-    public static function showEditProfile($user_details, $array_photo)
+    public static function showEditProfile($user_details, $array_photo, $edit = false)
     {
         $home = new \View\V_Home();
+        if ($edit) {
+            $home->set_banner($tpl = 'banner_ok');
+        }
         $details = $home->user_details($user_details);
         $home->assign('user_details', $details);
         $home->show_profile_pic(\Entity\E_User::get_ProfilePic($details['username']));

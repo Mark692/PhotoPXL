@@ -7,7 +7,6 @@
                         <div class="row">
                             {foreach from=$array1 item=valore}
                                 <div class="col-sm-1">
-                                    <!--QUA CI VA MESSO UN RIFERIMENTO ALLA FOTO, QUESTO è SOLO PROVVISORIO-->
                                     <a href="ShowProfile.tpl"></a>
                                     {$valore}
                                     <!--modo per mettere gli id nascoti-->
@@ -21,26 +20,25 @@
             {/if}
         </div>
         <div class="col-md-6">
-            <form metod="POST" action="">
+            <form method="POST" action="Service/profileSync.php">
                 {$pic_profile}
-                <input type="hidden" name="controller" value="profilo" />
-                <input type="hidden" name="task" value="update" />
-                <input type="submit" name="Salva" class="btn-success" value="Modifica"/>
                 <h3 class="text-success">Username:</h3><br />
                 <div class="form-group">
-                    <input name="username" class="form-control" id="focusedInput" type="text" value={$user_details.username}>
+                    <input id="username" name="username" class="form-control" type="text" value="{$user_details.username}" maxlength="20" pattern="[-._a-zA-Z0-9]+">
                 </div>
                 <h3 class="text-success">Password:</h3><br />
                 <div class="form-group">
-                    <input name="password" class="form-control" id="focusedInput" type="password" value="{$user_details.password}">
+                    <input id="password" name="password" class="form-control" type="password" >
                 </div>
                 <h3 class="text-success">Email:</h3><br />
                 <div class="form-group">
-                    <input name="email" class="form-control" id="focusedInput" type="text" value="{$user_details.email}">
+                    <input name="email" class="form-control" type="email" value="{$user_details.email}">
                 </div>
                 <h3 class="text-success">Ruolo:</h3><br />{$user_details.role}
-                <input type="submit" name="Salva" class="btn-success" value="Salva Modifiche"/>
+                <input type="hidden" name="action" value="edit" />
+                <input type="submit" name="Salva" class="btn btn-success" value="Salva Modifiche"/>
             </form>
         </div>
     </div>
 </div>
+<script src="templates/main/template/js/edit_profile.js"></script>

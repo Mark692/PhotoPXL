@@ -16,7 +16,7 @@
                 <li><a href="">Banna Utenti</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="profile.php">{$username}</a></li>
+                <li><a href="profile.php" id="profile">{$username}</a></li>
                 <li><a href="logout.php">Logout</a></li>	
             </ul>
         </div>

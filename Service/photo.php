@@ -1,12 +1,19 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+session_start();
+
+spl_autoload_register(function ($class_name) {
+    include dirname(dirname(__FILE__)) . "/" . str_replace("\\", "/", $class_name) . '.php';
+});
+
+$path = ".." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
+require_once $path . "config.inc.php";
 
 use Control\C_Photo;
+
+if(!\Control\C_LoginRegistration::isLogged()){
+    json_encode(false);
+}
 
 $photo = new C_Photo();
 $action = filter_input(INPUT_POST, "action");
@@ -15,14 +22,16 @@ switch ($action) {
         $text = filter_input(INPUT_POST, "text");
         $returns = $photo->comment($photoId, $text);
         break;
+    case "editComment":$photoId = filter_input(INPUT_POST, "photoId");
+        $text = filter_input(INPUT_POST, "text");
+        $comment = filter_input(INPUT_POST, "commentId");
+        $returns = $photo->editComment($photoId, $text, intval($comment));
+        break;
+    case "deleteComment": $comment = filter_input(INPUT_POST, "commentId");
+        $returns = $photo->deleteComment($comment);
+        break;
     case "likeUnlike": $photoId = filter_input(INPUT_POST, "photoId");
         $returns = $photo->likeUnlike($photoId);
-        break;
-    case "seeComments":$photoId = filter_input(INPUT_POST, "photoId");
-        $returns = $photo->seeComments($photoId);
-        break;
-    case "seeLikes":$photoId = filter_input(INPUT_POST, "photoId");
-        $returns = $photo->seeLikes($photoId);
         break;
     case "mostLikedAsync": $pageToView = filter_input(INPUT_POST, "pageToView");
         $returns = $photo->mostLikedAsync($pageToView);

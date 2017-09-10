@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Control;
 
 use Entity\E_User;
@@ -13,8 +7,6 @@ use Entity\E_User_Standard;
 use Utilities\U_Nonce;
 use Exceptions\input_texts;
 use View\V_Home;
-use View\V_Login;
-use View\V_Registration;
 
 /**
  * This class manages a user's registration, login and logout.
@@ -79,13 +71,14 @@ class C_LoginRegistration {
             header("Location: index.php");
             return true;
         } catch (input_texts $e) {
-            V_Registration::error_registration(); 
             return false;
         }
     }
 
     /**
      * This method is used to logout the user to the site.
+     * 
+     * @return boolean
      */
     public static function logout() {
         $_SESSION = [];
@@ -145,6 +138,14 @@ class C_LoginRegistration {
         return true;
     }
 
+    /**
+     * This method is used to show correct home, it may be: 
+     * 1. login page
+     * 2. standard home
+     * 3. banned home
+     * 
+     * @param boolean $failed whether login failed and shows an error banner accordingly. 
+     */
     public static function showHome($failed) {
         self::createSession(true);
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
@@ -159,10 +160,17 @@ class C_LoginRegistration {
         }
     }
     
+    /**
+     * This method is used to show the registration page.
+     * It can be considered failsafe as if an user attempt to use this method when
+     * already logged she get's redirected to index.
+     * 
+     * @param boolean $failed whether registration failed and shows an error banner accordingly
+     */
     public static function showRegistration($failed) {
         if (isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
             header("Location: index.php");
-            return;
+            exit();
         }
         V_Home::registration($failed);
     }
@@ -177,12 +185,29 @@ class C_LoginRegistration {
         return E_User::is_Available($username);
     }
     
+    /**
+     * This role is used to get current user's name
+     * 
+     * @return string
+     */
     public static function getUsername(){
         return $_SESSION['username'];
     }
     
+    /**
+     * This method is used to get current user's role
+     * 
+     * @return int
+     */
     public static function getRole() {
         return E_User::get_DB_Role($_SESSION['username']);
     }
+    
+    public static function isBanned() {
+        return self::getRole() == \Utilities\Roles::BANNED;
+    }
 
+    public static function isLogged() {
+        return !is_null($_SESSION['username']);
+    }
 }

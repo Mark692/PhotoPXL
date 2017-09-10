@@ -20,11 +20,11 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form method="POST" action="">
+            <form method="POST" action="search.php">
                 <h3 class="text-success">Ricerca per Categoria:</h3><br />
                 <div class="form-group">
                     <!-- select multiple -->
-                    <select name="categories" multiple="" class="form-control">
+                    <select name="categories[]" multiple="" class="form-control">
                         {foreach from=$categories item=cat}
                             <option value={$cat.riferimento}>{$cat.visualizzato}</option>
                         {/foreach}

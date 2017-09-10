@@ -53,7 +53,7 @@ class C_Photo {
      * @return true if the photo is private and the current user is the owner.
      */
     private function checkPrivacyOwner($photo) {
-        return $photo->get_Reserved() and ! E_Photo::is_TheUploader($_SESSION["username"], $photo->get_ID());
+        return $photo->get_Reserved() && !E_Photo::is_TheUploader($_SESSION["username"], $photo->get_ID());
     }
 
     /**
@@ -85,32 +85,39 @@ class C_Photo {
      * @param string $title the photo's title.
      * @param array $categories the photo's categories.
      * @param string $description the photo's description.
+     * @param boolean $reserved whether the photo is reserved or not
      * @return boolean true if the photo could be edit and all the changed were saved in the DB.
      */
-    public function edit($photoId, $title, $categories, $description) {
-        foreach ($categories as $category) {
-            if ($category != PAESAGGI and $category != RITRATTI and $category != FAUNA
-                    and $category != BIANCONERO and $category != ASTRONOMIA and
-                    $category != STREET and $category != NATURAMORTA and $category != SPORT) {
-                V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
-                return false;
-            }
-        }
+    public function edit($photoId, $title, $categories, $description, $reserved) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: index.php");
+            exit();
         }
         if (!E_Photo::is_TheUploader($_SESSION["username"], $photoId)) {
-            V_Home::error(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION['username'], $this->role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION['username'], $this->role)['photo'];
         /* @var $photo \Entity\E_Photo */
-        $photo->set_Title($title);
-        $photo->set_Categories($categories);
-        $photo->set_Description($description);
+        if (!empty($title)) {
+            $photo->set_Title($title);
+        }
+        if (!is_null($categories)) {
+            foreach ($categories as $category) {
+                if ($category != PAESAGGI and $category != RITRATTI and $category != FAUNA
+                        and $category != BIANCONERO and $category != ASTRONOMIA and
+                        $category != STREET and $category != NATURAMORTA and $category != SPORT) {
+                    return false;
+                }
+            }
+            $photo->set_Categories($categories);
+        }
+        if (!empty($description)) {
+            $photo->set_Description($description);
+        }
+        if (!is_null($reserved)) {
+            $photo->set_Reserved($reserved);
+        }
         \Entity\E_Photo::update($photo);
-        V_Foto::showPhotoPage($photo, $_SESSION["username"]); //controllare
         return true;
     }
 
@@ -122,6 +129,7 @@ class C_Photo {
      * @param string $title the photo's title.
      * @param array $categories the photo's categories
      * @param string $description the photo's description.
+     * @param boolean $reserved whether the photo is reserved or not
      * @param int $albumId the destion album's ID.
      * @return id of uploaded photo.
      */
@@ -130,17 +138,20 @@ class C_Photo {
             header("Location: index.php", true, 301);
             exit();
         }
+        if (is_null($categories)) {
+            $categories = [];
+        }
         $photo_blob = new E_Photo_Blob();
         $photo_blob->on_Upload($photoPath);
         $photo = new E_Photo($title);
         $photo->set_Categories($categories);
         $photo->set_Description($description);
         $photo->set_Reserved($reserved);
-        $photoId = E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
+        E_Photo::insert($photo, $photo_blob, $_SESSION["username"]);
         if (!is_null($albumId)) {
-            E_Photo::move_To($photoId, $albumId);
+            E_Photo::move_To($photo->get_ID(), $albumId);
         }
-        return $photoId;
+        return $photo->get_ID();
     }
 
     /**
@@ -149,19 +160,60 @@ class C_Photo {
      * 
      * @param int $photoId the photo's ID.
      * @param string $text the user's comment.
-     * @return boolean true if the comment was correctly added.
+     * @return boolean|int false if not succeded, comment id otherwise
      */
     public function comment($photoId, $text) {
         if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role)["photo"];
         /* @var $photo \Entity\E_Photo */
         if ($this->checkPrivacyOwner($photo)) {
             return false;
         }
-        E_Comment::insert(new E_Comment($text, $_SESSION["username"], $photoId));
-        return true;
+        return E_Comment::insert(new E_Comment($text, $_SESSION["username"], $photoId));
+    }
+
+    /**
+     * This method is used to edit a comment.
+     * 
+     * @param int $photoId the id of the photo
+     * @param string $text the text of the comment
+     * @param int $commentId the id of the comment
+     * @return boolean whether it success or not.
+     */
+    public function editComment($photoId, $text, $commentId) {
+        if ($this->isBanned($this->role)) {
+            return false;
+        }
+
+        try {
+            $comment = new E_Comment($text, $_SESSION["username"], $photoId);
+            $comment->set_ID($commentId);
+            E_Comment::update($comment);
+            return true;
+        } catch (\Exceptions\queries $e) {
+            return false;
+        }
+    }
+
+    /**
+     * This method is used to delete a comment.
+     * 
+     * @param int $commentId the id of the comment.
+     * @return boolean whether it success or not.
+     */
+    public function deleteComment($commentId) {
+        if ($this->isBanned($this->role)) {
+            return false;
+        }
+
+        try {
+            E_Comment::remove($commentId);
+            return true;
+        } catch (\Exceptions\queries $e) {
+            return false;
+        }
     }
 
     /**
@@ -171,19 +223,20 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the action went right.
      */
-    public static function likeUnlike($photoId) {
+    public function likeUnlike($photoId) {
         if ($this->isBanned($this->role)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role)['photo'];
         /* @var $photo \Entity\E_Photo */
         if ($this->checkPrivacyOwner($photo)) {
             return false;
         }
         if (!E_User::add_Like_to($photoId, $_SESSION["username"])) {
             E_User::remove_Like($_SESSION["username"], $photoId);
+            return -1;
         }
-        return true;
+        return 1;
     }
 
     /**
@@ -193,19 +246,17 @@ class C_Photo {
      * @param int $photoId the photo's ID.
      * @return boolean true if the photo was correctly deleted.
      */
-    public function delete($photoId, $albumId) {
+    public function delete($photoId) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
+            header("Location: /index.php");
+            exit();
+        }
+        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role)['photo'];
+        /* @var $photo \Entity\E_Photo */
+        if ($this->role != Roles::MOD && $this->role != Roles::ADMIN && $this->checkPrivacyOwner($photo)) {
             return false;
         }
-        $photo = E_Photo::get_By_ID($photoId, $_SESSION["username"], $this->role);
-        /* @var $photo \Entity\E_Photo */
-        if ($this->role != Roles::MOD and $this->role != Roles::ADMIN
-                and $this->checkPrivacyOwner($photo)) {
-            V_Home::notAllowed(E_Photo::get_MostLiked($_SESSION["username"], $this->role), $_SESSION["username"]);
-        }
         E_Photo::delete($photoId);
-        V_Album::album(E_Album::get_By_ID($albumId), $photo, $_SESSION["username"]);
         return true;
     }
 
@@ -238,8 +289,8 @@ class C_Photo {
      */
     public function searchByCategory($category) {
         if ($this->isBanned($this->role)) {
-            V_Home::bannedHome();
-            return false;
+            header("Location: index.php");
+            exit();
         }
         $photos = E_Photo::get_By_Categories($category, $_SESSION["username"], $this->role);
         V_Home::showPhotoCollection($photos, $_SESSION["username"]);

@@ -21,6 +21,7 @@ class F_Comment extends F_Database
      *
      * @param E_Comment $comment The comment to save
      * @throws queries In case of connection errors
+     * @return Comment id
      */
     public static function insert(E_Comment $comment)
     {
@@ -34,6 +35,7 @@ class F_Comment extends F_Database
 
         $comment_ID = parent::insert_Query($insertInto, $set); //Inserts the comments and gets its ID.
         $comment->set_ID($comment_ID);
+        return $comment_ID;
     }
 
 

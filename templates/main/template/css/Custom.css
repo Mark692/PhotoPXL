@@ -606,3 +606,7 @@ fieldset[disabled] .navbar-standard .btn-link:focus {
     margin-top: 10px;
     width: 100%;
 }
+
+.send {
+    display:none;
+}

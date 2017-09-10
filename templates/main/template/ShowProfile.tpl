@@ -23,7 +23,7 @@
         <div class="col-md-6">
             {$pic_profile}
             {if $attiva|default:"FALSE" eq 'TRUE'}
-                <form method="post" action="profileSync.php">  
+                <form method="post" action="index.php">  
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Cambia Immagine Profilo</button>
                     </div>
@@ -35,7 +35,7 @@
                 {if $attiva|default:"FALSE" eq 'TRUE'}
                 <form method="post" action="index.php">  
                     <div class="form-group">
-                        <button type="submit" class="btn btn-success">Modifica dati</button>
+                        <a href="edit_profile.php" class="btn btn-success">Modifica Profilo</a>
                     </div>
                 </form>
             {/if}
