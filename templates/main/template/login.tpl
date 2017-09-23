@@ -18,6 +18,7 @@
                 <input type="hidden" name="action" value="login"/>
                 <input type="submit" id="login" class="btn btn-success" value="Login"  />
             </form>
+            <a href="resetpassword.php">Password Dimenticata</a>
         </div>
     </div>
 </div>

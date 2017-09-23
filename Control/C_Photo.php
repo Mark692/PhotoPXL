@@ -175,7 +175,7 @@ class C_Photo {
         if ($this->checkPrivacyOwner($photo)) {
             return false;
         }
-        return E_Comment::insert(new E_Comment($text, $_SESSION["username"], $photoId));
+        return intval(E_Comment::insert(new E_Comment($text, $_SESSION["username"], $photoId)));
     }
 
     /**

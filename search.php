@@ -2,6 +2,9 @@
 
 session_start();
 
+header("Cache-Control: no cache");
+session_cache_limiter("private_no_expire");
+
 require_once '.'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Smarty.class.php';
 $path = "." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
 require_once $path . "my_Autoloader.php";

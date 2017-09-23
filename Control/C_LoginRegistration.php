@@ -134,6 +134,7 @@ class C_LoginRegistration {
             self::logout();
             return false;
         }
+
         E_User::nullify_Token($username);
         return true;
     }

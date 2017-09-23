@@ -11,7 +11,7 @@ $path = "." . DIRECTORY_SEPARATOR . "Utilities" . DIRECTORY_SEPARATOR;
 require_once $path . "my_Autoloader.php";
 require_once $path . "config.inc.php";
 
-if(!C_LoginRegistration::isLogged() || \C_LoginRegistration::isBanned()){
+if(!C_LoginRegistration::isLogged() || C_LoginRegistration::isBanned()){
     header("Location: /index.php");
     exit();
 }

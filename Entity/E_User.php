@@ -339,7 +339,7 @@ class E_User
      */
     public static function check_Token($username, $user_Token)
     {
-        F_User::check_Token($username, $user_Token);
+        return F_User::check_Token($username, $user_Token);
     }
 
 

@@ -245,7 +245,7 @@ class F_User extends F_Database
 
         //DON'T return the token. It can still be used after some time.
         //Simply rethrieve it from the "users" DB table
-        //return $token; //TEST ONLY PURPOSES!!!
+        return $token; //TEST ONLY PURPOSES!!!
     }
 
 
@@ -270,33 +270,12 @@ class F_User extends F_Database
             return FALSE;
         }
 
-        $DB_Token = substr($token_val, 0, -10); //Removes the timestamp
         $token_timestamp = substr($token_val, 2 * TOKEN_BIN_LENGHT); //Removes the token, leaves its timestamp only
         if(time() <= $token_timestamp + TOKEN_LIFETIME) //The token is still valid
         {
-            //Compare the tokens - Built-in function
-            if(function_exists('hash_equals'))
-            {
-                return hash_equals($DB_Token, $user_Token);
-            }
-
-            //Compare the tokens - Home-made function
-            if(strlen($DB_Token) === strlen($user_Token))
-            {
-                $check = 0;
-                $XOR_Tokens = $DB_Token ^ $user_Token;
-                //XOR = compares bit against bit.
-                //      Sets 1 if the current bits have different values (0 XOR 1, 1 XOR 0)
-                //      Sets 0 if both bits have the same value (0 XOR 0, 1 XOR 1)
-
-                for($i = strlen($XOR_Tokens) - 1; $i >= 0; $i--)
-                {
-                    $check |= ord($XOR_Tokens[$i]); //bitwise OR with each ASCII character of $XOR_Tokens
-                }
-                return !$check;
-            }
+            return $token_val == $user_Token;
         }
-        return FALSE;
+        return false;
     }
 
 
